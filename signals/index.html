@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cyber Signals — Early Threat Detection & Intelligence Signals | Dyve HackaX</title>
+
+<meta name="description" content="Monitor early cyber threat signals, anomaly detection, and emerging attack indicators. Dyve HackaX tracks weak signals before breaches occur.">
+
+<link rel="canonical" href="https://dyve.online/signals/">
+<meta name="robots" content="index, follow">
+
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../divider.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- SCHEMA -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "CollectionPage",
+ "name": "Cyber Signals",
+ "description": "Early threat indicators and anomaly detection signals.",
+ "url": "https://dyve.online/signals/"
+}
+</script>
+
+<style>
+
+/* =========================
+   SIGNALS — TELEMETRY UI
+========================= */
+
+/* hero */
+.signals-title {
+  text-align: center;
+  font-size: 26px;
+  margin-top: 40px;
+}
+
+.signals-title span {
+  display: block;
+  font-size: 12px;
+  opacity: 0.6;
+  margin-top: 6px;
+}
+
+.signals-desc {
+  text-align: center;
+  max-width: 600px;
+  margin: 12px auto;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* =========================
+   METRICS (KEY DIFFERENCE)
+========================= */
+
+.signals-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin: 30px 0;
+}
+
+.metric {
+  background: #030605;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+
+.metric span {
+  font-size: 11px;
+  opacity: 0.5;
+  display: block;
+}
+
+.metric strong {
+  font-size: 20px;
+  margin-top: 6px;
+  display: block;
+}
+
+/* =========================
+   SIGNAL CARDS
+========================= */
+
+.signals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 80px;
+}
+
+.signal-card {
+  background: #030605;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 16px;
+  transition: 0.25s;
+}
+
+.signal-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0,255,170,0.3);
+}
+
+/* top */
+.signal-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.signal-source {
+  font-size: 11px;
+  opacity: 0.5;
+}
+
+.signal-level {
+  font-size: 11px;
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+
+/* levels */
+.signal-level.high {
+  background: #ff914d;
+}
+
+.signal-level.medium {
+  background: #ffaa00;
+}
+
+.signal-level.critical {
+  background: #ff3b3b;
+  color: #fff;
+}
+
+/* text */
+.signal-card p {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* responsive */
+@media (max-width: 900px) {
+  .signals-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .signals-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .signals-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="topbar">
+    <div class="menu-icon"></div>
+    <div class="logo">DYVE<span style="opacity:.5">|</span>HACKAX</div>
+  </div>
+
+  <div class="nav">
+    <span data-link="../index.html">Intel</span>
+    <span data-link="../breaches/index.html">Breaches</span>
+    <span data-link="../dark-web/index.html">Dark Web</span>
+    <span data-link="../threat-actors/index.html">Threat Actors</span>
+    <span class="active">Signals</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- HERO -->
+<h1 class="signals-title">
+  Threat Signals
+  <span>Early Indicators, Anomalies & Emerging Activity</span>
+</h1>
+
+<p class="signals-desc">
+Detect weak cyber signals before they escalate into breaches. Monitor anomalies, unusual patterns, and emerging threat behavior.
+</p>
+
+<!-- LIVE METRICS -->
+<div class="signals-metrics">
+
+  <div class="metric">
+    <span>Active Signals</span>
+    <strong>128</strong>
+  </div>
+
+  <div class="metric">
+    <span>Anomalies</span>
+    <strong>34</strong>
+  </div>
+
+  <div class="metric">
+    <span>High Risk</span>
+    <strong>9</strong>
+  </div>
+
+  <div class="metric">
+    <span>Sources</span>
+    <strong>18</strong>
+  </div>
+
+</div>
+
+<div class="divider"></div>
+
+<!-- SIGNAL GRID -->
+<div class="signals-grid">
+
+  <!-- SIGNAL 1 -->
+  <div class="signal-card" id="signal-1">
+
+    <div class="signal-top">
+      <span class="signal-source">forum_monitor</span>
+      <span class="signal-level high">High</span>
+    </div>
+
+    <p>Spike in credential listings linked to fintech services.</p>
+
+    <!-- INTEL CHAIN -->
+    <div class="intel-chain">
+      Signal → Breach → Actor
+    </div>
+
+    <!-- CONNECTION -->
+    <div class="signal-links">
+      Related breach:
+      <a href="../breaches/index.html#breach-1">Financial credential leak →</a>
+    </div>
+
+  </div>
+
+  <!-- SIGNAL 2 -->
+  <div class="signal-card" id="signal-2">
+
+    <div class="signal-top">
+      <span class="signal-source">domain_watch</span>
+      <span class="signal-level medium">Medium</span>
+    </div>
+
+    <p>New lookalike domains registered targeting banking platforms.</p>
+
+    <div class="intel-chain">
+      Signal → Potential Breach
+    </div>
+
+    <div class="signal-links">
+      Monitoring:
+      <a href="../breaches/index.html">View emerging breaches →</a>
+    </div>
+
+  </div>
+
+  <!-- SIGNAL 3 -->
+  <div class="signal-card" id="signal-3">
+
+    <div class="signal-top">
+      <span class="signal-source">malware_scan</span>
+      <span class="signal-level critical">Critical</span>
+    </div>
+
+    <p>Emerging stealer variant detected across multiple regions.</p>
+
+    <div class="intel-chain">
+      Signal → Malware → Actor
+    </div>
+
+    <div class="signal-links">
+      Possible actor:
+      <a href="../threat-actors/index.html#actor-1">GhostRoot →</a>
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+<footer class="dyve-footer">
+  <div class="dyve-core">
+    <div class="dyve-title">DYVE HACKAX</div>
+    <p class="dyve-desc">Early detection & cyber signal intelligence</p>
+  </div>
+</footer>
+
+<!-- OPTIONAL: DATA HOOK FOR FUTURE SYSTEM -->
+<script>
+fetch('../assets/intel.json')
+  .then(res => res.json())
+  .then(data => {
+    console.log("Intel system connected", data);
+  });
+</script>
+
+<script>
+document.querySelectorAll(".nav span").forEach(item => {
+  item.addEventListener("click", () => {
+    const link = item.getAttribute("data-link");
+    if (!link) return;
+    window.location.href = link;
+  });
+});
+</script>
+
+
+
+
+</body>
+</html>
