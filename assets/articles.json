@@ -1,0 +1,102 @@
+[
+  {
+    "title": "Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets",
+    "desc": "A coordinated breach operation has surfaced millions of credentials across underground forums.",
+    "image": "https://tungstensecure.com/wp-content/uploads/2025/05/Cyber-Threat-Intelligence-Pakistan.jpg",
+    "url": "article/article-credential-leak.html",
+    "tag": "LIVE INTEL",
+    "meta": "Verified • Active Threat",
+    "category": "breach"
+  },
+  {
+    "title": "Zero-Day Vulnerability Discovered in Authentication API",
+    "desc": "A critical zero-day flaw enables authentication bypass and session hijacking.",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRELGUPLZGzdyHRJARBf-lP9gTRhjhkJZRzfzgaletP7QP14L0qBEoYzajU&s=10",
+    "url": "article/article-zero-day.html",
+    "tag": "CRITICAL",
+    "meta": "Ongoing Threat",
+    "category": "breach"
+  },
+  {
+    "title": "Encrypted Messaging Platform Exploited for Data Exfiltration",
+    "desc": "Threat actors leverage encrypted channels for covert data movement.",
+    "image": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=800",
+    "url": "article/article-exfiltration.html",
+    "tag": "DARK WEB",
+    "meta": "Signal Detected",
+    "category": "dark-web"
+  },
+  {
+    "title": "Credential Stuffing Attacks Explained",
+    "desc": "How hackers turn leaked passwords into large-scale account takeovers.",
+    "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800",
+    "url": "article/article-credential-stuffing.html",
+    "tag": "ATTACK VECTOR",
+    "meta": "Active Exploitation",
+    "category": "analysis"
+  },
+  {
+    "title": "Data Breach Response Playbook (2026)",
+    "desc": "Step-by-step incident response strategy for modern cyber attacks.",
+    "image": "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&w=800",
+    "url": "article/article-data-breach-response.html",
+    "tag": "DEFENSE",
+    "meta": "Operational Guide",
+    "category": "analysis"
+  },
+
+  {
+    "title": "Dark Web Secrets: What Really Happens Beyond the Surface Web",
+    "desc": "Inside the hidden internet: marketplaces, threat actors, and cyber intelligence systems.",
+    "image": "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=1200",
+    "url": "article/dark-web/index.html",
+    "tag": "CORE INTEL",
+    "meta": "Strategic Overview",
+    "category": "dark-web"
+  },
+  {
+    "title": "How the Dark Web Actually Works (Tor, Onion Routing, Encryption)",
+    "desc": "Technical breakdown of Tor, hidden services, and layered encryption systems.",
+    "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800",
+    "url": "article/dark-web/dark-web-how-it-works.html",
+    "tag": "INFRASTRUCTURE",
+    "meta": "Technical Deep Dive",
+    "category": "dark-web"
+  },
+  {
+    "title": "Dark Web Marketplaces Explained (Vendors, Escrow, Trade Systems)",
+    "desc": "How underground marketplaces operate, including trust systems and transactions.",
+    "image": "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&w=800",
+    "url": "article/dark-web/dark-web-marketplaces.html",
+    "tag": "MARKET",
+    "meta": "Underground Economy",
+    "category": "dark-web"
+  },
+  {
+    "title": "What Hackers Buy on the Dark Web (Access, Exploits, Data)",
+    "desc": "Inside the hacker economy: credentials, exploits, and access trading.",
+    "image": "https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=800",
+    "url": "article/dark-web/dark-web-hacker-economy.html",
+    "tag": "THREAT ECONOMY",
+    "meta": "Operational Insight",
+    "category": "dark-web"
+  },
+  {
+    "title": "Dark Web Monitoring Systems (How Organizations Track Threats)",
+    "desc": "How companies detect leaks, threats, and attack planning in real time.",
+    "image": "https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=800",
+    "url": "article/dark-web/dark-web-monitoring.html",
+    "tag": "DEFENSE",
+    "meta": "Intelligence Systems",
+    "category": "dark-web"
+  },
+  {
+    "title": "Is the Dark Web Dangerous? Risks, Myths & Reality",
+    "desc": "Separating myths from reality and understanding actual risks.",
+    "image": "https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&w=800",
+    "url": "article/dark-web/dark-web-risks.html",
+    "tag": "RISK ANALYSIS",
+    "meta": "Threat Assessment",
+    "category": "dark-web"
+  }
+]
