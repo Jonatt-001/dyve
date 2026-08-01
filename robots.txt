@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Block junk if needed (optional later)
+# Disallow: /admin/
+# Disallow: /private/
+
+Sitemap: https://dyve.online/sitemap.xml
