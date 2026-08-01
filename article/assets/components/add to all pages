@@ -1,0 +1,18 @@
+Put this BEFORE </body> on every page:
+
+
+<script>
+fetch('/assets/components/footer.html')
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById('global-footer').innerHTML = data;
+
+    // Re-bind accordion AFTER load
+    document.querySelectorAll(".hx-head").forEach(head=>{
+      head.addEventListener("click",()=>{
+        const item = head.parentElement;
+        item.classList.toggle("active");
+      });
+    });
+  });
+</script>
