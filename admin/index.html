@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dyve HackaX — Intelligence Dashboard</title>
 
-  <!-- PWA Support -->
-<link rel="manifest" href="/admin/manifest.json">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Dyve Intel">
-<meta name="theme-color" content="#00ffaa">
-<link rel="apple-touch-icon" href="/logo.png">
+    <!-- PWA Support -->
+    <link rel="manifest" href="/admin/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Dyve Intel">
+    <meta name="theme-color" content="#00ffaa">
+    <link rel="apple-touch-icon" href="/logo.png">
 
     
     <!-- Tailwind CSS -->
@@ -204,12 +204,27 @@
 
     <script>
         // ============================================
-        // CONFIGURATION (UPDATE THESE!)
+        // LOAD SETTINGS FROM LOCALSTORAGE
         // ============================================
-        const GITHUB_TOKEN = 'YOUR_GITHUB_TOKEN_HERE'; 
-        const GITHUB_REPO = 'your-username/your-repo'; 
-        const GITHUB_BRANCH = 'main';
-        const ARTICLES_JSON_PATH = 'assets/articles.json'; // Adjust if your path is different
+        function getGitHubConfig() {
+            const settings = JSON.parse(localStorage.getItem('dyve-settings') || '{}');
+            return {
+                token: settings.githubToken || '',
+                repo: settings.githubRepo || '',
+                branch: settings.githubBranch || 'main',
+                siteUrl: settings.siteUrl || 'https://dyve.online'
+            };
+        }
+
+        // Check if configured on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const config = getGitHubConfig();
+            if (!config.token || !config.repo) {
+                setTimeout(() => {
+                    showToast('⚠️ GitHub not configured. Go to Settings to set up.');
+                }, 2000);
+            }
+        });
         
         // ============================================
         // STATE
@@ -313,7 +328,7 @@
             else analysis.push({ type: 'success', message: '✅ Description length is optimal' });
 
             const wordCount = content.split(/\s+/).filter(w => w).length;
-            if (wordCount < 300) analysis.push({ type: 'warning', message: '⚠️ Content is too short (aim for 500+ words)' });
+            if (wordCount < 300) analysis.push({ type: 'warning', message: '️ Content is too short (aim for 500+ words)' });
             else analysis.push({ type: 'success', message: `✅ Content length is good (${wordCount} words)` });
 
             const container = document.getElementById('seoAnalysis');
@@ -327,10 +342,12 @@
         // INTERNAL LINKING
         // ============================================
         async function loadExistingArticles() {
+            const config = getGitHubConfig();
+            if (!config.token || !config.repo) return;
+            
             try {
-                // Look for HTML files in the article directory
-                const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/article`, {
-                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                const response = await fetch(`https://api.github.com/repos/${config.repo}/contents/article`, {
+                    headers: { 'Authorization': `token ${config.token}` }
                 });
                 
                 if (response.ok) {
@@ -404,6 +421,13 @@
         // THE GENIUS PUBLISH ENGINE
         // ============================================
         async function publishArticle() {
+            const config = getGitHubConfig();
+            
+            if (!config.token || !config.repo) {
+                showToast('❌ GitHub not configured! Go to Settings first.');
+                return;
+            }
+
             const title = document.getElementById('titleInput').value.trim();
             const description = document.getElementById('descriptionInput').value.trim();
             const category = document.getElementById('categorySelect').value.trim();
@@ -426,12 +450,12 @@
                 const articleUrl = `article/${slug}.html`;
 
                 // 1. Generate the SEO-Perfect HTML File
-                const htmlContent = generateArticleHTML(title, description, imageUrl, intelTag, metaStatus, category, slug, today);
+                const htmlContent = generateArticleHTML(config.siteUrl, title, description, imageUrl, intelTag, metaStatus, category, slug, today);
                 const htmlBase64 = btoa(unescape(encodeURIComponent(htmlContent)));
 
                 // 2. Fetch current articles.json from GitHub
-                const fetchRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${ARTICLES_JSON_PATH}?ref=${GITHUB_BRANCH}`, {
-                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                const fetchRes = await fetch(`https://api.github.com/repos/${config.repo}/contents/assets/articles.json?ref=${config.branch}`, {
+                    headers: { 'Authorization': `token ${config.token}` }
                 });
                 
                 let articles = [];
@@ -460,17 +484,17 @@
                 const jsonBase64 = btoa(unescape(encodeURIComponent(newJsonContent)));
 
                 // 4. Push HTML file to GitHub
-                await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${articleUrl}`, {
+                await fetch(`https://api.github.com/repos/${config.repo}/contents/${articleUrl}`, {
                     method: 'PUT',
-                    headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: `feat: publish new intel - ${title}`, content: htmlBase64, branch: GITHUB_BRANCH })
+                    headers: { 'Authorization': `token ${config.token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: `feat: publish new intel - ${title}`, content: htmlBase64, branch: config.branch })
                 });
 
                 // 5. Push updated articles.json to GitHub
-                await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${ARTICLES_JSON_PATH}`, {
+                await fetch(`https://api.github.com/repos/${config.repo}/contents/assets/articles.json`, {
                     method: 'PUT',
-                    headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: `chore: update articles.json with ${title}`, content: jsonBase64, sha: jsonSha, branch: GITHUB_BRANCH })
+                    headers: { 'Authorization': `token ${config.token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: `chore: update articles.json with ${title}`, content: jsonBase64, sha: jsonSha, branch: config.branch })
                 });
 
                 showToast('✅ Intel Published & Feed Updated!');
@@ -486,8 +510,8 @@
             }
         }
 
-        function generateArticleHTML(title, desc, image, tag, meta, category, slug, date) {
-            const canonicalUrl = `https://dyve.online/article/${slug}.html`;
+        function generateArticleHTML(siteUrl, title, desc, image, tag, meta, category, slug, date) {
+            const canonicalUrl = `${siteUrl}/article/${slug}.html`;
             
             return `<!DOCTYPE html>
 <html lang="en">
@@ -530,7 +554,7 @@
   "publisher": {
     "@type": "Organization",
     "name": "Dyve HackaX",
-    "logo": { "@type": "ImageObject", "url": "https://dyve.online/logo.png" }
+    "logo": { "@type": "ImageObject", "url": "${siteUrl}/logo.png" }
   },
   "mainEntityOfPage": { "@type": "WebPage", "@id": "${canonicalUrl}" }
 }
@@ -605,56 +629,53 @@ document.querySelectorAll(".nav span").forEach(item => {
         }
 
 
-// Auto-load draft if redirected from drafts.html
-window.addEventListener('DOMContentLoaded', () => {
-    const savedDraft = localStorage.getItem('dyve-draft');
-    if (savedDraft) {
-        try {
-            const draft = JSON.parse(savedDraft);
-            document.getElementById('titleInput').value = draft.title || '';
-            document.getElementById('descriptionInput').value = draft.description || '';
-            document.getElementById('categorySelect').value = draft.category || 'breach';
-            document.getElementById('intelTagInput').value = draft.intelTag || '';
-            document.getElementById('metaStatusInput').value = draft.metaStatus || '';
-            document.getElementById('imageUrlInput').value = draft.imageUrl || '';
-            
-            if (draft.content) {
-                quill.setContents(draft.content);
+        // Auto-load draft if redirected from drafts.html
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedDraft = localStorage.getItem('dyve-draft');
+            if (savedDraft) {
+                try {
+                    const draft = JSON.parse(savedDraft);
+                    document.getElementById('titleInput').value = draft.title || '';
+                    document.getElementById('descriptionInput').value = draft.description || '';
+                    document.getElementById('categorySelect').value = draft.category || 'breach';
+                    document.getElementById('intelTagInput').value = draft.intelTag || '';
+                    document.getElementById('metaStatusInput').value = draft.metaStatus || '';
+                    document.getElementById('imageUrlInput').value = draft.imageUrl || '';
+                    
+                    if (draft.content) {
+                        quill.setContents(draft.content);
+                    }
+                    
+                    // Trigger slug update
+                    document.getElementById('titleInput').dispatchEvent(new Event('input'));
+                    document.getElementById('descriptionInput').dispatchEvent(new Event('input'));
+                    
+                    // Clear the temporary draft flag so it doesn't load again on fresh visits
+                    localStorage.removeItem('dyve-draft');
+                    localStorage.removeItem('dyve-draft-index');
+                    
+                    showToast('📝 Draft loaded successfully');
+                } catch (e) {
+                    console.error('Failed to load draft', e);
+                }
             }
-            
-            // Trigger slug update
-            document.getElementById('titleInput').dispatchEvent(new Event('input'));
-            document.getElementById('descriptionInput').dispatchEvent(new Event('input'));
-            
-            // Clear the temporary draft flag so it doesn't load again on fresh visits
-            localStorage.removeItem('dyve-draft');
-            localStorage.removeItem('dyve-draft-index');
-            
-            showToast('📝 Draft loaded successfully');
-        } catch (e) {
-            console.error('Failed to load draft', e);
-        }
-    }
-});
-
-
-
+        });
     </script>
 
-<!-- Register Service Worker -->
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/admin/sw.js')
-      .then(registration => {
-        console.log('[SW] Registered:', registration.scope);
-      })
-      .catch(error => {
-        console.error('[SW] Registration failed:', error);
+    <!-- Register Service Worker -->
+    <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/admin/sw.js')
+          .then(registration => {
+            console.log('[SW] Registered:', registration.scope);
+          })
+          .catch(error => {
+            console.error('[SW] Registration failed:', error);
+          });
       });
-  });
-}
-</script>
+    }
+    </script>
 
 </body>
 </html>
