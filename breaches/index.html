@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Data Breaches & Cyber Incidents — Live Threat Intelligence | Dyve HackaX</title>
+
+<meta name="description" content="Track recent data breaches, credential leaks, and cyber incidents. Dyve HackaX provides real-time breach intelligence and threat analysis.">
+
+<link rel="canonical" href="https://dyve.online/breaches/">
+<meta name="robots" content="index, follow">
+
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../divider.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ENHANCED SCHEMA -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "CollectionPage",
+ "name": "Cyber Breaches",
+ "url": "https://dyve.online/breaches/",
+ "mainEntity": [
+  {
+    "@type": "Article",
+    "name": "Financial sector credential leak",
+    "about": "Cyber Attack",
+    "mentions": ["GhostRoot"]
+  }
+ ]
+}
+</script>
+
+<style>
+
+/* =========================
+   BREACHES PAGE — TIMELINE UI
+========================= */
+
+/* hero */
+.breach-title {
+  text-align: center;
+  font-size: 26px;
+  margin-top: 40px;
+}
+
+.breach-title span {
+  display: block;
+  font-size: 12px;
+  opacity: 0.6;
+  margin-top: 6px;
+}
+
+/* alert bar */
+.breach-alert {
+  margin: 20px auto;
+  max-width: 600px;
+  text-align: center;
+  font-size: 13px;
+  color: #ff4d4d;
+  background: rgba(255,0,0,0.08);
+  border: 1px solid rgba(255,0,0,0.25);
+  padding: 10px;
+  border-radius: 6px;
+}
+
+/* feed */
+.breach-feed {
+  max-width: 800px;
+  margin: 30px auto 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* item */
+.breach-item {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  gap: 14px;
+  padding: 16px;
+  background: #030605;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.breach-item:hover {
+  transform: translateY(-2px);
+}
+
+/* time */
+.breach-time {
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+/* content */
+.breach-content h2 {
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.breach-content p {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* tag */
+.breach-tag {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* severity colors */
+.breach-item.critical {
+  border-left: 3px solid #ff3b3b;
+}
+.breach-item.critical .breach-tag {
+  background: #ff3b3b;
+  color: #fff;
+}
+
+.breach-item.high {
+  border-left: 3px solid #ff914d;
+}
+.breach-item.high .breach-tag {
+  background: #ff914d;
+}
+
+.breach-item.medium {
+  border-left: 3px solid #ffaa00;
+}
+.breach-item.medium .breach-tag {
+  background: #ffaa00;
+}
+
+/* mobile */
+@media (max-width: 600px) {
+
+  .breach-item {
+    grid-template-columns: 1fr;
+  }
+
+  .breach-time {
+    margin-bottom: 6px;
+  }
+
+}
+
+/* =========================
+   INTEL CONNECTIONS (NEW)
+========================= */
+
+.breach-links {
+  margin-top: 10px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.breach-links a {
+  color: #00ffaa;
+  text-decoration: none;
+}
+
+.breach-links a:hover {
+  text-decoration: underline;
+}
+
+.intel-chain {
+  font-size: 11px;
+  opacity: 0.4;
+  margin-top: 6px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="topbar">
+    <div class="menu-icon"></div>
+    <div class="logo">DYVE<span style="opacity:.5">|</span>HACKAX</div>
+  </div>
+
+  <div class="nav">
+    <span data-link="../index.html">Intel</span>
+    <span class="active">Breaches</span>
+    <span data-link="../dark-web/index.html">Dark Web</span>
+    <span data-link="../signals/index.html">Signals</span>
+    <span data-link="../threat-actors/index.html">Threat Actors</span>
+  </div>
+</div>
+
+<div class="container">
+
+<h1 class="breach-title">
+  Live Breach Intelligence
+  <span>Data Leaks, Credential Exposure & Incident Tracking</span>
+</h1>
+
+<div class="breach-alert">
+  ● New breach signals detected — monitoring active sources
+</div>
+
+<div class="divider"></div>
+
+<div class="breach-feed">
+
+  <!-- BREACH 1 -->
+  <div class="breach-item critical" id="breach-1">
+
+    <div class="breach-time">2 min ago</div>
+
+    <div class="breach-content">
+      <h2>Financial sector credential leak detected</h2>
+      <p>Over 2.3M credentials linked to US banking systems surfaced in underground forums.</p>
+
+      <!-- INTEL CHAIN -->
+      <div class="intel-chain">
+        Signal → Breach → Actor → Dark Web
+      </div>
+
+      <!-- CONNECTIONS -->
+      <div class="breach-links">
+        Signal:
+        <a href="../signals/index.html#signal-1">Credential spike →</a><br>
+        Actor:
+        <a href="../threat-actors/index.html#actor-1">GhostRoot →</a><br>
+        Source:
+        <a href="../dark-web/index.html">Underground forum →</a>
+      </div>
+
+    </div>
+
+    <span class="breach-tag">Critical</span>
+
+  </div>
+
+  <!-- BREACH 2 -->
+  <div class="breach-item high" id="breach-2">
+
+    <div class="breach-time">12 min ago</div>
+
+    <div class="breach-content">
+      <h2>Healthcare provider data exposure</h2>
+      <p>Internal database access reportedly listed for sale with patient records.</p>
+
+      <div class="intel-chain">
+        Signal → Breach → Marketplace
+      </div>
+
+      <div class="breach-links">
+        Signal:
+        <a href="../signals/index.html#signal-2">Domain anomaly →</a><br>
+        Source:
+        <a href="../dark-web/index.html">Marketplace listing →</a>
+      </div>
+
+    </div>
+
+    <span class="breach-tag">High Risk</span>
+
+  </div>
+
+  <!-- BREACH 3 -->
+  <div class="breach-item medium" id="breach-3">
+
+    <div class="breach-time">34 min ago</div>
+
+    <div class="breach-content">
+      <h2>Corporate email dump circulating</h2>
+      <p>Thousands of enterprise email credentials shared across multiple forums.</p>
+
+      <div class="intel-chain">
+        Signal → Breach → Actor
+      </div>
+
+      <div class="breach-links">
+        Signal:
+        <a href="../signals/index.html#signal-1">Credential anomaly →</a><br>
+        Actor:
+        <a href="../threat-actors/index.html">View actors →</a>
+      </div>
+
+    </div>
+
+    <span class="breach-tag">Medium</span>
+
+  </div>
+
+</div>
+
+</div>
+
+<footer class="dyve-footer">
+  <div class="dyve-core">
+    <div class="dyve-title">DYVE HACKAX</div>
+    <p class="dyve-desc">Real-time breach intelligence & monitoring</p>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll(".nav span").forEach(item => {
+  item.addEventListener("click", () => {
+    const link = item.getAttribute("data-link");
+    if (!link) return;
+    window.location.href = link;
+  });
+});
+</script>
+
+</body>
+</html>
