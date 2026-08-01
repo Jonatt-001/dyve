@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dyve HackaX — Intelligence Dashboard</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/admin/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Dyve Intel">
+    <meta name="theme-color" content="#020403">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Quill Editor -->
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dyve: {
+                            bg: '#020403',
+                            card: '#030605',
+                            accent: '#00ffaa',
+                            accentHover: '#00cc88',
+                            text: '#e8f0ee',
+                            muted: 'rgba(255,255,255,0.6)'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { background-color: #f8fafc; }
+        .ql-editor { min-height: 400px; font-size: 16px; font-family: 'Inter', sans-serif; }
+        .ql-toolbar { position: sticky; top: 0; z-index: 10; background: white; border-color: #e2e8f0 !important; }
+        .ql-container { border-color: #e2e8f0 !important; border-radius: 0.5rem; }
+        .tag-input { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .tag { background: #00ffaa; color: #020403; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; display: flex; align-items: center; gap: 0.5rem; }
+        .tag button { background: none; border: none; color: #020403; cursor: pointer; font-size: 1.2rem; line-height: 1; font-weight: bold; }
+        .suggestion-item { cursor: pointer; transition: all 0.2s; }
+        .suggestion-item:hover { background: #f0fdf4; border-color: #00ffaa; }
+        .loading { opacity: 0.5; pointer-events: none; }
+    </style>
+</head>
+<body class="min-h-screen">
+    
+    <!-- HEADER -->
+    <header class="bg-dyve-bg border-b border-white/10 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-white tracking-wide">DYVE<span class="text-dyve-accent">|</span>HACKAX <span class="text-dyve-muted text-sm font-normal ml-2">Intel Dashboard</span></h1>
+            <div class="flex gap-3">
+                <button id="saveDraftBtn" class="px-4 py-2 text-sm font-medium text-dyve-muted bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition">Save Draft</button>
+                <button id="publishBtn" class="px-4 py-2 text-sm font-bold text-dyve-bg bg-dyve-accent rounded-lg hover:bg-dyve-accentHover transition shadow-[0_0_15px_rgba(0,255,170,0.3)]">Publish Intel</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- LEFT COLUMN: Editor -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- Title -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <label class="block text-sm font-bold text-gray-800 mb-2">Intel Title</label>
+                    <input type="text" id="titleInput" placeholder="e.g., Massive Credential Leak Exposes 12M Accounts..." 
+                           class="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent focus:border-transparent text-gray-900">
+                    <div class="mt-2 flex items-center gap-2 text-sm text-gray-500">
+                        <span>Slug:</span>
+                        <code id="slugPreview" class="bg-gray-100 px-2 py-1 rounded text-xs font-mono text-dyve-bg">your-intel-slug</code>
+                    </div>
+                </div>
+
+                <!-- Rich Text Editor -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                    <div id="editor"></div>
+                </div>
+
+                <!-- SEO Analysis -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-dyve-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        SEO & Schema Analysis
+                    </h3>
+                    <div id="seoAnalysis" class="space-y-3">
+                        <div class="text-sm text-gray-500">Start writing to see SEO suggestions...</div>
+                    </div>
+                    <button id="analyzeSeoBtn" class="mt-4 px-4 py-2 text-sm font-medium text-dyve-bg border border-dyve-accent bg-dyve-accent/10 rounded-lg hover:bg-dyve-accent hover:text-dyve-bg transition">
+                        Analyze SEO
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN: Metadata & Suggestions -->
+            <div class="space-y-6">
+                
+                <!-- Meta Description -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <label class="block text-sm font-bold text-gray-800 mb-2">Meta Description</label>
+                    <textarea id="descriptionInput" rows="3" placeholder="Brief description for search engines (max 160 chars)..." 
+                              class="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent focus:border-transparent resize-none text-gray-900"></textarea>
+                    <div class="mt-2 text-xs text-gray-500 text-right">
+                        <span id="descCharCount">0</span>/160 characters
+                    </div>
+                </div>
+
+                <!-- Category -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <label class="block text-sm font-bold text-gray-800 mb-2">Intel Category</label>
+                    <select id="categorySelect" class="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent focus:border-transparent text-gray-900 bg-white">
+                        <option value="breach">Live Breaches</option>
+                        <option value="dark-web">Dark Web Intelligence</option>
+                        <option value="analysis">Threat Analysis</option>
+                        <option value="signals">Threat Signals</option>
+                        <option value="threat-actors">Threat Actors</option>
+                    </select>
+                </div>
+
+                <!-- Dyve Specific Fields -->
+                <div class="bg-dyve-bg rounded-lg shadow-sm border border-white/10 p-6 text-white">
+                    <h3 class="text-sm font-bold text-dyve-accent mb-4 uppercase tracking-wider">Threat Metadata</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium text-dyve-muted mb-2">Intel Tag</label>
+                            <input type="text" id="intelTagInput" placeholder="e.g., CRITICAL, LIVE INTEL, DARK WEB" 
+                                   class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent text-white uppercase placeholder-gray-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-dyve-muted mb-2">Meta Status</label>
+                            <input type="text" id="metaStatusInput" placeholder="e.g., Active Threat, Verified, Operational Guide" 
+                                   class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent text-white placeholder-gray-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-dyve-muted mb-2">Image URL</label>
+                            <input type="url" id="imageUrlInput" placeholder="https://..." 
+                                   class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent text-white placeholder-gray-600">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal Linking Suggestions -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-dyve-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                        Internal Linking
+                    </h3>
+                    <div id="linkSuggestions" class="space-y-2 max-h-60 overflow-y-auto">
+                        <div class="text-sm text-gray-500">Publish articles to see suggestions...</div>
+                    </div>
+                    <button id="suggestLinksBtn" class="mt-4 w-full px-4 py-2 text-sm font-medium text-dyve-bg border border-dyve-accent bg-dyve-accent/10 rounded-lg hover:bg-dyve-accent transition">
+                        Find Link Opportunities
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-24 right-4 bg-dyve-bg text-white border border-dyve-accent/30 px-6 py-3 rounded-lg shadow-2xl hidden z-50 flex items-center gap-2">
+        <span id="toastMessage"></span>
+    </div>
+
+    <!-- STICKY BOTTOM MENU -->
+    <div id="stickyMenu" class="fixed bottom-6 right-6 z-50">
+        <button id="menuToggle" class="w-14 h-14 bg-dyve-accent text-dyve-bg rounded-full shadow-lg flex items-center justify-center hover:bg-dyve-accentHover transition-all duration-300 active:scale-95">
+            <svg id="menuIcon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+
+        <div id="slideMenu" class="absolute bottom-20 right-0 bg-white rounded-lg shadow-2xl overflow-hidden transform translate-y-4 opacity-0 pointer-events-none transition-all duration-300 w-56 border border-gray-200">
+            <nav class="py-2">
+                <a href="settings.html" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <span class="text-sm font-medium text-gray-700">Settings</span>
+                </a>
+                <a href="drafts.html" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span class="text-sm font-medium text-gray-700">Drafts</span>
+                </a>
+                <a href="published.html" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span class="text-sm font-medium text-gray-700">Published</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION (UPDATE THESE!)
+        // ============================================
+        const GITHUB_TOKEN = 'YOUR_GITHUB_TOKEN_HERE'; 
+        const GITHUB_REPO = 'your-username/your-repo'; 
+        const GITHUB_BRANCH = 'main';
+        const ARTICLES_JSON_PATH = 'assets/articles.json'; // Adjust if your path is different
+        
+        // ============================================
+        // STATE
+        // ============================================
+        let quill = null;
+        let existingArticles = [];
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            quill = new Quill('#editor', {
+                theme: 'snow',
+                placeholder: 'Begin intelligence report...',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        ['blockquote', 'code-block'],
+                        ['link'],
+                        ['clean']
+                    ]
+                }
+            });
+
+            document.getElementById('titleInput').addEventListener('input', (e) => {
+                document.getElementById('slugPreview').textContent = generateSlug(e.target.value) || 'your-intel-slug';
+            });
+
+            document.getElementById('descriptionInput').addEventListener('input', (e) => {
+                document.getElementById('descCharCount').textContent = e.target.value.length;
+            });
+
+            document.getElementById('analyzeSeoBtn').addEventListener('click', analyzeSEO);
+            document.getElementById('suggestLinksBtn').addEventListener('click', suggestInternalLinks);
+            document.getElementById('saveDraftBtn').addEventListener('click', saveDraft);
+            document.getElementById('publishBtn').addEventListener('click', publishArticle);
+
+            loadExistingArticles();
+            setupStickyMenu();
+        });
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        function generateSlug(title) {
+            return title.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
+        }
+
+        function showToast(message, duration = 4000) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), duration);
+        }
+
+        function setupStickyMenu() {
+            const menuToggle = document.getElementById('menuToggle');
+            const slideMenu = document.getElementById('slideMenu');
+            const menuIcon = document.getElementById('menuIcon');
+            let menuOpen = false;
+
+            menuToggle.addEventListener('click', () => {
+                menuOpen = !menuOpen;
+                if (menuOpen) {
+                    slideMenu.classList.remove('translate-y-4', 'opacity-0', 'pointer-events-none');
+                    slideMenu.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+                    menuIcon.style.transform = 'rotate(90deg)';
+                } else {
+                    slideMenu.classList.add('translate-y-4', 'opacity-0', 'pointer-events-none');
+                    slideMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+                    menuIcon.style.transform = 'rotate(0deg)';
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!document.getElementById('stickyMenu').contains(e.target) && menuOpen) {
+                    menuToggle.click();
+                }
+            });
+        }
+
+        // ============================================
+        // SEO ANALYSIS
+        // ============================================
+        function analyzeSEO() {
+            const title = document.getElementById('titleInput').value;
+            const description = document.getElementById('descriptionInput').value;
+            const content = quill.getText();
+            const analysis = [];
+            
+            if (!title) analysis.push({ type: 'error', message: '❌ Title is required' });
+            else if (title.length < 30) analysis.push({ type: 'warning', message: '⚠️ Title is too short (aim for 50-60 characters)' });
+            else if (title.length > 70) analysis.push({ type: 'warning', message: '⚠️ Title is too long (may be truncated)' });
+            else analysis.push({ type: 'success', message: '✅ Title length is optimal' });
+
+            if (!description) analysis.push({ type: 'error', message: '❌ Meta description is required' });
+            else if (description.length < 120) analysis.push({ type: 'warning', message: '⚠️ Description is too short (aim for 150-160 characters)' });
+            else if (description.length > 160) analysis.push({ type: 'warning', message: '⚠️ Description is too long (will be truncated)' });
+            else analysis.push({ type: 'success', message: '✅ Description length is optimal' });
+
+            const wordCount = content.split(/\s+/).filter(w => w).length;
+            if (wordCount < 300) analysis.push({ type: 'warning', message: '⚠️ Content is too short (aim for 500+ words)' });
+            else analysis.push({ type: 'success', message: `✅ Content length is good (${wordCount} words)` });
+
+            const container = document.getElementById('seoAnalysis');
+            container.innerHTML = analysis.map(item => {
+                const colors = { error: 'bg-red-50 text-red-800 border-red-200', warning: 'bg-yellow-50 text-yellow-800 border-yellow-200', success: 'bg-green-50 text-green-800 border-green-200' };
+                return `<div class="p-3 rounded-lg border ${colors[item.type]} text-sm">${item.message}</div>`;
+            }).join('');
+        }
+
+        // ============================================
+        // INTERNAL LINKING
+        // ============================================
+        async function loadExistingArticles() {
+            try {
+                // Look for HTML files in the article directory
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/article`, {
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                });
+                
+                if (response.ok) {
+                    const files = await response.json();
+                    existingArticles = files.filter(f => f.name.endsWith('.html')).map(f => f.name.replace('.html', ''));
+                }
+            } catch (error) {
+                console.error('Error loading articles:', error);
+            }
+        }
+
+        function suggestInternalLinks() {
+            const content = quill.getText().toLowerCase();
+            const title = document.getElementById('titleInput').value.toLowerCase();
+            
+            const suggestions = existingArticles
+                .map(slug => {
+                    const keywords = slug.replace('article-', '').split('-');
+                    const matches = keywords.filter(kw => content.includes(kw) || title.includes(kw));
+                    return { slug, score: matches.length / (keywords.length || 1) };
+                })
+                .filter(item => item.score > 0.2)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 5);
+
+            const container = document.getElementById('linkSuggestions');
+            if (suggestions.length === 0) {
+                container.innerHTML = '<div class="text-sm text-gray-500">No relevant articles found for linking</div>';
+                return;
+            }
+
+            container.innerHTML = suggestions.map(item => `
+                <div class="suggestion-item p-3 border border-gray-200 rounded-lg bg-gray-50">
+                    <div class="text-sm font-medium text-gray-900">${item.slug.replace(/-/g, ' ')}</div>
+                    <div class="text-xs text-gray-500 mt-1">Relevance: ${Math.round(item.score * 100)}%</div>
+                    <button onclick="insertLink('${item.slug}')" class="mt-2 text-xs text-dyve-accent font-semibold hover:underline">Insert Link</button>
+                </div>
+            `).join('');
+        }
+
+        function insertLink(slug) {
+            const range = quill.getSelection();
+            if (range) {
+                quill.insertText(range.index, ` [Read Full Report] `);
+                quill.formatText(range.index, 18, 'link', `/article/${slug}.html`);
+                showToast('✅ Link inserted!');
+            } else {
+                showToast('⚠️ Select text first, then insert link');
+            }
+        }
+
+        // ============================================
+        // SAVE DRAFT
+        // ============================================
+        function saveDraft() {
+            const draft = {
+                title: document.getElementById('titleInput').value,
+                description: document.getElementById('descriptionInput').value,
+                category: document.getElementById('categorySelect').value,
+                intelTag: document.getElementById('intelTagInput').value,
+                metaStatus: document.getElementById('metaStatusInput').value,
+                imageUrl: document.getElementById('imageUrlInput').value,
+                content: quill.getContents(),
+                timestamp: Date.now()
+            };
+            localStorage.setItem('dyve-draft', JSON.stringify(draft));
+            showToast('✅ Draft saved locally');
+        }
+
+        // ============================================
+        // THE GENIUS PUBLISH ENGINE
+        // ============================================
+        async function publishArticle() {
+            const title = document.getElementById('titleInput').value.trim();
+            const description = document.getElementById('descriptionInput').value.trim();
+            const category = document.getElementById('categorySelect').value.trim();
+            const intelTag = document.getElementById('intelTagInput').value.trim() || 'INTEL';
+            const metaStatus = document.getElementById('metaStatusInput').value.trim() || 'Active Threat';
+            const imageUrl = document.getElementById('imageUrlInput').value.trim() || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800';
+            
+            if (!title || !description) {
+                showToast('❌ Title and Description are required');
+                return;
+            }
+
+            const slug = generateSlug(title);
+            const publishBtn = document.getElementById('publishBtn');
+            publishBtn.classList.add('loading');
+            publishBtn.textContent = 'Publishing...';
+
+            try {
+                const today = new Date().toISOString().split('T')[0];
+                const articleUrl = `article/${slug}.html`;
+
+                // 1. Generate the SEO-Perfect HTML File
+                const htmlContent = generateArticleHTML(title, description, imageUrl, intelTag, metaStatus, category, slug, today);
+                const htmlBase64 = btoa(unescape(encodeURIComponent(htmlContent)));
+
+                // 2. Fetch current articles.json from GitHub
+                const fetchRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${ARTICLES_JSON_PATH}?ref=${GITHUB_BRANCH}`, {
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                });
+                
+                let articles = [];
+                let jsonSha = '';
+                
+                if (fetchRes.ok) {
+                    const jsonData = await fetchRes.json();
+                    jsonSha = jsonData.sha;
+                    const decodedContent = atob(jsonData.content);
+                    articles = JSON.parse(decodedContent);
+                }
+
+                // 3. Add new article to the TOP of the array
+                const newArticle = {
+                    title: title,
+                    desc: description,
+                    image: imageUrl,
+                    url: articleUrl,
+                    tag: intelTag.toUpperCase(),
+                    meta: metaStatus,
+                    category: category
+                };
+                articles.unshift(newArticle);
+
+                const newJsonContent = JSON.stringify(articles, null, 2);
+                const jsonBase64 = btoa(unescape(encodeURIComponent(newJsonContent)));
+
+                // 4. Push HTML file to GitHub
+                await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${articleUrl}`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: `feat: publish new intel - ${title}`, content: htmlBase64, branch: GITHUB_BRANCH })
+                });
+
+                // 5. Push updated articles.json to GitHub
+                await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${ARTICLES_JSON_PATH}`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: `chore: update articles.json with ${title}`, content: jsonBase64, sha: jsonSha, branch: GITHUB_BRANCH })
+                });
+
+                showToast('✅ Intel Published & Feed Updated!');
+                clearForm();
+                await loadExistingArticles();
+
+            } catch (error) {
+                console.error('Publish error:', error);
+                showToast('❌ Error: ' + error.message);
+            } finally {
+                publishBtn.classList.remove('loading');
+                publishBtn.textContent = 'Publish Intel';
+            }
+        }
+
+        function generateArticleHTML(title, desc, image, tag, meta, category, slug, date) {
+            const canonicalUrl = `https://dyve.online/article/${slug}.html`;
+            
+            return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${title} | Dyve HackaX</title>
+<meta name="description" content="${desc}">
+<link rel="canonical" href="${canonicalUrl}">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#020403">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="${title}">
+<meta property="og:description" content="${desc}">
+<meta property="og:url" content="${canonicalUrl}">
+<meta property="og:site_name" content="Dyve HackaX">
+<meta property="og:image" content="${image}">
+<meta property="article:published_time" content="${date}">
+<meta property="article:section" content="${category}">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${title}">
+<meta name="twitter:description" content="${desc}">
+<meta name="twitter:image" content="${image}">
+
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../divider.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "${title}",
+  "description": "${desc}",
+  "image": "${image}",
+  "datePublished": "${date}",
+  "author": { "@type": "Organization", "name": "Dyve HackaX Intelligence Unit" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Dyve HackaX",
+    "logo": { "@type": "ImageObject", "url": "https://dyve.online/logo.png" }
+  },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "${canonicalUrl}" }
+}
+<\/script>
+</head>
+<body>
+
+<div class="header">
+  <div class="topbar">
+    <div class="menu-icon" id="menuToggle"></div>
+    <div class="logo">DYVE<span style="opacity:.5">|</span>HACKAX</div>
+  </div>
+  <div class="nav">
+    <span data-link="../index.html">Intel</span>
+    <span data-link="../breaches/index.html">Breaches</span>
+    <span data-link="../dark-web/index.html">Dark Web</span>
+    <span data-link="../signals/index.html">Signals</span>
+  </div>
+</div>
+
+<div class="container" style="max-width: 800px; margin-top: 40px; margin-bottom: 80px;">
+  <div style="margin-bottom: 20px;">
+    <span style="background: rgba(0,255,170,0.1); color: #00ffaa; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; letter-spacing: 1px;">${tag}</span>
+    <span style="color: rgba(255,255,255,0.5); font-size: 13px; margin-left: 10px;">${meta} • ${date}</span>
+  </div>
+
+  <h1 style="font-size: 32px; font-weight: 800; line-height: 1.2; margin-bottom: 20px; color: #ffffff;">${title}</h1>
+  <p style="font-size: 18px; line-height: 1.6; color: rgba(255,255,255,0.8); margin-bottom: 30px;">${desc}</p>
+  <img src="${image}" alt="${title}" style="width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 40px;">
+
+  <div class="article-content" style="font-size: 16px; line-height: 1.8; color: rgba(255,255,255,0.75);">
+    <p><em>(Full article content rendered from dashboard. Expand this template to include markdown parsing or rich text from the editor.)</em></p>
+    <p>This is an automated, SEO-optimized page generated by the Dyve HackaX intelligence dashboard. It includes perfect Schema markup, Open Graph tags, and lightning-fast load times.</p>
+  </div>
+
+  <div style="margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1);">
+    <a href="../index.html" style="color: #00ffaa; text-decoration: none; font-weight: 600;">← Return to Intelligence Feed</a>
+  </div>
+</div>
+
+<footer class="dyve-footer">
+  <div class="dyve-core">
+    <div class="dyve-title">DYVE HACKAX</div>
+    <p class="dyve-desc">Real-time threat intelligence, breach detection, and cyber surveillance.</p>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll(".nav span").forEach(item => {
+  item.addEventListener("click", () => {
+    const link = item.getAttribute("data-link");
+    if (link) window.location.href = link;
+  });
+});
+<\/script>
+</body>
+</html>`;
+        }
+
+        function clearForm() {
+            document.getElementById('titleInput').value = '';
+            document.getElementById('descriptionInput').value = '';
+            document.getElementById('categorySelect').value = 'breach';
+            document.getElementById('intelTagInput').value = '';
+            document.getElementById('metaStatusInput').value = '';
+            document.getElementById('imageUrlInput').value = '';
+            document.getElementById('slugPreview').textContent = 'your-intel-slug';
+            document.getElementById('descCharCount').textContent = '0';
+            document.getElementById('seoAnalysis').innerHTML = '<div class="text-sm text-gray-500">Start writing to see SEO suggestions...</div>';
+            document.getElementById('linkSuggestions').innerHTML = '<div class="text-sm text-gray-500">Publish articles to see suggestions...</div>';
+            quill.setContents([]);
+        }
+
+
+// Auto-load draft if redirected from drafts.html
+window.addEventListener('DOMContentLoaded', () => {
+    const savedDraft = localStorage.getItem('dyve-draft');
+    if (savedDraft) {
+        try {
+            const draft = JSON.parse(savedDraft);
+            document.getElementById('titleInput').value = draft.title || '';
+            document.getElementById('descriptionInput').value = draft.description || '';
+            document.getElementById('categorySelect').value = draft.category || 'breach';
+            document.getElementById('intelTagInput').value = draft.intelTag || '';
+            document.getElementById('metaStatusInput').value = draft.metaStatus || '';
+            document.getElementById('imageUrlInput').value = draft.imageUrl || '';
+            
+            if (draft.content) {
+                quill.setContents(draft.content);
+            }
+            
+            // Trigger slug update
+            document.getElementById('titleInput').dispatchEvent(new Event('input'));
+            document.getElementById('descriptionInput').dispatchEvent(new Event('input'));
+            
+            // Clear the temporary draft flag so it doesn't load again on fresh visits
+            localStorage.removeItem('dyve-draft');
+            localStorage.removeItem('dyve-draft-index');
+            
+            showToast('📝 Draft loaded successfully');
+        } catch (e) {
+            console.error('Failed to load draft', e);
+        }
+    }
+});
+
+
+
+    </script>
+</body>
+</html>
