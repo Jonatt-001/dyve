@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Drafts - Dyve HackaX Dashboard</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#020403">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dyve: {
+                            bg: '#020403',
+                            accent: '#00ffaa',
+                            accentHover: '#00cc88',
+                            muted: 'rgba(255,255,255,0.6)'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { -webkit-tap-highlight-color: transparent; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    
+    <!-- HEADER -->
+    <header class="bg-dyve-bg border-b border-white/10 sticky top-0 z-40">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="text-dyve-muted hover:text-dyve-accent transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                </a>
+                <h1 class="text-xl font-bold text-white tracking-wide">DYVE<span class="text-dyve-accent">|</span>DRAFTS</h1>
+            </div>
+            <span id="draftCount" class="text-sm font-medium text-dyve-muted bg-white/5 px-3 py-1 rounded-full border border-white/10">0 drafts</span>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div id="draftsList" class="space-y-4">
+            <div class="text-center py-12">
+                <div class="animate-pulse">
+                    <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <p class="text-gray-500 font-medium">No pending drafts</p>
+                <a href="index.html" class="inline-block mt-4 text-sm text-dyve-accent hover:underline font-medium">Create new intel report →</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- STICKY BOTTOM MENU -->
+    <div id="stickyMenu" class="fixed bottom-6 right-6 z-50">
+        <button id="menuToggle" class="w-14 h-14 bg-dyve-accent text-dyve-bg rounded-full shadow-lg flex items-center justify-center hover:bg-dyve-accentHover transition-all duration-300 active:scale-95">
+            <svg id="menuIcon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+
+        <div id="slideMenu" class="absolute bottom-20 right-0 bg-white rounded-lg shadow-2xl overflow-hidden transform translate-y-4 opacity-0 pointer-events-none transition-all duration-300 w-56 border border-gray-200">
+            <nav class="py-2">
+                <a href="settings.html" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    <span class="text-sm font-medium text-gray-700">Settings</span>
+                </a>
+                <a href="drafts.html" class="flex items-center gap-3 px-4 py-3 bg-gray-50">
+                    <svg class="w-5 h-5 text-dyve-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <span class="text-sm font-medium text-dyve-accent">Drafts</span>
+                </a>
+                <a href="published.html" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="text-sm font-medium text-gray-700">Published</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="fixed bottom-24 right-4 bg-dyve-bg text-white border border-dyve-accent/30 px-6 py-3 rounded-lg shadow-2xl hidden z-50 flex items-center gap-2">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script>
+        // Load and display drafts
+        function loadDrafts() {
+            // Use the new 'dyve-drafts' key to match the updated editor
+            const drafts = JSON.parse(localStorage.getItem('dyve-drafts') || '[]');
+            const container = document.getElementById('draftsList');
+            const countEl = document.getElementById('draftCount');
+            
+            countEl.textContent = `${drafts.length} draft${drafts.length !== 1 ? 's' : ''}`;
+
+            if (drafts.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12">
+                        <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <p class="text-gray-500 font-medium">No pending drafts</p>
+                        <a href="index.html" class="inline-block mt-4 text-sm text-dyve-accent hover:underline font-medium">Create new intel report →</a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = drafts.map((draft, index) => {
+                const date = new Date(draft.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                const tag = draft.intelTag ? `<span class="inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-dyve-bg bg-dyve-accent rounded">${draft.intelTag}</span>` : '';
+                const category = draft.category ? `<span class="text-xs text-gray-500 capitalize">${draft.category}</span>` : '';
+
+                return `
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md hover:border-dyve-accent/30 transition-all duration-300">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2">
+                                ${tag}
+                                ${category}
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 leading-tight">${draft.title || 'Untitled Draft'}</h3>
+                       0</div>
+                        <button onclick="deleteDraft(${index})" class="text-gray-400 hover:text-red-500 transition-colors ml-2 p-1 hover:bg-red-50 rounded" title="Delete Draft">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4 line-clamp-2">${draft.description || 'No description provided.'}</p>
+                    <div class="flex items-center justify-between text-xs text-gray-500 border-t border-gray-100 pt-3">
+                        <span>Last saved: ${date}</span>
+                        <button onclick="editDraft(${index})" class="flex items-center gap-1 text-dyve-accent hover:text-dyve-accentHover font-semibold transition-colors">
+                            Continue Editing
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // Delete draft
+        function deleteDraft(index) {
+            if (confirm('Are you sure you want to permanently delete this draft?')) {
+                const drafts = JSON.parse(localStorage.getItem('dyve-drafts') || '[]');
+                drafts.splice(index, 1);
+                localStorage.setItem('dyve-drafts', JSON.stringify(drafts));
+                loadDrafts();
+                showToast('🗑️ Draft deleted');
+            }
+        }
+
+        // Edit draft (load into editor)
+        function editDraft(index) {
+            const drafts = JSON.parse(localStorage.getItem('dyve-drafts') || '[]');
+            const draft = drafts[index];
+            
+            // Store draft data in localStorage for the editor to load
+            localStorage.setItem('dyve-draft', JSON.stringify(draft));
+            localStorage.setItem('dyve-draft-index', index.toString());
+            
+            // Redirect to editor
+            window.location.href = 'index.html';
+        }
+
+        // Toast notification
+        function showToast(message, duration = 3000) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), duration);
+        }
+
+        // Sticky menu
+        const menuToggle = document.getElementById('menuToggle');
+        const slideMenu = document.getElementById('slideMenu');
+        const menuIcon = document.getElementById('menuIcon');
+        let menuOpen = false;
+
+        menuToggle.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            if (menuOpen) {
+                slideMenu.classList.remove('translate-y-4', 'opacity-0', 'pointer-events-none');
+                slideMenu.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+                menuIcon.style.transform = 'rotate(90deg)';
+            } else {
+                slideMenu.classList.add('translate-y-4', 'opacity-0', 'pointer-events-none');
+                slideMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+                menuIcon.style.transform = 'rotate(0deg)';
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!document.getElementById('stickyMenu').contains(e.target) && menuOpen) {
+                menuToggle.click();
+            }
+        });
+
+        // Initialize
+        loadDrafts();
+    </script>
+</body>
+</html>
