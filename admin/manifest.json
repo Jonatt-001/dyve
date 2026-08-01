@@ -1,0 +1,36 @@
+{
+  "name": "Dyve HackaX Intelligence Dashboard",
+  "short_name": "Dyve Intel",
+  "description": "Cyber intelligence publishing platform for Dyve HackaX",
+  "start_url": "/admin/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#020403",
+  "theme_color": "#00ffaa",
+  "scope": "/admin/",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "shortcuts": [
+    {
+      "name": "New Article",
+      "short_name": "New",
+      "description": "Create new intelligence report",
+      "url": "/admin/",
+      "icons": [{ "src": "/logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Published",
+      "short_name": "Published",
+      "description": "View published articles",
+      "url": "/admin/published.html",
+      "icons": [{ "src": "/logo.png", "sizes": "192x192" }]
+    }
+  ]
+}
