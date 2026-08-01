@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Threat Actors — Cyber Adversary Intelligence & Hacker Profiles | Dyve HackaX</title>
+
+<meta name="description" content="Track cyber threat actors, hacker groups, and adversary profiles. Analyze tactics, breach activity, and global cybercrime behavior.">
+
+<link rel="canonical" href="https://dyve.online/threat-actors/">
+<meta name="robots" content="index, follow">
+
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../divider.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ENHANCED SCHEMA -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "CollectionPage",
+ "name": "Threat Actors",
+ "description": "Profiles and intelligence on cyber attackers and threat groups.",
+ "url": "https://dyve.online/threat-actors/",
+ "mainEntity": [
+  {
+    "@type": "Person",
+    "name": "GhostRoot",
+    "knowsAbout": ["Ransomware", "Data Exfiltration"],
+    "relatedLink": "https://dyve.online/breaches/#breach-1"
+  },
+  {
+    "@type": "Organization",
+    "name": "DarkVault Collective",
+    "knowsAbout": ["Credential Theft", "Cybercrime"]
+  }
+ ]
+}
+</script>
+
+<style>
+
+/* =========================
+   THREAT ACTORS — PROFILE UI
+========================= */
+
+.actor-title {
+  text-align: center;
+  font-size: 26px;
+  margin-top: 40px;
+}
+
+.actor-title span {
+  display: block;
+  font-size: 12px;
+  opacity: 0.6;
+  margin-top: 6px;
+}
+
+.actor-desc {
+  text-align: center;
+  max-width: 600px;
+  margin: 12px auto;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* grid */
+.actor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin: 40px 0 80px;
+}
+
+/* card */
+.actor-card {
+  background: #030605;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 18px;
+  transition: all 0.25s ease;
+}
+
+.actor-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0,255,170,0.3);
+}
+
+/* header */
+.actor-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.actor-name {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* risk */
+.actor-risk {
+  font-size: 11px;
+  padding: 3px 7px;
+  border-radius: 4px;
+}
+
+.actor-risk.high { background: #ff914d; }
+.actor-risk.medium { background: #ffaa00; }
+.actor-risk.critical { background: #ff3b3b; color: #fff; }
+
+/* meta */
+.actor-meta {
+  font-size: 12px;
+  opacity: 0.5;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 10px;
+}
+
+/* description */
+.actor-desc-text {
+  font-size: 13px;
+  opacity: 0.7;
+  margin-bottom: 12px;
+}
+
+/* tags */
+.actor-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.actor-tags span {
+  font-size: 11px;
+  padding: 4px 6px;
+  background: rgba(0,255,170,0.08);
+  border-radius: 4px;
+}
+
+/* INTEL LINKS (NEW) */
+.actor-links {
+  margin-top: 12px;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.actor-links a {
+  color: #00ffaa;
+  text-decoration: none;
+}
+
+.actor-links a:hover {
+  text-decoration: underline;
+}
+
+/* INTEL CHAIN */
+.intel-chain {
+  font-size: 11px;
+  opacity: 0.4;
+  margin-top: 10px;
+}
+
+/* responsive */
+@media (max-width: 900px) {
+  .actor-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .actor-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+  <div class="topbar">
+    <div class="menu-icon"></div>
+    <div class="logo">DYVE<span style="opacity:.5">|</span>HACKAX</div>
+  </div>
+
+  <div class="nav">
+    <span data-link="../index.html">Intel</span>
+    <span data-link="../breaches/index.html">Breaches</span>
+    <span data-link="../dark-web/index.html">Dark Web</span>
+    <span class="active">Threat Actors</span>
+  </div>
+</div>
+
+<div class="container">
+
+<h1 class="actor-title">
+  Threat Actor Intelligence
+  <span>Profiles, Tactics & Adversary Behavior</span>
+</h1>
+
+<p class="actor-desc">
+Track known cyber threat actors, analyze attack patterns, and understand how adversaries operate across global networks.
+</p>
+
+<div class="divider"></div>
+
+<div class="actor-grid">
+
+  <!-- ACTOR 1 -->
+  <div class="actor-card" id="actor-1">
+
+    <div class="actor-header">
+      <div class="actor-name">GhostRoot</div>
+      <div class="actor-risk critical">Critical</div>
+    </div>
+
+    <div class="actor-meta">
+      <span>Region: Unknown</span>
+      <span>Type: Ransomware Operator</span>
+    </div>
+
+    <p class="actor-desc-text">
+      Linked to large-scale ransomware campaigns targeting enterprise infrastructure and cloud systems.
+    </p>
+
+    <div class="actor-tags">
+      <span>Ransomware</span>
+      <span>Data Exfiltration</span>
+      <span>Extortion</span>
+    </div>
+
+    <!-- INTEL CHAIN -->
+    <div class="intel-chain">
+      Actor → Breaches → Signals → Dark Web
+    </div>
+
+    <!-- CONNECTIONS -->
+    <div class="actor-links">
+      Breaches:
+      <a href="../breaches/index.html#breach-1">Financial leak →</a><br>
+      Signals:
+      <a href="../signals/index.html#signal-3">Malware detection →</a><br>
+      Activity:
+      <a href="../dark-web/index.html">Dark web operations →</a>
+    </div>
+
+  </div>
+
+  <!-- ACTOR 2 -->
+  <div class="actor-card" id="actor-2">
+
+    <div class="actor-header">
+      <div class="actor-name">DarkVault Collective</div>
+      <div class="actor-risk medium">Medium</div>
+    </div>
+
+    <div class="actor-meta">
+      <span>Region: Eastern Europe</span>
+      <span>Type: Cybercrime Group</span>
+    </div>
+
+    <p class="actor-desc-text">
+      Operates underground marketplaces specializing in stolen credentials and access sales.
+    </p>
+
+    <div class="actor-tags">
+      <span>Credential Theft</span>
+      <span>Marketplaces</span>
+      <span>Fraud</span>
+    </div>
+
+    <div class="intel-chain">
+      Actor → Dark Web → Signals
+    </div>
+
+    <div class="actor-links">
+      Activity:
+      <a href="../dark-web/index.html">Marketplace intel →</a><br>
+      Signals:
+      <a href="../signals/index.html#signal-1">Credential spike →</a>
+    </div>
+
+  </div>
+
+  <!-- ACTOR 3 -->
+  <div class="actor-card" id="actor-3">
+
+    <div class="actor-header">
+      <div class="actor-name">APT Shadow Lynx</div>
+      <div class="actor-risk high">High Risk</div>
+    </div>
+
+    <div class="actor-meta">
+      <span>Region: Global</span>
+      <span>Type: Advanced Persistent Threat</span>
+    </div>
+
+    <p class="actor-desc-text">
+      Known for stealth infiltration, credential harvesting, and long-term persistence in financial systems.
+    </p>
+
+    <div class="actor-tags">
+      <span>Phishing</span>
+      <span>Zero-Day</span>
+      <span>Lateral Movement</span>
+    </div>
+
+    <div class="intel-chain">
+      Actor → Signals → Potential Breaches
+    </div>
+
+    <div class="actor-links">
+      Signals:
+      <a href="../signals/index.html#signal-2">Domain anomaly →</a><br>
+      Breaches:
+      <a href="../breaches/index.html">View incidents →</a>
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+<footer class="dyve-footer">
+  <div class="dyve-core">
+    <div class="dyve-title">DYVE HACKAX</div>
+    <p class="dyve-desc">Threat intelligence & adversary tracking</p>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll(".nav span").forEach(item => {
+  item.addEventListener("click", () => {
+    const link = item.getAttribute("data-link");
+    if (!link) return;
+    window.location.href = link;
+  });
+});
+</script>
+
+</body>
+</html>
