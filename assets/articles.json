@@ -1,11 +1,20 @@
 [
   {
+    "title": "The Silent Epidemic: AI-Driven Polymorphic Malware Bypassing Next-Gen EDR",
+    "desc": "Advanced threat actors are leveraging AI to generate polymorphic malware that bypasses next-gen EDR. Dyve HackaX analyzes the new TTPs and mitigation strategies.",
+    "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1200",
+    "url": "article/the-silent-epidemic-ai-driven-polymorphic-malware-bypassing-next-gen-edr.html",
+    "tag": "CRITICAL",
+    "meta": "Verified • Active Threat",
+    "category": "analysis"
+  },
+  {
     "title": "Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets",
     "desc": "A coordinated breach operation has surfaced millions of credentials across underground forums.",
     "image": "https://tungstensecure.com/wp-content/uploads/2025/05/Cyber-Threat-Intelligence-Pakistan.jpg",
     "url": "article/article-credential-leak.html",
     "tag": "LIVE INTEL",
-    "meta": "Verified • Active Threat",
+    "meta": "Verified â¢ Active Threat",
     "category": "breach"
   },
   {
@@ -44,7 +53,6 @@
     "meta": "Operational Guide",
     "category": "analysis"
   },
-
   {
     "title": "Dark Web Secrets: What Really Happens Beyond the Surface Web",
     "desc": "Inside the hidden internet: marketplaces, threat actors, and cyber intelligence systems.",
