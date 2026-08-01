@@ -1,0 +1,29 @@
+{
+  "signals": [
+    {
+      "id": "signal-1",
+      "title": "Credential spike detected",
+      "related_breach": "breach-1"
+    }
+  ],
+  "breaches": [
+    {
+      "id": "breach-1",
+      "title": "Financial credentials leak",
+      "actor": "actor-1"
+    }
+  ],
+  "actors": [
+    {
+      "id": "actor-1",
+      "name": "GhostRoot",
+      "related_darkweb": "darkweb-1"
+    }
+  ],
+  "darkweb": [
+    {
+      "id": "darkweb-1",
+      "title": "Underground marketplace listing"
+    }
+  ]
+}
