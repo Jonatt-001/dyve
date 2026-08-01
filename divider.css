@@ -1,0 +1,28 @@
+.divider-intel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 40px 0;
+
+  color: #8b979e;
+  font-size: 11px;
+  letter-spacing: 1.6px;
+  font-family: 'Michroma', sans-serif;
+}
+
+.divider-intel::before,
+.divider-intel::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.15)
+  );
+}
+
+.divider-intel span {
+  opacity: 0.6;
+}
