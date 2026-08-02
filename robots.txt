@@ -1,46 +1,45 @@
-# ==========================================
 # Dyve HackaX - Cyber Intelligence Platform
-# https://dyve.online
-# ==========================================
+# Generated automatically on 2026-08-02
+# Do not edit manually - changes will be overwritten
 
 User-agent: *
 Allow: /
+Allow: /article/
+Allow: /breaches/
+Allow: /dark-web/
+Allow: /ransomware/
+Allow: /threat-actors/
+Allow: /signals/
+Allow: /analysis/
+Allow: /faq/
+Allow: /about-us/
 
-# Private administration
+# Block admin/editor paths
 Disallow: /admin/
 Disallow: /editor/
 Disallow: /settings/
 Disallow: /drafts/
 Disallow: /published/
-
-# Internal data and exports
-Disallow: /assets/articles.json
 Disallow: /*.json$
-Disallow: /*.bak$
-Disallow: /*.tmp$
-Disallow: /*.log$
+Disallow: /assets/articles.json
 
-# Duplicate and preview URLs
+# Block duplicate content
 Disallow: /*?mode=edit
-Disallow: /*?preview=
-Disallow: /*preview*
 Disallow: /*?ref=
-Disallow: /*?utm_
-Disallow: /*&utm_
-Disallow: /*?fbclid=
-Disallow: /*&fbclid=
-Disallow: /*?gclid=
-Disallow: /*&gclid=
 
-# Optional: internal search pages
-Disallow: /search
-
-# Sitemap
+# Sitemaps
 Sitemap: https://dyve.online/sitemap.xml
 
-# Limit aggressive SEO crawlers
+# Crawl-delay for heavy bots
 User-agent: AhrefsBot
 Crawl-delay: 10
 
 User-agent: SemrushBot
 Crawl-delay: 10
+
+# Optimize for Google
+User-agent: Googlebot
+Allow: /
+Allow: /*.html$
+Allow: /*.css$
+Allow: /*.js$
