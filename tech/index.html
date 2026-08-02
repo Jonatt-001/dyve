@@ -31,1019 +31,313 @@
   <meta name="twitter:description" content="Your daily source for artificial intelligence news, general tech updates, and deep-dive analysis.">
   <meta name="twitter:image" content="https://dyve.online/assets/tech-og-image.jpg">
 
-  <!-- =========================
-       FONTS & ICONS
-  ========================= -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Maven+Pro:wght@600;700;800;900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- =========================
-       MODERNIZED STYLES
-  ========================= -->
-  <style>
-    :root {
-      --primary: #ff4a22;
-      --primary-hover: #e03e1b;
-      --accent: #00ffaa;
-      --bg-body: #f8f9fa;
-      --bg-card: #ffffff;
-      --bg-dark: #111827;
-      --text-primary: #111827;
-      --text-secondary: #6b7280;
-      --text-light: #f3f4f6;
-      --border-color: #e5e7eb;
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      --radius-sm: 6px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --font-heading: 'Maven Pro', sans-serif;
-      --font-body: 'Inter', sans-serif;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: var(--font-body);
-      background-color: var(--bg-body);
-      color: var(--text-primary);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-      transition: var(--transition);
-    }
-
-    /* =========================
-       HEADER & NAVIGATION
-    ========================= */
-    .fixed-header {
-      width: 100%;
-      position: fixed;
-      top: 0;
-      z-index: 1000;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-color);
-      transition: var(--transition);
-    }
-
-    .nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 24px;
-      height: 64px;
-    }
-
-    .nav-logo a {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: var(--font-heading);
-      font-weight: 800;
-      font-size: 1.25rem;
-      color: var(--bg-dark);
-    }
-
-    .nav-logo svg {
-      width: 32px;
-      height: 32px;
-      color: var(--primary);
-    }
-
-    .nav-bar-ipad-1 {
-      display: none;
-    }
-
-    .nav-icons {
-      display: flex;
-      list-style: none;
-      gap: 8px;
-    }
-
-    .nav-icons a {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      color: var(--text-secondary);
-    }
-
-    .nav-icons a:hover {
-      background-color: var(--bg-body);
-      color: var(--primary);
-    }
-
-    .tech-fest-cta {
-      background: linear-gradient(90deg, #111827 0%, #1f2937 100%);
-      color: var(--accent);
-      text-align: center;
-      padding: 8px 0;
-      font-weight: 600;
-      font-size: 0.85rem;
-      letter-spacing: 0.02em;
-    }
-
-    .tech-fest-cta a:hover {
-      color: #ffffff;
-    }
-
-    /* =========================
-       HERO SECTION
-    ========================= */
-    .top-articles {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-      padding: 0 16px;
-      margin-top: 100px;
-      max-width: 1280px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .top-articles article {
-      position: relative;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      background-color: var(--bg-dark);
-      min-height: 280px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      transition: var(--transition);
-    }
-
-    .top-articles article::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%);
-      z-index: 1;
-      transition: var(--transition);
-    }
-
-    .top-articles article:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .top-articles article:hover::before {
-      background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.2) 100%);
-    }
-
-    .top-articles article > * {
-      position: relative;
-      z-index: 2;
-      padding: 24px;
-    }
-
-    .top-articles h2 {
-      font-family: var(--font-heading);
-      color: #ffffff;
-      line-height: 1.2;
-      margin-bottom: 12px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-
-    .ta-atcl-credits {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 0.85rem;
-    }
-
-    .ta-atcl-credits a {
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    .cover-date {
-      display: inline-block;
-      background: rgba(0, 255, 170, 0.15);
-      color: var(--accent);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 12px;
-      border: 1px solid rgba(0, 255, 170, 0.3);
-    }
-
-    /* =========================
-       LAYOUT & SECTIONS
-    ========================= */
-    .love-wrapper {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 40px 16px;
-    }
-
-    .ln-heading {
-      font-family: var(--font-heading);
-      font-size: 1.75rem;
-      font-weight: 800;
-      color: var(--text-primary);
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .ln-heading i {
-      color: var(--primary);
-      font-size: 1.5rem;
-    }
-
-    /* News Grid */
-    .latest-news-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 24px;
-    }
-
-    .news-card {
-      background: var(--bg-card);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border-color);
-      transition: var(--transition);
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-
-    .news-card:hover {
-      transform: translateY(-6px);
-      box-shadow: var(--shadow-lg);
-      border-color: transparent;
-    }
-
-    .news-card-image {
-      aspect-ratio: 16/10;
-      background-size: cover;
-      background-position: center;
-      transition: transform 0.5s ease;
-    }
-
-    .news-card:hover .news-card-image {
-      transform: scale(1.05);
-    }
-
-    .news-card-content {
-      padding: 20px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .news-card h3 {
-      font-family: var(--font-heading);
-      font-size: 1.1rem;
-      font-weight: 700;
-      line-height: 1.4;
-      margin-bottom: 12px;
-      color: var(--text-primary);
-    }
-
-    .news-card h3 a:hover {
-      color: var(--primary);
-    }
-
-    .news-card-meta {
-      margin-top: auto;
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .news-card-meta i {
-      font-size: 1rem;
-      color: var(--primary);
-    }
-
-    /* Sections Grid */
-    .sections-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 32px;
-      margin-top: 64px;
-    }
-
-    .section-block h3 {
-      font-family: var(--font-heading);
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .section-block h3::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border-color);
-      margin-left: 8px;
-    }
-
-    .featured-article {
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      margin-bottom: 16px;
-      position: relative;
-      aspect-ratio: 16/9;
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: flex-end;
-      transition: var(--transition);
-    }
-
-    .featured-article::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
-    }
-
-    .featured-article:hover {
-      transform: scale(1.02);
-    }
-
-    .featured-article-content {
-      position: relative;
-      z-index: 2;
-      padding: 20px;
-      color: white;
-      width: 100%;
-    }
-
-    .featured-article-content h5 {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-
-    .featured-article-content h3 {
-      font-size: 1.2rem;
-      margin: 0;
-      color: white;
-    }
-
-    .featured-article-content h3::after { display: none; }
-
-    .article-list {
-      list-style: none;
-    }
-
-    .article-list li {
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border-color);
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      transition: var(--transition);
-    }
-
-    .article-list li::before {
-      content: '▹';
-      color: var(--primary);
-      font-weight: bold;
-      font-size: 1.2rem;
-      line-height: 1;
-    }
-
-    .article-list li:hover {
-      color: var(--text-primary);
-      padding-left: 4px;
-    }
-
-    /* =========================
-       NEWSLETTER
-    ========================= */
-    .newsletter-section {
-      background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
-      color: white;
-      border-radius: var(--radius-lg);
-      padding: 48px 24px;
-      text-align: center;
-      margin: 64px auto;
-      max-width: 1280px;
-      box-shadow: var(--shadow-lg);
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .newsletter-section h2 {
-      font-family: var(--font-heading);
-      font-size: 1.75rem;
-      margin-bottom: 12px;
-    }
-
-    .newsletter-section p {
-      color: #9ca3af;
-      margin-bottom: 24px;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .newsletter-form {
-      display: flex;
-      gap: 12px;
-      max-width: 480px;
-      margin: 0 auto;
-      flex-wrap: wrap;
-    }
-
-    .newsletter-form input {
-      flex: 1;
-      min-width: 250px;
-      padding: 14px 18px;
-      border: 1px solid #374151;
-      border-radius: var(--radius-sm);
-      background: #1f2937;
-      color: white;
-      font-size: 1rem;
-      outline: none;
-      transition: var(--transition);
-    }
-
-    .newsletter-form input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(255, 74, 34, 0.2);
-    }
-
-    .newsletter-form button {
-      padding: 14px 28px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: var(--transition);
-      white-space: nowrap;
-    }
-
-    .newsletter-form button:hover {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
-    }
-
-    /* =========================
-       FOOTER
-    ========================= */
-    footer {
-      background: var(--bg-dark);
-      color: #9ca3af;
-      margin-top: 80px;
-    }
-
-    .footer-links {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 48px 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
-      border-bottom: 1px solid #1f2937;
-    }
-
-    .footer-social {
-      display: flex;
-      gap: 16px;
-      list-style: none;
-    }
-
-    .footer-social a {
-      width: 44px;
-      height: 44px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #1f2937;
-      border-radius: 50%;
-      color: #9ca3af;
-      font-size: 1.2rem;
-      transition: var(--transition);
-    }
-
-    .footer-social a:hover {
-      background: var(--primary);
-      color: white;
-      transform: translateY(-3px);
-    }
-
-    .footer-nav {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 24px;
-      list-style: none;
-    }
-
-    .footer-nav a {
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .footer-nav a:hover {
-      color: var(--primary);
-    }
-
-    .footer-legal {
-      text-align: center;
-      padding: 32px 24px;
-      font-size: 0.85rem;
-    }
-
-    .footer-legal .brand {
-      font-family: var(--font-heading);
-      font-weight: 800;
-      font-size: 1.1rem;
-      color: white;
-      letter-spacing: 0.05em;
-    }
-
-    .heart {
-      color: var(--primary);
-      display: inline-block;
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.15); }
-    }
-
-    /* =========================
-       UTILITIES & ANIMATIONS
-    ========================= */
-    .skeleton {
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-      background-size: 200% 100%;
-      animation: loading 1.5s infinite;
-      pointer-events: none;
-    }
-
-    @keyframes loading {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    .fade-in {
-      animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-      opacity: 0;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* =========================
-       RESPONSIVE DESIGN
-    ========================= */
-    @media (min-width: 768px) {
-      .nav-bar-ipad-1 {
-        display: flex;
-        align-items: center;
-        gap: 32px;
-      }
-
-      .nav-bar-ipad-1 ul {
-        display: flex;
-        list-style: none;
-        gap: 24px;
-      }
-
-      .nav-bar-ipad-1 a {
-        font-size: 0.9rem;
-        font-weight: 500;
-        color: var(--text-secondary);
-        position: relative;
-      }
-
-      .nav-bar-ipad-1 a::after {
-        content: '';
-        position: absolute;
-        bottom: -4px;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: var(--primary);
-        transition: var(--transition);
-      }
-
-      .nav-bar-ipad-1 a:hover,
-      .nav-bar-ipad-1 a.active {
-        color: var(--text-primary);
-      }
-
-      .nav-bar-ipad-1 a:hover::after,
-      .nav-bar-ipad-1 a.active::after {
-        width: 100%;
-      }
-
-      .nav-icons {
-        display: none; /* Hide mobile icons on desktop */
-      }
-
-      .top-articles {
-        grid-template-columns: 2fr 1fr;
-        grid-template-rows: 1fr 1fr;
-        gap: 20px;
-        padding: 0 24px;
-        margin-top: 110px;
-      }
-
-      .top1 { grid-column: 1 / 2; grid-row: 1 / 3; min-height: 480px; }
-      .top2 { grid-column: 2 / 3; grid-row: 1 / 2; min-height: 230px; }
-      .top3 { grid-column: 2 / 3; grid-row: 2 / 3; min-height: 230px; }
-
-      .top1 h2 { font-size: 2.5rem; }
-      .top2 h2, .top3 h2 { font-size: 1.5rem; }
-
-      .sections-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .nav {
-        padding: 0 40px;
-        height: 72px;
-      }
-      
-      .top-articles {
-        padding: 0 40px;
-        margin-top: 120px;
-      }
-      
-      .top1 h2 { font-size: 3rem; }
-      
-      .love-wrapper {
-        padding: 60px 40px;
-      }
-    }
-  </style>
-
-  <!-- =========================
-       JSON-LD SCHEMA
-  ========================= -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "Dyve Tech — Artificial Intelligence News",
-    "description": "Your daily source for artificial intelligence news, general tech updates, and deep-dive analysis.",
-    "url": "https://dyve.online/tech/",
-    "publisher": {
-      "@type": "Organization",
-      "name": "Dyve Tech",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://dyve.online/logo.png"
-      }
-    }
-  }
-  </script>
-</head>
-
-<body>
-  <header class="fixed-header">
-    <nav class="nav">
-      <div class="nav-logo">
-        <a href="https://dyve.online/" aria-label="Dyve Home">
-          <svg viewBox="0 0 32 32" fill="none">
-            <path d="M13.7692 19.9074L16.0003 17.656L18.2314 19.9074L16.0003 22.1588L13.7692 19.9074Z" fill="currentColor"></path>
-            <path d="M11.4438 17.5608L15.953 13.0106L13.722 10.7593L9.21275 15.3095L11.4438 17.5608Z" fill="currentColor"></path>
-            <path d="M20.5569 17.5608L22.7879 15.3095L20.5569 13.0582L18.3259 15.3095L20.5569 17.5608Z" fill="currentColor"></path>
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM11.6722 8.13447C12.811 6.98529 14.6329 6.98529 15.7717 8.13447L18.2785 10.6641L18.5071 10.4334C19.646 9.28421 21.4678 9.2842 22.6067 10.4334L25.3028 13.154C26.4753 14.3372 26.4753 16.2818 25.3028 17.465L17.1392 25.7028C16.8601 25.9845 16.5076 26.1416 16.1466 26.1749C15.6884 26.2173 15.2158 26.0604 14.8615 25.7028L6.6979 17.465C5.52538 16.2818 5.52537 14.3372 6.6979 13.154L11.6722 8.13447Z" fill="currentColor"></path>
-          </svg>
-          <span>DYVE TECH</span>
-        </a>
-      </div>
-      
-      <div class="nav-bar-ipad-1">
-        <ul>
-          <li><a href="https://dyve.online/">Home</a></li>
-          <li><a href="https://dyve.online/tech/" class="active">Tech</a></li>
-          <li><a href="https://dyve.online/breaches/">Breaches</a></li>
-          <li><a href="https://dyve.online/dark-web/">Dark Web</a></li>
-          <li><a href="https://dyve.online/ransomware/">Ransomware</a></li>
-        </ul>
-        <ul style="margin-left: auto;">
-          <li><a href="https://dyve.online/tech/about/">About</a></li>
-          <li><a href="https://dyve.online/contact/">Contact</a></li>
-        </ul>
-      </div>
-
-      <ul class="nav-icons">
-        <li>
-          <a href="#" aria-label="Search">
-            <i class="material-icons">search</i>
-          </a>
-        </li>
-        <li>
-          <a href="#" aria-label="Menu" id="mobileMenuBtn">
-            <i class="material-icons">menu</i>
-          </a>
-        </li>
-      </ul>
-    </nav>
     
-    <div class="tech-fest-cta">
-      <a href="https://dyve.online/">
-        🚀 Explore the main Dyve Intelligence Platform →
-      </a>
-    </div>
-  </header>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Maven+Pro:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fffdfa;
+        }
+        .font-heading {
+            font-family: 'Maven Pro', sans-serif;
+        }
+        .text-primary {
+            color: #f15e50;
+        }
+        .bg-primary {
+            background-color: #f15e50;
+        }
+        .hover\:bg-primary:hover {
+            background-color: #d94a3e;
+        }
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #f15e50;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .article-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+    
+<body class="bg-[#fffdfa] p-4 sm:p-6 md:p-8 min-[1200px]:px-[5%] min-[1440px]:px-[12%]">
 
-  <main>
-    <div class="top-articles">
-      <article class="top1 skeleton" id="hero1">
-        <div style="padding: 24px;">
-          <div class="cover-date">Loading...</div>
-          <h2>Fetching latest intelligence...</h2>
-          <div class="ta-atcl-credits">
-            <p>by <a href="#">Dyve Tech Unit</a></p>
-          </div>
-        </div>
-      </article>
-      
-      <article class="top2 skeleton" id="hero2">
-        <div style="padding: 24px;">
-          <h2>Fetching latest intelligence...</h2>
-        </div>
-      </article>
-      
-      <article class="top3 skeleton" id="hero3">
-        <div style="padding: 24px;">
-          <h2>Fetching latest intelligence...</h2>
-          <div class="ta-atcl-credits">
-            <p>by <a href="#">Dyve Tech Unit</a></p>
-          </div>
-        </div>
-      </article>
-    </div>
+    <!-- OVERLAY -->
+    <div id="overlay" class="fixed h-full w-full top-0 left-0 bg-[#000000] opacity-50 hidden z-30"></div>
 
-    <div class="love-wrapper">
-      <section>
-        <h2 class="ln-heading">Latest Tech Intelligence <i class="material-icons">keyboard_arrow_right</i></h2>
-        <div id="latestNewsGrid" class="latest-news-grid">
-          <!-- Skeleton loaders -->
-          <div class="news-card skeleton" style="height: 320px;"></div>
-          <div class="news-card skeleton" style="height: 320px;"></div>
-          <div class="news-card skeleton" style="height: 320px;"></div>
-          <div class="news-card skeleton" style="height: 320px;"></div>
+    <!-- HEADER -->
+    <header class="flex justify-between items-center my-4 mb-8 md:mx-6 min-[1200px]:mx-0 min-[1200px]:mb-7 min-[1200px]:mt-10">
+        <!-- LOGO -->
+        <div class="logo flex items-center gap-3">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" class="text-[#f15e50]">
+                <path d="M13.7692 19.9074L16.0003 17.656L18.2314 19.9074L16.0003 22.1588L13.7692 19.9074Z" fill="currentColor"></path>
+                <path d="M11.4438 17.5608L15.953 13.0106L13.722 10.7593L9.21275 15.3095L11.4438 17.5608Z" fill="currentColor"></path>
+                <path d="M20.5569 17.5608L22.7879 15.3095L20.5569 13.0582L18.3259 15.3095L20.5569 17.5608Z" fill="currentColor"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM11.6722 8.13447C12.811 6.98529 14.6329 6.98529 15.7717 8.13447L18.2785 10.6641L18.5071 10.4334C19.646 9.28421 21.4678 9.2842 22.6067 10.4334L25.3028 13.154C26.4753 14.3372 26.4753 16.2818 25.3028 17.465L17.1392 25.7028C16.8601 25.9845 16.5076 26.1416 16.1466 26.1749C15.6884 26.2173 15.2158 26.0604 14.8615 25.7028L6.6979 17.465C5.52538 16.2818 5.52537 14.3372 6.6979 13.154L11.6722 8.13447Z" fill="currentColor"></path>
+            </svg>
+            <span class="font-heading font-bold text-xl text-[#00001a]">DYVE TECH</span>
         </div>
-      </section>
 
-      <!-- Sections Grid (Curated Categories) -->
-      <div class="sections-grid">
-        <section class="section-block">
-          <h3>AI & Machine Learning</h3>
-          <a href="#" class="featured-article" style="background-image: url('https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800&auto=format&fit=crop');">
-            <div class="featured-article-content">
-              <h5>Most Popular</h5>
-              <h3>The Rise of Agentic AI in Enterprise Workflows</h3>
+        <!-- NAVIGATION -->
+        <nav class="group relative">
+            <img src="https://raw.githubusercontent.com/Deepali25-K/news-homepage/main/assets/images/icon-menu.svg" alt="menu-icon" class="menuBtn lg:hidden cursor-pointer w-6 h-6">
+            <div class="navigation-list bg-[#fffdfa] h-full w-2/3 fixed z-40 right-0 top-0 min-[500px]:w-1/2 md:w-1/3 hidden shadow-xl">
+                <img src="https://raw.githubusercontent.com/Deepali25-K/news-homepage/main/assets/images/icon-menu-close.svg" alt="close-icon" class="closeIcon float-right mx-[1rem] my-[2rem] cursor-pointer lg:hidden w-6 h-6">
+                <ul class="navbar-list ml-5 mt-[10rem] font-heading">
+                    <li class="mb-[1.2rem] hover:text-[#f15e50] transition duration-300 ease-in-out"><a href="https://dyve.online/" class="navbar-link text-[#00001a] font-semibold">Home</a></li>
+                    <li class="mb-[1.2rem] hover:text-[#f15e50] transition duration-300 ease-in-out"><a href="https://dyve.online/tech/" class="navbar-link text-[#f15e50] font-bold">Tech</a></li>
+                    <li class="mb-[1.2rem] hover:text-[#f15e50] transition duration-300 ease-in-out"><a href="https://dyve.online/breaches/" class="navbar-link text-[#00001a] font-semibold">Breaches</a></li>
+                    <li class="mb-[1.2rem] hover:text-[#f15e50] transition duration-300 ease-in-out"><a href="https://dyve.online/dark-web/" class="navbar-link text-[#00001a] font-semibold">Dark Web</a></li>
+                    <li class="mb-[1.2rem] hover:text-[#f15e50] transition duration-300 ease-in-out"><a href="https://dyve.online/ransomware/" class="navbar-link text-[#00001a] font-semibold">Ransomware</a></li>
+                </ul>
             </div>
-          </a>
-          <ul class="article-list">
-            <li>How autonomous agents are reshaping corporate automation</li>
-            <li>The hidden risks of on-demand AI decision-making</li>
-            <li>Why open-source AI models are gaining enterprise traction</li>
-          </ul>
+
+            <ul class="navbar-list hidden lg:inline-flex gap-[2rem] lg:gap-[2.5rem] align-center justify-center font-heading">
+                <li class="hover:text-[#f15e50] transition duration-300 ease-in-out"><a href="https://dyve.online/" class="navbar-link text-[#00001a] font-semibold">Home</a></li>
+                <li class="hover:text-[#f15e50] transition duration-300 ease-in-out"><a href="https://dyve.online/tech/" class="navbar-link text-[#f15e50] font-bold">Tech</a></li>
+                <li class="hover:text-[#f15e50] transition duration-300 ease-in-out"><a href="https://dyve.online/breaches/" class="navbar-link text-[#00001a] font-semibold">Breaches</a></li>
+                <li class="hover:text-[#f15e50] transition duration-300 ease-in-out"><a href="https://dyve.online/dark-web/" class="navbar-link text-[#00001a] font-semibold">Dark Web</a></li>
+                <li class="hover:text-[#f15e50] transition duration-300 ease-in-out"><a href="https://dyve.online/ransomware/" class="navbar-link text-[#00001a] font-semibold">Ransomware</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- MAIN -->
+    <main class="lg:flex lg:gap-4 lg:mb-8 min-[1200px]:gap-7">
+        <section class="min-[1200px]:w-[68%]">
+            <!-- Hero Article -->
+            <div id="heroContainer" class="skeleton rounded-lg overflow-hidden mb-6">
+                <img src="" alt="" id="heroImage" class="w-full h-64 md:h-96 object-cover">
+                <div class="p-6 bg-white">
+                    <span id="heroTag" class="text-[#f15e50] font-bold text-xs uppercase tracking-wider mb-2 block">Loading...</span>
+                    <h1 id="heroTitle" class="font-heading font-extrabold text-[2rem] md:text-[2.5rem] leading-tight pb-5 min-[1440px]:text-[3rem] text-[#00001a]">Fetching latest intelligence...</h1>
+                    <p id="heroExcerpt" class="text-[#5d5f79] text-[0.92rem] leading-7 pb-6 md:w-4/5">Stay tuned for the latest AI and tech news from Dyve Intelligence Unit.</p>
+                    <button class="bg-[#f15e50] text-[#fffdfa] font-bold tracking-[0.2em] text-xs py-4 px-8 uppercase hover:bg-[#00001a] transition duration-300 ease-in-out" onclick="window.location.href='/tech/latest'">Read More</button>
+                </div>
+            </div>
         </section>
         
-        <section class="section-block">
-          <h3>Tech Tools</h3>
-          <a href="#" class="featured-article" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop');">
-            <div class="featured-article-content">
-              <h5>Most Popular</h5>
-              <h3>Top 5 Developer Tools for 2026</h3>
+        <section class="h-[100%] bg-[#00001a] text-[#fffdfa] px-6 py-4 my-16 lg:my-0 lg:mt-8 min-[1200px]:w-[32%] min-[1200px]:py-6 min-[1200px]:px-7 rounded-lg">
+            <h2 class="text-[1.8rem] font-heading font-bold text-[#e9ab53] mb-6 min-[1200px]:text-[2.4rem]">New</h2>
+            <div id="newArticlesList">
+                <div class="border-b border-[#5d5f79] mb-6 skeleton h-32 rounded"></div>
+                <div class="border-b border-[#5d5f79] mb-6 skeleton h-32 rounded"></div>
+                <div class="skeleton h-32 rounded"></div>
             </div>
-          </a>
-          <ul class="article-list">
-            <li>The best VS Code extensions for AI-assisted coding</li>
-            <li>Why Rust is becoming the default for systems programming</li>
-            <li>Cloud-native debugging tools you need to know</li>
-          </ul>
         </section>
+    </main>
 
-        <section class="section-block">
-          <h3>Deep Dives</h3>
-          <a href="#" class="featured-article" style="background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=800&auto=format&fit=crop');">
-            <div class="featured-article-content">
-              <h5>Most Popular</h5>
-              <h3>The Exponential Growth of Edge Computing</h3>
+    <!-- BOTTOM SECTION -->
+    <section class="lg:flex lg:gap-4 min-[1200px]:gap-0">
+        <div class="flex gap-5 my-8 lg:w-1/3 article-card cursor-pointer" onclick="window.location.href='/tech/ai-agents'">
+            <div class="w-28 h-28 flex-shrink-0 lg:w-24 lg:h-24">
+                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover rounded" alt="AI Agents">
             </div>
-          </a>
-          <ul class="article-list">
-            <li>How decentralized processing is sparking fresh opportunities</li>
-            <li>The physics limiting the next generation of semiconductors</li>
-            <li>Quantum computing: Hype vs. Reality in 2026</li>
-          </ul>
-        </section>
-      </div>
-
-      <!-- Newsletter Section -->
-      <section class="newsletter-section fade-in">
-        <h2>Stay in the Loop</h2>
-        <p>Curated AI news, tech updates, and deep dives delivered straight to your inbox every week.</p>
-        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing to Dyve Tech!');">
-          <input type="email" placeholder="Your email address" required aria-label="Email address">
-          <button type="submit">Subscribe</button>
-        </form>
-      </section>
-    </div>
-  </main>
-
-  <footer>
-    <div class="footer-links">
-      <ul class="footer-social">
-        <li><a href="https://twitter.com/" aria-label="Twitter"><i class="fab fa-twitter"></i></a></li>
-        <li><a href="https://linkedin.com/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a></li>
-        <li><a href="https://youtube.com/" aria-label="YouTube"><i class="fab fa-youtube"></i></a></li>
-        <li><a href="https://github.com/" aria-label="GitHub"><i class="fab fa-github"></i></a></li>
-        <li><a href="mailto:tech@dyve.online" aria-label="Email"><i class="fas fa-envelope"></i></a></li>
-      </ul>
-      <ul class="footer-nav">
-        <li><a href="https://dyve.online/tech/about/">About</a></li>
-        <li><a href="https://dyve.online/tech/newsletter/">Newsletter</a></li>
-        <li><a href="https://dyve.online/contact/">Contact</a></li>
-        <li><a href="https://dyve.online/privacy-policy/">Privacy Policy</a></li>
-      </ul>
-    </div>
-    <div class="footer-legal">
-      <p><span class="brand">DYVE TECH</span> © 2026 Dyve Intelligence Unit.</p>
-      <p style="margin-top: 8px;">Made with <span class="heart">♥</span> for the future of technology.</p>
-    </div>
-  </footer>
-
-  <!-- =========================
-       DYNAMIC CONTENT LOADER
-  ========================= -->
-  <script>
-    // Mock data fallback for demonstration purposes if JSON fetch fails
-    const mockArticles = [
-      { title: "Breakthrough in Quantum Neural Networks Announced", image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=800&auto=format&fit=crop", url: "tech/quantum-neural-networks", date: "2026-08-01T10:00:00Z", meta: "Dyve Tech Unit", tag: "QUANTUM AI" },
-      { title: "New EU Regulations Shape the Future of Generative AI", image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=800&auto=format&fit=crop", url: "tech/eu-ai-regulations", date: "2026-07-30T14:30:00Z", meta: "Sarah Jenkins", tag: "POLICY" },
-      { title: "The Silent Rise of Ambient Computing in Smart Homes", image: "https://images.unsplash.com/photo-1558002038-1091a166111c?q=80&w=800&auto=format&fit=crop", url: "tech/ambient-computing", date: "2026-07-28T09:15:00Z", meta: "Dyve Tech Unit", tag: "IOT" },
-      { title: "Why Rust is Overtaking C++ in Systems Programming", image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop", url: "tech/rust-systems", date: "2026-07-25T11:00:00Z", meta: "Dev Team", tag: "DEV TOOLS" },
-      { title: "Cybersecurity Threats Evolve with Deepfake Technology", image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=800&auto=format&fit=crop", url: "tech/deepfake-security", date: "2026-07-22T16:45:00Z", meta: "Security Desk", tag: "SECURITY" },
-      { title: "Apple's Next-Gen AR Glasses Leak: What We Know", image: "https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?q=80&w=800&auto=format&fit=crop", url: "tech/ar-glasses-leak", date: "2026-07-20T08:30:00Z", meta: "Dyve Tech Unit", tag: "HARDWARE" }
-    ];
-
-    async function loadTechHomepage() {
-      try {
-        // Attempt to fetch real data
-        const response = await fetch('/assets/articles.json');
-        if (!response.ok) throw new Error('Network response was not ok');
-        const articles = await response.json();
-        renderContent(articles);
-      } catch (error) {
-        console.warn('Using mock data (fetch failed or file missing):', error);
-        // Fallback to mock data so the UI still looks polished
-        renderContent(mockArticles);
-      }
-    }
-
-    function renderContent(articles) {
-      const techArticles = articles.filter(article => 
-        article.page === 'tech' || 
-        article.category === 'tech' ||
-        article.category === 'ai' ||
-        article.category === 'technology' ||
-        true // Removed strict filter for mock data demonstration
-      ).slice(0, 6); // Limit for demo
-
-      if (techArticles.length === 0) {
-        document.getElementById('hero1').innerHTML = '<div style="padding:24px"><h2>No tech articles published yet.</h2></div>';
-        document.getElementById('hero2').style.display = 'none';
-        document.getElementById('hero3').style.display = 'none';
-        document.getElementById('latestNewsGrid').innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-secondary);">Check back soon for the latest tech intelligence!</p>';
-        return;
-      }
-
-      // Populate Top 3 Heroes
-      populateHero('hero1', techArticles[0], true);
-      if (techArticles[1]) populateHero('hero2', techArticles[1], false);
-      if (techArticles[2]) populateHero('hero3', techArticles[2], false);
-
-      // Populate Latest News Grid
-      const grid = document.getElementById('latestNewsGrid');
-      grid.innerHTML = ''; // Clear skeletons
-      
-      const latestArticles = techArticles.slice(3);
-      latestArticles.forEach((article, index) => {
-        grid.innerHTML += createNewsCard(article, index);
-      });
-    }
-
-    function populateHero(elementId, article, isMain) {
-      const el = document.getElementById(elementId);
-      el.classList.remove('skeleton');
-      el.classList.add('fade-in');
-      
-      el.style.backgroundImage = `url('${article.image}')`;
-      const date = new Date(article.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-      
-      if (isMain) {
-        el.innerHTML = `
-          <a href="/${article.url}" style="text-decoration: none; color: inherit; display: block; height: 100%; width: 100%;">
-            <div style="padding: 32px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end;">
-              <div class="cover-date">${article.tag || 'TECH INTELLIGENCE'}</div>
-              <h2>${article.title}</h2>
-              <div class="ta-atcl-credits">
-                <p>by <a href="#">${article.meta || 'Dyve Tech Unit'}</a></p>
-                <p><i class="material-icons" style="font-size: 16px; vertical-align: middle; margin-right: 4px;">access_time</i> ${date}</p>
-              </div>
+            <div>
+                <h4 class="text-[#c5c6ce] font-heading font-bold text-[2.5rem] lg:text-[1.8rem]">01</h4>
+                <p class="text-[#00001a] font-bold text-[1.14rem] lg:font-extrabold lg:my-1 hover:text-[#f15e50] transition duration-300 ease-in-out">Agentic AI Revolution</p>
+                <p class="text-[#5d5f79] text-[0.92rem] leading-7 sm:w-1/2 lg:w-full lg:leading-6">How autonomous agents are reshaping enterprise workflows in 2026.</p>
             </div>
-          </a>
-        `;
-      } else {
-        el.innerHTML = `
-          <a href="/${article.url}" style="text-decoration: none; color: inherit; display: block; height: 100%; width: 100%;">
-            <div style="padding: 24px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end;">
-              <h2>${article.title}</h2>
-              <div class="ta-atcl-credits" style="margin-top: 8px;">
-                <p>by <a href="#">${article.meta || 'Dyve Tech Unit'}</a></p>
-                <p><i class="material-icons" style="font-size: 16px; vertical-align: middle; margin-right: 4px;">access_time</i> ${date}</p>
-              </div>
-            </div>
-          </a>
-        `;
-      }
-    }
-
-    function createNewsCard(article, index) {
-      const date = new Date(article.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      const delay = index * 100; // Staggered animation
-      return `
-        <div class="news-card fade-in" style="animation-delay: ${delay}ms">
-          <a href="/${article.url}" class="news-card-image" style="background-image: url('${article.image}');" aria-label="Read ${article.title}"></a>
-          <div class="news-card-content">
-            <h3><a href="/${article.url}">${article.title}</a></h3>
-            <div class="news-card-meta">
-              <i class="material-icons">person</i>
-              <span>${article.meta || 'Dyve Tech Unit'}</span>
-              <span>•</span>
-              <span>${date}</span>
-            </div>
-          </div>
         </div>
-      `;
-    }
+        
+        <div class="flex gap-5 my-8 lg:w-1/3 article-card cursor-pointer" onclick="window.location.href='/tech/quantum'">
+            <div class="w-28 h-28 flex-shrink-0 lg:w-24 lg:h-24">
+                <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover rounded" alt="Quantum Computing">
+            </div>
+            <div>
+                <h4 class="text-[#c5c6ce] font-heading font-bold text-[2.5rem] lg:text-[1.8rem]">02</h4>
+                <p class="text-[#00001a] font-bold text-[1.14rem] lg:font-extrabold lg:my-1 hover:text-[#f15e50] transition duration-300 ease-in-out">Quantum Breakthrough</p>
+                <p class="text-[#5d5f79] text-[0.92rem] leading-7 sm:w-2/3 lg:w-full lg:leading-6 lg:pr-2">New quantum neural networks achieve unprecedented processing speeds.</p>
+            </div>
+        </div>
+        
+        <div class="flex gap-5 my-8 lg:w-1/3 article-card cursor-pointer" onclick="window.location.href='/tech/cybersecurity'">
+            <div class="w-28 h-28 flex-shrink-0 lg:w-24 lg:h-24">
+                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover rounded" alt="Cybersecurity">
+            </div>
+            <div>
+                <h4 class="text-[#c5c6ce] font-heading font-bold text-[2.5rem] lg:text-[1.8rem]">03</h4>
+                <p class="text-[#00001a] font-bold text-[1.14rem] lg:font-extrabold lg:my-1 hover:text-[#f15e50] transition duration-300 ease-in-out">AI Security Threats</p>
+                <p class="text-[#5d5f79] text-[0.92rem] leading-7 sm:w-2/3 lg:w-full lg:leading-6">Deepfake technology evolves: New cybersecurity challenges emerge.</p>
+            </div>
+        </div>
+    </section>
 
-    // Initialize on load
-    document.addEventListener('DOMContentLoaded', loadTechHomepage);
+    <!-- NEWSLETTER SECTION -->
+    <section class="mt-16 mb-8 bg-[#00001a] text-[#fffdfa] rounded-lg p-8 md:p-12 text-center">
+        <h2 class="font-heading font-bold text-2xl md:text-3xl mb-4">Stay in the Loop</h2>
+        <p class="text-[#9ca3af] mb-8 max-w-lg mx-auto">Curated AI news, tech updates, and deep dives delivered to your inbox every week.</p>
+        <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" onsubmit="event.preventDefault(); alert('Thanks for subscribing to Dyve Tech!');">
+            <input type="email" placeholder="Your email address" required class="flex-1 px-6 py-3 rounded bg-[#1f2937] border border-[#374151] text-white focus:outline-none focus:border-[#f15e50]">
+            <button type="submit" class="bg-[#f15e50] text-white font-bold px-8 py-3 rounded hover:bg-[#d94a3e] transition duration-300">Subscribe</button>
+        </form>
+    </section>
 
-    // Simple mobile menu toggle (placeholder for future expansion)
-    document.getElementById('mobileMenuBtn')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      alert('Mobile menu toggle would open here. Add your slide-out menu logic!');
-    });
-  </script>
+    <!-- FOOTER -->
+    <footer class="mt-16 border-t border-[#e5e7eb] pt-8 pb-12">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <svg width="24" height="24" viewBox="0 0 32 32" fill="none" class="text-[#f15e50]">
+                    <path d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z" fill="currentColor"></path>
+                </svg>
+                <span class="font-heading font-bold text-lg text-[#00001a]">DYVE TECH</span>
+            </div>
+            <div class="flex gap-6">
+                <a href="https://twitter.com/" class="text-[#5d5f79] hover:text-[#f15e50] transition"><i class="fab fa-twitter text-xl"></i></a>
+                <a href="https://linkedin.com/" class="text-[#5d5f79] hover:text-[#f15e50] transition"><i class="fab fa-linkedin text-xl"></i></a>
+                <a href="https://github.com/" class="text-[#5d5f79] hover:text-[#f15e50] transition"><i class="fab fa-github text-xl"></i></a>
+            </div>
+        </div>
+        <div class="text-center mt-8 text-[#5d5f79] text-sm">
+            <p>© 2026 Dyve Intelligence Unit. Made with <span class="text-[#f15e50]">♥</span> for the future of technology.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuBtn = document.querySelector('.menuBtn');
+        const closeIcon = document.querySelector('.closeIcon');
+        const navigationList = document.querySelector('.navigation-list');
+        const overlay = document.getElementById('overlay');
+
+        function toggleMenu() {
+            navigationList.classList.toggle('hidden');
+            overlay.classList.toggle('hidden');
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        closeIcon.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+
+        // Mock Data for Articles
+        const mockArticles = [
+            {
+                title: "The Rise of Agentic AI in Enterprise Workflows",
+                excerpt: "Autonomous AI agents are transforming how businesses operate, promising unprecedented efficiency while raising questions about control and oversight.",
+                image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1200&auto=format&fit=crop",
+                tag: "AI & Automation",
+                date: "2026-08-02",
+                author: "Dyve Tech Unit"
+            },
+            {
+                title: "Quantum Neural Networks Achieve Breakthrough",
+                excerpt: "Researchers demonstrate quantum advantage in machine learning tasks, opening new possibilities for drug discovery and cryptography.",
+                image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=800&auto=format&fit=crop",
+                tag: "Quantum Computing",
+                date: "2026-08-01",
+                author: "Dr. Sarah Chen"
+            },
+            {
+                title: "New EU AI Regulations Take Effect",
+                excerpt: "The European Union's comprehensive AI Act introduces strict guidelines for high-risk AI systems, setting a global precedent.",
+                image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=800&auto=format&fit=crop",
+                tag: "Policy",
+                date: "2026-07-30",
+                author: "Legal Desk"
+            },
+            {
+                title: "Edge Computing Powers IoT Revolution",
+                excerpt: "Decentralized processing brings AI closer to data sources, reducing latency and enabling real-time decision making.",
+                image: "https://images.unsplash.com/photo-1558002038-1091a166111c?q=80&w=800&auto=format&fit=crop",
+                tag: "Infrastructure",
+                date: "2026-07-28",
+                author: "Tech Team"
+            }
+        ];
+
+        // Load Content
+        async function loadContent() {
+            try {
+                // Try to fetch real data
+                const response = await fetch('/assets/articles.json');
+                if (!response.ok) throw new Error('API unavailable');
+                const data = await response.json();
+                renderContent(data.slice(0, 4));
+            } catch (error) {
+                // Fallback to mock data
+                console.log('Using mock data');
+                renderContent(mockArticles);
+            }
+        }
+
+        function renderContent(articles) {
+            if (articles.length === 0) return;
+
+            // Render Hero (first article)
+            const hero = articles[0];
+            const heroContainer = document.getElementById('heroContainer');
+            const heroImage = document.getElementById('heroImage');
+            const heroTag = document.getElementById('heroTag');
+            const heroTitle = document.getElementById('heroTitle');
+            const heroExcerpt = document.getElementById('heroExcerpt');
+
+            heroImage.src = hero.image;
+            heroTag.textContent = hero.tag || 'TECH INTELLIGENCE';
+            heroTitle.textContent = hero.title;
+            heroExcerpt.textContent = hero.excerpt || 'Stay tuned for the latest updates from Dyve Tech.';
+            
+            heroContainer.classList.remove('skeleton');
+            heroContainer.classList.add('fade-in');
+
+            // Render New Articles (remaining articles)
+            const newArticlesList = document.getElementById('newArticlesList');
+            newArticlesList.innerHTML = '';
+
+            articles.slice(1).forEach((article, index) => {
+                const date = new Date(article.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                const div = document.createElement('div');
+                div.className = 'border-b border-[#5d5f79] mb-6 fade-in';
+                div.style.animationDelay = `${index * 100}ms`;
+                div.innerHTML = `
+                    <h3 class="text-[1.14rem] font-bold mb-2 min-[1200px]:text-[1.2rem] hover:text-[#e9ab53] transition duration-300 ease-in-out cursor-pointer">
+                        <a href="/tech/article-${index + 1}">${article.title}</a>
+                    </h3>
+                    <p class="text-[#c5c6ce] text-[0.92rem] leading-7 pb-6">${article.excerpt || article.author} • ${date}</p>
+                `;
+                newArticlesList.appendChild(div);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadContent);
+    </script>
 </body>
 </html>
