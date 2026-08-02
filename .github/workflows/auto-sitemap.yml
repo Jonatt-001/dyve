@@ -1,0 +1,107 @@
+name: Auto Sitemap & SEO Update
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/articles.json'
+      - 'article/**'
+
+jobs:
+  update-sitemap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate Sitemap
+        run: |
+          # Read articles.json and generate sitemap.xml
+          node -e "
+          const fs = require('fs');
+          const articles = JSON.parse(fs.readFileSync('assets/articles.json', 'utf8'));
+          const siteUrl = 'https://dyve.online';
+          
+          const staticPages = [
+            { url: '/', changefreq: 'daily', priority: '1.0' },
+            { url: '/breaches/', changefreq: 'daily', priority: '0.9' },
+            { url: '/dark-web/', changefreq: 'daily', priority: '0.9' },
+            { url: '/ransomware/', changefreq: 'daily', priority: '0.9' },
+            { url: '/threat-actors/', changefreq: 'weekly', priority: '0.8' },
+            { url: '/signals/', changefreq: 'daily', priority: '0.8' },
+            { url: '/analysis/', changefreq: 'weekly', priority: '0.7' },
+            { url: '/about-us/', changefreq: 'monthly', priority: '0.5' },
+            { url: '/faq/', changefreq: 'monthly', priority: '0.5' },
+            { url: '/privacy-policy/', changefreq: 'yearly', priority: '0.3' },
+            { url: '/terms-of-service/', changefreq: 'yearly', priority: '0.3' }
+          ];
+          
+          let xml = '<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n';
+          xml += '<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n';
+          
+          staticPages.forEach(page => {
+            xml += '  <url>\n';
+            xml += '    <loc>' + siteUrl + page.url + '</loc>\n';
+            xml += '    <changefreq>' + page.changefreq + '</changefreq>\n';
+            xml += '    <priority>' + page.priority + '</priority>\n';
+            xml += '  </url>\n';
+          });
+          
+          const today = new Date().toISOString().split('T')[0];
+          articles.forEach(article => {
+            const articleUrl = article.url.startsWith('http') ? article.url : siteUrl + '/' + article.url;
+            const lastmod = article.date || today;
+            const priority = (article.category === 'ransomware' || article.category === 'dark-web') ? '0.9' : '0.8';
+            
+            xml += '  <url>\n';
+            xml += '    <loc>' + articleUrl + '</loc>\n';
+            xml += '    <lastmod>' + lastmod + '</lastmod>\n';
+            xml += '    <changefreq>weekly</changefreq>\n';
+            xml += '    <priority>' + priority + '</priority>\n';
+            xml += '  </url>\n';
+          });
+          
+          xml += '</urlset>';
+          fs.writeFileSync('sitemap.xml', xml);
+          console.log('✅ Sitemap generated with ' + (staticPages.length + articles.length) + ' URLs');
+          "
+
+      - name: Generate Robots.txt
+        run: |
+          cat > robots.txt << 'EOF'
+          # Dyve HackaX - Cyber Intelligence Platform
+          # Auto-generated - do not edit manually
+          
+          User-agent: *
+          Allow: /
+          Allow: /article/
+          Allow: /breaches/
+          Allow: /dark-web/
+          Allow: /ransomware/
+          Allow: /threat-actors/
+          Allow: /signals/
+          Allow: /analysis/
+          
+          Disallow: /admin/
+          Disallow: /editor/
+          Disallow: /*.json$
+          Disallow: /assets/articles.json
+          
+          Sitemap: https://dyve.online/sitemap.xml
+          EOF
+
+      - name: Commit and Push
+        run: |
+          git config user.name "Dyve Bot"
+          git config user.email "bot@dyve.online"
+          git add sitemap.xml robots.txt
+          git diff --staged --quiet || git commit -m "chore: auto-update sitemap and robots [bot]"
+          git push
+
+      - name: Ping Google
+        run: |
+          curl -s "https://www.google.com/ping?sitemap=https://dyve.online/sitemap.xml" || true
+          curl -s "https://www.bing.com/ping?sitemap=https://dyve.online/sitemap.xml" || true
+          echo "🔔 Search engines notified"
