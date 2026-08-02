@@ -1,8 +1,46 @@
+# ==========================================
+# Dyve HackaX - Cyber Intelligence Platform
+# https://dyve.online
+# ==========================================
+
 User-agent: *
 Allow: /
 
-# Block junk if needed (optional later)
-# Disallow: /admin/
-# Disallow: /private/
+# Private administration
+Disallow: /admin/
+Disallow: /editor/
+Disallow: /settings/
+Disallow: /drafts/
+Disallow: /published/
 
+# Internal data and exports
+Disallow: /assets/articles.json
+Disallow: /*.json$
+Disallow: /*.bak$
+Disallow: /*.tmp$
+Disallow: /*.log$
+
+# Duplicate and preview URLs
+Disallow: /*?mode=edit
+Disallow: /*?preview=
+Disallow: /*preview*
+Disallow: /*?ref=
+Disallow: /*?utm_
+Disallow: /*&utm_
+Disallow: /*?fbclid=
+Disallow: /*&fbclid=
+Disallow: /*?gclid=
+Disallow: /*&gclid=
+
+# Optional: internal search pages
+Disallow: /search
+
+# Sitemap
 Sitemap: https://dyve.online/sitemap.xml
+
+# Limit aggressive SEO crawlers
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
