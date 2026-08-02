@@ -377,6 +377,155 @@
 
 }
 
+
+/* =========================
+   PREMIUM DRAWER STYLING
+========================= */
+
+.drawer-nav a,
+.drawer-extra a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  color: rgba(232,240,238,0.75);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 3px solid transparent;
+}
+
+.drawer-nav a:hover,
+.drawer-extra a:hover {
+  color: #e8f0ee;
+  background: rgba(0,255,170,0.03);
+  border-left-color: #00ffaa;
+}
+
+.drawer-nav a.active {
+  color: #e8f0ee;
+  background: linear-gradient(90deg, rgba(0,255,170,0.08), transparent);
+  border-left-color: #00ffaa;
+}
+
+/* Icon Styling */
+.nav-icon,
+.submenu-item-icon,
+.extra-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity 0.25s ease;
+}
+
+.drawer-nav a:hover .nav-icon,
+.drawer-extra a:hover .extra-icon {
+  opacity: 1;
+}
+
+.drawer-nav a.active .nav-icon {
+  opacity: 1;
+  stroke: #00ffaa;
+}
+
+/* Submenu Styling */
+.drawer-submenu {
+  padding: 0 20px 20px;
+}
+
+.submenu-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.submenu-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
+  stroke: #00ffaa;
+}
+
+.submenu-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  color: rgba(255,255,255,0.4);
+  font-weight: 600;
+}
+
+.submenu-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.submenu-items a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0 10px 30px;
+  color: rgba(232,240,238,0.6);
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+}
+
+.submenu-items a:hover {
+  color: #e8f0ee;
+  background: rgba(0,255,170,0.04);
+}
+
+.submenu-item-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
+}
+
+.submenu-items a:hover .submenu-item-icon {
+  opacity: 0.9;
+}
+
+/* Drawer Extra */
+.drawer-extra {
+  padding-top: 10px;
+}
+
+.drawer-extra a {
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+.drawer-extra a:hover {
+  opacity: 1;
+}
+
+/* Close button */
+.drawer-close {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.drawer-close:hover {
+  background: rgba(255,255,255,0.05);
+  color: #e8f0ee;
+}
+
 </style>
 </head>
 
@@ -386,7 +535,7 @@
 </div>
 
 <!-- =========================
-     DRAWER
+     DRAWER (MOBILE/TABLET)
 ========================= -->
 <div class="drawer-backdrop" id="drawerBackdrop"></div>
 
@@ -394,32 +543,137 @@
 
   <div class="drawer-header">
     <div class="drawer-logo">DYVE<span style="opacity:.5">|</span>HACKAX</div>
-    <button class="drawer-close" id="drawerClose">✕</button>
+    <button class="drawer-close" id="drawerClose">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
   </div>
 
+  <!-- PRIMARY CORE CAPABILITIES -->
   <nav class="drawer-nav">
-    <a class="active" href="/index.html">Intel Feed</a>
-    <a href="/breaches/index.html">Live Breaches</a>
-    <a href="/dark-web/index.html">Dark Web Intelligence</a>
-    <a href="/threat-actors/index.html">Threat Actors</a>
-    <a href="/signals/index.html">Threat Signals</a>
-    <a href="/category/index.html">Analysis</a>
+    <a class="active" href="/index.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+      <span>Intel Feed</span>
+    </a>
+    
+    <a href="/breaches/index.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0110 0v4"></path>
+      </svg>
+      <span>Breach Surveillance</span>
+    </a>
+    
+    <a href="/dark-web/index.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M12 2a14.5 14.5 0 000 20 14.5 14.5 0 000-20"></path>
+        <path d="M2 12h20"></path>
+      </svg>
+      <span>Dark Web Intelligence</span>
+    </a>
+    
+    <a href="/ransomware/index.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path>
+        <line x1="12" y1="9" x2="12" y2="13"></line>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </svg>
+      <span>Ransomware Intelligence</span>
+    </a>
   </nav>
 
   <div class="drawer-divider"></div>
 
+  <!-- SECONDARY SUBMENU (ADVANCED INTELLIGENCE) -->
+  <div class="drawer-submenu">
+    <div class="submenu-header">
+      <svg class="submenu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.77z"></path>
+      </svg>
+      <span class="submenu-label">Advanced Intelligence</span>
+    </div>
+    
+    <div class="submenu-items">
+      <a href="/signals/index.html">
+        <svg class="submenu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+        </svg>
+        <span>Threat Signals</span>
+      </a>
+      
+      <a href="/threat-actors/index.html">
+        <svg class="submenu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 00-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 010 7.75"></path>
+        </svg>
+        <span>Threat Actors</span>
+      </a>
+      
+      <a href="/analysis/index.html">
+        <svg class="submenu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <line x1="18" y1="20" x2="18" y2="10"></line>
+          <line x1="12" y1="20" x2="12" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="14"></line>
+        </svg>
+        <span>Threat Analysis</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="drawer-divider"></div>
+
+  <!-- UTILITY & LEGAL -->
   <div class="drawer-extra">
-    <a href="/signals/index.html">Trending Signals</a>
-    <a href="/faq/index.html">FAQ</a>
-    <a href="/about-us/index.html">About</a>
-    <a href="/privacy-policy/index.html">Privacy Policy</a>
-    <a href="/terms-of-service/index.html">Terms of Service</a>
+    <a href="/faq/index.html">
+      <svg class="extra-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"></path>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </svg>
+      <span>FAQ</span>
+    </a>
+    
+    <a href="/about-us/index.html">
+      <svg class="extra-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+        <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"></path>
+      </svg>
+      <span>About Us</span>
+    </a>
+    
+    <a href="/privacy-policy/index.html">
+      <svg class="extra-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0110 0v4"></path>
+      </svg>
+      <span>Privacy Policy</span>
+    </a>
+    
+    <a href="/terms-of-service/index.html">
+      <svg class="extra-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path>
+        <polyline points="14,2 14,8 20,8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+        <polyline points="10,9 9,9 8,9"></polyline>
+      </svg>
+      <span>Terms of Service</span>
+    </a>
   </div>
 
 </aside>
 
+
 <!-- =========================
-     HEADER
+     HEADER (DESKTOP/TOP)
 ========================= -->
 <div class="header">
   <div class="topbar">
@@ -431,14 +685,13 @@
     </div>
   </div>
 
-<div class="nav">
-  <span class="active" data-link="/index.html">Intel</span>
-  <span data-link="/breaches/index.html">Breaches</span>
-  <span data-link="/dark-web/index.html">Dark Web</span>
-  <span data-link="/signals/index.html">Signals</span>
-  <span data-link="/threat-actors/index.html">Threat Actors</span>
-  <span data-link="/category/index.html">Analysis</span>
-</div>
+  <!-- STRICTLY 4 CORE CAPABILITIES + FEED -->
+  <div class="nav">
+    <span class="active" data-link="/index.html">Feed</span>
+    <span data-link="/breaches/index.html">Breaches</span>
+    <span data-link="/dark-web/index.html">Dark Web</span>
+    <span data-link="/ransomware/index.html">Ransomware</span>
+  </div>
 </div>
 
 
