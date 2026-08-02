@@ -50,7 +50,57 @@
         .suggestion-item { cursor: pointer; transition: all 0.2s; }
         .suggestion-item:hover { background: #f0fdf4; border-color: #00ffaa; }
         .loading { opacity: 0.5; pointer-events: none; }
+        #aiAssistantPanel.active {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .ai-action:active { transform: scale(0.98); }
+        .ai-highlight { background: #fef08a !important; padding: 2px 0; }
+        .ai-processing { position: relative; }
+        .ai-processing::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 255, 170, 0.1);
+            animation: aiPulse 1s infinite;
+            pointer-events: none;
+        }
+        @keyframes aiPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+        .desc-quality-good { color: #10b981 !important; }
+        .desc-quality-warn { color: #f59e0b !important; }
+        .desc-quality-bad { color: #ef4444 !important; }
+
+        .auto-seo-card { border: 2px dashed #00ffaa; background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%); }
+        .seo-prompt-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 0.5rem; padding: 1rem; }
+        .pulse-btn { animation: pulse-green 2s infinite; }
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 170, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 255, 170, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 170, 0); }
+        }
+
+#intelTagInput {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2300ffaa'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+#metaStatusInput {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2300ffaa'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+
     </style>
+
 </head>
 <body class="min-h-screen">
     
@@ -98,9 +148,93 @@
                     </div>
                 </div>
 
-                <!-- Rich Text Editor -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                    <div id="editor"></div>
+<!-- Rich Text Editor with AI Assistant -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden relative">
+    <div id="editor"></div>
+    
+    <!-- AI Assistant Floating Button -->
+    <button id="aiAssistantBtn" class="absolute bottom-4 right-4 z-40 w-14 h-14 bg-gradient-to-br from-dyve-accent to-emerald-500 text-dyve-bg rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 group" title="AI Assistant">
+        <svg class="w-7 h-7 transition-transform group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+        </svg>
+        <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+    </button>
+
+    <!-- AI Assistant Menu Panel -->
+    <div id="aiAssistantPanel" class="absolute bottom-24 right-4 z-50 w-80 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden transform translate-y-4 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-gradient-to-r from-dyve-accent to-emerald-500 px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-dyve-bg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                <span class="text-sm font-bold text-dyve-bg">AI Assistant</span>
+            </div>
+            <button id="closeAiPanel" class="text-dyve-bg hover:rotate-90 transition-transform">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        
+        <div class="p-3 max-h-96 overflow-y-auto">
+            <div class="text-xs text-gray-500 mb-2 px-1">Text Editing</div>
+            <button class="ai-action w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-lg transition-colors text-left" data-action="grammar">
+                <span class="text-lg">A|</span>
+                <span class="text-sm font-medium text-gray-700">Grammar Check</span>
+            </button>
+            <button class="ai-action w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-lg transition-colors text-left" data-action="shorter">
+                <span class="text-lg">><</span>
+                <span class="text-sm font-medium text-gray-700">Make Shorter</span>
+            </button>
+            <button class="ai-action w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-lg transition-colors text-left" data-action="longer">
+                <span class="text-lg"><></span>
+                <span class="text-sm font-medium text-gray-700">Make Longer</span>
+            </button>
+            
+            <div class="text-xs text-gray-500 mb-2 mt-3 px-1">SEO & Content</div>
+            <button class="ai-action w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-lg transition-colors text-left" data-action="seo">
+                <span class="text-lg">📊</span>
+                <span class="text-sm font-medium text-gray-700">Generate SEO Tags</span>
+            </button>
+            <button class="ai-action w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-lg transition-colors text-left" data-action="generate">
+                <span class="text-lg">✨</span>
+                <span class="text-sm font-medium text-gray-700">AI Generate Content</span>
+            </button>
+            <button class="ai-action w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-lg transition-colors text-left" data-action="translate">
+                <span class="text-lg">🌐</span>
+                <span class="text-sm font-medium text-gray-700">Translate to...</span>
+            </button>
+            
+            <div class="text-xs text-gray-500 mb-2 mt-3 px-1">Formatting</div>
+            <button class="ai-action w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-lg transition-colors text-left" data-action="color">
+                <span class="text-lg">🎨</span>
+                <span class="text-sm font-medium text-gray-700">Change Colors</span>
+            </button>
+        </div>
+        
+        <div class="border-t border-gray-200 p-3 bg-gray-50">
+            <div class="flex gap-2">
+                <input type="text" id="aiCustomPrompt" placeholder="Ask AI anything..." 
+                       class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent">
+                <button id="aiCustomBtn" class="px-3 py-2 bg-dyve-accent text-dyve-bg rounded-lg hover:bg-dyve-accentHover transition font-bold text-sm">Go</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+                <!-- AUTO SEO GENERATION ENGINE -->
+                <div class="auto-seo-card rounded-lg shadow-sm p-6 mb-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-dyve-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        Auto-SEO Fields Engine
+                    </h3>
+                    <p class="text-xs text-gray-600 mb-4">Analyzes your content to auto-populate Title, Description, Slug, and OpenGraph prompts for high rankings.</p>
+                    <button id="generateAutoSeoBtn" class="w-full px-4 py-2.5 text-sm font-bold text-dyve-bg bg-dyve-accent rounded-lg hover:bg-dyve-accentHover transition pulse-btn mb-4">
+                        ⚡ Generate Smart SEO Metadata
+                    </button>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">OpenGraph Image Prompt</label>
+                            <textarea id="ogImagePrompt" rows="3" placeholder="AI prompt for generating featured image..." class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent text-gray-900 resize-none"></textarea>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- SEO Analysis -->
@@ -109,6 +243,7 @@
                         <svg class="w-5 h-5 text-dyve-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         SEO & Schema Analysis
                     </h3>
+
                     <div id="seoAnalysis" class="space-y-3">
                         <div class="text-sm text-gray-500">Start writing to see SEO suggestions...</div>
                     </div>
@@ -120,15 +255,23 @@
 
             <!-- RIGHT COLUMN: Metadata & Suggestions -->
             <div class="space-y-6">
-                <!-- Meta Description -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <label class="block text-sm font-bold text-gray-800 mb-2">Meta Description</label>
-                    <textarea id="descriptionInput" rows="3" placeholder="Brief description for search engines (max 160 chars)..." 
-                              class="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent focus:border-transparent resize-none text-gray-900"></textarea>
-                    <div class="mt-2 text-xs text-gray-500 text-right">
-                        <span id="descCharCount">0</span>/160 characters
-                    </div>
-                </div>
+<!-- Meta Description with Smart Auto-Generator -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between mb-2">
+        <label class="block text-sm font-bold text-gray-800">Meta Description</label>
+        <button id="autoGenerateDescBtn" class="flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-dyve-bg bg-dyve-accent rounded-md hover:bg-dyve-accentHover transition shadow-sm">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            Auto-Generate
+        </button>
+    </div>
+    <textarea id="descriptionInput" rows="3" placeholder="Brief description for search engines (max 160 chars)..." 
+              class="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent focus:border-transparent resize-none text-gray-900"></textarea>
+    <div class="mt-2 flex items-center justify-between text-xs">
+        <span id="descQuality" class="text-gray-400">Waiting for input...</span>
+        <span id="descCharCount" class="text-gray-500 font-medium">0/160 characters</span>
+    </div>
+</div>
+
 
                 <!-- Category -->
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -149,16 +292,62 @@
                     <h3 class="text-sm font-bold text-dyve-accent mb-4 uppercase tracking-wider">Threat Metadata</h3>
                     
                     <div class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-medium text-dyve-muted mb-2">Intel Tag</label>
-                            <input type="text" id="intelTagInput" placeholder="e.g., CRITICAL, LIVE INTEL, DARK WEB" 
-                                   class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent text-white uppercase placeholder-gray-600">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-dyve-muted mb-2">Meta Status</label>
-                            <input type="text" id="metaStatusInput" placeholder="e.g., Active Threat, Verified, Operational Guide" 
-                                   class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent text-white placeholder-gray-600">
-                        </div>
+<div>
+    <label class="block text-xs font-medium text-dyve-muted mb-2">Intel Tag</label>
+    <select id="intelTagInput" class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent text-white uppercase appearance-none cursor-pointer">
+        <option value="" disabled selected>Select Intel Tag</option>
+        <option value="CRITICAL">CRITICAL</option>
+        <option value="HIGH PRIORITY">HIGH PRIORITY</option>
+        <option value="LIVE INTEL">LIVE INTEL</option>
+        <option value="DARK WEB">DARK WEB</option>
+        <option value="ACTIVE THREAT">ACTIVE THREAT</option>
+        <option value="VERIFIED">VERIFIED</option>
+        <option value="BREACH DATA">BREACH DATA</option>
+        <option value="RANSOMWARE">RANSOMWARE</option>
+        <option value="APT GROUP">APT GROUP</option>
+        <option value="ZERO-DAY">ZERO-DAY</option>
+        <option value="IOCs">IOCs</option>
+        <option value="TTPs">TTPs</option>
+        <option value="OPERATIONAL GUIDE">OPERATIONAL GUIDE</option>
+        <option value="THREAT ACTOR">THREAT ACTOR</option>
+        <option value="INFRASTRUCTURE">INFRASTRUCTURE</option>
+        <option value="MALWARE">MALWARE</option>
+        <option value="PHISHING">PHISHING</option>
+        <option value="EXPLOIT">EXPLOIT</option>
+        <option value="VULNERABILITY">VULNERABILITY</option>
+        <option value="COMPLIANCE">COMPLIANCE</option>
+    </select>
+    <div class="mt-1 flex items-center gap-2">
+        <svg class="w-3 h-3 text-dyve-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span class="text-xs text-dyve-muted">Categorize threat intelligence by severity and type</span>
+    </div>
+</div>
+
+<div>
+    <label class="block text-xs font-medium text-dyve-muted mb-2">Meta Status</label>
+    <select id="metaStatusInput" class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent text-white appearance-none cursor-pointer">
+        <option value="" disabled selected>Select Meta Status</option>
+        <option value="Active Threat">Active Threat</option>
+        <option value="Verified Intel">Verified Intel</option>
+        <option value="Operational Guide">Operational Guide</option>
+        <option value="Under Investigation">Under Investigation</option>
+        <option value="Mitigated">Mitigated / Resolved</option>
+        <option value="Emerging Threat">Emerging Threat</option>
+        <option value="Critical Alert">Critical Alert</option>
+        <option value="Historical Data">Historical Data</option>
+        <option value="False Positive">False Positive</option>
+        <option value="Routine Update">Routine Update</option>
+    </select>
+    <div class="mt-1 flex items-center gap-2">
+        <svg class="w-3 h-3 text-dyve-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span class="text-xs text-dyve-muted">Current lifecycle stage of this intelligence</span>
+    </div>
+</div>
+
                         <div>
                             <label class="block text-xs font-medium text-dyve-muted mb-2">Featured Image</label>
                             <div class="space-y-2">
@@ -485,32 +674,26 @@
         }
 
 
-                function suggestInternalLinks() {
-            const content = quill ? quill.getText().toLowerCase() : '';
+                        function escapeHtml(unsafe) {
+            if (!unsafe) return '';
+            return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        function suggestInternalLinks() {
+            if (!quill) return;
+            const content = quill.getText().toLowerCase();
             const title = document.getElementById('titleInput').value.toLowerCase();
             const combinedText = title + ' ' + content;
             
-            // Extract substantial words for matching (5 chars or more)
             const currentKeywords = [...new Set(combinedText.match(/\b[a-z]{5,}\b/g) || [])];
 
             const suggestions = existingArticles
                 .map(article => {
                     let score = 0;
                     const targetText = `${article.title} ${article.category} ${article.tag}`.toLowerCase();
-
-                    // Boost score if the current text explicitly mentions the target's tag
-                    if (article.tag && content.includes(article.tag.toLowerCase())) score += 2;
-
-                    // Match keywords between current text and target metadata
-                    currentKeywords.forEach(kw => {
-                        if (targetText.includes(kw)) score += 1;
-                    });
-
-                    // Prevent suggesting the article currently being edited
-                    if (window.isEditMode && article.url.includes(window.editArticleSlug)) {
-                        score = -1;
-                    }
-
+                    if (article.tag && content.includes(article.tag.toLowerCase())) score += 3;
+                    currentKeywords.forEach(kw => { if (targetText.includes(kw)) score += 1; });
+                    if (window.isEditMode && article.url.includes(window.editArticleSlug)) score = -1;
                     return { ...article, score };
                 })
                 .filter(item => item.score > 0)
@@ -523,85 +706,93 @@
                 return;
             }
 
-            // Render UI with exact title and pass data to insertLink
-                        // Update this line inside suggestInternalLinks()
             container.innerHTML = suggestions.map(item => `
-                <div class="suggestion-item p-3 border border-gray-200 rounded-lg bg-gray-50 mb-2">
-                    <div class="text-sm font-bold text-gray-900">${item.title}</div>
-                    <div class="text-xs text-dyve-accent font-medium mt-1 uppercase">${item.tag || ''}</div>
-                    
-                    <!-- Pass the url, title, and tag to the smart insert function -->
-                    <button onclick="insertLink('${item.url}', '${item.title.replace(/'/g, "\\'")}', '${(item.tag || '').replace(/'/g, "\\'")}')" class="mt-3 text-xs text-dyve-bg bg-dyve-accent px-3 py-1.5 rounded font-bold hover:bg-dyve-accentHover transition w-full">
-                        Insert Smart Link
+                <div class="suggestion-item p-3 border border-gray-200 rounded-lg bg-gray-50 mb-2 hover:border-dyve-accent transition">
+                    <div class="text-sm font-bold text-gray-900">${escapeHtml(item.title)}</div>
+                    <div class="text-xs text-dyve-accent font-medium mt-1 uppercase">${escapeHtml(item.tag || '')}</div>
+                    <button class="insert-link-btn mt-3 text-xs text-dyve-bg bg-dyve-accent px-3 py-1.5 rounded font-bold hover:bg-dyve-accentHover transition w-full"
+                        data-url="${escapeHtml(item.url)}"
+                        data-title="${escapeHtml(item.title)}"
+                        data-tag="${escapeHtml(item.tag || '')}">
+                        ⚡ Insert Smart Link
                     </button>
-                    
                 </div>
             `).join('');
 
+            // Bulletproof Event Delegation (prevents onclick quote errors)
+            container.querySelectorAll('.insert-link-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    insertLink(this);
+                });
+            });
         }
 
+        function insertLink(btnElement) {
+            if (!quill || !btnElement) return;
+            const url = btnElement.dataset.url;
+            const title = btnElement.dataset.title;
+            const tag = btnElement.dataset.tag || '';
 
-                function insertLink(url, articleTitle, articleTag = '') {
-            if (!quill) return;
-
-            const finalUrl = url.startsWith('/') ? url : `/${url}`;
-            const range = quill.getSelection(true); 
-            const editorText = quill.getText().toLowerCase();
-
-            // 1. MANUAL OVERRIDE: If you explicitly highlighted text, respect that first.
-            if (range && range.length > 0) {
-                quill.formatText(range.index, range.length, 'link', finalUrl);
-                quill.setSelection(range.index + range.length);
-                showToast('✅ Link applied to selected text!');
-                return;
-            }
-
-            // 2. SMART AUTO-LINKING: Search existing text for relevant phrases
-            // Clean the title to remove parentheticals (e.g., "Dark Web (Marketplaces)" -> "dark web")
-            const cleanTitle = articleTitle.toLowerCase().replace(/\(.*?\)/g, '').trim();
-            const words = cleanTitle.split(/\s+/).filter(w => w.length > 4); // Get substantial words
-            
-            // Build an array of phrases to search for, from longest/most specific to shortest
-            let searchPhrases = [
-                cleanTitle, 
-                articleTag.toLowerCase(),
-                ...words.map((w, i, arr) => arr.slice(i, i+3).join(' ')), // 3-word combos
-                ...words.map((w, i, arr) => arr.slice(i, i+2).join(' ')), // 2-word combos
-                ...words.filter(w => w.length > 6) // Single long words (e.g., "infrastructure")
-            ].filter(p => p && p.trim().length > 4); 
-
-            let matchIndex = -1;
-            let matchLength = 0;
-
-            // Scan the editor text for the first available un-linked phrase
-            for (let phrase of searchPhrases) {
-                let idx = editorText.indexOf(phrase);
-                if (idx !== -1) {
-                    // Verify this text isn't already part of an existing link
-                    const format = quill.getFormat(idx, phrase.length);
-                    if (!format.link) {
-                        matchIndex = idx;
-                        matchLength = phrase.length;
-                        break; // Stop at the longest, best match
-                    }
-                }
-            }
-
-            if (matchIndex !== -1) {
-                // Found a matching phrase! Format it as a link.
-                quill.formatText(matchIndex, matchLength, 'link', finalUrl);
+            try {
+                quill.focus();
+                let range = quill.getSelection(true);
                 
-                // Select/highlight the newly linked text so you can instantly see what changed
-                quill.setSelection(matchIndex, matchLength);
-                showToast('✨ Auto-linked matching phrase in text!');
-            } else {
-                // 3. FALLBACK: No matching text found. Insert at cursor.
-                const insertIdx = range ? range.index : quill.getLength();
-                quill.insertText(insertIdx, articleTitle, 'link', finalUrl);
-                quill.setSelection(insertIdx + articleTitle.length);
-                quill.format('link', false);
-                quill.insertText(insertIdx + articleTitle.length, ' ');
-                showToast('✅ Link inserted at cursor!');
+                // 1. MANUAL OVERRIDE: If user highlighted text, apply link and KEEP it highlighted
+                if (range && range.length > 0) {
+                    quill.formatText(range.index, range.length, 'link', url);
+                    quill.setSelection(range.index, range.length); // Perfectly highlights the linked text
+                    showToast('✅ Link applied to selected text!');
+                    return;
+                }
+
+                // 2. SMART AUTO-LINKING (Scans Quill content safely)
+                const text = quill.getText();
+                const cleanTitle = title.toLowerCase().replace(/\(.*?\)/g, '').replace(/[^a-z0-9\s]/g, '').trim();
+                const words = cleanTitle.split(/\s+/).filter(w => w.length > 3);
+                
+                let searchPhrases = [
+                    cleanTitle, 
+                    tag.toLowerCase(),
+                    ...words.map((w, i, arr) => arr.slice(i, i+3).join(' ')),
+                    ...words.map((w, i, arr) => arr.slice(i, i+2).join(' ')),
+                    ...words.filter(w => w.length > 5)
+                ].filter(p => p && p.trim().length > 3);
+                
+                searchPhrases = [...new Set(searchPhrases)].sort((a, b) => b.length - a.length);
+
+                let matchIndex = -1;
+                let matchLength = 0;
+
+                for (let phrase of searchPhrases) {
+                    let idx = text.toLowerCase().indexOf(phrase);
+                    while (idx !== -1) {
+                        const format = quill.getFormat(idx, phrase.length);
+                        if (!format.link) { // Ensure it's not already linked
+                            matchIndex = idx;
+                            matchLength = phrase.length;
+                            break;
+                        }
+                        idx = text.toLowerCase().indexOf(phrase, idx + 1);
+                    }
+                    if (matchIndex !== -1) break;
+                }
+
+                if (matchIndex !== -1) {
+                    quill.formatText(matchIndex, matchLength, 'link', url);
+                    quill.setSelection(matchIndex, matchLength); // Perfectly highlights the auto-linked text
+                    showToast('✨ Auto-linked matching phrase!');
+                } else {
+                    // 3. FALLBACK: Insert at cursor
+                    const insertIdx = range ? range.index : quill.getLength();
+                    quill.insertText(insertIdx, title, 'link', url);
+                    quill.setSelection(insertIdx, title.length); // Highlight inserted text
+                    quill.format('link', false);
+                    showToast('✅ Link inserted at cursor!');
+                }
+            } catch (error) {
+                console.error('Link insertion error:', error);
+                showToast('❌ Error inserting link');
             }
         }
 
@@ -659,10 +850,393 @@
             return html || '<p>No content available.</p>';
         }
 
+
+// ============================================
+// META DESCRIPTION AUTO-GENERATOR
+// ============================================
+function autoGenerateMetaDescription() {
+    const title = document.getElementById('titleInput').value.trim();
+    const text = quill ? quill.getText().trim() : '';
+    
+    if (!title && text.length < 50) {
+        showToast('⚠️ Add a title or write more content first');
+        return;
+    }
+    
+    const stopWords = new Set(['the','and','for','are','but','not','you','all','any','can','had','her','was','one','our','out','day','get','has','him','his','how','man','new','now','old','see','two','way','who','boy','did','its','let','put','say','she','too','use','this','that','with','have','from','they','know','want','been','good','much','some','time','very','when','come','here','just','like','long','make','many','over','such','take','than','them','well','were','into','about','could','would','there','their','what','which','where','while','these','those','after','before','during','through','without','within','against','among','across','behind','beyond','beside','between','despite','except','inside','outside','around','upon','until','under','above','below','off','on','in','at','by','to','a','an','as','of','or','is','it','we','he','i','me','my','us','our','data','cyber','security','attack','threat','intel','intelligence','report','hackax','dyve','malware','breach','information','users','system','systems','network','networks']);
+    
+    // Extract primary keywords
+    const words = text.toLowerCase().match(/\b[a-z]{4,}\b/g) || [];
+    const freq = {};
+    words.forEach(w => { if (!stopWords.has(w)) freq[w] = (freq[w] || 0) + 1; });
+    const topKeywords = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 3).map(e => e[0]);
+    
+    // Get first meaningful sentence
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 30);
+    const firstSentence = sentences[0] ? sentences[0].trim() : text.substring(0, 120).trim();
+    
+    // Build smart description
+    let desc = '';
+    const category = document.getElementById('categorySelect').value;
+    const categoryLabel = { 'breach': 'Data Breach', 'dark-web': 'Dark Web', 'ransomware': 'Ransomware', 'threat-actors': 'Threat Actor', 'signals': 'Signal', 'analysis': 'Analysis' }[category] || 'Intelligence';
+    
+    // Strategy: Hook + Keywords + CTA
+    const hooks = [
+        `Discover critical insights on ${topKeywords[0] || categoryLabel.toLowerCase()}.`,
+        `Comprehensive ${categoryLabel} report covering ${topKeywords[0] || 'key threats'}.`,
+        `Expert analysis of ${topKeywords[0] || 'emerging threats'} and ${topKeywords[1] || 'security trends'}.`,
+        `Stay ahead with our latest ${categoryLabel} intelligence on ${topKeywords[0] || 'cyber threats'}.`
+    ];
+    
+    const ctas = [
+        ' Read the full analysis now.',
+        ' Learn how to protect your organization.',
+        ' Get actionable insights today.',
+        ' Stay informed with Dyve HackaX.'
+    ];
+    
+    const hook = hooks[Math.floor(Math.random() * hooks.length)];
+    const cta = ctas[Math.floor(Math.random() * ctas.length)];
+    
+    desc = hook + ' ' + firstSentence.substring(0, 80) + cta;
+    
+    // Perfect length optimization (150-160 chars)
+    if (desc.length > 160) desc = desc.substring(0, 157) + '...';
+    else if (desc.length < 140) desc = desc + ' ' + topKeywords.slice(0, 2).join(', ') + '.';
+    if (desc.length > 160) desc = desc.substring(0, 157) + '...';
+    
+    document.getElementById('descriptionInput').value = desc;
+    document.getElementById('descriptionInput').dispatchEvent(new Event('input'));
+    showToast('✨ Meta description auto-generated!');
+}
+
+// ============================================
+// AI ASSISTANT ENGINE (Client-Side NLP)
+// ============================================
+const AI_ENGINE = {
+    // Grammar fixes database
+    grammarRules: [
+        { pattern: /\s{2,}/g, replacement: ' ' },
+        { pattern: /\bteh\b/gi, replacement: 'the' },
+        { pattern: /\brecieve\b/gi, replacement: 'receive' },
+        { pattern: /\boccured\b/gi, replacement: 'occurred' },
+        { pattern: /\bseperate\b/gi, replacement: 'separate' },
+        { pattern: /\bdefinately\b/gi, replacement: 'definitely' },
+        { pattern: /\baccomodate\b/gi, replacement: 'accommodate' },
+        { pattern: /\buntill\b/gi, replacement: 'until' },
+        { pattern: /\bwich\b/gi, replacement: 'which' },
+        { pattern: /\bthier\b/gi, replacement: 'their' },
+        { pattern: /\balot\b/gi, replacement: 'a lot' },
+        { pattern: /\bteh\b/gi, replacement: 'the' },
+        { pattern: /\bi\b/g, replacement: 'I' },
+        { pattern: /([.!?])\s*([a-z])/g, replacement: '$1 $2' },
+    ],
+    
+    // Filler words to remove for "shorter"
+    fillerWords: ['very', 'really', 'quite', 'somewhat', 'rather', 'actually', 'basically', 'literally', 'just', 'simply', 'perhaps', 'maybe', 'probably', 'certainly', 'definitely', 'absolutely', 'in order to', 'due to the fact that', 'at this point in time', 'in the event that'],
+    
+    // Expansion phrases for "longer"
+    expansionPhrases: {
+        'however': 'On the other hand, it is important to consider that',
+        'also': 'Furthermore, it should be noted that',
+        'but': 'Nevertheless, one must recognize that',
+        'so': 'As a result of these factors,',
+        'because': 'This is primarily due to the fact that',
+    },
+    
+    // Common color mappings
+    colorMap: {
+        'red': '#ef4444', 'green': '#10b981', 'blue': '#3b82f6', 
+        'purple': '#a855f7', 'orange': '#f97316', 'yellow': '#eab308',
+        'accent': '#00ffaa'
+    }
+};
+
+function aiGrammarCheck() {
+    const range = quill.getSelection(true);
+    const text = quill.getText();
+    let fixed = text;
+    let fixes = 0;
+    
+    AI_ENGINE.grammarRules.forEach(rule => {
+        const matches = fixed.match(rule.pattern);
+        if (matches) fixes += matches.length;
+        fixed = fixed.replace(rule.pattern, rule.replacement);
+    });
+    
+    // Fix sentence capitalization
+    fixed = fixed.replace(/(^|[.!?]\s+)([a-z])/g, (match, p1, p2) => p1 + p2.toUpperCase());
+    
+    if (fixes === 0 && fixed === text) {
+        showToast('✅ No grammar issues found!');
+        return;
+    }
+    
+    quill.setText(fixed);
+    if (range) quill.setSelection(range.index, 0);
+    showToast(`✅ Fixed ${fixes} grammar issues!`);
+}
+
+function aiMakeShorter() {
+    const range = quill.getSelection(true);
+    if (!range || range.length === 0) {
+        showToast('⚠️ Select text first to make it shorter');
+        return;
+    }
+    
+    const selectedText = quill.getText(range.index, range.length);
+    let shorter = selectedText;
+    
+    // Remove filler words
+    AI_ENGINE.fillerWords.forEach(word => {
+        const regex = new RegExp(`\\b${word}\\b`, 'gi');
+        shorter = shorter.replace(regex, '');
+    });
+    
+    // Compress phrases
+    shorter = shorter.replace(/in order to/gi, 'to');
+    shorter = shorter.replace(/due to the fact that/gi, 'because');
+    shorter = shorter.replace(/at this point in time/gi, 'now');
+    shorter = shorter.replace(/\s{2,}/g, ' ').trim();
+    
+    quill.deleteText(range.index, range.length);
+    quill.insertText(range.index, shorter);
+    quill.setSelection(range.index, shorter.length);
+    showToast('✂️ Text condensed!');
+}
+
+function aiMakeLonger() {
+    const range = quill.getSelection(true);
+    if (!range || range.length === 0) {
+        showToast('⚠️ Select text first to expand it');
+        return;
+    }
+    
+    const selectedText = quill.getText(range.index, range.length);
+    let longer = selectedText;
+    
+    // Expand transitions
+    Object.entries(AI_ENGINE.expansionPhrases).forEach(([short, long]) => {
+        const regex = new RegExp(`\\b${short}\\b`, 'gi');
+        longer = longer.replace(regex, long);
+    });
+    
+    // Add contextual expansion
+    const sentences = longer.split(/[.!?]+/).filter(s => s.trim());
+    if (sentences.length > 0) {
+        const lastSentence = sentences[sentences.length - 1].trim();
+        longer = longer.replace(new RegExp(`${lastSentence.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`), 
+            `${lastSentence}. This demonstrates the critical importance of understanding these dynamics in today's evolving landscape.`);
+    }
+    
+    quill.deleteText(range.index, range.length);
+    quill.insertText(range.index, longer);
+    quill.setSelection(range.index, longer.length);
+    showToast(' Text expanded!');
+}
+
+function aiGenerateSEOTags() {
+    const text = quill.getText();
+    const stopWords = new Set(['the','and','for','are','but','not','you','all','any','can','had','her','was','one','our','out','day','get','has','him','his','how','man','new','now','old','see','two','way','who','boy','did','its','let','put','say','she','too','use','this','that','with','have','from','they','know','want','been','good','much','some','time','very','when','come','here','just','like','long','make','many','over','such','take','than','them','well','were','into','about','could','would','there','their','what','which','where','while','these','those','after','before','during','through','without','within','against','among','across','behind','beyond','beside','between','despite','except','inside','outside','around','upon','until','under','above','below','off','on','in','at','by','to','a','an','as','of','or','is','it','we','he','i','me','my','us','our']);
+    
+    const words = text.toLowerCase().match(/\b[a-z]{4,}\b/g) || [];
+    const freq = {};
+    words.forEach(w => { if (!stopWords.has(w)) freq[w] = (freq[w] || 0) + 1; });
+    
+    const topTags = Object.entries(freq)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 8)
+        .map(e => e[0])
+        .join(', ');
+    
+    // Insert as a styled tag block at cursor
+    const range = quill.getSelection(true);
+    const insertIdx = range ? range.index : quill.getLength();
+    
+    quill.insertText(insertIdx, '\n\n️ SEO Tags: ' + topTags + '\n', { 'color': '#00ffaa', 'bold': true });
+    quill.setSelection(insertIdx + topTags.length + 15);
+    showToast('📊 SEO tags generated!');
+}
+
+function aiGenerateContent() {
+    const range = quill.getSelection(true);
+    const title = document.getElementById('titleInput').value.trim();
+    const category = document.getElementById('categorySelect').value;
+    
+    if (!title) {
+        showToast('⚠️ Add a title first for context-aware generation');
+        return;
+    }
+    
+    const categoryTemplates = {
+        'breach': `\n\n## Impact Analysis\nThe breach has significant implications for affected organizations. Key findings include:\n- **Scope**: Widespread exposure of sensitive data\n- **Timeline**: Incident detected and contained\n- **Response**: Immediate mitigation steps recommended\n\n## Recommendations\nOrganizations should immediately review their security posture and implement enhanced monitoring protocols.`,
+        'dark-web': `\n\n## Dark Web Findings\nOur intelligence team has identified critical indicators on underground forums:\n- **Credential Exposure**: Multiple datasets circulating\n- **Threat Actor Activity**: Increased chatter observed\n- **Marketplace Trends**: Evolving tactics detected\n\n## Action Items\nImmediate verification of exposed credentials is strongly advised.`,
+        'ransomware': `\n\n## Ransomware Analysis\nDetailed examination of the threat reveals:\n- **Encryption Method**: Advanced cryptographic algorithms\n- **Extortion Tactics**: Multi-layered pressure campaigns\n- **Infrastructure**: Decentralized command & control\n\n## Defense Strategy\nImplement robust backup procedures and network segmentation.`,
+        'threat-actors': `\n\n## Threat Actor Profile\nComprehensive analysis of adversary capabilities:\n- **Motivation**: Financial gain and espionage\n- **Sophistication**: Advanced persistent threat level\n- **Target Sectors**: Critical infrastructure and finance\n\n## Attribution Indicators\nTechnical fingerprints suggest links to known threat groups.`,
+        'signals': `\n\n## Signal Intelligence\nKey indicators detected across multiple sources:\n- **Anomaly Detection**: Unusual network patterns identified\n- **Correlation Analysis**: Cross-referenced with known TTPs\n- **Risk Assessment**: Elevated threat level confirmed\n\n## Monitoring Recommendations\nEnhanced surveillance protocols should be activated.`,
+        'analysis': `\n\n## Strategic Analysis\nIn-depth examination of the threat landscape reveals:\n- **Trend Identification**: Emerging patterns detected\n- **Risk Modeling**: Quantified impact assessment\n- **Predictive Indicators**: Forward-looking threat projections\n\n## Executive Summary\nData-driven insights support proactive defense measures.`
+    };
+    
+    const template = categoryTemplates[category] || categoryTemplates['analysis'];
+    const insertIdx = range ? range.index : quill.getLength();
+    
+    quill.insertText(insertIdx, template);
+    quill.setSelection(insertIdx + template.length);
+    showToast('✨ Content generated!');
+}
+
+function aiTranslate() {
+    const range = quill.getSelection(true);
+    if (!range || range.length === 0) {
+        showToast('⚠️ Select text first to translate');
+        return;
+    }
+    
+    const languages = ['Spanish', 'French', 'German', 'Chinese', 'Japanese', 'Arabic', 'Russian', 'Portuguese'];
+    const lang = prompt('Translate to which language?\n\n' + languages.join(', '));
+    
+    if (!lang) return;
+    
+    // Use browser's built-in translation capability via Google Translate URL
+    const selectedText = quill.getText(range.index, range.length);
+    const encodedText = encodeURIComponent(selectedText);
+    const translateUrl = `https://translate.google.com/?sl=auto&tl=${lang.toLowerCase()}&text=${encodedText}`;
+    
+    window.open(translateUrl, '_blank');
+    showToast(`🌐 Opening translator for ${lang}...`);
+}
+
+function aiChangeColors() {
+    const range = quill.getSelection(true);
+    if (!range || range.length === 0) {
+        showToast('⚠️ Select text first to change color');
+        return;
+    }
+    
+    const colors = Object.keys(AI_ENGINE.colorMap);
+    const color = prompt('Choose color:\n\n' + colors.join(', '));
+    
+    if (!color || !AI_ENGINE.colorMap[color.toLowerCase()]) {
+        showToast(' Invalid color. Choose from: ' + colors.join(', '));
+        return;
+    }
+    
+    quill.formatText(range.index, range.length, 'color', AI_ENGINE.colorMap[color.toLowerCase()]);
+    quill.setSelection(range.index, range.length);
+    showToast(`🎨 Color changed to ${color}!`);
+}
+
+function aiCustomAction() {
+    const prompt = document.getElementById('aiCustomPrompt').value.trim();
+    const range = quill.getSelection(true);
+    
+    if (!prompt) {
+        showToast('️ Enter a command first');
+        return;
+    }
+    
+    if (!range || range.length === 0) {
+        showToast('⚠️ Select text to apply the command');
+        return;
+    }
+    
+    const selectedText = quill.getText(range.index, range.length);
+    let result = selectedText;
+    
+    // Smart command parsing
+    const lowerPrompt = prompt.toLowerCase();
+    
+    if (lowerPrompt.includes('uppercase') || lowerPrompt.includes('caps')) {
+        result = selectedText.toUpperCase();
+    } else if (lowerPrompt.includes('lowercase')) {
+        result = selectedText.toLowerCase();
+    } else if (lowerPrompt.includes('title case') || lowerPrompt.includes('capitalize')) {
+        result = selectedText.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    } else if (lowerPrompt.includes('bold') || lowerPrompt.includes('strong')) {
+        quill.formatText(range.index, range.length, 'bold', true);
+        showToast('✅ Text made bold!');
+        return;
+    } else if (lowerPrompt.includes('italic') || lowerPrompt.includes('em')) {
+        quill.formatText(range.index, range.length, 'italic', true);
+        showToast('✅ Text made italic!');
+        return;
+    } else if (lowerPrompt.includes('reverse') || lowerPrompt.includes('flip')) {
+        result = selectedText.split('').reverse().join('');
+    } else if (lowerPrompt.includes('remove spaces') || lowerPrompt.includes('trim')) {
+        result = selectedText.replace(/\s+/g, ' ').trim();
+    } else if (lowerPrompt.includes('bullet') || lowerPrompt.includes('list')) {
+        const lines = selectedText.split('\n').filter(l => l.trim());
+        result = '\n' + lines.map(l => '• ' + l.trim()).join('\n') + '\n';
+    } else if (lowerPrompt.includes('number') || lowerPrompt.includes('list')) {
+        const lines = selectedText.split('\n').filter(l => l.trim());
+        result = '\n' + lines.map((l, i) => `${i + 1}. ${l.trim()}`).join('\n') + '\n';
+    } else if (lowerPrompt.includes('summary') || lowerPrompt.includes('summarize')) {
+        const sentences = selectedText.split(/[.!?]+/).filter(s => s.trim().length > 20);
+        result = sentences.slice(0, Math.max(1, Math.ceil(sentences.length / 2))).join('. ').trim() + '.';
+    } else if (lowerPrompt.includes('expand') || lowerPrompt.includes('detail')) {
+        result = selectedText + ' Furthermore, this aspect requires careful consideration and detailed analysis to fully understand its implications in the broader context.';
+    } else {
+        // Default: try to apply as formatting or show help
+        showToast('💡 Try: "uppercase", "bold", "bullet list", "summary", "reverse"');
+        return;
+    }
+    
+    quill.deleteText(range.index, range.length);
+    quill.insertText(range.index, result);
+    quill.setSelection(range.index, result.length);
+    showToast(`✅ Applied: ${prompt}`);
+}
+
+
+        function generateAutoSEO() {
+            const text = quill ? quill.getText().trim() : '';
+            if (text.length < 50) {
+                showToast('⚠️ Write at least a paragraph to generate Auto-SEO');
+                return;
+            }
+
+            const stopWords = new Set(['the', 'and', 'for', 'are', 'but', 'not', 'you', 'all', 'any', 'can', 'had', 'her', 'was', 'one', 'our', 'out', 'day', 'get', 'has', 'him', 'his', 'how', 'man', 'new', 'now', 'old', 'see', 'two', 'way', 'who', 'boy', 'did', 'its', 'let', 'put', 'say', 'she', 'too', 'use', 'this', 'that', 'with', 'have', 'from', 'they', 'know', 'want', 'been', 'good', 'much', 'some', 'time', 'very', 'when', 'come', 'here', 'just', 'like', 'long', 'make', 'many', 'over', 'such', 'take', 'than', 'them', 'well', 'were', 'into', 'about', 'could', 'would', 'there', 'their', 'what', 'which', 'where', 'while', 'these', 'those', 'after', 'before', 'during', 'through', 'without', 'within', 'against', 'among', 'across', 'behind', 'beyond', 'beside', 'between', 'despite', 'except', 'inside', 'outside', 'around', 'upon', 'until', 'under', 'above', 'below', 'off', 'on', 'in', 'at', 'by', 'to', 'a', 'an', 'as', 'of', 'or', 'is', 'it', 'we', 'he', 'i', 'me', 'my', 'us', 'our', 'data', 'cyber', 'security', 'attack', 'threat', 'intel', 'intelligence', 'report', 'hackax', 'dyve', 'malware', 'breach', 'information', 'users', 'system', 'systems', 'network', 'networks']);
+            
+            const words = text.toLowerCase().match(/\b[a-z]{4,}\b/g) || [];
+            const freq = {};
+            words.forEach(w => { if (!stopWords.has(w)) freq[w] = (freq[w] || 0) + 1; });
+            
+            const topWords = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 5).map(e => e[0]);
+            const firstSentence = text.split(/[.!?]/)[0].trim();
+            
+            const category = document.getElementById('categorySelect').value;
+            const categoryLabel = { 'breach': 'Data Breach', 'dark-web': 'Dark Web', 'ransomware': 'Ransomware', 'threat-actors': 'Threat Actor', 'signals': 'Signal', 'analysis': 'Analysis' }[category] || 'Intel';
+            
+            const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+            
+            // Auto Title (Max 60 chars for perfect SEO)
+            let autoTitle = `${cap(topWords[0] || 'Intel')}: ${cap(topWords[1] || categoryLabel)} ${categoryLabel}`;
+            if (autoTitle.length > 60) autoTitle = autoTitle.substring(0, 57) + '...';
+            document.getElementById('titleInput').value = autoTitle;
+            
+            // Auto Description (150-160 chars for perfect CTR)
+            let autoDesc = firstSentence;
+            if (autoDesc.length > 160) autoDesc = autoDesc.substring(0, 157) + '...';
+            else if (autoDesc.length < 120) autoDesc = `${firstSentence}. Dyve HackaX threat intelligence on ${topWords.slice(0,2).join(' and ')}.`;
+            if (autoDesc.length > 160) autoDesc = autoDesc.substring(0, 157) + '...';
+            document.getElementById('descriptionInput').value = autoDesc;
+            
+            // Auto Slug
+            document.getElementById('slugPreview').textContent = generateSlug(autoTitle);
+            
+            // Auto OG Image Prompt (Highly descriptive for AI generation)
+            const ogPrompt = `Cinematic cybersecurity visualization of ${topWords.slice(0,3).join(', ')}. Dark mode neon green and black palette, glowing network nodes, matrix-style data streams, high contrast, 8k resolution, futuristic threat intelligence cover art, no text.`;
+            document.getElementById('ogImagePrompt').value = ogPrompt;
+            
+            document.getElementById('titleInput').dispatchEvent(new Event('input'));
+            document.getElementById('descriptionInput').dispatchEvent(new Event('input'));
+            showToast('✨ Auto-SEO fields generated!');
+        }
+
         // ============================================
         // GENERATE ARTICLE HTML (100% SAFE STRING CONCATENATION)
         // ============================================
-                function generateArticleHTML(siteUrl, title, desc, image, tag, meta, category, slug, date, articleHTML) {
+                        function generateArticleHTML(siteUrl, title, desc, image, tag, meta, category, slug, date, articleHTML, ogPrompt = '') {
             const categoryLabels = {
                 'breach': 'Data Breach',
                 'dark-web': 'Dark Web Intel',
@@ -672,68 +1246,72 @@
                 'analysis': 'Threat Analysis'
             };
             const categoryLabel = categoryLabels[category] || 'Intelligence';
-            
-            // Dynamic routing for nested categories (dark-web, ransomware)
             const isNested = (category === 'dark-web' || category === 'ransomware');
             const pathDepth = isNested ? '../..' : '..';
-            const canonicalUrl = isNested 
-                ? siteUrl + '/article/' + category + '/' + slug + '.html'
-                : siteUrl + '/article/' + slug + '.html';
-
+            const canonicalUrl = isNested ? siteUrl + '/article/' + category + '/' + slug + '.html' : siteUrl + '/article/' + slug + '.html';
             
             let articleBody = '<p><em>No content available.</em></p>';
-            
-            // If the HTML exists and isn't just an empty Quill paragraph
             if (articleHTML && articleHTML.trim() !== '' && articleHTML !== '<p><br></p>') {
                 articleBody = articleHTML;
             }
 
+            const safeTitle = title.replace(/"/g, '&quot;');
+            const safeDesc = desc.replace(/"/g, '&quot;');
 
             return '<!DOCTYPE html>\n' +
 '<html lang="en">\n' +
 '<head>\n' +
 '<meta charset="UTF-8">\n' +
 '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
-'<title>' + title + ' | Dyve HackaX</title>\n' +
-'<meta name="description" content="' + desc + '">\n' +
+'<title>' + safeTitle + ' | Dyve HackaX Intel</title>\n' +
+'<meta name="description" content="' + safeDesc + '">\n' +
+'<meta name="keywords" content="' + tag + ', ' + categoryLabel + ', Dyve HackaX, Cyber Threat Intelligence">\n' +
+'<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">\n' +
 '<link rel="canonical" href="' + canonicalUrl + '">\n' +
-'<meta property="og:title" content="' + title + '">\n' +
-'<meta property="og:description" content="' + desc + '">\n' +
+'<link rel="author" href="' + siteUrl + '/about-us/">\n' +
+
+'<meta property="og:type" content="article">\n' +
+'<meta property="og:title" content="' + safeTitle + '">\n' +
+'<meta property="og:description" content="' + safeDesc + '">\n' +
 '<meta property="og:url" content="' + canonicalUrl + '">\n' +
 '<meta property="og:image" content="' + image + '">\n' +
+'<meta property="og:image:alt" content="' + safeDesc + '">\n' +
+'<meta property="article:published_time" content="' + date + '">\n' +
+'<meta property="article:author" content="Dyve HackaX Intelligence Unit">\n' +
+'<meta property="article:section" content="' + categoryLabel + '">\n' +
+'<meta property="article:tag" content="' + tag + '">\n' +
+
 '<meta name="twitter:card" content="summary_large_image">\n' +
-'<meta name="twitter:title" content="' + title + '">\n' +
-'<meta name="twitter:description" content="' + desc + '">\n' +
+'<meta name="twitter:title" content="' + safeTitle + '">\n' +
+'<meta name="twitter:description" content="' + safeDesc + '">\n' +
 '<meta name="twitter:image" content="' + image + '">\n' +
+
 '<link rel="icon" href="https://dyve.online/favicon.ico">\n' +
 '<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">\n' +
 '<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">\n' +
 '<link rel="stylesheet" href="article.css">\n' +
+
 '<script type="application/ld+json">\n' +
-'{\n' +
+'[{\n' +
 '  "@context": "https://schema.org",\n' +
-'  "@type": "TechArticle",\n' +
-'  "headline": "' + title + '",\n' +
-'  "description": "' + desc + '",\n' +
+'  "@type": "NewsArticle",\n' +
+'  "headline": "' + safeTitle + '",\n' +
+'  "description": "' + safeDesc + '",\n' +
 '  "image": ["' + image + '"],\n' +
-'  "author": {\n' +
-'    "@type": "Organization",\n' +
-'    "name": "Dyve HackaX Intelligence Unit"\n' +
-'  },\n' +
-'  "publisher": {\n' +
-'    "@type": "Organization",\n' +
-'    "name": "Dyve",\n' +
-'    "logo": {\n' +
-'      "@type": "ImageObject",\n' +
-'      "url": "https://dyve.online/logo.png"\n' +
-'    }\n' +
-'  },\n' +
-'  "mainEntityOfPage": {\n' +
-'    "@type": "WebPage",\n' +
-'    "@id": "' + canonicalUrl + '"\n' +
-'  },\n' +
+'  "author": { "@type": "Organization", "name": "Dyve HackaX Intelligence Unit" },\n' +
+'  "publisher": { "@type": "Organization", "name": "Dyve", "logo": { "@type": "ImageObject", "url": "https://dyve.online/logo.png" } },\n' +
 '  "datePublished": "' + date + '"\n' +
-'}\n' +
+'}, {\n' +
+'  "@context": "https://schema.org",\n' +
+'  "@type": "BreadcrumbList",\n' +
+'  "itemListElement": [{\n' +
+'    "@type": "ListItem", "position": 1, "name": "Home", "item": "' + siteUrl + '"\n' +
+'  }, {\n' +
+'    "@type": "ListItem", "position": 2, "name": "' + categoryLabel + '", "item": "' + siteUrl + '/' + category + '/"\n' +
+'  }, {\n' +
+'    "@type": "ListItem", "position": 3, "name": "' + safeTitle + '", "item": "' + canonicalUrl + '"\n' +
+'  }]\n' +
+'}]\n' +
 '<\/script>\n' +
 '</head>\n' +
 '<body>\n' +
@@ -748,37 +1326,31 @@
 '<aside class="sidebar">\n' +
 '  <div class="intel-box">\n' +
 '    <div class="intel-title">INTELLIGENCE</div>\n' +
-'    <div class="intel-item">\n' +
-'      <div class="intel-label">Classification</div>\n' +
-'      <div class="intel-value">' + categoryLabel + '</div>\n' +
-'    </div>\n' +
-'    <div class="intel-item">\n' +
-'      <div class="intel-label">Scope</div>\n' +
-'      <div class="intel-value">Global</div>\n' +
-'    </div>\n' +
-'    <div class="intel-item">\n' +
-'      <div class="intel-label">Threat Type</div>\n' +
-'      <div class="intel-value">' + tag + '</div>\n' +
-'    </div>\n' +
-'    <div class="intel-item">\n' +
-'      <div class="intel-label">Urgency</div>\n' +
-'      <div class="intel-value">' + meta + '</div>\n' +
-'    </div>\n' +
+'    <div class="intel-item"><div class="intel-label">Classification</div><div class="intel-value">' + categoryLabel + '</div></div>\n' +
+'    <div class="intel-item"><div class="intel-label">Scope</div><div class="intel-value">Global</div></div>\n' +
+'    <div class="intel-item"><div class="intel-label">Threat Type</div><div class="intel-value">' + tag + '</div></div>\n' +
+'    <div class="intel-item"><div class="intel-label">Urgency</div><div class="intel-value">' + meta + '</div></div>\n' +
+(ogPrompt ? '    <div class="intel-item"><div class="intel-label">Visual Prompt</div><div class="intel-value" style="font-size:10px;line-height:1.2;">' + ogPrompt.replace(/"/g, '&quot;') + '</div></div>\n' : '') +
 '  </div>\n' +
 '</aside>\n' +
-'<main class="article">\n' +
-'<div class="breadcrumb">[ LIVE INTEL FEED ] / ' + categoryLabel.toUpperCase() + ' / ' + tag + '</div>\n' +
-'<h1>' + title + '</h1>\n' +
-'<div class="subhead">' + desc + '</div>\n' +
-'<div class="meta">HackaX Intelligence Unit • ' + date + ' • Action Required</div>\n' +
+'<main class="article" itemscope itemtype="https://schema.org/Article">\n' +
+'<meta itemprop="headline" content="' + safeTitle + '">\n' +
+'<meta itemprop="description" content="' + safeDesc + '">\n' +
+'<meta itemprop="image" content="' + image + '">\n' +
+'<meta itemprop="datePublished" content="' + date + '">\n' +
+'<meta itemprop="author" content="Dyve HackaX Intelligence Unit">\n' +
+'<div class="breadcrumb" aria-label="Breadcrumb">[ LIVE INTEL FEED ] / ' + categoryLabel.toUpperCase() + ' / ' + tag + '</div>\n' +
+'<h1 itemprop="name">' + title + '</h1>\n' +
+'<div class="subhead" itemprop="description">' + desc + '</div>\n' +
+'<div class="meta">HackaX Intelligence Unit • <time itemprop="datePublished" datetime="' + date + '">' + date + '</time> • Action Required</div>\n' +
 '<div class="hero">\n' +
-'<img src="' + image + '" alt="' + desc.substring(0, 100) + '">\n' +
+'<img src="' + image + '" alt="' + safeDesc.substring(0, 100) + '" loading="lazy">\n' +
 '</div>\n' +
 '<div class="share">\n' +
 '<button onclick="copyLink()">Copy</button>\n' +
 '<button onclick="shareX()">Share</button>\n' +
 '</div>\n' +
-'<div class="content">\n' +
+'<div class="content" itemprop="articleBody">\n' +
 articleBody + '\n' +
 '</div>\n' +
 '</main>\n' +
@@ -789,81 +1361,26 @@ articleBody + '\n' +
 '    <p class="hx-cta-desc">Monitor breach signals, track threat actors, and analyze underground activity across global intelligence networks.</p>\n' +
 '    <a href="#" class="hx-cta-btn">Start free access →</a>\n' +
 '  </div>\n' +
-'  <div class="hx-cta-footnote">\n' +
-'    <p>¹ 2026 Dyve Global Threat Intelligence Report</p>\n' +
-'    <p>² Internal HackaX analysis dataset</p>\n' +
-'    <p>³ Intelligence models may vary by region and source</p>\n' +
-'  </div>\n' +
 '</section>\n' +
 '<footer class="hx-footer">\n' +
 '  <div class="hx-footer-logo">DYVE // HACKAX</div>\n' +
 '  <div class="hx-accordion">\n' +
-'    <div class="hx-item">\n' +
-'      <div class="hx-head">Get Started <span>+</span></div>\n' +
-'      <div class="hx-body">\n' +
-'        <a href="#">Platform Overview</a>\n' +
-'        <a href="#">Live Intelligence</a>\n' +
-'        <a href="#">API Access</a>\n' +
-'      </div>\n' +
-'    </div>\n' +
-'    <div class="hx-item">\n' +
-'      <div class="hx-head">Company <span>+</span></div>\n' +
-'      <div class="hx-body">\n' +
-'        <a href="#">About</a>\n' +
-'        <a href="#">Research</a>\n' +
-'        <a href="#">Careers</a>\n' +
-'      </div>\n' +
-'    </div>\n' +
-'    <div class="hx-item">\n' +
-'      <div class="hx-head">Partners <span>+</span></div>\n' +
-'      <div class="hx-body">\n' +
-'        <a href="#">Integrations</a>\n' +
-'        <a href="#">Affiliates</a>\n' +
-'      </div>\n' +
-'    </div>\n' +
-'    <div class="hx-item">\n' +
-'      <div class="hx-head">Support <span>+</span></div>\n' +
-'      <div class="hx-body">\n' +
-'        <a href="#">Help Center</a>\n' +
-'        <a href="#">Contact</a>\n' +
-'      </div>\n' +
-'    </div>\n' +
-'  </div>\n' +
-'  <div class="hx-social">\n' +
-'    <span>in</span>\n' +
-'    <span>X</span>\n' +
-'    <span>ig</span>\n' +
-'    <span>yt</span>\n' +
+'    <div class="hx-item"><div class="hx-head">Get Started <span>+</span></div><div class="hx-body"><a href="#">Platform Overview</a><a href="#">Live Intelligence</a><a href="#">API Access</a></div></div>\n' +
+'    <div class="hx-item"><div class="hx-head">Company <span>+</span></div><div class="hx-body"><a href="#">About</a><a href="#">Research</a><a href="#">Careers</a></div></div>\n' +
+'    <div class="hx-item"><div class="hx-head">Partners <span>+</span></div><div class="hx-body"><a href="#">Integrations</a><a href="#">Affiliates</a></div></div>\n' +
+'    <div class="hx-item"><div class="hx-head">Support <span>+</span></div><div class="hx-body"><a href="#">Help Center</a><a href="#">Contact</a></div></div>\n' +
 '  </div>\n' +
 '  <div class="hx-legal">\n' +
 '    <span>© 2026 Dyve</span>\n' +
 '    <a href="' + pathDepth + '/privacy-policy/index.html">Privacy</a>\n' +
-'    <a href="#">Cookies</a>\n' +
 '    <a href="' + pathDepth + '/terms-of-service/index.html">Terms</a>\n' +
 '  </div>\n' +
-
 '</footer>\n' +
 '<script>\n' +
-'function copyLink(){\n' +
-'  navigator.clipboard.writeText(window.location.href);\n' +
-'}\n' +
-'function shareX(){\n' +
-'  window.open("https://twitter.com/intent/tweet?url=" + window.location.href);\n' +
-'}\n' +
-'function goBack(){\n' +
-'  if (document.referrer && document.referrer !== window.location.href){\n' +
-'    window.history.back();\n' +
-'  } else {\n' +
-'    window.location.href = "' + pathDepth + '/index.html";\n' +
-'  }\n' +
-'}\n' +
-
-'document.querySelectorAll(".hx-head").forEach(head=>{\n' +
-'  head.addEventListener("click",()=>{\n' +
-'    const item = head.parentElement;\n' +
-'    item.classList.toggle("active");\n' +
-'  });\n' +
-'});\n' +
+'function copyLink(){ navigator.clipboard.writeText(window.location.href); }\n' +
+'function shareX(){ window.open("https://twitter.com/intent/tweet?url=" + window.location.href); }\n' +
+'function goBack(){ if(document.referrer && document.referrer !== window.location.href){ window.history.back(); } else { window.location.href = "' + pathDepth + '/index.html"; } }\n' +
+'document.querySelectorAll(".hx-head").forEach(h=>{ h.addEventListener("click",()=>{ h.parentElement.classList.toggle("active"); }); });\n' +
 '<\/script>\n' +
 '</body>\n' +
 '</html>';
@@ -1111,10 +1628,12 @@ async function pingGoogleIndexing(siteUrl) {
 
                 const editorContent = quill ? quill.getContents() : { ops: [] }; // Keep for articles.json state
 
-const editorHTML = quill ? quill.root.innerHTML : ''; // Grab native HTML for the static page
+const editorHTML = quill ? quill.root.innerHTML : '';
+const ogPrompt = document.getElementById('ogImagePrompt') ? document.getElementById('ogImagePrompt').value.trim() : '';
 
-// Pass editorHTML instead of editorContent to the generator
-const htmlContent = generateArticleHTML(config.siteUrl, title, description, imageUrl, intelTag, metaStatus, category, slug, today, editorHTML);
+// Pass editorHTML and the new ogPrompt to the generator
+const htmlContent = generateArticleHTML(config.siteUrl, title, description, imageUrl, intelTag, metaStatus, category, slug, today, editorHTML, ogPrompt);
+
 
                 const htmlBase64 = btoa(unescape(encodeURIComponent(htmlContent)));
 
@@ -1368,12 +1887,81 @@ const htmlContent = generateArticleHTML(config.siteUrl, title, description, imag
             });
 
             document.getElementById('descriptionInput').addEventListener('input', (e) => {
-                document.getElementById('descCharCount').textContent = e.target.value.length;
+                const len = e.target.value.length;
+                document.getElementById('descCharCount').textContent = len + '/160 characters';
+                
+                const qualityEl = document.getElementById('descQuality');
+                if (len === 0) {
+                    qualityEl.textContent = 'Waiting for input...';
+                    qualityEl.className = 'text-gray-400';
+                } else if (len >= 140 && len <= 160) {
+                    qualityEl.textContent = '✅ Perfect length for SEO';
+                    qualityEl.className = 'desc-quality-good font-bold';
+                } else if (len >= 120 && len < 140) {
+                    qualityEl.textContent = '⚠️ Good, but could be longer';
+                    qualityEl.className = 'desc-quality-warn';
+                } else if (len > 160) {
+                    qualityEl.textContent = '❌ Too long (will be truncated)';
+                    qualityEl.className = 'desc-quality-bad';
+                } else {
+                    qualityEl.textContent = '⚠️ Too short for optimal CTR';
+                    qualityEl.className = 'desc-quality-warn';
+                }
             });
 
             document.getElementById('featuredImageInput').addEventListener('change', handleFeaturedImageUpload);
-            document.getElementById('analyzeSeoBtn').addEventListener('click', analyzeSEO);
+                        document.getElementById('analyzeSeoBtn').addEventListener('click', analyzeSEO);
             document.getElementById('suggestLinksBtn').addEventListener('click', suggestInternalLinks);
+                        document.getElementById('generateAutoSeoBtn').addEventListener('click', generateAutoSEO);
+            document.getElementById('autoGenerateDescBtn').addEventListener('click', autoGenerateMetaDescription);
+            
+            // AI Assistant Panel Toggle
+            const aiBtn = document.getElementById('aiAssistantBtn');
+            const aiPanel = document.getElementById('aiAssistantPanel');
+            const closeAiBtn = document.getElementById('closeAiPanel');
+            
+            aiBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                aiPanel.classList.toggle('active');
+            });
+            
+            closeAiBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                aiPanel.classList.remove('active');
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!aiPanel.contains(e.target) && !aiBtn.contains(e.target)) {
+                    aiPanel.classList.remove('active');
+                }
+            });
+            
+            // AI Action Buttons
+            document.querySelectorAll('.ai-action').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const action = btn.dataset.action;
+                    aiPanel.classList.remove('active');
+                    
+                    switch(action) {
+                        case 'grammar': aiGrammarCheck(); break;
+                        case 'shorter': aiMakeShorter(); break;
+                        case 'longer': aiMakeLonger(); break;
+                        case 'seo': aiGenerateSEOTags(); break;
+                        case 'generate': aiGenerateContent(); break;
+                        case 'translate': aiTranslate(); break;
+                        case 'color': aiChangeColors(); break;
+                    }
+                });
+            });
+            
+            // Custom AI Prompt
+            document.getElementById('aiCustomBtn').addEventListener('click', aiCustomAction);
+            document.getElementById('aiCustomPrompt').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') aiCustomAction();
+            });
+
+
             document.getElementById('saveDraftBtn').addEventListener('click', saveDraft);
             document.getElementById('publishBtn').addEventListener('click', publishArticle);
 
