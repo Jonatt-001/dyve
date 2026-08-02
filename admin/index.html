@@ -136,11 +136,13 @@
                     <select id="categorySelect" class="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent focus:border-transparent text-gray-900 bg-white">
                         <option value="breach">Live Breaches</option>
                         <option value="dark-web">Dark Web Intelligence</option>
-                        <option value="analysis">Threat Analysis</option>
-                        <option value="signals">Threat Signals</option>
+                        <option value="ransomware">Ransomware Intelligence</option>
                         <option value="threat-actors">Threat Actors</option>
+                        <option value="signals">Threat Signals</option>
+                        <option value="analysis">Threat Analysis</option>
                     </select>
                 </div>
+
 
                 <!-- Dyve Specific Fields -->
                 <div class="bg-dyve-bg rounded-lg shadow-sm border border-white/10 p-6 text-white">
@@ -338,7 +340,7 @@
             });
         }
 
-        async function uploadToCloudinary(file) {
+                async function uploadToCloudinary(file) {
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
@@ -353,11 +355,9 @@
                 const data = await response.json();
                 
                 if (data.secure_url) {
-                    const publicId = data.public_id;
-                    const optimizedUrl = `https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/f_auto,q_auto,w_1200,c_limit/${publicId}`;
-                    
+                    // Use the direct URL provided by Cloudinary instead of building a custom one
                     return {
-                        url: optimizedUrl,
+                        url: data.secure_url,
                         alt: generateAltText(data.original_filename, ''),
                         width: data.width,
                         height: data.height
@@ -370,6 +370,7 @@
                 return null;
             }
         }
+
 
         async function handleFeaturedImageUpload(event) {
             const files = event.target.files;
@@ -458,7 +459,7 @@
             }).join('');
         }
 
-        // ============================================
+                // ============================================
         // INTERNAL LINKING
         // ============================================
         async function loadExistingArticles() {
@@ -466,30 +467,53 @@
             if (!config.token || !config.repo) return;
             
             try {
-                const response = await fetch(`https://api.github.com/repos/${config.repo}/contents/article`, {
+                // Fetch the central articles database instead of just filenames
+                const response = await fetch(`https://api.github.com/repos/${config.repo}/contents/assets/articles.json?ref=${config.branch}`, {
                     headers: { 'Authorization': `token ${config.token}` }
                 });
                 
-                if (response.ok) {
-                    const files = await response.json();
-                    existingArticles = files.filter(f => f.name.endsWith('.html')).map(f => f.name.replace('.html', ''));
+                                if (response.ok) {
+                    const data = await response.json();
+                    // FIX: Added UTF-8 decoding to prevent mojibake (ÃÂ characters)
+                    const decodedContent = decodeURIComponent(escape(atob(data.content)));
+                    existingArticles = JSON.parse(decodedContent); // Now holds full article objects
                 }
+
             } catch (error) {
                 console.error('Error loading articles:', error);
             }
         }
 
-        function suggestInternalLinks() {
+
+                function suggestInternalLinks() {
             const content = quill ? quill.getText().toLowerCase() : '';
             const title = document.getElementById('titleInput').value.toLowerCase();
+            const combinedText = title + ' ' + content;
             
+            // Extract substantial words for matching (5 chars or more)
+            const currentKeywords = [...new Set(combinedText.match(/\b[a-z]{5,}\b/g) || [])];
+
             const suggestions = existingArticles
-                .map(slug => {
-                    const keywords = slug.replace('article-', '').split('-');
-                    const matches = keywords.filter(kw => content.includes(kw) || title.includes(kw));
-                    return { slug, score: matches.length / (keywords.length || 1) };
+                .map(article => {
+                    let score = 0;
+                    const targetText = `${article.title} ${article.category} ${article.tag}`.toLowerCase();
+
+                    // Boost score if the current text explicitly mentions the target's tag
+                    if (article.tag && content.includes(article.tag.toLowerCase())) score += 2;
+
+                    // Match keywords between current text and target metadata
+                    currentKeywords.forEach(kw => {
+                        if (targetText.includes(kw)) score += 1;
+                    });
+
+                    // Prevent suggesting the article currently being edited
+                    if (window.isEditMode && article.url.includes(window.editArticleSlug)) {
+                        score = -1;
+                    }
+
+                    return { ...article, score };
                 })
-                .filter(item => item.score > 0.2)
+                .filter(item => item.score > 0)
                 .sort((a, b) => b.score - a.score)
                 .slice(0, 5);
 
@@ -499,25 +523,88 @@
                 return;
             }
 
+            // Render UI with exact title and pass data to insertLink
+                        // Update this line inside suggestInternalLinks()
             container.innerHTML = suggestions.map(item => `
-                <div class="suggestion-item p-3 border border-gray-200 rounded-lg bg-gray-50">
-                    <div class="text-sm font-medium text-gray-900">${item.slug.replace(/-/g, ' ')}</div>
-                    <div class="text-xs text-gray-500 mt-1">Relevance: ${Math.round(item.score * 100)}%</div>
-                    <button onclick="insertLink('${item.slug}')" class="mt-2 text-xs text-dyve-accent font-semibold hover:underline">Insert Link</button>
+                <div class="suggestion-item p-3 border border-gray-200 rounded-lg bg-gray-50 mb-2">
+                    <div class="text-sm font-bold text-gray-900">${item.title}</div>
+                    <div class="text-xs text-dyve-accent font-medium mt-1 uppercase">${item.tag || ''}</div>
+                    
+                    <!-- Pass the url, title, and tag to the smart insert function -->
+                    <button onclick="insertLink('${item.url}', '${item.title.replace(/'/g, "\\'")}', '${(item.tag || '').replace(/'/g, "\\'")}')" class="mt-3 text-xs text-dyve-bg bg-dyve-accent px-3 py-1.5 rounded font-bold hover:bg-dyve-accentHover transition w-full">
+                        Insert Smart Link
+                    </button>
+                    
                 </div>
             `).join('');
+
         }
 
-        function insertLink(slug) {
-            const range = quill.getSelection();
-            if (range) {
-                quill.insertText(range.index, ` [Read Full Report] `);
-                quill.formatText(range.index, 18, 'link', `/article/${slug}.html`);
-                showToast('✅ Link inserted!');
+
+                function insertLink(url, articleTitle, articleTag = '') {
+            if (!quill) return;
+
+            const finalUrl = url.startsWith('/') ? url : `/${url}`;
+            const range = quill.getSelection(true); 
+            const editorText = quill.getText().toLowerCase();
+
+            // 1. MANUAL OVERRIDE: If you explicitly highlighted text, respect that first.
+            if (range && range.length > 0) {
+                quill.formatText(range.index, range.length, 'link', finalUrl);
+                quill.setSelection(range.index + range.length);
+                showToast('✅ Link applied to selected text!');
+                return;
+            }
+
+            // 2. SMART AUTO-LINKING: Search existing text for relevant phrases
+            // Clean the title to remove parentheticals (e.g., "Dark Web (Marketplaces)" -> "dark web")
+            const cleanTitle = articleTitle.toLowerCase().replace(/\(.*?\)/g, '').trim();
+            const words = cleanTitle.split(/\s+/).filter(w => w.length > 4); // Get substantial words
+            
+            // Build an array of phrases to search for, from longest/most specific to shortest
+            let searchPhrases = [
+                cleanTitle, 
+                articleTag.toLowerCase(),
+                ...words.map((w, i, arr) => arr.slice(i, i+3).join(' ')), // 3-word combos
+                ...words.map((w, i, arr) => arr.slice(i, i+2).join(' ')), // 2-word combos
+                ...words.filter(w => w.length > 6) // Single long words (e.g., "infrastructure")
+            ].filter(p => p && p.trim().length > 4); 
+
+            let matchIndex = -1;
+            let matchLength = 0;
+
+            // Scan the editor text for the first available un-linked phrase
+            for (let phrase of searchPhrases) {
+                let idx = editorText.indexOf(phrase);
+                if (idx !== -1) {
+                    // Verify this text isn't already part of an existing link
+                    const format = quill.getFormat(idx, phrase.length);
+                    if (!format.link) {
+                        matchIndex = idx;
+                        matchLength = phrase.length;
+                        break; // Stop at the longest, best match
+                    }
+                }
+            }
+
+            if (matchIndex !== -1) {
+                // Found a matching phrase! Format it as a link.
+                quill.formatText(matchIndex, matchLength, 'link', finalUrl);
+                
+                // Select/highlight the newly linked text so you can instantly see what changed
+                quill.setSelection(matchIndex, matchLength);
+                showToast('✨ Auto-linked matching phrase in text!');
             } else {
-                showToast('⚠️ Select text first, then insert link');
+                // 3. FALLBACK: No matching text found. Insert at cursor.
+                const insertIdx = range ? range.index : quill.getLength();
+                quill.insertText(insertIdx, articleTitle, 'link', finalUrl);
+                quill.setSelection(insertIdx + articleTitle.length);
+                quill.format('link', false);
+                quill.insertText(insertIdx + articleTitle.length, ' ');
+                showToast('✅ Link inserted at cursor!');
             }
         }
+
 
         // ============================================
         // SAVE DRAFT
@@ -575,21 +662,32 @@
         // ============================================
         // GENERATE ARTICLE HTML (100% SAFE STRING CONCATENATION)
         // ============================================
-        function generateArticleHTML(siteUrl, title, desc, image, tag, meta, category, slug, date, editorContent) {
+                function generateArticleHTML(siteUrl, title, desc, image, tag, meta, category, slug, date, articleHTML) {
             const categoryLabels = {
                 'breach': 'Data Breach',
                 'dark-web': 'Dark Web Intel',
-                'analysis': 'Threat Analysis',
+                'ransomware': 'Ransomware Intelligence',
+                'threat-actors': 'Threat Actors',
                 'signals': 'Threat Signals',
-                'threat-actors': 'Threat Actors'
+                'analysis': 'Threat Analysis'
             };
             const categoryLabel = categoryLabels[category] || 'Intelligence';
-            const canonicalUrl = siteUrl + '/article/' + slug + '.html';
+            
+            // Dynamic routing for nested categories (dark-web, ransomware)
+            const isNested = (category === 'dark-web' || category === 'ransomware');
+            const pathDepth = isNested ? '../..' : '..';
+            const canonicalUrl = isNested 
+                ? siteUrl + '/article/' + category + '/' + slug + '.html'
+                : siteUrl + '/article/' + slug + '.html';
+
             
             let articleBody = '<p><em>No content available.</em></p>';
-            if (editorContent && editorContent.ops && editorContent.ops.length > 0) {
-                articleBody = convertQuillToHTML(editorContent);
+            
+            // If the HTML exists and isn't just an empty Quill paragraph
+            if (articleHTML && articleHTML.trim() !== '' && articleHTML !== '<p><br></p>') {
+                articleBody = articleHTML;
             }
+
 
             return '<!DOCTYPE html>\n' +
 '<html lang="en">\n' +
@@ -739,10 +837,11 @@ articleBody + '\n' +
 '  </div>\n' +
 '  <div class="hx-legal">\n' +
 '    <span>© 2026 Dyve</span>\n' +
-'    <a href="../privacy-policy/index.html">Privacy</a>\n' +
+'    <a href="' + pathDepth + '/privacy-policy/index.html">Privacy</a>\n' +
 '    <a href="#">Cookies</a>\n' +
-'    <a href="../terms-of-service/index.html">Terms</a>\n' +
+'    <a href="' + pathDepth + '/terms-of-service/index.html">Terms</a>\n' +
 '  </div>\n' +
+
 '</footer>\n' +
 '<script>\n' +
 'function copyLink(){\n' +
@@ -755,9 +854,10 @@ articleBody + '\n' +
 '  if (document.referrer && document.referrer !== window.location.href){\n' +
 '    window.history.back();\n' +
 '  } else {\n' +
-'    window.location.href = "../index.html";\n' +
+'    window.location.href = "' + pathDepth + '/index.html";\n' +
 '  }\n' +
 '}\n' +
+
 'document.querySelectorAll(".hx-head").forEach(head=>{\n' +
 '  head.addEventListener("click",()=>{\n' +
 '    const item = head.parentElement;\n' +
@@ -799,12 +899,20 @@ articleBody + '\n' +
             publishBtn.classList.add('loading');
             publishBtn.textContent = window.isEditMode ? 'Updating...' : 'Publishing...';
 
-            try {
+                        try {
                 const today = new Date().toISOString().split('T')[0];
-                const articleUrl = `article/${slug}.html`;
-                const editorContent = quill ? quill.getContents() : { ops: [] };
                 
-                const htmlContent = generateArticleHTML(config.siteUrl, title, description, imageUrl, intelTag, metaStatus, category, slug, today, editorContent);
+                // Route to category subfolder for organized structure
+                const isNested = (category === 'dark-web' || category === 'ransomware');
+                const articleUrl = isNested ? `article/${category}/${slug}.html` : `article/${slug}.html`;
+
+                const editorContent = quill ? quill.getContents() : { ops: [] }; // Keep for articles.json state
+
+const editorHTML = quill ? quill.root.innerHTML : ''; // Grab native HTML for the static page
+
+// Pass editorHTML instead of editorContent to the generator
+const htmlContent = generateArticleHTML(config.siteUrl, title, description, imageUrl, intelTag, metaStatus, category, slug, today, editorHTML);
+
                 const htmlBase64 = btoa(unescape(encodeURIComponent(htmlContent)));
 
                 const fetchRes = await fetch(`https://api.github.com/repos/${config.repo}/contents/assets/articles.json?ref=${config.branch}`, {
@@ -1008,15 +1116,19 @@ articleBody + '\n' +
                         } catch(e) {
                             console.error("Failed to parse edit content", e);
                         }
-                    } else {
+                                        } else {
                         const config = getGitHubConfig();
-                        fetch(`https://api.github.com/repos/${config.repo}/contents/article/${editData.slug}.html?ref=${config.branch}`, {
+                        // Use the full URL from the article data to support nested categories
+                        const fetchPath = editData.url || `article/${editData.slug}.html`;
+                        fetch(`https://api.github.com/repos/${config.repo}/contents/${fetchPath}?ref=${config.branch}`, {
                             headers: { 'Authorization': `token ${config.token}` }
                         })
-                        .then(res => res.json())
+
+                                               .then(res => res.json())
                         .then(data => {
                             if (data.content) {
-                                const htmlContent = atob(data.content);
+                                // FIX: Added UTF-8 decoding to prevent mojibake (ÃÂ characters)
+                                const htmlContent = decodeURIComponent(escape(atob(data.content)));
                                 const bodyMatch = htmlContent.match(/<div class="content"[^>]*>([\s\S]*?)<\/div>\s*<\/main>/);
                                 if (bodyMatch && bodyMatch[1]) {
                                     const delta = simpleHtmlToDelta(bodyMatch[1].trim());
@@ -1025,6 +1137,7 @@ articleBody + '\n' +
                                 }
                             }
                         })
+
                         .catch(error => {
                             console.error('Error loading article content:', error);
                         });
