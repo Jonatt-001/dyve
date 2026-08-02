@@ -869,6 +869,209 @@ articleBody + '\n' +
 '</html>';
         }
 
+
+
+
+
+// ============================================
+// AUTO SITEMAP GENERATION
+// ============================================
+function generateSitemapXML(articles, siteUrl) {
+  const staticPages = [
+    { url: '/', changefreq: 'daily', priority: '1.0' },
+    { url: '/breaches/', changefreq: 'daily', priority: '0.9' },
+    { url: '/dark-web/', changefreq: 'daily', priority: '0.9' },
+    { url: '/ransomware/', changefreq: 'daily', priority: '0.9' },
+    { url: '/threat-actors/', changefreq: 'weekly', priority: '0.8' },
+    { url: '/signals/', changefreq: 'daily', priority: '0.8' },
+    { url: '/analysis/', changefreq: 'weekly', priority: '0.7' },
+    { url: '/about-us/', changefreq: 'monthly', priority: '0.5' },
+    { url: '/faq/', changefreq: 'monthly', priority: '0.5' },
+    { url: '/privacy-policy/', changefreq: 'yearly', priority: '0.3' },
+    { url: '/terms-of-service/', changefreq: 'yearly', priority: '0.3' }
+  ];
+
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+
+  // Add static pages
+  staticPages.forEach(page => {
+    xml += '  <url>\n';
+    xml += '    <loc>' + siteUrl + page.url + '</loc>\n';
+    xml += '    <changefreq>' + page.changefreq + '</changefreq>\n';
+    xml += '    <priority>' + page.priority + '</priority>\n';
+    xml += '  </url>\n';
+  });
+
+  // Add all articles from articles.json
+  const today = new Date().toISOString().split('T')[0];
+  articles.forEach(article => {
+    const articleUrl = article.url.startsWith('http') 
+      ? article.url 
+      : siteUrl + '/' + article.url;
+    const lastmod = article.date || today;
+    const priority = article.category === 'ransomware' || article.category === 'dark-web' ? '0.9' : '0.8';
+    
+    xml += '  <url>\n';
+    xml += '    <loc>' + articleUrl + '</loc>\n';
+    xml += '    <lastmod>' + lastmod + '</lastmod>\n';
+    xml += '    <changefreq>weekly</changefreq>\n';
+    xml += '    <priority>' + priority + '</priority>\n';
+    xml += '  </url>\n';
+  });
+
+  xml += '</urlset>';
+  return xml;
+}
+
+// ============================================
+// AUTO ROBOTS.TXT GENERATION
+// ============================================
+function generateRobotsTXT(siteUrl) {
+  return `# Dyve HackaX - Cyber Intelligence Platform
+# Generated automatically on ${new Date().toISOString().split('T')[0]}
+# Do not edit manually - changes will be overwritten
+
+User-agent: *
+Allow: /
+Allow: /article/
+Allow: /breaches/
+Allow: /dark-web/
+Allow: /ransomware/
+Allow: /threat-actors/
+Allow: /signals/
+Allow: /analysis/
+Allow: /faq/
+Allow: /about-us/
+
+# Block admin/editor paths
+Disallow: /admin/
+Disallow: /editor/
+Disallow: /settings/
+Disallow: /drafts/
+Disallow: /published/
+Disallow: /*.json$
+Disallow: /assets/articles.json
+
+# Block duplicate content
+Disallow: /*?mode=edit
+Disallow: /*?ref=
+
+# Sitemaps
+Sitemap: ${siteUrl}/sitemap.xml
+
+# Crawl-delay for heavy bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+# Optimize for Google
+User-agent: Googlebot
+Allow: /
+Allow: /*.html$
+Allow: /*.css$
+Allow: /*.js$
+`;
+}
+
+// ============================================
+// UPDATE SITEMAP & ROBOTS ON GITHUB
+// ============================================
+async function updateSitemapAndRobots(config, articles) {
+  try {
+    const siteUrl = config.siteUrl || 'https://dyve.online';
+    
+    // Generate fresh sitemap
+    const sitemapXML = generateSitemapXML(articles, siteUrl);
+    const sitemapBase64 = btoa(unescape(encodeURIComponent(sitemapXML)));
+    
+    // Generate fresh robots.txt
+    const robotsTXT = generateRobotsTXT(siteUrl);
+    const robotsBase64 = btoa(unescape(encodeURIComponent(robotsTXT)));
+    
+    // Fetch current sitemap to get SHA (for update)
+    const sitemapRes = await fetch(`https://api.github.com/repos/${config.repo}/contents/sitemap.xml?ref=${config.branch}`, {
+      headers: { 'Authorization': `token ${config.token}` }
+    });
+    
+    let sitemapSha = '';
+    if (sitemapRes.ok) {
+      const sitemapData = await sitemapRes.json();
+      sitemapSha = sitemapData.sha;
+    }
+    
+    // Fetch current robots.txt to get SHA
+    const robotsRes = await fetch(`https://api.github.com/repos/${config.repo}/contents/robots.txt?ref=${config.branch}`, {
+      headers: { 'Authorization': `token ${config.token}` }
+    });
+    
+    let robotsSha = '';
+    if (robotsRes.ok) {
+      const robotsData = await robotsRes.json();
+      robotsSha = robotsData.sha;
+    }
+    
+    // Push updated sitemap.xml
+    const sitemapPayload = {
+      message: 'chore: auto-update sitemap.xml - new article published',
+      content: sitemapBase64,
+      branch: config.branch
+    };
+    if (sitemapSha) sitemapPayload.sha = sitemapSha;
+    
+    await fetch(`https://api.github.com/repos/${config.repo}/contents/sitemap.xml`, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${config.token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(sitemapPayload)
+    });
+    
+    // Push updated robots.txt
+    const robotsPayload = {
+      message: 'chore: auto-update robots.txt',
+      content: robotsBase64,
+      branch: config.branch
+    };
+    if (robotsSha) robotsPayload.sha = robotsSha;
+    
+    await fetch(`https://api.github.com/repos/${config.repo}/contents/robots.txt`, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${config.token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(robotsPayload)
+    });
+    
+    console.log('✅ Sitemap and robots.txt updated on GitHub');
+    return true;
+  } catch (error) {
+    console.error('Error updating sitemap/robots:', error);
+    return false;
+  }
+}
+
+// ============================================
+// PING GOOGLE FOR INSTANT INDEXING
+// ============================================
+async function pingGoogleIndexing(siteUrl) {
+  try {
+    // Method 1: Ping sitemap (simplest, works for all sites)
+    const pingUrl = `https://www.google.com/ping?sitemap=${encodeURIComponent(siteUrl + '/sitemap.xml')}`;
+    
+    // Use a no-cors fetch to ping Google (won't return response but triggers crawl)
+    await fetch(pingUrl, { mode: 'no-cors' });
+    
+    // Method 2: Also ping Bing for extra coverage
+    await fetch(`https://www.bing.com/ping?sitemap=${encodeURIComponent(siteUrl + '/sitemap.xml')}`, { mode: 'no-cors' });
+    
+    console.log('🔔 Google and Bing pinged for indexing');
+    return true;
+  } catch (error) {
+    console.error('Error pinging search engines:', error);
+    return false;
+  }
+}
+
+
         // ============================================
         // PUBLISH ENGINE
         // ============================================
@@ -974,11 +1177,26 @@ const htmlContent = generateArticleHTML(config.siteUrl, title, description, imag
                     
                     showToast('✅ Article updated successfully! Redirecting...');
                     setTimeout(() => { window.location.href = 'published.html'; }, 1500);
-                } else {
-                    showToast('✅ Intel Published & Feed Updated!');
+                              } else {
+                    showToast('✅ Intel Published! Updating sitemap...');
                     clearForm();
                     await loadExistingArticles();
+                    
+                    // AUTO: Update sitemap.xml and robots.txt
+                    const sitemapUpdated = await updateSitemapAndRobots(config, articles);
+                    
+                    if (sitemapUpdated) {
+                        showToast('🗺️ Sitemap updated! Pinging Google...');
+                        
+                        // AUTO: Ping Google for instant indexing
+                        await pingGoogleIndexing(config.siteUrl);
+                        
+                        showToast(' Published, sitemap updated & Google notified!');
+                    } else {
+                        showToast('✅ Published! (Sitemap update failed - check console)');
+                    }
                 }
+
 
             } catch (error) {
                 console.error('Publish error:', error);
