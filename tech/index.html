@@ -247,7 +247,8 @@
         closeIcon.addEventListener('click', toggleMenu);
         overlay.addEventListener('click', toggleMenu);
 
-        // Mock Data for Articles
+        // Mock Data for Articles (Added 'url' property for correct routing)
+        // NOTE: Ensure your real /assets/articles.json also includes a "url" or "slug" field.
         const mockArticles = [
             {
                 title: "The Rise of Agentic AI in Enterprise Workflows",
@@ -255,7 +256,8 @@
                 image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1200&auto=format&fit=crop",
                 tag: "AI & Automation",
                 date: "2026-08-02",
-                author: "Dyve Tech Unit"
+                author: "Dyve Tech Unit",
+                url: "/tech/agentic-ai-enterprise-workflows"
             },
             {
                 title: "Quantum Neural Networks Achieve Breakthrough",
@@ -263,7 +265,8 @@
                 image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=800&auto=format&fit=crop",
                 tag: "Quantum Computing",
                 date: "2026-08-01",
-                author: "Dr. Sarah Chen"
+                author: "Dr. Sarah Chen",
+                url: "/tech/quantum-neural-networks-breakthrough"
             },
             {
                 title: "New EU AI Regulations Take Effect",
@@ -271,7 +274,8 @@
                 image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=800&auto=format&fit=crop",
                 tag: "Policy",
                 date: "2026-07-30",
-                author: "Legal Desk"
+                author: "Legal Desk",
+                url: "/tech/eu-ai-regulations-take-effect"
             },
             {
                 title: "Edge Computing Powers IoT Revolution",
@@ -279,7 +283,8 @@
                 image: "https://images.unsplash.com/photo-1558002038-1091a166111c?q=80&w=800&auto=format&fit=crop",
                 tag: "Infrastructure",
                 date: "2026-07-28",
-                author: "Tech Team"
+                author: "Tech Team",
+                url: "/tech/edge-computing-iot-revolution"
             }
         ];
 
@@ -292,45 +297,73 @@
                 const data = await response.json();
                 renderContent(data.slice(0, 4));
             } catch (error) {
-                // Fallback to mock data
-                console.log('Using mock data');
+                // Fallback to mock data if fetch fails
+                console.log('Using mock data (fetch failed or file missing)');
                 renderContent(mockArticles);
             }
         }
 
         function renderContent(articles) {
-            if (articles.length === 0) return;
+            if (!articles || articles.length === 0) return;
 
-            // Render Hero (first article)
+            // 1. Render Hero (first article)
             const hero = articles[0];
             const heroContainer = document.getElementById('heroContainer');
             const heroImage = document.getElementById('heroImage');
             const heroTag = document.getElementById('heroTag');
             const heroTitle = document.getElementById('heroTitle');
             const heroExcerpt = document.getElementById('heroExcerpt');
+            const heroButton = heroContainer.querySelector('button');
 
             heroImage.src = hero.image;
+            heroImage.alt = hero.title;
             heroTag.textContent = hero.tag || 'TECH INTELLIGENCE';
             heroTitle.textContent = hero.title;
             heroExcerpt.textContent = hero.excerpt || 'Stay tuned for the latest updates from Dyve Tech.';
             
+            // Update button to route to the correct article URL
+            if (heroButton) {
+                heroButton.onclick = (e) => {
+                    e.stopPropagation(); // Prevent double-firing
+                    window.location.href = hero.url || '#';
+                };
+            }
+            
+            // Make the whole hero container clickable for better UX
+            heroContainer.style.cursor = 'pointer';
+            heroContainer.onclick = () => {
+                window.location.href = hero.url || '#';
+            };
+            
             heroContainer.classList.remove('skeleton');
             heroContainer.classList.add('fade-in');
 
-            // Render New Articles (remaining articles)
+            // 2. Render New Articles (remaining articles)
             const newArticlesList = document.getElementById('newArticlesList');
             newArticlesList.innerHTML = '';
 
             articles.slice(1).forEach((article, index) => {
                 const date = new Date(article.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                // Fallback to a generic URL if 'url' is missing from the data
+                const articleUrl = article.url || `/tech/article-${index + 1}`; 
+                
                 const div = document.createElement('div');
-                div.className = 'border-b border-[#5d5f79] mb-6 fade-in';
+                div.className = 'border-b border-[#5d5f79] mb-6 fade-in cursor-pointer group';
                 div.style.animationDelay = `${index * 100}ms`;
+                
+                // Make the entire block clickable
+                div.onclick = () => {
+                    window.location.href = articleUrl;
+                };
+
                 div.innerHTML = `
-                    <h3 class="text-[1.14rem] font-bold mb-2 min-[1200px]:text-[1.2rem] hover:text-[#e9ab53] transition duration-300 ease-in-out cursor-pointer">
-                        <a href="/tech/article-${index + 1}">${article.title}</a>
+                    <h3 class="text-[1.14rem] font-bold mb-2 min-[1200px]:text-[1.2rem] group-hover:text-[#e9ab53] transition duration-300 ease-in-out">
+                        <!-- event.stopPropagation() prevents the div's onclick from firing twice -->
+                        <a href="${articleUrl}" class="block" onclick="event.stopPropagation()">${article.title}</a>
                     </h3>
-                    <p class="text-[#c5c6ce] text-[0.92rem] leading-7 pb-6">${article.excerpt || article.author} • ${date}</p>
+                    <p class="text-[#c5c6ce] text-[0.92rem] leading-7 pb-6 group-hover:text-gray-300 transition duration-300">
+                        ${article.excerpt ? article.excerpt.substring(0, 90) + '...' : article.author} • ${date}
+                    </p>
                 `;
                 newArticlesList.appendChild(div);
             });
@@ -339,5 +372,6 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', loadContent);
     </script>
+
 </body>
 </html>
