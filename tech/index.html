@@ -167,7 +167,7 @@
 
     <!-- BOTTOM SECTION -->
     <section class="lg:flex lg:gap-4 min-[1200px]:gap-0">
-        <div class="flex gap-5 my-8 lg:w-1/3 article-card cursor-pointer" onclick="window.location.href='/ai-agents'">
+        <div class="flex gap-5 my-8 lg:w-1/3 article-card cursor-pointer" onclick="window.location.href='/tech/ai-agents.html'">
             <div class="w-28 h-28 flex-shrink-0 lg:w-24 lg:h-24">
                 <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover rounded" alt="AI Agents">
             </div>
@@ -178,7 +178,7 @@
             </div>
         </div>
         
-        <div class="flex gap-5 my-8 lg:w-1/3 article-card cursor-pointer" onclick="window.location.href='/quantum'">
+        <div class="flex gap-5 my-8 lg:w-1/3 article-card cursor-pointer" onclick="window.location.href='/tech/quantum.html'">
             <div class="w-28 h-28 flex-shrink-0 lg:w-24 lg:h-24">
                 <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover rounded" alt="Quantum Computing">
             </div>
@@ -189,7 +189,7 @@
             </div>
         </div>
         
-        <div class="flex gap-5 my-8 lg:w-1/3 article-card cursor-pointer" onclick="window.location.href='/cybersecurity'">
+        <div class="flex gap-5 my-8 lg:w-1/3 article-card cursor-pointer" onclick="window.location.href='/tech/cybersecurity.html'">
             <div class="w-28 h-28 flex-shrink-0 lg:w-24 lg:h-24">
                 <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover rounded" alt="Cybersecurity">
             </div>
@@ -200,6 +200,7 @@
             </div>
         </div>
     </section>
+
 
 
     <!-- NEWSLETTER SECTION -->
@@ -248,56 +249,61 @@
         closeIcon.addEventListener('click', toggleMenu);
         overlay.addEventListener('click', toggleMenu);
 
-        // Mock Data for Articles (Routes now point to root: /slug)
+        // Helper function to guarantee correct /tech/... routing and prevent double /tech/
+        function getCorrectUrl(url, index) {
+            if (!url) return `/tech/article-${index + 1}.html`;
+            
+            // Remove any leading or trailing slashes for clean processing
+            let clean = url.replace(/^\/+|\/+$/g, '');
+            
+            // If it starts with 'tech/', remove it so we can standardize
+            if (clean.toLowerCase().startsWith('tech/')) {
+                clean = clean.substring(5);
+            }
+            
+            // Standardize to absolute path under /tech/
+            return `/tech/${clean}`;
+        }
+
+        // Mock Data for Articles (The helper function will format these correctly)
         const mockArticles = [
             {
-                title: "The Rise of Agentic AI in Enterprise Workflows",
-                excerpt: "Autonomous AI agents are transforming how businesses operate, promising unprecedented efficiency while raising questions about control and oversight.",
-                image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1200&auto=format&fit=crop",
-                tag: "AI & Automation",
+                title: "What is Information Architecture in UX?",
+                excerpt: "A deep dive into how structuring information shapes user experience and drives product success.",
+                image: "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?q=80&w=1200&auto=format&fit=crop",
+                tag: "UX Design",
                 date: "2026-08-02",
                 author: "Dyve Tech Unit",
-                url: "/agentic-ai-enterprise-workflows"
+                url: "what-is-information-architecture-in-ux.html" // Helper will make this /tech/what-is...
             },
             {
                 title: "Quantum Neural Networks Achieve Breakthrough",
-                excerpt: "Researchers demonstrate quantum advantage in machine learning tasks, opening new possibilities for drug discovery and cryptography.",
+                excerpt: "Researchers demonstrate quantum advantage in machine learning tasks, opening new possibilities.",
                 image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=800&auto=format&fit=crop",
                 tag: "Quantum Computing",
                 date: "2026-08-01",
                 author: "Dr. Sarah Chen",
-                url: "/quantum-neural-networks-breakthrough"
+                url: "/tech/quantum-neural-networks.html" // Helper will clean the leading /tech/
             },
             {
                 title: "New EU AI Regulations Take Effect",
-                excerpt: "The European Union's comprehensive AI Act introduces strict guidelines for high-risk AI systems, setting a global precedent.",
+                excerpt: "The European Union's comprehensive AI Act introduces strict guidelines for high-risk AI systems.",
                 image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=800&auto=format&fit=crop",
                 tag: "Policy",
                 date: "2026-07-30",
                 author: "Legal Desk",
-                url: "/eu-ai-regulations-take-effect"
-            },
-            {
-                title: "Edge Computing Powers IoT Revolution",
-                excerpt: "Decentralized processing brings AI closer to data sources, reducing latency and enabling real-time decision making.",
-                image: "https://images.unsplash.com/photo-1558002038-1091a166111c?q=80&w=800&auto=format&fit=crop",
-                tag: "Infrastructure",
-                date: "2026-07-28",
-                author: "Tech Team",
-                url: "/edge-computing-iot-revolution"
+                url: "tech/eu-ai-regulations.html" // Helper will remove the tech/ prefix
             }
         ];
 
         // Load Content
         async function loadContent() {
             try {
-                // Try to fetch real data
                 const response = await fetch('/assets/articles.json');
                 if (!response.ok) throw new Error('API unavailable');
                 const data = await response.json();
                 renderContent(data.slice(0, 4));
             } catch (error) {
-                // Fallback to mock data if fetch fails
                 console.log('Using mock data (fetch failed or file missing)');
                 renderContent(mockArticles);
             }
@@ -315,24 +321,24 @@
             const heroExcerpt = document.getElementById('heroExcerpt');
             const heroButton = heroContainer.querySelector('button');
 
+            const heroUrl = getCorrectUrl(hero.url, 0);
+
             heroImage.src = hero.image;
             heroImage.alt = hero.title;
             heroTag.textContent = hero.tag || 'TECH INTELLIGENCE';
             heroTitle.textContent = hero.title;
             heroExcerpt.textContent = hero.excerpt || 'Stay tuned for the latest updates from Dyve Tech.';
             
-            // Update button to route to the correct root-level article URL
             if (heroButton) {
                 heroButton.onclick = (e) => {
-                    e.stopPropagation(); // Prevent double-firing
-                    window.location.href = hero.url || '#';
+                    e.stopPropagation();
+                    window.location.href = heroUrl;
                 };
             }
             
-            // Make the whole hero container clickable for better UX
             heroContainer.style.cursor = 'pointer';
             heroContainer.onclick = () => {
-                window.location.href = hero.url || '#';
+                window.location.href = heroUrl;
             };
             
             heroContainer.classList.remove('skeleton');
@@ -344,21 +350,18 @@
 
             articles.slice(1).forEach((article, index) => {
                 const date = new Date(article.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                // Fallback to a generic root-level URL if 'url' is missing from the data
-                const articleUrl = article.url || `/article-${index + 1}`; 
+                const articleUrl = getCorrectUrl(article.url, index + 1);
                 
                 const div = document.createElement('div');
                 div.className = 'border-b border-[#5d5f79] mb-6 fade-in cursor-pointer group';
                 div.style.animationDelay = `${index * 100}ms`;
                 
-                // Make the entire block clickable
                 div.onclick = () => {
                     window.location.href = articleUrl;
                 };
 
                 div.innerHTML = `
                     <h3 class="text-[1.14rem] font-bold mb-2 min-[1200px]:text-[1.2rem] group-hover:text-[#e9ab53] transition duration-300 ease-in-out">
-                        <!-- event.stopPropagation() prevents the div's onclick from firing twice -->
                         <a href="${articleUrl}" class="block" onclick="event.stopPropagation()">${article.title}</a>
                     </h3>
                     <p class="text-[#c5c6ce] text-[0.92rem] leading-7 pb-6 group-hover:text-gray-300 transition duration-300">
@@ -372,6 +375,7 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', loadContent);
     </script>
+
 
 
 </body>
