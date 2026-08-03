@@ -362,17 +362,15 @@
             }
         ];
 
-         // Only keep articles that belong to the Tech section
+        // Only keep articles that belong to the Tech section
         function isTechArticle(article) {
-            // Explicit section/category field wins, if present
-            const section = String(article.section || article.category || '').toLowerCase();
-            if (section) return section === 'tech';
-
-            // Otherwise decide by the url path
+            // The "page" field in articles.json is the source of truth
+            if (article.page) return String(article.page).toLowerCase() === 'tech';
+            // Fallback for entries without "page": url must start with tech/
             const clean = String(article.url || '').replace(/^\/+/, '').toLowerCase();
-            if (clean.includes('/')) return clean.startsWith('tech/'); // folder path must be tech/
-            return true; // bare filename (no folder) = tech article
+            return clean.startsWith('tech/');
         }
+
 
         // Load Content
         async function loadContent() {
