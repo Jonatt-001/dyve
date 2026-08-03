@@ -8,6 +8,7 @@
     "meta": "Verified • Active Threat",
     "category": "breach"
   },
+  
   {
     "title": "Zero-Day Vulnerability Discovered in Authentication API",
     "desc": "A critical zero-day flaw enables authentication bypass and session hijacking.",
