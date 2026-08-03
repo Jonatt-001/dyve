@@ -1,14 +1,25 @@
 [
   {
+    "title": "Spotify Music",
+    "desc": "Comprehensive Data Breach report covering mode. Spotify is adding a new mode to its phone app for people who like to listen to m Stay informed with Dyve HackaX.",
+    "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800",
+    "url": "analysis/spotify-music.html",
+    "tag": "LIVE INTEL",
+    "meta": "Routine Update",
+    "category": "breach",
+    "date": "2026-08-03",
+    "page": "analysis",
+    "content": "{\"ops\":[{\"insert\":\"Spotify is adding a new mode to its phone app for people who like to listen to music on runs. The new running mode cues up songs based on different phases of runs, and selects tracks based on your preferences and tempo.\\n\\nPaying subscribers can find the running mode in Fitness Hub, and can select from one of the 25 presets. Users can choose their workout type from options like interval runs, steady runs, or pyramid, and can customize the duration, beats per minute, and the kind of music they want to listen to.\\nIMAGE CREDITS:SPOTIFY\\nAs well as playing songs, running mode can create audio cues for different stages of your run, too. This feature only works in English for now.\\n\"}]}"
+  },
+  {
     "title": "Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets",
     "desc": "A coordinated breach operation has surfaced millions of credentials across underground forums.",
     "image": "https://tungstensecure.com/wp-content/uploads/2025/05/Cyber-Threat-Intelligence-Pakistan.jpg",
     "url": "article/article-credential-leak.html",
     "tag": "LIVE INTEL",
-    "meta": "Verified • Active Threat",
+    "meta": "Verified â¢ Active Threat",
     "category": "breach"
   },
-  
   {
     "title": "Zero-Day Vulnerability Discovered in Authentication API",
     "desc": "A critical zero-day flaw enables authentication bypass and session hijacking.",
@@ -45,7 +56,6 @@
     "meta": "Operational Guide",
     "category": "analysis"
   },
-
   {
     "title": "Dark Web Secrets: What Really Happens Beyond the Surface Web",
     "desc": "Inside the hidden internet: marketplaces, threat actors, and cyber intelligence systems.",
