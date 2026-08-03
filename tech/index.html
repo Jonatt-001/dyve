@@ -362,34 +362,52 @@
             }
         ];
 
-      // Load Content
-async function loadContent() {
-    try {
-        const response = await fetch('/assets/articles.json');
-        if (!response.ok) throw new Error('API unavailable');
-        const data = await response.json();
-        if (!Array.isArray(data) || data.length === 0) throw new Error('No articles found');
-        allArticles = data;
-    } catch (error) {
-        console.log('Using mock data (fetch failed or file missing)');
-        allArticles = mockArticles;
-    }
+         // Only keep articles that belong to the Tech section
+        function isTechArticle(article) {
+            // Explicit section/category field wins, if present
+            const section = String(article.section || article.category || '').toLowerCase();
+            if (section) return section === 'tech';
 
-    // 1. Render Hero (first article)
-    renderHero(allArticles[0]);
+            // Otherwise decide by the url path
+            const clean = String(article.url || '').replace(/^\/+/, '').toLowerCase();
+            if (clean.includes('/')) return clean.startsWith('tech/'); // folder path must be tech/
+            return true; // bare filename (no folder) = tech article
+        }
 
-    // 2. CLEAR the skeleton placeholders first
-    const newArticlesList = document.getElementById('newArticlesList');
-    newArticlesList.innerHTML = '';
+        // Load Content
+        async function loadContent() {
+            try {
+                const response = await fetch('/assets/articles.json');
+                if (!response.ok) throw new Error('API unavailable');
+                const json = await response.json();
 
-    // 3. Render initial sidebar articles (with right-side thumbnails)
-    const pool = allArticles.slice(1);
-    sidebarShown = Math.min(INITIAL_SIDEBAR_COUNT, pool.length);
-    appendSidebarItems(pool.slice(0, sidebarShown), 1);
+                // Supports both { tech: [...] } style objects AND flat arrays
+                let data = Array.isArray(json.tech) ? json.tech
+                         : Array.isArray(json) ? json.filter(isTechArticle)
+                         : [];
 
-    // 4. Show "Dyve More" only if there are actually more articles
-    updateLoadMoreBtn();
-}
+                if (data.length === 0) throw new Error('No tech articles found');
+                allArticles = data;
+            } catch (error) {
+                console.log('Using mock data (fetch failed or no tech articles)');
+                allArticles = mockArticles;
+            }
+
+            // 1. Render Hero (first article)
+            renderHero(allArticles[0]);
+
+            // 2. CLEAR the skeleton placeholders first
+            const newArticlesList = document.getElementById('newArticlesList');
+            newArticlesList.innerHTML = '';
+
+            // 3. Render initial sidebar articles (with right-side thumbnails)
+            const pool = allArticles.slice(1);
+            sidebarShown = Math.min(INITIAL_SIDEBAR_COUNT, pool.length);
+            appendSidebarItems(pool.slice(0, sidebarShown), 1);
+
+            // 4. Show "Dyve More" only if there are actually more articles
+            updateLoadMoreBtn();
+        }
 
 
         function renderHero(hero) {
