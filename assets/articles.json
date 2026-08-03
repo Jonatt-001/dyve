@@ -1,5 +1,17 @@
 [
   {
+    "title": "Sporty gist",
+    "desc": "Discover critical insights on runs. Spotify is adding a new mode to its phone app for people who like to listen to m Stay informed with Dyve HackaX.",
+    "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800",
+    "url": "tech/sporty-gist.html",
+    "tag": "INTEL",
+    "meta": "Active Threat",
+    "category": "breach",
+    "date": "2026-08-03",
+    "page": "tech",
+    "content": "{\"ops\":[{\"insert\":\"Spotify is adding a new mode to its phone app for people who like to listen to music on runs. The new running mode cues up songs based on different phases of runs, and selects tracks based on your preferences and tempo.\\n\\nPaying subscribers can find the running mode in Fitness Hub, and can select from one of the 25 presets. Users can choose their workout type from options like interval runs, steady runs, or pyramid, and can customize the duration, beats per minute, and the kind of music they want to listen to.\\n\"}]}"
+  },
+  {
     "title": "Spotify Music",
     "desc": "Comprehensive Data Breach report covering mode. Spotify is adding a new mode to its phone app for people who like to listen to m Stay informed with Dyve HackaX.",
     "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800",
@@ -17,7 +29,7 @@
     "image": "https://tungstensecure.com/wp-content/uploads/2025/05/Cyber-Threat-Intelligence-Pakistan.jpg",
     "url": "article/article-credential-leak.html",
     "tag": "LIVE INTEL",
-    "meta": "Verified â¢ Active Threat",
+    "meta": "Verified Ã¢ÂÂ¢ Active Threat",
     "category": "breach"
   },
   {
