@@ -1,6 +1,6 @@
 /* =========================
-   DYVE TECH - PROFESSIONAL ARTICLE STYLES
-   Clean, modern, publication-quality
+   DYVE TECH - PREMIUM ARTICLE STYLES
+   Polished, professional, publication-quality
 ========================= */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -14,6 +14,8 @@
   --tech-card: #f8fafc;
   --tech-dark: #0f172a;
   --tech-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  --tech-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --tech-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 html { scroll-behavior: smooth; }
@@ -28,16 +30,17 @@ body {
 }
 
 /* =========================
-   HEADER
+   CENTERED HEADER (Dashboard Style)
 ========================= */
 .tech-header {
   position: sticky;
   top: 0;
-  background: rgba(255,255,255,0.98);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(12px) saturate(180%);
   border-bottom: 1px solid var(--tech-border);
   z-index: 1000;
   padding: 16px 24px;
+  box-shadow: var(--tech-shadow);
 }
 
 .tech-header-inner {
@@ -45,18 +48,20 @@ body {
   margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  position: relative;
   gap: 20px;
 }
 
 .tech-back-btn {
+  position: absolute;
+  left: 0;
   background: var(--tech-card);
   border: 1px solid var(--tech-border);
   width: 40px;
   height: 40px;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 20px;
   color: var(--tech-text);
   transition: all 0.2s ease;
   display: flex;
@@ -70,21 +75,30 @@ body {
   border-color: var(--tech-accent);
   color: white;
   transform: translateX(-2px);
+  box-shadow: var(--tech-shadow);
 }
 
 .tech-logo {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  font-size: 20px;
-  letter-spacing: 1px;
+  font-size: 22px;
+  letter-spacing: 1.5px;
   color: var(--tech-dark);
   flex-shrink: 0;
+  text-align: center;
+}
+
+.logo-divider {
+  opacity: 0.4;
+  font-weight: 300;
+  margin: 0 2px;
 }
 
 .tech-nav {
+  position: absolute;
+  right: 0;
   display: flex;
-  gap: 24px;
-  margin-left: auto;
+  gap: 28px;
 }
 
 .tech-nav a {
@@ -125,10 +139,10 @@ body {
 .tech-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: 48px 24px;
   display: grid;
   grid-template-columns: 1fr 320px;
-  gap: 60px;
+  gap: 64px;
 }
 
 /* =========================
@@ -138,11 +152,11 @@ body {
   grid-column: 1 / -1;
   font-size: 14px;
   color: var(--tech-muted);
-  margin-bottom: 32px;
+  margin-bottom: 40px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .tech-breadcrumb a {
@@ -157,7 +171,7 @@ body {
 }
 
 .tech-breadcrumb .separator {
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 .tech-breadcrumb .current {
@@ -173,7 +187,7 @@ body {
 }
 
 .article-header {
-  margin-bottom: 40px;
+  margin-bottom: 48px;
 }
 
 .category-badge {
@@ -185,29 +199,58 @@ body {
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
   margin-bottom: 24px;
+  border: 1px solid rgba(255, 94, 80, 0.2);
 }
 
 .tech-article h1 {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.15;
   color: var(--tech-text);
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   letter-spacing: -0.5px;
 }
 
+/* =========================
+   ARTICLE DESCRIPTION - QUOTE STYLE
+========================= */
 .article-subhead {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
+  line-height: 1.7;
   color: var(--tech-muted);
-  line-height: 1.6;
-  margin-bottom: 28px;
+  margin-bottom: 32px;
   font-weight: 400;
-  max-width: 700px;
+  max-width: 750px;
+  font-style: italic;
+  position: relative;
+  padding: 0 24px;
+  border-left: 4px solid var(--tech-accent);
+  background: linear-gradient(to right, rgba(255, 94, 80, 0.05), transparent);
+  border-radius: 0 12px 12px 0;
 }
 
+.article-subhead .quote-mark {
+  font-size: 2rem;
+  color: var(--tech-accent);
+  opacity: 0.6;
+  line-height: 0;
+  vertical-align: middle;
+}
+
+.article-subhead .quote-mark:first-child {
+  margin-right: 8px;
+}
+
+.article-subhead .quote-mark:last-child {
+  margin-left: 8px;
+}
+
+/* =========================
+   ARTICLE META
+========================= */
 .article-meta {
   display: flex;
   justify-content: space-between;
@@ -226,48 +269,53 @@ body {
 }
 
 .author-avatar {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   background: linear-gradient(135deg, #e9ab53 0%, #f15e50 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 15px;
   color: white;
   flex-shrink: 0;
+  box-shadow: var(--tech-shadow);
 }
 
 .author-name {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--tech-text);
   font-size: 15px;
+  margin-bottom: 4px;
 }
 
 .author-name + time {
   font-size: 13px;
   color: var(--tech-muted);
+  font-weight: 500;
 }
 
 .meta-status {
-  background: var(--tech-card);
+  background: rgba(255, 94, 80, 0.1);
   padding: 8px 16px;
   border-radius: 8px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--tech-accent);
-  border: 1px solid var(--tech-border);
+  border: 1px solid rgba(255, 94, 80, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* =========================
    HERO IMAGE
 ========================= */
 .article-hero {
-  margin-bottom: 48px;
-  border-radius: 16px;
+  margin-bottom: 56px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  box-shadow: var(--tech-shadow-lg);
 }
 
 .article-hero img {
@@ -282,50 +330,52 @@ body {
    CONTENT
 ========================= */
 .article-content {
-  font-size: 1.0625rem;
+  font-size: 1.125rem;
   line-height: 1.85;
   color: var(--tech-text);
 }
 
 .article-content h2 {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.75rem;
+  font-size: 1.85rem;
   font-weight: 700;
   color: var(--tech-text);
-  margin: 56px 0 20px;
+  margin: 64px 0 24px;
   letter-spacing: -0.3px;
   line-height: 1.3;
 }
 
 .article-content h3 {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.35rem;
+  font-size: 1.45rem;
   font-weight: 700;
   color: var(--tech-text);
-  margin: 40px 0 16px;
+  margin: 48px 0 20px;
   line-height: 1.3;
 }
 
 .article-content p {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
+  color: var(--tech-text);
 }
 
 .article-content a {
   color: var(--tech-accent);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: opacity 0.2s;
-  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 94, 80, 0.3);
+  transition: all 0.2s;
+  font-weight: 600;
 }
 
 .article-content a:hover {
-  opacity: 0.7;
+  border-bottom-color: var(--tech-accent);
+  opacity: 0.8;
 }
 
 .article-content ul,
 .article-content ol {
-  margin: 24px 0;
-  padding-left: 28px;
+  margin: 28px 0;
+  padding-left: 32px;
 }
 
 .article-content li {
@@ -334,13 +384,13 @@ body {
 
 .article-content blockquote {
   border-left: 4px solid var(--tech-accent);
-  background: var(--tech-card);
-  padding: 24px 28px;
-  margin: 36px 0;
+  background: linear-gradient(to right, rgba(255, 94, 80, 0.05), transparent);
+  padding: 28px 32px;
+  margin: 40px 0;
   border-radius: 0 12px 12px 0;
   font-style: italic;
   color: var(--tech-text);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   line-height: 1.7;
 }
 
@@ -350,7 +400,7 @@ body {
   padding: 24px;
   border-radius: 12px;
   overflow-x: auto;
-  margin: 28px 0;
+  margin: 32px 0;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.9rem;
   line-height: 1.6;
@@ -359,23 +409,26 @@ body {
 .article-content code {
   font-family: 'JetBrains Mono', monospace;
   background: var(--tech-card);
-  padding: 3px 8px;
+  padding: 4px 10px;
   border-radius: 6px;
   font-size: 0.85em;
   color: var(--tech-accent);
+  border: 1px solid var(--tech-border);
 }
 
 .article-content pre code {
   background: none;
   padding: 0;
   color: inherit;
+  border: none;
 }
 
 .article-content img {
   max-width: 100%;
   height: auto;
   border-radius: 12px;
-  margin: 32px 0;
+  margin: 40px 0;
+  box-shadow: var(--tech-shadow);
 }
 
 /* =========================
@@ -384,17 +437,17 @@ body {
 .article-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 56px;
-  padding-top: 28px;
+  gap: 12px;
+  margin-top: 64px;
+  padding-top: 32px;
   border-top: 1px solid var(--tech-border);
 }
 
 .tag {
   background: var(--tech-card);
   border: 1px solid var(--tech-border);
-  padding: 8px 16px;
-  border-radius: 20px;
+  padding: 10px 20px;
+  border-radius: 24px;
   font-size: 13px;
   font-weight: 600;
   color: var(--tech-muted);
@@ -406,6 +459,7 @@ body {
   border-color: var(--tech-accent);
   color: var(--tech-accent);
   transform: translateY(-2px);
+  box-shadow: var(--tech-shadow);
 }
 
 /* =========================
@@ -424,7 +478,8 @@ body {
   background: var(--tech-card);
   border: 1px solid var(--tech-border);
   border-radius: 16px;
-  padding: 24px;
+  padding: 28px;
+  box-shadow: var(--tech-shadow);
 }
 
 .sidebar-title {
@@ -433,13 +488,13 @@ body {
   font-weight: 700;
   letter-spacing: 1.5px;
   color: var(--tech-accent);
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   text-transform: uppercase;
 }
 
 .info-item {
-  margin-bottom: 16px;
-  padding-bottom: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
   border-bottom: 1px solid var(--tech-border);
 }
 
@@ -454,9 +509,9 @@ body {
   font-size: 11px;
   color: var(--tech-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 6px;
-  font-weight: 600;
+  letter-spacing: 0.8px;
+  margin-bottom: 8px;
+  font-weight: 700;
 }
 
 .info-item value {
@@ -478,8 +533,8 @@ body {
 .share-btn {
   display: block;
   width: 100%;
-  padding: 12px;
-  margin-bottom: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
   background: rgba(255,255,255,0.1);
   color: white;
   border: none;
@@ -497,6 +552,7 @@ body {
 .share-btn:hover {
   background: var(--tech-accent);
   transform: translateY(-2px);
+  box-shadow: var(--tech-shadow);
 }
 
 /* =========================
@@ -504,50 +560,54 @@ body {
 ========================= */
 .tech-cta {
   max-width: 1200px;
-  margin: 60px auto 0;
+  margin: 80px auto 0;
   padding: 0 24px;
 }
 
 .cta-card {
   background: var(--tech-gradient);
-  border-radius: 20px;
-  padding: 56px 48px;
+  border-radius: 24px;
+  padding: 64px 48px;
   text-align: center;
   color: white;
+  box-shadow: var(--tech-shadow-lg);
 }
 
 .cta-card h2 {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 700;
   margin-bottom: 16px;
+  letter-spacing: -0.5px;
 }
 
 .cta-card p {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   opacity: 0.85;
-  margin-bottom: 32px;
-  max-width: 500px;
+  margin-bottom: 36px;
+  max-width: 550px;
   margin-left: auto;
   margin-right: auto;
+  line-height: 1.6;
 }
 
 .cta-btn {
   display: inline-block;
   background: var(--tech-accent);
   color: white;
-  padding: 14px 32px;
-  border-radius: 10px;
+  padding: 16px 36px;
+  border-radius: 12px;
   text-decoration: none;
   font-weight: 700;
   font-size: 15px;
   transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(255, 94, 80, 0.3);
 }
 
 .cta-btn:hover {
   background: var(--tech-accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(255, 94, 80, 0.3);
+  box-shadow: 0 8px 20px rgba(255, 94, 80, 0.4);
 }
 
 /* =========================
@@ -556,8 +616,8 @@ body {
 .tech-footer {
   background: var(--tech-dark);
   color: white;
-  padding: 48px 24px 32px;
-  margin-top: 80px;
+  padding: 56px 24px 40px;
+  margin-top: 100px;
 }
 
 .footer-container {
@@ -566,23 +626,23 @@ body {
 }
 
 .footer-brand {
-  margin-bottom: 32px;
-  padding-bottom: 32px;
+  margin-bottom: 40px;
+  padding-bottom: 40px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 .footer-logo {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  font-size: 20px;
-  letter-spacing: 1px;
-  margin-bottom: 20px;
+  font-size: 22px;
+  letter-spacing: 1.5px;
+  margin-bottom: 24px;
 }
 
 .footer-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 28px;
+  gap: 32px;
 }
 
 .footer-nav a {
@@ -600,7 +660,7 @@ body {
 .footer-legal {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 24px;
   font-size: 13px;
   color: rgba(255,255,255,0.5);
 }
@@ -621,14 +681,14 @@ body {
 @media (max-width: 1024px) {
   .tech-container {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 48px;
   }
   
   .tech-sidebar {
     position: static;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 24px;
   }
   
   .tech-nav {
@@ -636,17 +696,22 @@ body {
   }
   
   .tech-article h1 {
-    font-size: 2rem;
+    font-size: 2.25rem;
+  }
+  
+  .article-subhead {
+    font-size: 1.2rem;
+    padding: 0 20px;
   }
 }
 
 @media (max-width: 640px) {
   .tech-header {
-    padding: 12px 16px;
+    padding: 14px 16px;
   }
   
   .tech-container {
-    padding: 24px 16px;
+    padding: 32px 16px;
   }
   
   .tech-sidebar {
@@ -654,28 +719,36 @@ body {
   }
   
   .tech-article h1 {
-    font-size: 1.6rem;
+    font-size: 1.85rem;
   }
   
   .article-subhead {
-    font-size: 1.05rem;
-  }
-  
-  .article-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    font-size: 1.1rem;
+    padding: 0 16px;
+    border-left-width: 3px;
   }
   
   .article-hero {
-    border-radius: 12px;
+    border-radius: 16px;
   }
   
   .cta-card {
-    padding: 40px 24px;
+    padding: 48px 24px;
   }
   
   .cta-card h2 {
-    font-size: 1.5rem;
+    font-size: 1.65rem;
+  }
+  
+  .article-content {
+    font-size: 1.05rem;
+  }
+  
+  .article-content h2 {
+    font-size: 1.55rem;
+  }
+  
+  .article-content h3 {
+    font-size: 1.25rem;
   }
 }
