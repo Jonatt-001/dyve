@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Drafts — Dyve Tech</title>
 
-    <link rel="manifest" href="../manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#f15e50">
+  <link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#020403">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Dyve Admin">
+<link rel="apple-touch-icon" href="../logo.png">
+
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -292,5 +296,13 @@
             }
         });
     </script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('../sw.js', { scope: '../' }).catch(function () {});
+    });
+  }
+</script>
+
 </body>
 </html>
