@@ -310,16 +310,34 @@
     // REAL DATA LOADING
     // ==========================================
     async function fetchArticles() {
+        const sources = [];
+
+        // 1) Local / same-origin copy (works on dyve.online)
+        sources.push('assets/articles.json');
+
+        // 2) Your GitHub repo (raw) — read from saved Settings
         try {
-            const res = await fetch('assets/articles.json', { cache: 'no-store' });
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            const json = await res.json();
-            return Array.isArray(json) ? json : [];
-        } catch (e) {
-            console.error('articles.json fetch failed:', e);
-            return null;
+            const settings = safeParse(localStorage.getItem('dyve-settings'), {});
+            if (settings && settings.githubRepo) {
+                const branch = settings.githubBranch || 'main';
+                sources.push('https://raw.githubusercontent.com/' + settings.githubRepo + '/' + branch + '/assets/articles.json');
+            }
+        } catch (e) { /* ignore bad settings */ }
+
+        // 3) Live site as last resort
+        sources.push('https://dyve.online/assets/articles.json');
+
+        for (let i = 0; i < sources.length; i++) {
+            try {
+                const res = await fetch(sources[i], { cache: 'no-store' });
+                if (!res.ok) continue;                    // 404/500 → try next source
+                const json = JSON.parse(await res.text()); // throws if HTML error page
+                if (Array.isArray(json)) return json;
+            } catch (e) { /* try next source */ }
         }
+        return null; // truly unreachable (offline + nothing cached)
     }
+
 
     function getDraftCounts() {
         const tech = safeParse(localStorage.getItem('dyve-tech-drafts'), []);
