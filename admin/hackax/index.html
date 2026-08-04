@@ -6,12 +6,13 @@
     <title>Dyve HackaX — Intelligence Dashboard</title>
 
     <!-- PWA Support -->
-    <link rel="manifest" href="/admin/manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Dyve Intel">
-    <meta name="theme-color" content="#00ffaa">
-    <link rel="apple-touch-icon" href="/logo.png">
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#020403">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Dyve Admin">
+<link rel="apple-touch-icon" href="../logo.png">
+
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -2091,15 +2092,13 @@ Allow: /*.js$
         });
     </script>
 
-    <!-- Register Service Worker -->
-    <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/admin/sw.js')
-          .then(registration => { console.log('[SW] Registered:', registration.scope); })
-          .catch(error => { console.error('[SW] Registration failed:', error); });
-      });
-    }
-    </script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('../sw.js', { scope: '../' }).catch(function () {});
+    });
+  }
+</script>
+
 </body>
 </html>
