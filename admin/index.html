@@ -2,2272 +2,516 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dyve HackaX — Intelligence Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dyve Intelligence — Dashboard</title>
 
-    <!-- PWA Support -->
-    <link rel="manifest" href="/admin/manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Dyve Intel">
-    <meta name="theme-color" content="#00ffaa">
-    <link rel="apple-touch-icon" href="/logo.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#020403">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Dyve Admin">
+<link rel="apple-touch-icon" href="logo.png">
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Quill Editor -->
-    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
-    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        dyve: {
-                            bg: '#020403',
-                            card: '#030605',
-                            accent: '#00ffaa',
-                            accentHover: '#00cc88',
-                            text: '#e8f0ee',
-                            muted: 'rgba(255,255,255,0.6)'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #f8fafc; }
-        .ql-editor { min-height: 400px; font-size: 16px; font-family: 'Inter', sans-serif; }
-        .ql-toolbar { position: sticky; top: 0; z-index: 10; background: white; border-color: #e2e8f0 !important; }
-        .ql-container { border-color: #e2e8f0 !important; border-radius: 0.5rem; }
-        .tag-input { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-        .tag { background: #00ffaa; color: #020403; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; display: flex; align-items: center; gap: 0.5rem; }
-        .tag button { background: none; border: none; color: #020403; cursor: pointer; font-size: 1.2rem; line-height: 1; font-weight: bold; }
-        .suggestion-item { cursor: pointer; transition: all 0.2s; }
-        .suggestion-item:hover { background: #f0fdf4; border-color: #00ffaa; }
-        .loading { opacity: 0.5; pointer-events: none; }
-        #aiAssistantPanel.active {
-            transform: translateX(0);
-            opacity: 1;
-            pointer-events: auto;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020403;
+            color: #e8f0ee;
         }
-        .ai-action:active { transform: scale(0.98); }
-        .ai-highlight { background: #fef08a !important; padding: 2px 0; }
-        .ai-processing { position: relative; }
-        .ai-processing::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #020403; }
+        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00ffaa; }
+
+        .glass-panel {
+            background: rgba(10, 15, 13, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .nav-item.active {
             background: rgba(0, 255, 170, 0.1);
-            animation: aiPulse 1s infinite;
-            pointer-events: none;
+            color: #00ffaa;
+            border-right: 3px solid #00ffaa;
         }
-        @keyframes aiPulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.7; }
+        .platform-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        @media (hover: hover) {
+            .platform-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5); }
+            .platform-card.hackax:hover { border-color: rgba(0, 255, 170, 0.5); box-shadow: 0 20px 40px -10px rgba(0, 255, 170, 0.15); }
+            .platform-card.tech:hover { border-color: rgba(241, 94, 80, 0.5); box-shadow: 0 20px 40px -10px rgba(241, 94, 80, 0.15); }
         }
-        .desc-quality-good { color: #10b981 !important; }
-        .desc-quality-warn { color: #f59e0b !important; }
-        .desc-quality-bad { color: #ef4444 !important; }
-
-        .auto-seo-card { border: 2px dashed #00ffaa; background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%); }
-        .seo-prompt-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 0.5rem; padding: 1rem; }
-        .pulse-btn { animation: pulse-green 2s infinite; }
-        @keyframes pulse-green {
-            0% { box-shadow: 0 0 0 0 rgba(0, 255, 170, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(0, 255, 170, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 255, 170, 0); }
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.4s infinite;
+            border-radius: 6px;
         }
-
-#intelTagInput {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2300ffaa'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 1.5em 1.5em;
-    padding-right: 2.5rem;
-}
-#metaStatusInput {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2300ffaa'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 1.5em 1.5em;
-    padding-right: 2.5rem;
-}
-
-
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     </style>
-
 </head>
-<body class="min-h-screen">
-    
-    <!-- HEADER -->
-    <header class="bg-dyve-bg border-b border-white/10 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-white tracking-wide">DYVE<span class="text-dyve-accent">|</span>HACKAX <span class="text-dyve-muted text-sm font-normal ml-2">Intel Dashboard</span></h1>
-            <div class="flex gap-3">
-                <button id="saveDraftBtn" class="px-4 py-2 text-sm font-medium text-dyve-muted bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition">Save Draft</button>
-                <button id="publishBtn" class="px-4 py-2 text-sm font-bold text-dyve-bg bg-dyve-accent rounded-lg hover:bg-dyve-accentHover transition shadow-[0_0_15px_rgba(0,255,170,0.3)]">Publish Intel</button>
-            </div>
-        </div>
-    </header>
+<body class="min-h-screen flex overflow-hidden">
 
-    <!-- GITHUB CONNECTION STATUS -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-        <div id="githubStatus" class="flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg w-fit">
-            <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-            </svg>
-            <div id="statusDot" class="w-2 h-2 rounded-full bg-gray-500"></div>
-            <span id="statusText" class="text-xs font-medium text-gray-400">Checking...</span>
-            <button id="refreshStatusBtn" class="ml-1 p-1 hover:bg-white/10 rounded transition-colors" title="Check Connection">
-                <svg id="refreshIcon" class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#030605] border-r border-white/5 flex flex-col transform -translate-x-full md:translate-x-0 md:static md:flex transition-transform duration-300 ease-in-out">
+        <div class="h-16 flex items-center justify-between px-6 border-b border-white/5">
+            <div class="flex items-center">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none" class="text-[#00ffaa] mr-3">
+                    <path d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z" fill="currentColor"></path>
                 </svg>
+                <span class="font-bold text-lg tracking-wide text-white">DYVE<span class="text-[#00ffaa]">|</span>ADMIN</span>
+            </div>
+            <button id="closeSidebarBtn" class="md:hidden text-gray-400 hover:text-white p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
-    </div>
 
-    <!-- MAIN CONTENT -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- LEFT COLUMN: Editor -->
-            <div class="lg:col-span-2 space-y-6">
-                <!-- Title -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <label class="block text-sm font-bold text-gray-800 mb-2">Intel Title</label>
-                    <input type="text" id="titleInput" placeholder="e.g., Massive Credential Leak Exposes 12M Accounts..." 
-                           class="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent focus:border-transparent text-gray-900">
-                    <div class="mt-2 flex items-center gap-2 text-sm text-gray-500">
-                        <span>Slug:</span>
-                        <code id="slugPreview" class="bg-gray-100 px-2 py-1 rounded text-xs font-mono text-dyve-bg">your-intel-slug</code>
+        <nav class="flex-1 py-6 space-y-1 overflow-y-auto">
+            <a href="#" class="nav-item active flex items-center px-6 py-3 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                Dashboard
+            </a>
+            <a href="hackax/published.html" class="nav-item flex items-center px-6 py-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                All Articles
+            </a>
+            <a href="hackax/drafts.html" class="nav-item flex items-center px-6 py-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                Drafts
+            </a>
+            <a href="#" class="nav-item flex items-center px-6 py-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                Analytics
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-white/5">
+            <a href="hackax/settings.html" class="flex items-center px-2 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 3.35 0 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 01-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.915-1.543 2.37-2.37 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                Settings
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
+
+        <!-- TOP HEADER -->
+        <header class="h-16 glass-panel flex items-center justify-between px-4 md:px-6 z-30 sticky top-0">
+            <div class="flex items-center md:hidden">
+                <button id="mobileMenuBtn" class="text-gray-400 hover:text-white p-2 -ml-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+
+            <div class="hidden md:flex items-center text-sm text-gray-400">
+                <span>Home</span>
+                <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                <span class="text-white">Dashboard</span>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <span id="liveClock" class="text-xs text-gray-500 hidden sm:block font-medium"></span>
+                <div class="flex items-center gap-3 pl-4 border-l border-white/10">
+                    <div class="text-right hidden sm:block">
+                        <div class="text-sm font-medium text-white">Admin User</div>
+                        <div class="text-xs text-gray-400">Chief Editor</div>
                     </div>
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#00ffaa] to-emerald-600 flex items-center justify-center text-[#020403] font-bold text-sm">AU</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- SCROLLABLE CONTENT -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-8">
+
+            <!-- Welcome -->
+            <div class="mb-6 md:mb-8">
+                <h1 class="text-2xl md:text-3xl font-bold text-white mb-2" id="welcomeTitle">Welcome back, Admin</h1>
+                <p class="text-gray-400 text-sm md:text-base">Here's what's happening across your intelligence platforms today.</p>
+            </div>
+
+            <!-- Error / offline banner -->
+            <div id="dataBanner" class="hidden mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 flex items-center justify-between gap-3">
+                <span class="text-sm text-red-300" id="dataBannerMsg">Couldn't load the article database.</span>
+                <button onclick="initData()" class="text-sm font-semibold text-white bg-red-500/80 hover:bg-red-500 px-3 py-1.5 rounded-lg transition flex-shrink-0">Retry</button>
+            </div>
+
+            <!-- Stats Grid (REAL DATA) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+                <div class="glass-panel rounded-xl p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-2 bg-[#00ffaa]/10 rounded-lg">
+                            <svg class="w-6 h-6 text-[#00ffaa]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <span id="statTotalBadge" class="hidden text-xs font-medium text-[#00ffaa] bg-[#00ffaa]/10 px-2 py-1 rounded"></span>
+                    </div>
+                    <div class="text-2xl font-bold text-white" id="statTotal"><div class="skeleton h-8 w-16"></div></div>
+                    <div class="text-sm text-gray-400">Published Articles</div>
                 </div>
 
-<!-- Rich Text Editor with AI Assistant -->
-<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden relative">
-    <div id="editor"></div>
-    
-    <!-- AI Assistant Floating Button -->
-    <button id="aiAssistantBtn" class="absolute bottom-4 right-4 z-40 w-14 h-14 bg-gradient-to-br from-dyve-accent to-emerald-500 text-dyve-bg rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 group" title="AI Assistant">
-        <svg class="w-7 h-7 transition-transform group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-        </svg>
-        <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
-    </button>
-
-    <!-- AI Assistant Menu Panel -->
-    <div id="aiAssistantPanel" class="absolute bottom-24 right-4 z-50 w-80 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden transform translate-y-4 opacity-0 pointer-events-none transition-all duration-300">
-        <div class="bg-gradient-to-r from-dyve-accent to-emerald-500 px-4 py-3 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5 text-dyve-bg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
-                <span class="text-sm font-bold text-dyve-bg">AI Assistant</span>
-            </div>
-            <button id="closeAiPanel" class="text-dyve-bg hover:rotate-90 transition-transform">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-        </div>
-        
-        <div class="p-3 max-h-96 overflow-y-auto">
-            <div class="text-xs text-gray-500 mb-2 px-1">Text Editing</div>
-            <button class="ai-action w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-lg transition-colors text-left" data-action="grammar">
-                <span class="text-lg">A|</span>
-                <span class="text-sm font-medium text-gray-700">Grammar Check</span>
-            </button>
-            <button class="ai-action w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-lg transition-colors text-left" data-action="shorter">
-                <span class="text-lg">><</span>
-                <span class="text-sm font-medium text-gray-700">Make Shorter</span>
-            </button>
-            <button class="ai-action w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-lg transition-colors text-left" data-action="longer">
-                <span class="text-lg"><></span>
-                <span class="text-sm font-medium text-gray-700">Make Longer</span>
-            </button>
-            
-            <div class="text-xs text-gray-500 mb-2 mt-3 px-1">SEO & Content</div>
-            <button class="ai-action w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-lg transition-colors text-left" data-action="seo">
-                <span class="text-lg">📊</span>
-                <span class="text-sm font-medium text-gray-700">Generate SEO Tags</span>
-            </button>
-            <button class="ai-action w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-lg transition-colors text-left" data-action="generate">
-                <span class="text-lg">✨</span>
-                <span class="text-sm font-medium text-gray-700">AI Generate Content</span>
-            </button>
-            <button class="ai-action w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-lg transition-colors text-left" data-action="translate">
-                <span class="text-lg">🌐</span>
-                <span class="text-sm font-medium text-gray-700">Translate to...</span>
-            </button>
-            
-            <div class="text-xs text-gray-500 mb-2 mt-3 px-1">Formatting</div>
-            <button class="ai-action w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-lg transition-colors text-left" data-action="color">
-                <span class="text-lg">🎨</span>
-                <span class="text-sm font-medium text-gray-700">Change Colors</span>
-            </button>
-        </div>
-        
-        <div class="border-t border-gray-200 p-3 bg-gray-50">
-            <div class="flex gap-2">
-                <input type="text" id="aiCustomPrompt" placeholder="Ask AI anything..." 
-                       class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent">
-                <button id="aiCustomBtn" class="px-3 py-2 bg-dyve-accent text-dyve-bg rounded-lg hover:bg-dyve-accentHover transition font-bold text-sm">Go</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-                <!-- AUTO SEO GENERATION ENGINE -->
-                <div class="auto-seo-card rounded-lg shadow-sm p-6 mb-6">
-                    <h3 class="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-dyve-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        Auto-SEO Fields Engine
-                    </h3>
-                    <p class="text-xs text-gray-600 mb-4">Analyzes your content to auto-populate Title, Description, Slug, and OpenGraph prompts for high rankings.</p>
-                    <button id="generateAutoSeoBtn" class="w-full px-4 py-2.5 text-sm font-bold text-dyve-bg bg-dyve-accent rounded-lg hover:bg-dyve-accentHover transition pulse-btn mb-4">
-                        ⚡ Generate Smart SEO Metadata
-                    </button>
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-1">OpenGraph Image Prompt</label>
-                            <textarea id="ogImagePrompt" rows="3" placeholder="AI prompt for generating featured image..." class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent text-gray-900 resize-none"></textarea>
+                <div class="glass-panel rounded-xl p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-2 bg-yellow-500/10 rounded-lg">
+                            <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                         </div>
                     </div>
+                    <div class="text-2xl font-bold text-white" id="statDrafts">0</div>
+                    <div class="text-sm text-gray-400">Pending Drafts</div>
+                    <div class="text-xs text-gray-500 mt-1" id="statDraftsSub">Tech: 0 • HackaX: 0</div>
                 </div>
 
-                <!-- SEO Analysis -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-dyve-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        SEO & Schema Analysis
-                    </h3>
-
-                    <div id="seoAnalysis" class="space-y-3">
-                        <div class="text-sm text-gray-500">Start writing to see SEO suggestions...</div>
+                <div class="glass-panel rounded-xl p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-2 bg-[#f15e50]/10 rounded-lg">
+                            <svg class="w-6 h-6 text-[#f15e50]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        </div>
                     </div>
-                    <button id="analyzeSeoBtn" class="mt-4 px-4 py-2 text-sm font-medium text-dyve-bg border border-dyve-accent bg-dyve-accent/10 rounded-lg hover:bg-dyve-accent hover:text-dyve-bg transition">
-                        Analyze SEO
-                    </button>
+                    <div class="text-2xl font-bold text-white" id="statTech"><div class="skeleton h-8 w-12"></div></div>
+                    <div class="text-sm text-gray-400">Tech Articles</div>
+                    <div class="text-xs text-gray-500 mt-1" id="statTechSub">HackaX: —</div>
+                </div>
+
+                <div class="glass-panel rounded-xl p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-2 bg-blue-500/10 rounded-lg">
+                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-white" id="statLast"><div class="skeleton h-8 w-16"></div></div>
+                    <div class="text-sm text-gray-400">Last Publish</div>
+                    <div class="text-xs text-gray-500 mt-1 truncate" id="statLastSub">—</div>
                 </div>
             </div>
 
-            <!-- RIGHT COLUMN: Metadata & Suggestions -->
-            <div class="space-y-6">
-<!-- Meta Description with Smart Auto-Generator -->
-<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-    <div class="flex items-center justify-between mb-2">
-        <label class="block text-sm font-bold text-gray-800">Meta Description</label>
-        <button id="autoGenerateDescBtn" class="flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-dyve-bg bg-dyve-accent rounded-md hover:bg-dyve-accentHover transition shadow-sm">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-            Auto-Generate
-        </button>
-    </div>
-    <textarea id="descriptionInput" rows="3" placeholder="Brief description for search engines (max 160 chars)..." 
-              class="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent focus:border-transparent resize-none text-gray-900"></textarea>
-    <div class="mt-2 flex items-center justify-between text-xs">
-        <span id="descQuality" class="text-gray-400">Waiting for input...</span>
-        <span id="descCharCount" class="text-gray-500 font-medium">0/160 characters</span>
-    </div>
-</div>
-
-
-                <!-- Category -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <label class="block text-sm font-bold text-gray-800 mb-2">Intel Category</label>
-                    <select id="categorySelect" class="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent focus:border-transparent text-gray-900 bg-white">
-                        <option value="breach">Live Breaches</option>
-                        <option value="dark-web">Dark Web Intelligence</option>
-                        <option value="ransomware">Ransomware Intelligence</option>
-                        <option value="threat-actors">Threat Actors</option>
-                        <option value="signals">Threat Signals</option>
-                        <option value="analysis">Threat Analysis</option>
-                    </select>
-                </div>
-
-
-                <!-- Dyve Specific Fields -->
-                <div class="bg-dyve-bg rounded-lg shadow-sm border border-white/10 p-6 text-white">
-                    <h3 class="text-sm font-bold text-dyve-accent mb-4 uppercase tracking-wider">Threat Metadata</h3>
-                    
-                    <div class="space-y-4">
-<div>
-    <label class="block text-xs font-medium text-dyve-muted mb-2">Intel Tag</label>
-    <select id="intelTagInput" class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent text-white uppercase appearance-none cursor-pointer">
-        <option value="" disabled selected>Select Intel Tag</option>
-        <option value="CRITICAL">CRITICAL</option>
-        <option value="HIGH PRIORITY">HIGH PRIORITY</option>
-        <option value="LIVE INTEL">LIVE INTEL</option>
-        <option value="DARK WEB">DARK WEB</option>
-        <option value="ACTIVE THREAT">ACTIVE THREAT</option>
-        <option value="VERIFIED">VERIFIED</option>
-        <option value="BREACH DATA">BREACH DATA</option>
-        <option value="RANSOMWARE">RANSOMWARE</option>
-        <option value="APT GROUP">APT GROUP</option>
-        <option value="ZERO-DAY">ZERO-DAY</option>
-        <option value="IOCs">IOCs</option>
-        <option value="TTPs">TTPs</option>
-        <option value="OPERATIONAL GUIDE">OPERATIONAL GUIDE</option>
-        <option value="THREAT ACTOR">THREAT ACTOR</option>
-        <option value="INFRASTRUCTURE">INFRASTRUCTURE</option>
-        <option value="MALWARE">MALWARE</option>
-        <option value="PHISHING">PHISHING</option>
-        <option value="EXPLOIT">EXPLOIT</option>
-        <option value="VULNERABILITY">VULNERABILITY</option>
-        <option value="COMPLIANCE">COMPLIANCE</option>
-    </select>
-    <div class="mt-1 flex items-center gap-2">
-        <svg class="w-3 h-3 text-dyve-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        <span class="text-xs text-dyve-muted">Categorize threat intelligence by severity and type</span>
-    </div>
-</div>
-
-<div>
-    <label class="block text-xs font-medium text-dyve-muted mb-2">Meta Status</label>
-    <select id="metaStatusInput" class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent text-white appearance-none cursor-pointer">
-        <option value="" disabled selected>Select Meta Status</option>
-        <option value="Active Threat">Active Threat</option>
-        <option value="Verified Intel">Verified Intel</option>
-        <option value="Operational Guide">Operational Guide</option>
-        <option value="Under Investigation">Under Investigation</option>
-        <option value="Mitigated">Mitigated / Resolved</option>
-        <option value="Emerging Threat">Emerging Threat</option>
-        <option value="Critical Alert">Critical Alert</option>
-        <option value="Historical Data">Historical Data</option>
-        <option value="False Positive">False Positive</option>
-        <option value="Routine Update">Routine Update</option>
-    </select>
-    <div class="mt-1 flex items-center gap-2">
-        <svg class="w-3 h-3 text-dyve-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        <span class="text-xs text-dyve-muted">Current lifecycle stage of this intelligence</span>
-    </div>
-</div>
-
-                        <div>
-                            <label class="block text-xs font-medium text-dyve-muted mb-2">Featured Image</label>
-                            <div class="space-y-2">
-                                <input type="hidden" id="imageUrlInput" value="">
-                                <input type="file" id="featuredImageInput" accept="image/*"
-                                       class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-dyve-accent file:text-dyve-bg hover:file:bg-dyve-accentHover">
-                                <div id="featuredImagePreview" class="hidden">
-                                    <img id="featuredImagePreviewImg" src="" alt="Featured preview" class="w-full h-32 object-cover rounded-lg">
-                                    <p id="featuredImageAlt" class="text-xs text-dyve-muted mt-1"></p>
-                                </div>
-                                <p class="text-xs text-dyve-muted">Auto-compressed & optimized for SEO</p>
+            <!-- Platform Selection -->
+            <h2 class="text-lg font-semibold text-white mb-4">Create New Content</h2>
+            <div class="grid md:grid-cols-2 gap-4 md:gap-6 mb-10">
+                <div class="platform-card hackax glass-panel rounded-2xl p-6 cursor-pointer border border-transparent relative overflow-hidden group" onclick="window.location.href='hackax/index.html'">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-[#00ffaa]/5 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-[#00ffaa]/10 transition-all"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="w-14 h-14 bg-gradient-to-br from-[#00ffaa] to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-[#00ffaa]/20">
+                                <svg class="w-7 h-7 text-[#020403]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                             </div>
+                            <span class="px-3 py-1 bg-[#00ffaa]/10 text-[#00ffaa] text-xs font-bold rounded-full border border-[#00ffaa]/20">CYBERSECURITY</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">HackaX Intelligence</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Publish threat intelligence, breach surveillance, dark web monitoring, and ransomware analysis.</p>
+                        <div class="flex items-center text-[#00ffaa] font-semibold text-sm group-hover:translate-x-1 transition-transform">
+                            Open Editor
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                         </div>
                     </div>
                 </div>
 
-                <!-- Pages Section -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <label class="block text-sm font-bold text-gray-800 mb-2">Publish To Page</label>
-                    <select id="pageSelect" class="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent focus:border-transparent text-gray-900 bg-white mb-3">
-                        <option value="homepage">🏠 Main Homepage (Default)</option>
-                        <option value="tech">💻 Dyve Tech</option>
-                        <option value="breaches">🔓 Breach Surveillance</option>
-                        <option value="dark-web"> Dark Web Intelligence</option>
-                        <option value="ransomware">🦠 Ransomware Intelligence</option>
-                        <option value="signals">📡 Threat Signals</option>
-                        <option value="threat-actors"> Threat Actors</option>
-                        <option value="analysis">📊 Threat Analysis</option>
-                    </select>
-                    <div class="flex items-center gap-2 text-xs text-gray-500">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span>Choose destination page for this article</span>
+                <div class="platform-card tech glass-panel rounded-2xl p-6 cursor-pointer border border-transparent relative overflow-hidden group" onclick="window.location.href='tech-editor/index.html'">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-[#f15e50]/5 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-[#f15e50]/10 transition-all"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="w-14 h-14 bg-gradient-to-br from-[#f15e50] to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-[#f15e50]/20">
+                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <span class="px-3 py-1 bg-[#f15e50]/10 text-[#f15e50] text-xs font-bold rounded-full border border-[#f15e50]/20">TECHNOLOGY</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Dyve Tech</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Publish artificial intelligence news, developer tools, coding resources, and deep-dive analysis.</p>
+                        <div class="flex items-center text-[#f15e50] font-semibold text-sm group-hover:translate-x-1 transition-transform">
+                            Open Editor
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </div>
                     </div>
-                </div>
-
-                <!-- Internal Linking Suggestions -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-dyve-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                        Internal Linking
-                    </h3>
-                    <div id="linkSuggestions" class="space-y-2 max-h-60 overflow-y-auto">
-                        <div class="text-sm text-gray-500">Publish articles to see suggestions...</div>
-                    </div>
-                    <button id="suggestLinksBtn" class="mt-4 w-full px-4 py-2 text-sm font-medium text-dyve-bg border border-dyve-accent bg-dyve-accent/10 rounded-lg hover:bg-dyve-accent transition">
-                        Find Link Opportunities
-                    </button>
                 </div>
             </div>
-        </div>
-    </main>
 
-    <!-- TOAST NOTIFICATION -->
-    <div id="toast" class="fixed bottom-24 right-4 bg-dyve-bg text-white border border-dyve-accent/30 px-6 py-3 rounded-lg shadow-2xl hidden z-50 flex items-center gap-2">
-        <span id="toastMessage"></span>
-    </div>
+            <!-- Recent Publications (REAL DATA) -->
+            <div class="glass-panel rounded-xl border border-white/5 overflow-hidden">
+                <div class="px-4 md:px-6 py-4 border-b border-white/5 flex items-center justify-between">
+                    <h3 class="font-semibold text-white">Recent Publications</h3>
+                    <a href="hackax/published.html" class="text-sm text-[#00ffaa] hover:underline">View All</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-gray-400 min-w-[640px]">
+                        <thead class="bg-white/5 text-xs uppercase font-medium text-gray-500">
+                            <tr>
+                                <th class="px-6 py-3">Article Title</th>
+                                <th class="px-6 py-3">Platform</th>
+                                <th class="px-6 py-3">Status</th>
+                                <th class="px-6 py-3">Date</th>
+                                <th class="px-6 py-3 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentBody" class="divide-y divide-white/5">
+                            <tr><td colspan="5" class="px-6 py-4"><div class="skeleton h-6 w-full"></div></td></tr>
+                            <tr><td colspan="5" class="px-6 py-4"><div class="skeleton h-6 w-full"></div></td></tr>
+                            <tr><td colspan="5" class="px-6 py-4"><div class="skeleton h-6 w-full"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-    <!-- STICKY BOTTOM MENU -->
-    <div id="stickyMenu" class="fixed bottom-6 right-6 z-50">
-        <button id="menuToggle" class="w-14 h-14 bg-dyve-accent text-dyve-bg rounded-full shadow-lg flex items-center justify-center hover:bg-dyve-accentHover transition-all duration-300 active:scale-95">
-            <svg id="menuIcon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-        </button>
-
-        <div id="slideMenu" class="absolute bottom-20 right-0 bg-white rounded-lg shadow-2xl overflow-hidden transform translate-y-4 opacity-0 pointer-events-none transition-all duration-300 w-56 border border-gray-200">
-            <nav class="py-2">
-                <a href="settings.html" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
-                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    <span class="text-sm font-medium text-gray-700">Settings</span>
-                </a>
-                <a href="drafts.html" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
-                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    <span class="text-sm font-medium text-gray-700">Drafts</span>
-                </a>
-                <a href="published.html" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
-                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span class="text-sm font-medium text-gray-700">Published</span>
-                </a>
-            </nav>
-        </div>
+        </main>
     </div>
 
     <script>
-        // ============================================
-        // STATE
-        // ============================================
-        let quill = null;
-        let existingArticles = [];
+    // ==========================================
+    // HELPERS
+    // ==========================================
+    function $(id) { return document.getElementById(id); }
 
-        // ============================================
-        // HELPER FUNCTIONS
-        // ============================================
-        async function imageHandler() {
-            const input = document.createElement('input');
-            input.setAttribute('type', 'file');
-            input.setAttribute('accept', 'image/*');
-            input.setAttribute('multiple', 'true');
-            input.click();
+    function safeParse(str, fallback) {
+        try {
+            const v = JSON.parse(str);
+            return (v === null || v === undefined) ? fallback : v;
+        } catch (e) { return fallback; }
+    }
 
-            input.onchange = async () => {
-                const files = input.files;
-                if (files && files.length > 0) {
-                    showToast('📤 Uploading images...');
-                    const range = quill.getSelection(true);
-                    
-                    for (let i = 0; i < files.length; i++) {
-                        const file = files[i];
-                        const compressedFile = await compressImage(file, 1200, 0.85);
-                        const result = await uploadToCloudinary(compressedFile);
-                        
-                        if (result) {
-                            quill.insertEmbed(range.index, 'image', result.url, {
-                                alt: result.alt,
-                                width: Math.min(result.width, 800),
-                                loading: 'lazy'
-                            });
-                            range.index += 1;
-                        }
-                    }
-                    showToast('✅ Images uploaded & optimized!');
-                }
-            };
+    function escapeHtml(s) {
+        if (s === null || s === undefined) return '';
+        const div = document.createElement('div');
+        div.textContent = String(s);
+        return div.innerHTML;
+    }
+
+    function parseDate(d) {
+        if (!d) return null;
+        const t = new Date(d);
+        return isNaN(t.getTime()) ? null : t;
+    }
+
+    function formatDate(d) {
+        const t = parseDate(d);
+        if (!t) return d || '—';
+        return t.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function timeAgo(d) {
+        const t = parseDate(d);
+        if (!t) return '—';
+        const days = Math.floor((Date.now() - t.getTime()) / 86400000);
+        if (days <= 0) return 'Today';
+        if (days === 1) return '1d ago';
+        if (days < 7) return days + 'd ago';
+        if (days < 30) return Math.floor(days / 7) + 'w ago';
+        return formatDate(t);
+    }
+
+    function isTech(a) {
+        if (!a) return false;
+        if (String(a.page || '').toLowerCase() === 'tech') return true;
+        return String(a.url || '').replace(/^\/+/, '').toLowerCase().startsWith('tech/');
+    }
+
+    function cleanUrl(a) {
+        return String((a && a.url) || '#').replace(/^\/+/, '');
+    }
+
+    // ==========================================
+    // REAL DATA LOADING
+    // ==========================================
+    async function fetchArticles() {
+        try {
+            const res = await fetch('assets/articles.json', { cache: 'no-store' });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const json = await res.json();
+            return Array.isArray(json) ? json : [];
+        } catch (e) {
+            console.error('articles.json fetch failed:', e);
+            return null;
         }
+    }
 
-        function simpleHtmlToDelta(html) {
-            const ops = [];
-            html = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-            html = html.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
-            const blocks = html.split(/<\/p>|<\/h[1-6]>|<\/li>|<\/blockquote>|<br\s*\/?>/i);
-            
-            blocks.forEach(block => {
-                block = block.trim();
-                if (!block) return;
-                const text = block.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim();
-                if (!text && !/<img/i.test(block)) return;
-                
-                let attributes = {};
-                if (/<h1/i.test(block)) attributes.header = 1;
-                else if (/<h2/i.test(block)) attributes.header = 2;
-                else if (/<h3/i.test(block)) attributes.header = 3;
-                else if (/<blockquote/i.test(block)) attributes.blockquote = true;
-                else if (/<li/i.test(block)) attributes.list = 'bullet';
-                
-                if (text) {
-                    ops.push({ insert: text + '\n', attributes: Object.keys(attributes).length > 0 ? attributes : undefined });
-                } else {
-                    ops.push({ insert: '\n' });
-                }
-            });
-            
-            return ops.length > 0 ? { ops } : { ops: [{ insert: '\n' }] };
-        }
-
-        // ============================================
-        // CLOUDINARY CONFIGURATION
-        // ============================================
-        const CLOUDINARY_CONFIG = {
-            cloudName: 'dxdbn6xwy',
-            uploadPreset: 'geefox_unsigned',
-            endpoint: 'https://api.cloudinary.com/v1_1/dxdbn6xwy/image/upload'
+    function getDraftCounts() {
+        const tech = safeParse(localStorage.getItem('dyve-tech-drafts'), []);
+        const hack = safeParse(localStorage.getItem('dyve-hackax-drafts'), []);
+        return {
+            tech: Array.isArray(tech) ? tech.length : 0,
+            hack: Array.isArray(hack) ? hack.length : 0
         };
+    }
 
-        function generateAltText(filename, context = '') {
-            const name = filename.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
-            const words = name.split(' ').filter(w => w.length > 3);
-            const keywords = words.slice(0, 3).join(' ');
-            return `${keywords} - Dyve HackaX Intelligence Report`;
+    async function initData() {
+        $('dataBanner').classList.add('hidden');
+
+        // Drafts are always local & real
+        const drafts = getDraftCounts();
+        $('statDrafts').textContent = drafts.tech + drafts.hack;
+        $('statDraftsSub').textContent = 'Tech: ' + drafts.tech + ' • HackaX: ' + drafts.hack;
+
+        const articles = await fetchArticles();
+
+        if (articles === null) {
+            $('statTotal').textContent = '—';
+            $('statTech').textContent = '—';
+            $('statTechSub').textContent = 'HackaX: —';
+            $('statLast').textContent = '—';
+            $('statLastSub').textContent = 'Database unreachable';
+            $('recentBody').innerHTML = '<tr><td colspan="5" class="px-6 py-6 text-center text-gray-500">Couldn\'t load the article database. Check your connection or settings.</td></tr>';
+            $('dataBanner').classList.remove('hidden');
+            return;
         }
 
-        async function compressImage(file, maxWidth = 1920, quality = 0.8) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        let width = img.width;
-                        let height = img.height;
-                        
-                        if (width > maxWidth) {
-                            height = Math.round((height * maxWidth) / width);
-                            width = maxWidth;
-                        }
-                        
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-                        
-                        canvas.toBlob((blob) => {
-                            resolve(new File([blob], file.name, { type: 'image/jpeg', lastModified: Date.now() }));
-                        }, 'image/jpeg', quality);
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
+        // ---- Stat 1: total published + real weekly activity
+        const total = articles.length;
+        $('statTotal').textContent = total;
+
+        const week = 7 * 86400000;
+        const thisWeek = articles.filter(a => { const t = parseDate(a.date); return t && (Date.now() - t.getTime()) < week; }).length;
+        const badge = $('statTotalBadge');
+        badge.classList.remove('hidden');
+        badge.textContent = '+' + thisWeek + ' this week';
+        if (thisWeek === 0) { badge.className = 'text-xs font-medium text-gray-400 bg-white/5 px-2 py-1 rounded'; }
+        else { badge.className = 'text-xs font-medium text-[#00ffaa] bg-[#00ffaa]/10 px-2 py-1 rounded'; }
+
+        // ---- Stat 3: platform split
+        const techCount = articles.filter(isTech).length;
+        $('statTech').textContent = techCount;
+        $('statTechSub').textContent = 'HackaX: ' + (total - techCount);
+
+        // ---- Stat 4: most recent publish
+        let newest = null;
+        articles.forEach(a => {
+            const t = parseDate(a.date);
+            if (t && (!newest || t > newest.t)) newest = { t: t, a: a };
+        });
+        if (newest) {
+            $('statLast').textContent = timeAgo(newest.t);
+            $('statLastSub').textContent = newest.a.title || 'Untitled';
+        } else {
+            $('statLast').textContent = '—';
+            $('statLastSub').textContent = 'No publications yet';
+        }
+
+        // ---- Recent publications table (top 6 by date)
+        const sorted = articles.slice().sort((a, b) => {
+            const ta = parseDate(a.date) ? parseDate(a.date).getTime() : 0;
+            const tb = parseDate(b.date) ? parseDate(b.date).getTime() : 0;
+            return tb - ta;
+        }).slice(0, 6);
+
+        if (sorted.length === 0) {
+            $('recentBody').innerHTML = '<tr><td colspan="5" class="px-6 py-6 text-center text-gray-500">No published articles yet. Create your first one above.</td></tr>';
+            return;
+        }
+
+        $('recentBody').innerHTML = sorted.map(a => {
+            const tech = isTech(a);
+            const platformBadge = tech
+                ? '<span class="px-2 py-1 bg-[#f15e50]/10 text-[#f15e50] text-xs rounded border border-[#f15e50]/20">Tech</span>'
+                : '<span class="px-2 py-1 bg-[#00ffaa]/10 text-[#00ffaa] text-xs rounded border border-[#00ffaa]/20">HackaX</span>';
+
+            const editBtn = tech
+                ? '<button data-edit-url="' + escapeHtml(cleanUrl(a)) + '" class="edit-btn text-gray-400 hover:text-white transition-colors p-1" title="Edit in Tech Editor"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>'
+                : '';
+
+            return '<tr class="hover:bg-white/5 transition-colors">' +
+                '<td class="px-6 py-4 font-medium text-white max-w-[280px] truncate">' + escapeHtml(a.title || 'Untitled') + '</td>' +
+                '<td class="px-6 py-4">' + platformBadge + '</td>' +
+                '<td class="px-6 py-4"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> Published</span></td>' +
+                '<td class="px-6 py-4 whitespace-nowrap">' + formatDate(a.date) + '</td>' +
+                '<td class="px-6 py-4"><div class="flex items-center justify-end gap-2">' +
+                    editBtn +
+                    '<a href="' + escapeHtml(cleanUrl(a)) + '" class="text-gray-400 hover:text-[#00ffaa] transition-colors p-1" title="View live" target="_blank" rel="noopener"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a>' +
+                '</div></td></tr>';
+        }).join('');
+
+        // Wire edit buttons -> hand article to the Tech editor's edit mode
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const url = btn.getAttribute('data-edit-url');
+                const index = articles.findIndex(x => cleanUrl(x) === url);
+                if (index === -1) return;
+                const a = articles[index];
+                const slug = url.split('/').pop().replace(/\.html$/i, '');
+                localStorage.setItem('dyve-edit-article', JSON.stringify({
+                    index: index,
+                    slug: slug,
+                    title: a.title || '',
+                    desc: a.desc || '',
+                    image: a.image || '',
+                    meta: a.meta || a.category || '',
+                    category: a.category || '',
+                    tag: a.tag || '',
+                    delta: a.delta || null
+                }));
+                window.location.href = 'tech-editor/index.html?mode=edit';
             });
+        });
+    }
+
+    // ==========================================
+    // MOBILE DRAWER + MISC
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+        const mobileMenuBtn = $('mobileMenuBtn');
+        const closeSidebarBtn = $('closeSidebarBtn');
+        const sidebar = $('sidebar');
+
+        let overlay = $('mobileOverlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'mobileOverlay';
+            overlay.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden md:hidden transition-opacity duration-300 opacity-0';
+            document.body.appendChild(overlay);
         }
 
-                async function uploadToCloudinary(file) {
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
-            formData.append('tags', 'dyve-hackax,intelligence');
-            
-            try {
-                const response = await fetch(CLOUDINARY_CONFIG.endpoint, {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const data = await response.json();
-                
-                if (data.secure_url) {
-                    // Use the direct URL provided by Cloudinary instead of building a custom one
-                    return {
-                        url: data.secure_url,
-                        alt: generateAltText(data.original_filename, ''),
-                        width: data.width,
-                        height: data.height
-                    };
-                }
-                throw new Error('Upload failed');
-            } catch (error) {
-                console.error('Cloudinary upload error:', error);
-                showToast('❌ Image upload failed');
-                return null;
-            }
+        function openMenu() {
+            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.add('translate-x-0');
+            overlay.classList.remove('hidden');
+            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMenu() {
+            sidebar.classList.remove('translate-x-0');
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('opacity-0');
+            document.body.style.overflow = '';
+            setTimeout(() => overlay.classList.add('hidden'), 300);
         }
 
+        if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMenu);
+        if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', closeMenu);
+        if (overlay) overlay.addEventListener('click', closeMenu);
 
-        async function handleFeaturedImageUpload(event) {
-            const files = event.target.files;
-            if (files.length === 0) return;
-            
-            showToast('📤 Uploading and compressing image...');
-            const file = files[0];
-            const compressedFile = await compressImage(file);
-            const result = await uploadToCloudinary(compressedFile);
-            
-            if (result) {
-                const imgInput = document.getElementById('imageUrlInput');
-                if (imgInput) imgInput.value = result.url;
-                
-                document.getElementById('featuredImagePreviewImg').src = result.url;
-                document.getElementById('featuredImageAlt').textContent = `Alt: ${result.alt}`;
-                document.getElementById('featuredImagePreview').classList.remove('hidden');
-                showToast('✅ Featured image uploaded & optimized!');
-            }
-        }
-
-        function generateSlug(title) {
-            return title.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
-        }
-
-        function showToast(message, duration = 4000) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toastMessage').textContent = message;
-            toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.add('hidden'), duration);
-        }
-
-        function setupStickyMenu() {
-            const menuToggle = document.getElementById('menuToggle');
-            const slideMenu = document.getElementById('slideMenu');
-            const menuIcon = document.getElementById('menuIcon');
-            let menuOpen = false;
-
-            menuToggle.addEventListener('click', () => {
-                menuOpen = !menuOpen;
-                if (menuOpen) {
-                    slideMenu.classList.remove('translate-y-4', 'opacity-0', 'pointer-events-none');
-                    slideMenu.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
-                    menuIcon.style.transform = 'rotate(90deg)';
-                } else {
-                    slideMenu.classList.add('translate-y-4', 'opacity-0', 'pointer-events-none');
-                    slideMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
-                    menuIcon.style.transform = 'rotate(0deg)';
-                }
+        document.querySelectorAll('.nav-item').forEach(link => {
+            link.addEventListener('click', function (e) {
+                if (this.getAttribute('href') === '#') e.preventDefault();
+                if (window.innerWidth < 768) closeMenu();
             });
-
-            document.addEventListener('click', (e) => {
-                if (!document.getElementById('stickyMenu').contains(e.target) && menuOpen) {
-                    menuToggle.click();
-                }
-            });
-        }
-
-        // ============================================
-        // SEO ANALYSIS
-        // ============================================
-        function analyzeSEO() {
-            const title = document.getElementById('titleInput').value;
-            const description = document.getElementById('descriptionInput').value;
-            const content = quill ? quill.getText() : '';
-            const analysis = [];
-            
-            if (!title) analysis.push({ type: 'error', message: '❌ Title is required' });
-            else if (title.length < 30) analysis.push({ type: 'warning', message: '⚠️ Title is too short (aim for 50-60 characters)' });
-            else if (title.length > 70) analysis.push({ type: 'warning', message: '⚠️ Title is too long (may be truncated)' });
-            else analysis.push({ type: 'success', message: '✅ Title length is optimal' });
-
-            if (!description) analysis.push({ type: 'error', message: '❌ Meta description is required' });
-            else if (description.length < 120) analysis.push({ type: 'warning', message: '⚠️ Description is too short (aim for 150-160 characters)' });
-            else if (description.length > 160) analysis.push({ type: 'warning', message: '⚠️ Description is too long (will be truncated)' });
-            else analysis.push({ type: 'success', message: '✅ Description length is optimal' });
-
-            const wordCount = content.split(/\s+/).filter(w => w).length;
-            if (wordCount < 300) analysis.push({ type: 'warning', message: '⚠️ Content is too short (aim for 500+ words)' });
-            else analysis.push({ type: 'success', message: `✅ Content length is good (${wordCount} words)` });
-
-            const container = document.getElementById('seoAnalysis');
-            container.innerHTML = analysis.map(item => {
-                const colors = { error: 'bg-red-50 text-red-800 border-red-200', warning: 'bg-yellow-50 text-yellow-800 border-yellow-200', success: 'bg-green-50 text-green-800 border-green-200' };
-                return `<div class="p-3 rounded-lg border ${colors[item.type]} text-sm">${item.message}</div>`;
-            }).join('');
-        }
-
-                // ============================================
-        // INTERNAL LINKING
-        // ============================================
-        async function loadExistingArticles() {
-            const config = getGitHubConfig();
-            if (!config.token || !config.repo) return;
-            
-            try {
-                // Fetch the central articles database instead of just filenames
-                const response = await fetch(`https://api.github.com/repos/${config.repo}/contents/assets/articles.json?ref=${config.branch}`, {
-                    headers: { 'Authorization': `token ${config.token}` }
-                });
-                
-                                if (response.ok) {
-                    const data = await response.json();
-                    // FIX: Added UTF-8 decoding to prevent mojibake (ÃÂ characters)
-                    const decodedContent = decodeURIComponent(escape(atob(data.content)));
-                    existingArticles = JSON.parse(decodedContent); // Now holds full article objects
-                }
-
-            } catch (error) {
-                console.error('Error loading articles:', error);
-            }
-        }
-
-
-                        function escapeHtml(unsafe) {
-            if (!unsafe) return '';
-            return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
-
-        function suggestInternalLinks() {
-            if (!quill) return;
-            const content = quill.getText().toLowerCase();
-            const title = document.getElementById('titleInput').value.toLowerCase();
-            const combinedText = title + ' ' + content;
-            
-            const currentKeywords = [...new Set(combinedText.match(/\b[a-z]{5,}\b/g) || [])];
-
-            const suggestions = existingArticles
-                .map(article => {
-                    let score = 0;
-                    const targetText = `${article.title} ${article.category} ${article.tag}`.toLowerCase();
-                    if (article.tag && content.includes(article.tag.toLowerCase())) score += 3;
-                    currentKeywords.forEach(kw => { if (targetText.includes(kw)) score += 1; });
-                    if (window.isEditMode && article.url.includes(window.editArticleSlug)) score = -1;
-                    return { ...article, score };
-                })
-                .filter(item => item.score > 0)
-                .sort((a, b) => b.score - a.score)
-                .slice(0, 5);
-
-            const container = document.getElementById('linkSuggestions');
-            if (suggestions.length === 0) {
-                container.innerHTML = '<div class="text-sm text-gray-500">No relevant articles found for linking</div>';
-                return;
-            }
-
-            container.innerHTML = suggestions.map(item => `
-                <div class="suggestion-item p-3 border border-gray-200 rounded-lg bg-gray-50 mb-2 hover:border-dyve-accent transition">
-                    <div class="text-sm font-bold text-gray-900">${escapeHtml(item.title)}</div>
-                    <div class="text-xs text-dyve-accent font-medium mt-1 uppercase">${escapeHtml(item.tag || '')}</div>
-                    <button class="insert-link-btn mt-3 text-xs text-dyve-bg bg-dyve-accent px-3 py-1.5 rounded font-bold hover:bg-dyve-accentHover transition w-full"
-                        data-url="${escapeHtml(item.url)}"
-                        data-title="${escapeHtml(item.title)}"
-                        data-tag="${escapeHtml(item.tag || '')}">
-                        ⚡ Insert Smart Link
-                    </button>
-                </div>
-            `).join('');
-
-            // Bulletproof Event Delegation (prevents onclick quote errors)
-            container.querySelectorAll('.insert-link-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    insertLink(this);
-                });
-            });
-        }
-
-        function insertLink(btnElement) {
-            if (!quill || !btnElement) return;
-            const url = btnElement.dataset.url;
-            const title = btnElement.dataset.title;
-            const tag = btnElement.dataset.tag || '';
-
-            try {
-                quill.focus();
-                let range = quill.getSelection(true);
-                
-                // 1. MANUAL OVERRIDE: If user highlighted text, apply link and KEEP it highlighted
-                if (range && range.length > 0) {
-                    quill.formatText(range.index, range.length, 'link', url);
-                    quill.setSelection(range.index, range.length); // Perfectly highlights the linked text
-                    showToast('✅ Link applied to selected text!');
-                    return;
-                }
-
-                // 2. SMART AUTO-LINKING (Scans Quill content safely)
-                const text = quill.getText();
-                const cleanTitle = title.toLowerCase().replace(/\(.*?\)/g, '').replace(/[^a-z0-9\s]/g, '').trim();
-                const words = cleanTitle.split(/\s+/).filter(w => w.length > 3);
-                
-                let searchPhrases = [
-                    cleanTitle, 
-                    tag.toLowerCase(),
-                    ...words.map((w, i, arr) => arr.slice(i, i+3).join(' ')),
-                    ...words.map((w, i, arr) => arr.slice(i, i+2).join(' ')),
-                    ...words.filter(w => w.length > 5)
-                ].filter(p => p && p.trim().length > 3);
-                
-                searchPhrases = [...new Set(searchPhrases)].sort((a, b) => b.length - a.length);
-
-                let matchIndex = -1;
-                let matchLength = 0;
-
-                for (let phrase of searchPhrases) {
-                    let idx = text.toLowerCase().indexOf(phrase);
-                    while (idx !== -1) {
-                        const format = quill.getFormat(idx, phrase.length);
-                        if (!format.link) { // Ensure it's not already linked
-                            matchIndex = idx;
-                            matchLength = phrase.length;
-                            break;
-                        }
-                        idx = text.toLowerCase().indexOf(phrase, idx + 1);
-                    }
-                    if (matchIndex !== -1) break;
-                }
-
-                if (matchIndex !== -1) {
-                    quill.formatText(matchIndex, matchLength, 'link', url);
-                    quill.setSelection(matchIndex, matchLength); // Perfectly highlights the auto-linked text
-                    showToast('✨ Auto-linked matching phrase!');
-                } else {
-                    // 3. FALLBACK: Insert at cursor
-                    const insertIdx = range ? range.index : quill.getLength();
-                    quill.insertText(insertIdx, title, 'link', url);
-                    quill.setSelection(insertIdx, title.length); // Highlight inserted text
-                    quill.format('link', false);
-                    showToast('✅ Link inserted at cursor!');
-                }
-            } catch (error) {
-                console.error('Link insertion error:', error);
-                showToast('❌ Error inserting link');
-            }
-        }
-
-
-        // ============================================
-        // SAVE DRAFT
-        // ============================================
-        function saveDraft() {
-            const imgInput = document.getElementById('imageUrlInput');
-            const draft = {
-                title: document.getElementById('titleInput').value,
-                description: document.getElementById('descriptionInput').value,
-                category: document.getElementById('categorySelect').value,
-                intelTag: document.getElementById('intelTagInput').value,
-                metaStatus: document.getElementById('metaStatusInput').value,
-                imageUrl: imgInput ? imgInput.value : '',
-                content: quill ? quill.getContents() : {},
-                timestamp: Date.now()
-            };
-            localStorage.setItem('dyve-draft', JSON.stringify(draft));
-            showToast('✅ Draft saved locally');
-        }
-
-        // ============================================
-        // CONVERT QUILL TO HTML
-        // ============================================
-        function convertQuillToHTML(delta) {
-            if (!delta.ops) return '';
-            let html = '';
-            delta.ops.forEach(op => {
-                let text = op.insert || '';
-                if (typeof text !== 'string') return;
-                if (text === '\n') { html += '</p><p>'; return; }
-                if (op.attributes) {
-                    if (op.attributes.bold) text = `<strong>${text}</strong>`;
-                    if (op.attributes.italic) text = `<em>${text}</em>`;
-                    if (op.attributes.underline) text = `<u>${text}</u>`;
-                    if (op.attributes.strike) text = `<s>${text}</s>`;
-                    if (op.attributes.header === 1) text = `<h2>${text}</h2>`;
-                    if (op.attributes.header === 2) text = `<h3>${text}</h3>`;
-                    if (op.attributes.list === 'ordered') text = `<li>${text}</li>`;
-                    if (op.attributes.list === 'bullet') text = `<li>${text}</li>`;
-                    if (op.attributes.blockquote) text = `<blockquote>${text}</blockquote>`;
-                    if (op.attributes.code) text = `<code>${text}</code>`;
-                }
-                html += text;
-            });
-            html = html.replace(/<p><\/p>/g, '');
-            html = '<p>' + html + '</p>';
-            html = html.replace(/<p>(<h[23][^>]*>)/g, '$1');
-            html = html.replace(/(<\/h[23]>)<\/p>/g, '$1');
-            html = html.replace(/<p>(<li>)/g, '<ul>$1');
-            html = html.replace(/(<\/li>)<\/p>/g, '$1</ul>');
-            html = html.replace(/<\/ul><ul>/g, '');
-            return html || '<p>No content available.</p>';
-        }
-
-
-// ============================================
-// META DESCRIPTION AUTO-GENERATOR
-// ============================================
-function autoGenerateMetaDescription() {
-    const title = document.getElementById('titleInput').value.trim();
-    const text = quill ? quill.getText().trim() : '';
-    
-    if (!title && text.length < 50) {
-        showToast('⚠️ Add a title or write more content first');
-        return;
-    }
-    
-    const stopWords = new Set(['the','and','for','are','but','not','you','all','any','can','had','her','was','one','our','out','day','get','has','him','his','how','man','new','now','old','see','two','way','who','boy','did','its','let','put','say','she','too','use','this','that','with','have','from','they','know','want','been','good','much','some','time','very','when','come','here','just','like','long','make','many','over','such','take','than','them','well','were','into','about','could','would','there','their','what','which','where','while','these','those','after','before','during','through','without','within','against','among','across','behind','beyond','beside','between','despite','except','inside','outside','around','upon','until','under','above','below','off','on','in','at','by','to','a','an','as','of','or','is','it','we','he','i','me','my','us','our','data','cyber','security','attack','threat','intel','intelligence','report','hackax','dyve','malware','breach','information','users','system','systems','network','networks']);
-    
-    // Extract primary keywords
-    const words = text.toLowerCase().match(/\b[a-z]{4,}\b/g) || [];
-    const freq = {};
-    words.forEach(w => { if (!stopWords.has(w)) freq[w] = (freq[w] || 0) + 1; });
-    const topKeywords = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 3).map(e => e[0]);
-    
-    // Get first meaningful sentence
-    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 30);
-    const firstSentence = sentences[0] ? sentences[0].trim() : text.substring(0, 120).trim();
-    
-    // Build smart description
-    let desc = '';
-    const category = document.getElementById('categorySelect').value;
-    const categoryLabel = { 'breach': 'Data Breach', 'dark-web': 'Dark Web', 'ransomware': 'Ransomware', 'threat-actors': 'Threat Actor', 'signals': 'Signal', 'analysis': 'Analysis' }[category] || 'Intelligence';
-    
-    // Strategy: Hook + Keywords + CTA
-    const hooks = [
-        `Discover critical insights on ${topKeywords[0] || categoryLabel.toLowerCase()}.`,
-        `Comprehensive ${categoryLabel} report covering ${topKeywords[0] || 'key threats'}.`,
-        `Expert analysis of ${topKeywords[0] || 'emerging threats'} and ${topKeywords[1] || 'security trends'}.`,
-        `Stay ahead with our latest ${categoryLabel} intelligence on ${topKeywords[0] || 'cyber threats'}.`
-    ];
-    
-    const ctas = [
-        ' Read the full analysis now.',
-        ' Learn how to protect your organization.',
-        ' Get actionable insights today.',
-        ' Stay informed with Dyve HackaX.'
-    ];
-    
-    const hook = hooks[Math.floor(Math.random() * hooks.length)];
-    const cta = ctas[Math.floor(Math.random() * ctas.length)];
-    
-    desc = hook + ' ' + firstSentence.substring(0, 80) + cta;
-    
-    // Perfect length optimization (150-160 chars)
-    if (desc.length > 160) desc = desc.substring(0, 157) + '...';
-    else if (desc.length < 140) desc = desc + ' ' + topKeywords.slice(0, 2).join(', ') + '.';
-    if (desc.length > 160) desc = desc.substring(0, 157) + '...';
-    
-    document.getElementById('descriptionInput').value = desc;
-    document.getElementById('descriptionInput').dispatchEvent(new Event('input'));
-    showToast('✨ Meta description auto-generated!');
-}
-
-// ============================================
-// AI ASSISTANT ENGINE (Client-Side NLP)
-// ============================================
-const AI_ENGINE = {
-    // Grammar fixes database
-    grammarRules: [
-        { pattern: /\s{2,}/g, replacement: ' ' },
-        { pattern: /\bteh\b/gi, replacement: 'the' },
-        { pattern: /\brecieve\b/gi, replacement: 'receive' },
-        { pattern: /\boccured\b/gi, replacement: 'occurred' },
-        { pattern: /\bseperate\b/gi, replacement: 'separate' },
-        { pattern: /\bdefinately\b/gi, replacement: 'definitely' },
-        { pattern: /\baccomodate\b/gi, replacement: 'accommodate' },
-        { pattern: /\buntill\b/gi, replacement: 'until' },
-        { pattern: /\bwich\b/gi, replacement: 'which' },
-        { pattern: /\bthier\b/gi, replacement: 'their' },
-        { pattern: /\balot\b/gi, replacement: 'a lot' },
-        { pattern: /\bteh\b/gi, replacement: 'the' },
-        { pattern: /\bi\b/g, replacement: 'I' },
-        { pattern: /([.!?])\s*([a-z])/g, replacement: '$1 $2' },
-    ],
-    
-    // Filler words to remove for "shorter"
-    fillerWords: ['very', 'really', 'quite', 'somewhat', 'rather', 'actually', 'basically', 'literally', 'just', 'simply', 'perhaps', 'maybe', 'probably', 'certainly', 'definitely', 'absolutely', 'in order to', 'due to the fact that', 'at this point in time', 'in the event that'],
-    
-    // Expansion phrases for "longer"
-    expansionPhrases: {
-        'however': 'On the other hand, it is important to consider that',
-        'also': 'Furthermore, it should be noted that',
-        'but': 'Nevertheless, one must recognize that',
-        'so': 'As a result of these factors,',
-        'because': 'This is primarily due to the fact that',
-    },
-    
-    // Common color mappings
-    colorMap: {
-        'red': '#ef4444', 'green': '#10b981', 'blue': '#3b82f6', 
-        'purple': '#a855f7', 'orange': '#f97316', 'yellow': '#eab308',
-        'accent': '#00ffaa'
-    }
-};
-
-function aiGrammarCheck() {
-    const range = quill.getSelection(true);
-    const text = quill.getText();
-    let fixed = text;
-    let fixes = 0;
-    
-    AI_ENGINE.grammarRules.forEach(rule => {
-        const matches = fixed.match(rule.pattern);
-        if (matches) fixes += matches.length;
-        fixed = fixed.replace(rule.pattern, rule.replacement);
-    });
-    
-    // Fix sentence capitalization
-    fixed = fixed.replace(/(^|[.!?]\s+)([a-z])/g, (match, p1, p2) => p1 + p2.toUpperCase());
-    
-    if (fixes === 0 && fixed === text) {
-        showToast('✅ No grammar issues found!');
-        return;
-    }
-    
-    quill.setText(fixed);
-    if (range) quill.setSelection(range.index, 0);
-    showToast(`✅ Fixed ${fixes} grammar issues!`);
-}
-
-function aiMakeShorter() {
-    const range = quill.getSelection(true);
-    if (!range || range.length === 0) {
-        showToast('⚠️ Select text first to make it shorter');
-        return;
-    }
-    
-    const selectedText = quill.getText(range.index, range.length);
-    let shorter = selectedText;
-    
-    // Remove filler words
-    AI_ENGINE.fillerWords.forEach(word => {
-        const regex = new RegExp(`\\b${word}\\b`, 'gi');
-        shorter = shorter.replace(regex, '');
-    });
-    
-    // Compress phrases
-    shorter = shorter.replace(/in order to/gi, 'to');
-    shorter = shorter.replace(/due to the fact that/gi, 'because');
-    shorter = shorter.replace(/at this point in time/gi, 'now');
-    shorter = shorter.replace(/\s{2,}/g, ' ').trim();
-    
-    quill.deleteText(range.index, range.length);
-    quill.insertText(range.index, shorter);
-    quill.setSelection(range.index, shorter.length);
-    showToast('✂️ Text condensed!');
-}
-
-function aiMakeLonger() {
-    const range = quill.getSelection(true);
-    if (!range || range.length === 0) {
-        showToast('⚠️ Select text first to expand it');
-        return;
-    }
-    
-    const selectedText = quill.getText(range.index, range.length);
-    let longer = selectedText;
-    
-    // Expand transitions
-    Object.entries(AI_ENGINE.expansionPhrases).forEach(([short, long]) => {
-        const regex = new RegExp(`\\b${short}\\b`, 'gi');
-        longer = longer.replace(regex, long);
-    });
-    
-    // Add contextual expansion
-    const sentences = longer.split(/[.!?]+/).filter(s => s.trim());
-    if (sentences.length > 0) {
-        const lastSentence = sentences[sentences.length - 1].trim();
-        longer = longer.replace(new RegExp(`${lastSentence.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`), 
-            `${lastSentence}. This demonstrates the critical importance of understanding these dynamics in today's evolving landscape.`);
-    }
-    
-    quill.deleteText(range.index, range.length);
-    quill.insertText(range.index, longer);
-    quill.setSelection(range.index, longer.length);
-    showToast(' Text expanded!');
-}
-
-function aiGenerateSEOTags() {
-    const text = quill.getText();
-    const stopWords = new Set(['the','and','for','are','but','not','you','all','any','can','had','her','was','one','our','out','day','get','has','him','his','how','man','new','now','old','see','two','way','who','boy','did','its','let','put','say','she','too','use','this','that','with','have','from','they','know','want','been','good','much','some','time','very','when','come','here','just','like','long','make','many','over','such','take','than','them','well','were','into','about','could','would','there','their','what','which','where','while','these','those','after','before','during','through','without','within','against','among','across','behind','beyond','beside','between','despite','except','inside','outside','around','upon','until','under','above','below','off','on','in','at','by','to','a','an','as','of','or','is','it','we','he','i','me','my','us','our']);
-    
-    const words = text.toLowerCase().match(/\b[a-z]{4,}\b/g) || [];
-    const freq = {};
-    words.forEach(w => { if (!stopWords.has(w)) freq[w] = (freq[w] || 0) + 1; });
-    
-    const topTags = Object.entries(freq)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 8)
-        .map(e => e[0])
-        .join(', ');
-    
-    // Insert as a styled tag block at cursor
-    const range = quill.getSelection(true);
-    const insertIdx = range ? range.index : quill.getLength();
-    
-    quill.insertText(insertIdx, '\n\n️ SEO Tags: ' + topTags + '\n', { 'color': '#00ffaa', 'bold': true });
-    quill.setSelection(insertIdx + topTags.length + 15);
-    showToast('📊 SEO tags generated!');
-}
-
-function aiGenerateContent() {
-    const range = quill.getSelection(true);
-    const title = document.getElementById('titleInput').value.trim();
-    const category = document.getElementById('categorySelect').value;
-    
-    if (!title) {
-        showToast('⚠️ Add a title first for context-aware generation');
-        return;
-    }
-    
-    const categoryTemplates = {
-        'breach': `\n\n## Impact Analysis\nThe breach has significant implications for affected organizations. Key findings include:\n- **Scope**: Widespread exposure of sensitive data\n- **Timeline**: Incident detected and contained\n- **Response**: Immediate mitigation steps recommended\n\n## Recommendations\nOrganizations should immediately review their security posture and implement enhanced monitoring protocols.`,
-        'dark-web': `\n\n## Dark Web Findings\nOur intelligence team has identified critical indicators on underground forums:\n- **Credential Exposure**: Multiple datasets circulating\n- **Threat Actor Activity**: Increased chatter observed\n- **Marketplace Trends**: Evolving tactics detected\n\n## Action Items\nImmediate verification of exposed credentials is strongly advised.`,
-        'ransomware': `\n\n## Ransomware Analysis\nDetailed examination of the threat reveals:\n- **Encryption Method**: Advanced cryptographic algorithms\n- **Extortion Tactics**: Multi-layered pressure campaigns\n- **Infrastructure**: Decentralized command & control\n\n## Defense Strategy\nImplement robust backup procedures and network segmentation.`,
-        'threat-actors': `\n\n## Threat Actor Profile\nComprehensive analysis of adversary capabilities:\n- **Motivation**: Financial gain and espionage\n- **Sophistication**: Advanced persistent threat level\n- **Target Sectors**: Critical infrastructure and finance\n\n## Attribution Indicators\nTechnical fingerprints suggest links to known threat groups.`,
-        'signals': `\n\n## Signal Intelligence\nKey indicators detected across multiple sources:\n- **Anomaly Detection**: Unusual network patterns identified\n- **Correlation Analysis**: Cross-referenced with known TTPs\n- **Risk Assessment**: Elevated threat level confirmed\n\n## Monitoring Recommendations\nEnhanced surveillance protocols should be activated.`,
-        'analysis': `\n\n## Strategic Analysis\nIn-depth examination of the threat landscape reveals:\n- **Trend Identification**: Emerging patterns detected\n- **Risk Modeling**: Quantified impact assessment\n- **Predictive Indicators**: Forward-looking threat projections\n\n## Executive Summary\nData-driven insights support proactive defense measures.`
-    };
-    
-    const template = categoryTemplates[category] || categoryTemplates['analysis'];
-    const insertIdx = range ? range.index : quill.getLength();
-    
-    quill.insertText(insertIdx, template);
-    quill.setSelection(insertIdx + template.length);
-    showToast('✨ Content generated!');
-}
-
-function aiTranslate() {
-    const range = quill.getSelection(true);
-    if (!range || range.length === 0) {
-        showToast('⚠️ Select text first to translate');
-        return;
-    }
-    
-    const languages = ['Spanish', 'French', 'German', 'Chinese', 'Japanese', 'Arabic', 'Russian', 'Portuguese'];
-    const lang = prompt('Translate to which language?\n\n' + languages.join(', '));
-    
-    if (!lang) return;
-    
-    // Use browser's built-in translation capability via Google Translate URL
-    const selectedText = quill.getText(range.index, range.length);
-    const encodedText = encodeURIComponent(selectedText);
-    const translateUrl = `https://translate.google.com/?sl=auto&tl=${lang.toLowerCase()}&text=${encodedText}`;
-    
-    window.open(translateUrl, '_blank');
-    showToast(`🌐 Opening translator for ${lang}...`);
-}
-
-function aiChangeColors() {
-    const range = quill.getSelection(true);
-    if (!range || range.length === 0) {
-        showToast('⚠️ Select text first to change color');
-        return;
-    }
-    
-    const colors = Object.keys(AI_ENGINE.colorMap);
-    const color = prompt('Choose color:\n\n' + colors.join(', '));
-    
-    if (!color || !AI_ENGINE.colorMap[color.toLowerCase()]) {
-        showToast(' Invalid color. Choose from: ' + colors.join(', '));
-        return;
-    }
-    
-    quill.formatText(range.index, range.length, 'color', AI_ENGINE.colorMap[color.toLowerCase()]);
-    quill.setSelection(range.index, range.length);
-    showToast(`🎨 Color changed to ${color}!`);
-}
-
-function aiCustomAction() {
-    const prompt = document.getElementById('aiCustomPrompt').value.trim();
-    const range = quill.getSelection(true);
-    
-    if (!prompt) {
-        showToast('️ Enter a command first');
-        return;
-    }
-    
-    if (!range || range.length === 0) {
-        showToast('⚠️ Select text to apply the command');
-        return;
-    }
-    
-    const selectedText = quill.getText(range.index, range.length);
-    let result = selectedText;
-    
-    // Smart command parsing
-    const lowerPrompt = prompt.toLowerCase();
-    
-    if (lowerPrompt.includes('uppercase') || lowerPrompt.includes('caps')) {
-        result = selectedText.toUpperCase();
-    } else if (lowerPrompt.includes('lowercase')) {
-        result = selectedText.toLowerCase();
-    } else if (lowerPrompt.includes('title case') || lowerPrompt.includes('capitalize')) {
-        result = selectedText.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-    } else if (lowerPrompt.includes('bold') || lowerPrompt.includes('strong')) {
-        quill.formatText(range.index, range.length, 'bold', true);
-        showToast('✅ Text made bold!');
-        return;
-    } else if (lowerPrompt.includes('italic') || lowerPrompt.includes('em')) {
-        quill.formatText(range.index, range.length, 'italic', true);
-        showToast('✅ Text made italic!');
-        return;
-    } else if (lowerPrompt.includes('reverse') || lowerPrompt.includes('flip')) {
-        result = selectedText.split('').reverse().join('');
-    } else if (lowerPrompt.includes('remove spaces') || lowerPrompt.includes('trim')) {
-        result = selectedText.replace(/\s+/g, ' ').trim();
-    } else if (lowerPrompt.includes('bullet') || lowerPrompt.includes('list')) {
-        const lines = selectedText.split('\n').filter(l => l.trim());
-        result = '\n' + lines.map(l => '• ' + l.trim()).join('\n') + '\n';
-    } else if (lowerPrompt.includes('number') || lowerPrompt.includes('list')) {
-        const lines = selectedText.split('\n').filter(l => l.trim());
-        result = '\n' + lines.map((l, i) => `${i + 1}. ${l.trim()}`).join('\n') + '\n';
-    } else if (lowerPrompt.includes('summary') || lowerPrompt.includes('summarize')) {
-        const sentences = selectedText.split(/[.!?]+/).filter(s => s.trim().length > 20);
-        result = sentences.slice(0, Math.max(1, Math.ceil(sentences.length / 2))).join('. ').trim() + '.';
-    } else if (lowerPrompt.includes('expand') || lowerPrompt.includes('detail')) {
-        result = selectedText + ' Furthermore, this aspect requires careful consideration and detailed analysis to fully understand its implications in the broader context.';
-    } else {
-        // Default: try to apply as formatting or show help
-        showToast('💡 Try: "uppercase", "bold", "bullet list", "summary", "reverse"');
-        return;
-    }
-    
-    quill.deleteText(range.index, range.length);
-    quill.insertText(range.index, result);
-    quill.setSelection(range.index, result.length);
-    showToast(`✅ Applied: ${prompt}`);
-}
-
-
-        function generateAutoSEO() {
-            const text = quill ? quill.getText().trim() : '';
-            if (text.length < 50) {
-                showToast('⚠️ Write at least a paragraph to generate Auto-SEO');
-                return;
-            }
-
-            const stopWords = new Set(['the', 'and', 'for', 'are', 'but', 'not', 'you', 'all', 'any', 'can', 'had', 'her', 'was', 'one', 'our', 'out', 'day', 'get', 'has', 'him', 'his', 'how', 'man', 'new', 'now', 'old', 'see', 'two', 'way', 'who', 'boy', 'did', 'its', 'let', 'put', 'say', 'she', 'too', 'use', 'this', 'that', 'with', 'have', 'from', 'they', 'know', 'want', 'been', 'good', 'much', 'some', 'time', 'very', 'when', 'come', 'here', 'just', 'like', 'long', 'make', 'many', 'over', 'such', 'take', 'than', 'them', 'well', 'were', 'into', 'about', 'could', 'would', 'there', 'their', 'what', 'which', 'where', 'while', 'these', 'those', 'after', 'before', 'during', 'through', 'without', 'within', 'against', 'among', 'across', 'behind', 'beyond', 'beside', 'between', 'despite', 'except', 'inside', 'outside', 'around', 'upon', 'until', 'under', 'above', 'below', 'off', 'on', 'in', 'at', 'by', 'to', 'a', 'an', 'as', 'of', 'or', 'is', 'it', 'we', 'he', 'i', 'me', 'my', 'us', 'our', 'data', 'cyber', 'security', 'attack', 'threat', 'intel', 'intelligence', 'report', 'hackax', 'dyve', 'malware', 'breach', 'information', 'users', 'system', 'systems', 'network', 'networks']);
-            
-            const words = text.toLowerCase().match(/\b[a-z]{4,}\b/g) || [];
-            const freq = {};
-            words.forEach(w => { if (!stopWords.has(w)) freq[w] = (freq[w] || 0) + 1; });
-            
-            const topWords = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 5).map(e => e[0]);
-            const firstSentence = text.split(/[.!?]/)[0].trim();
-            
-            const category = document.getElementById('categorySelect').value;
-            const categoryLabel = { 'breach': 'Data Breach', 'dark-web': 'Dark Web', 'ransomware': 'Ransomware', 'threat-actors': 'Threat Actor', 'signals': 'Signal', 'analysis': 'Analysis' }[category] || 'Intel';
-            
-            const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
-            
-            // Auto Title (Max 60 chars for perfect SEO)
-            let autoTitle = `${cap(topWords[0] || 'Intel')}: ${cap(topWords[1] || categoryLabel)} ${categoryLabel}`;
-            if (autoTitle.length > 60) autoTitle = autoTitle.substring(0, 57) + '...';
-            document.getElementById('titleInput').value = autoTitle;
-            
-            // Auto Description (150-160 chars for perfect CTR)
-            let autoDesc = firstSentence;
-            if (autoDesc.length > 160) autoDesc = autoDesc.substring(0, 157) + '...';
-            else if (autoDesc.length < 120) autoDesc = `${firstSentence}. Dyve HackaX threat intelligence on ${topWords.slice(0,2).join(' and ')}.`;
-            if (autoDesc.length > 160) autoDesc = autoDesc.substring(0, 157) + '...';
-            document.getElementById('descriptionInput').value = autoDesc;
-            
-            // Auto Slug
-            document.getElementById('slugPreview').textContent = generateSlug(autoTitle);
-            
-            // Auto OG Image Prompt (Highly descriptive for AI generation)
-            const ogPrompt = `Cinematic cybersecurity visualization of ${topWords.slice(0,3).join(', ')}. Dark mode neon green and black palette, glowing network nodes, matrix-style data streams, high contrast, 8k resolution, futuristic threat intelligence cover art, no text.`;
-            document.getElementById('ogImagePrompt').value = ogPrompt;
-            
-            document.getElementById('titleInput').dispatchEvent(new Event('input'));
-            document.getElementById('descriptionInput').dispatchEvent(new Event('input'));
-            showToast('✨ Auto-SEO fields generated!');
-        }
-
-        // ============================================
-        // GENERATE ARTICLE HTML (100% SAFE STRING CONCATENATION)
-        // ============================================
-// ============================================
-// GENERATE ARTICLE HTML (TECH-AWARE)
-// ============================================
-// ============================================
-// GENERATE TECH ARTICLE HTML (PROFESSIONAL)
-// ============================================
-function generateArticleHTML(siteUrl, title, desc, image, tag, meta, category, slug, date, articleHTML, ogPrompt = '', selectedPage = 'homepage') {
-    
-    // =========================
-    // TECH PAGE TEMPLATE (PROFESSIONAL)
-    // =========================
-    if (selectedPage === 'tech') {
-        const categoryLabels = {
-            'tech': 'Tech Intelligence',
-            'ai': 'Artificial Intelligence',
-            'technology': 'Technology',
-            'tools': 'Tech Tools',
-            'analysis': 'Deep Dive'
-        };
-        const categoryLabel = categoryLabels[category] || 'Tech Intelligence';
-        const canonicalUrl = siteUrl + '/tech/' + slug + '.html';
-        
-        let articleBody = '<p><em>No content available.</em></p>';
-        if (articleHTML && articleHTML.trim() !== '' && articleHTML !== '<p><br></p>') {
-            articleBody = articleHTML;
-        }
-
-        const safeTitle = title.replace(/"/g, '&quot;');
-        const safeDesc = desc.replace(/"/g, '&quot;');
-
-        return '<!DOCTYPE html>\n' +
-'<html lang="en" class="scroll-smooth">\n' +
-'<head>\n' +
-'<meta charset="UTF-8">\n' +
-'<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">\n' +
-'<title>' + safeTitle + ' | Dyve Tech</title>\n' +
-'<meta name="description" content="' + safeDesc + '">\n' +
-'<meta name="keywords" content="' + tag + ', ' + categoryLabel + ', Dyve Tech, AI News, Technology">\n' +
-'<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">\n' +
-'<link rel="canonical" href="' + canonicalUrl + '">\n' +
-
-'<meta property="og:type" content="article">\n' +
-'<meta property="og:title" content="' + safeTitle + '">\n' +
-'<meta property="og:description" content="' + safeDesc + '">\n' +
-'<meta property="og:url" content="' + canonicalUrl + '">\n' +
-'<meta property="og:image" content="' + image + '">\n' +
-'<meta property="article:published_time" content="' + date + '">\n' +
-'<meta property="article:author" content="Dyve Tech Intelligence Unit">\n' +
-'<meta property="article:section" content="' + categoryLabel + '">\n' +
-
-'<meta name="twitter:card" content="summary_large_image">\n' +
-'<meta name="twitter:title" content="' + safeTitle + '">\n' +
-'<meta name="twitter:description" content="' + safeDesc + '">\n' +
-'<meta name="twitter:image" content="' + image + '">\n' +
-
-'<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
-'<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">\n' +
-'<link rel="stylesheet" href="../tech-article.css">\n' +
-
-'<script type="application/ld+json">\n' +
-'{\n' +
-'  "@context": "https://schema.org",\n' +
-'  "@type": "TechArticle",\n' +
-'  "headline": "' + safeTitle + '",\n' +
-'  "description": "' + safeDesc + '",\n' +
-'  "image": ["' + image + '"],\n' +
-'  "author": { "@type": "Organization", "name": "Dyve Tech Intelligence Unit" },\n' +
-'  "publisher": { "@type": "Organization", "name": "Dyve Tech", "logo": { "@type": "ImageObject", "url": "https://dyve.online/logo.png" } },\n' +
-'  "datePublished": "' + date + '",\n' +
-'  "articleSection": "' + categoryLabel + '"\n' +
-'}\n' +
-'<\/script>\n' +
-'</head>\n' +
-'<body>\n' +
-
-'<header class="tech-header">\n' +
-'  <div class="tech-header-inner">\n' +
-'    <button class="tech-back-btn" onclick="goBack()" aria-label="Go back">←</button>\n' +
-'    <div class="tech-logo">DYVE<span style="opacity:0.5">|</span>TECH</div>\n' +
-'    <nav class="tech-nav">\n' +
-'      <a href="../tech/index.html">Latest</a>\n' +
-'      <a href="../tech/">AI</a>\n' +
-'      <a href="../tech/">Tools</a>\n' +
-'      <a href="../tech/">Deep Dives</a>\n' +
-'    </nav>\n' +
-'  </div>\n' +
-'</header>\n' +
-
-'<main class="tech-main">\n' +
-'  <div class="tech-container">\n' +
-'    <nav class="tech-breadcrumb" aria-label="Breadcrumb">\n' +
-'      <a href="../tech/index.html">Dyve Tech</a>\n' +
-'      <span class="separator">/</span>\n' +
-'      <a href="../tech/">' + categoryLabel + '</a>\n' +
-'      <span class="separator">/</span>\n' +
-'      <span class="current">' + safeTitle.substring(0, 50) + (safeTitle.length > 50 ? '...' : '') + '</span>\n' +
-'    </nav>\n' +
-
-'    <article class="tech-article" itemscope itemtype="https://schema.org/TechArticle">\n' +
-'      <meta itemprop="headline" content="' + safeTitle + '">\n' +
-'      <meta itemprop="description" content="' + safeDesc + '">\n' +
-'      <meta itemprop="image" content="' + image + '">\n' +
-'      <meta itemprop="datePublished" content="' + date + '">\n' +
-'      <meta itemprop="author" content="Dyve Tech Intelligence Unit">\n' +
-
-'      <div class="article-header">\n' +
-'        <span class="category-badge">' + categoryLabel + '</span>\n' +
-'        <h1 itemprop="name">' + title + '</h1>\n' +
-'        <p class="article-subhead" itemprop="description">' + desc + '</p>\n' +
-'        <div class="article-meta">\n' +
-'          <div class="author-info">\n' +
-'            <div class="author-avatar">DT</div>\n' +
-'            <div>\n' +
-'              <div class="author-name">Dyve Tech Intelligence Unit</div>\n' +
-'              <time datetime="' + date + '">' + date + '</time>\n' +
-'            </div>\n' +
-'          </div>\n' +
-'          <span class="meta-status">' + meta + '</span>\n' +
-'        </div>\n' +
-'      </div>\n' +
-
-'      <figure class="article-hero">\n' +
-'        <img src="' + image + '" alt="' + safeDesc.substring(0, 100) + '" loading="lazy" itemprop="image">\n' +
-'      </figure>\n' +
-
-'      <div class="article-content" itemprop="articleBody">\n' +
-articleBody + '\n' +
-'      </div>\n' +
-
-'      <div class="article-tags">\n' +
-'        <span class="tag">' + tag + '</span>\n' +
-'        <span class="tag">' + categoryLabel + '</span>\n' +
-'        <span class="tag">Dyve Tech</span>\n' +
-'      </div>\n' +
-'    </article>\n' +
-
-'    <aside class="tech-sidebar">\n' +
-'      <div class="sidebar-card">\n' +
-'        <h3 class="sidebar-title">Article Info</h3>\n' +
-'        <div class="info-item">\n' +
-'          <label>Category</label>\n' +
-'          <value>' + categoryLabel + '</value>\n' +
-'        </div>\n' +
-'        <div class="info-item">\n' +
-'          <label>Tag</label>\n' +
-'          <value>' + tag + '</value>\n' +
-'        </div>\n' +
-'        <div class="info-item">\n' +
-'          <label>Status</label>\n' +
-'          <value>' + meta + '</value>\n' +
-'        </div>\n' +
-'        <div class="info-item">\n' +
-'          <label>Published</label>\n' +
-'          <value>' + date + '</value>\n' +
-'        </div>\n' +
-'      </div>\n' +
-
-'      <div class="sidebar-card share-card">\n' +
-'        <h3 class="sidebar-title">Share</h3>\n' +
-'        <button onclick="copyLink()" class="share-btn">Copy Link</button>\n' +
-'        <button onclick="shareX()" class="share-btn">Share on X</button>\n' +
-'        <button onclick="shareLinkedIn()" class="share-btn">Share on LinkedIn</button>\n' +
-'      </div>\n' +
-'    </aside>\n' +
-'  </div>\n' +
-
-'  <section class="tech-cta">\n' +
-'    <div class="cta-card">\n' +
-'      <h2>Stay ahead of the tech curve</h2>\n' +
-'      <p>Get weekly AI news, tech updates, and deep-dive analysis delivered to your inbox.</p>\n' +
-'      <a href="../tech/" class="cta-btn">Explore Dyve Tech →</a>\n' +
-'    </div>\n' +
-'  </section>\n' +
-
-'  <footer class="tech-footer">\n' +
-'    <div class="footer-container">\n' +
-'      <div class="footer-brand">\n' +
-'        <div class="footer-logo">DYVE<span style="opacity:0.5">|</span>TECH</div>\n' +
-'        <nav class="footer-nav">\n' +
-'          <a href="../tech/">Latest</a>\n' +
-'          <a href="../tech/about/">About</a>\n' +
-'          <a href="../tech/newsletter/">Newsletter</a>\n' +
-'          <a href="../contact/">Contact</a>\n' +
-'        </nav>\n' +
-'      </div>\n' +
-'      <div class="footer-legal">\n' +
-'        <span>© 2026 Dyve Tech</span>\n' +
-'        <a href="../privacy-policy/index.html">Privacy</a>\n' +
-'        <a href="../terms-of-service/index.html">Terms</a>\n' +
-'      </div>\n' +
-'    </div>\n' +
-'  </footer>\n' +
-'</main>\n' +
-
-'<script>\n' +
-'function copyLink(){ navigator.clipboard.writeText(window.location.href); alert("Link copied!"); }\n' +
-'function shareX(){ window.open("https://twitter.com/intent/tweet?url=" + encodeURIComponent(window.location.href), "_blank"); }\n' +
-'function shareLinkedIn(){ window.open("https://www.linkedin.com/sharing/share-offsite/?url=" + encodeURIComponent(window.location.href), "_blank"); }\n' +
-'function goBack(){ if(document.referrer && document.referrer !== window.location.href){ window.history.back(); } else { window.location.href = "../tech/index.html"; } }\n' +
-'<\/script>\n' +
-'</body>\n' +
-'</html>';
-    }
-
-
-
-    // =========================
-    // DEFAULT HACKAX TEMPLATE (for all other pages)
-    // =========================
-    const categoryLabels = {
-        'breach': 'Data Breach',
-        'dark-web': 'Dark Web Intel',
-        'ransomware': 'Ransomware Intelligence',
-        'threat-actors': 'Threat Actors',
-        'signals': 'Threat Signals',
-        'analysis': 'Threat Analysis'
-    };
-    const categoryLabel = categoryLabels[category] || 'Intelligence';
-    const isNested = (category === 'dark-web' || category === 'ransomware');
-    const pathDepth = isNested ? '../..' : '..';
-    const canonicalUrl = isNested ? siteUrl + '/article/' + category + '/' + slug + '.html' : siteUrl + '/article/' + slug + '.html';
-    
-    let articleBody = '<p><em>No content available.</em></p>';
-    if (articleHTML && articleHTML.trim() !== '' && articleHTML !== '<p><br></p>') {
-        articleBody = articleHTML;
-    }
-
-    const safeTitle = title.replace(/"/g, '&quot;');
-    const safeDesc = desc.replace(/"/g, '&quot;');
-
-    return '<!DOCTYPE html>\n' +
-'<html lang="en">\n' +
-'<head>\n' +
-'<meta charset="UTF-8">\n' +
-'<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
-'<title>' + safeTitle + ' | Dyve HackaX Intel</title>\n' +
-'<meta name="description" content="' + safeDesc + '">\n' +
-'<meta name="keywords" content="' + tag + ', ' + categoryLabel + ', Dyve HackaX, Cyber Threat Intelligence">\n' +
-'<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">\n' +
-'<link rel="canonical" href="' + canonicalUrl + '">\n' +
-'<link rel="author" href="' + siteUrl + '/about-us/">\n' +
-
-'<meta property="og:type" content="article">\n' +
-'<meta property="og:title" content="' + safeTitle + '">\n' +
-'<meta property="og:description" content="' + safeDesc + '">\n' +
-'<meta property="og:url" content="' + canonicalUrl + '">\n' +
-'<meta property="og:image" content="' + image + '">\n' +
-'<meta property="og:image:alt" content="' + safeDesc + '">\n' +
-'<meta property="article:published_time" content="' + date + '">\n' +
-'<meta property="article:author" content="Dyve HackaX Intelligence Unit">\n' +
-'<meta property="article:section" content="' + categoryLabel + '">\n' +
-'<meta property="article:tag" content="' + tag + '">\n' +
-
-'<meta name="twitter:card" content="summary_large_image">\n' +
-'<meta name="twitter:title" content="' + safeTitle + '">\n' +
-'<meta name="twitter:description" content="' + safeDesc + '">\n' +
-'<meta name="twitter:image" content="' + image + '">\n' +
-
-'<link rel="icon" href="https://dyve.online/favicon.ico">\n' +
-'<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">\n' +
-'<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">\n' +
-'<link rel="stylesheet" href="../article.css">\n' +
-
-'<script type="application/ld+json">\n' +
-'[\n' +
-'{\n' +
-'  "@context": "https://schema.org",\n' +
-'  "@type": "NewsArticle",\n' +
-'  "headline": "' + safeTitle + '",\n' +
-'  "description": "' + safeDesc + '",\n' +
-'  "image": ["' + image + '"],\n' +
-'  "author": { "@type": "Organization", "name": "Dyve HackaX Intelligence Unit" },\n' +
-'  "publisher": { "@type": "Organization", "name": "Dyve", "logo": { "@type": "ImageObject", "url": "https://dyve.online/logo.png" } },\n' +
-'  "datePublished": "' + date + '"\n' +
-'},\n' +
-'{\n' +
-'  "@context": "https://schema.org",\n' +
-'  "@type": "BreadcrumbList",\n' +
-'  "itemListElement": [\n' +
-'    { "@type": "ListItem", "position": 1, "name": "Home", "item": "' + siteUrl + '" },\n' +
-'    { "@type": "ListItem", "position": 2, "name": "' + categoryLabel + '", "item": "' + siteUrl + '/' + category + '/" },\n' +
-'    { "@type": "ListItem", "position": 3, "name": "' + safeTitle + '", "item": "' + canonicalUrl + '" }\n' +
-'  ]\n' +
-'}\n' +
-']\n' +
-'<\/script>\n' +
-'</head>\n' +
-'<body>\n' +
-'<header class="header">\n' +
-'<div class="header-inner">\n' +
-'  <button class="back-btn" onclick="goBack()">←</button>\n' +
-'  <div class="logo">DYVE // HACKAX CORE</div>\n' +
-'  <div></div>\n' +
-'</div>\n' +
-'</header>\n' +
-'<div class="layout">\n' +
-'<aside class="sidebar">\n' +
-'  <div class="intel-box">\n' +
-'    <div class="intel-title">INTELLIGENCE</div>\n' +
-'    <div class="intel-item"><div class="intel-label">Classification</div><div class="intel-value">' + categoryLabel + '</div></div>\n' +
-'    <div class="intel-item"><div class="intel-label">Scope</div><div class="intel-value">Global</div></div>\n' +
-'    <div class="intel-item"><div class="intel-label">Threat Type</div><div class="intel-value">' + tag + '</div></div>\n' +
-'    <div class="intel-item"><div class="intel-label">Urgency</div><div class="intel-value">' + meta + '</div></div>\n' +
-(ogPrompt ? '    <div class="intel-item"><div class="intel-label">Visual Prompt</div><div class="intel-value" style="font-size:10px;line-height:1.2;">' + ogPrompt.replace(/"/g, '&quot;') + '</div></div>\n' : '') +
-'  </div>\n' +
-'</aside>\n' +
-'<main class="article" itemscope itemtype="https://schema.org/Article">\n' +
-'<meta itemprop="headline" content="' + safeTitle + '">\n' +
-'<meta itemprop="description" content="' + safeDesc + '">\n' +
-'<meta itemprop="image" content="' + image + '">\n' +
-'<meta itemprop="datePublished" content="' + date + '">\n' +
-'<meta itemprop="author" content="Dyve HackaX Intelligence Unit">\n' +
-'<div class="breadcrumb" aria-label="Breadcrumb">[ LIVE INTEL FEED ] / ' + categoryLabel.toUpperCase() + ' / ' + tag + '</div>\n' +
-'<h1 itemprop="name">' + title + '</h1>\n' +
-'<div class="subhead" itemprop="description">' + desc + '</div>\n' +
-'<div class="meta">HackaX Intelligence Unit • <time itemprop="datePublished" datetime="' + date + '">' + date + '</time> • Action Required</div>\n' +
-'<div class="hero">\n' +
-'<img src="' + image + '" alt="' + safeDesc.substring(0, 100) + '" loading="lazy">\n' +
-'</div>\n' +
-'<div class="share">\n' +
-'<button onclick="copyLink()">Copy</button>\n' +
-'<button onclick="shareX()">Share</button>\n' +
-'</div>\n' +
-'<div class="content" itemprop="articleBody">\n' +
-articleBody + '\n' +
-'</div>\n' +
-'</main>\n' +
-'</div>\n' +
-'<section class="hx-cta">\n' +
-'  <div class="hx-cta-card">\n' +
-'    <h2 class="hx-cta-title">Access HackaX Intelligence for 15 days</h2>\n' +
-'    <p class="hx-cta-desc">Monitor breach signals, track threat actors, and analyze underground activity across global intelligence networks.</p>\n' +
-'    <a href="#" class="hx-cta-btn">Start free access →</a>\n' +
-'  </div>\n' +
-'</section>\n' +
-'<footer class="hx-footer">\n' +
-'  <div class="hx-footer-logo">DYVE // HACKAX</div>\n' +
-'  <div class="hx-accordion">\n' +
-'    <div class="hx-item"><div class="hx-head">Get Started <span>+</span></div><div class="hx-body"><a href="#">Platform Overview</a><a href="#">Live Intelligence</a><a href="#">API Access</a></div></div>\n' +
-'    <div class="hx-item"><div class="hx-head">Company <span>+</span></div><div class="hx-body"><a href="#">About</a><a href="#">Research</a><a href="#">Careers</a></div></div>\n' +
-'    <div class="hx-item"><div class="hx-head">Partners <span>+</span></div><div class="hx-body"><a href="#">Integrations</a><a href="#">Affiliates</a></div></div>\n' +
-'    <div class="hx-item"><div class="hx-head">Support <span>+</span></div><div class="hx-body"><a href="#">Help Center</a><a href="#">Contact</a></div></div>\n' +
-'  </div>\n' +
-'  <div class="hx-legal">\n' +
-'    <span>© 2026 Dyve</span>\n' +
-'    <a href="' + pathDepth + '/privacy-policy/index.html">Privacy</a>\n' +
-'    <a href="' + pathDepth + '/terms-of-service/index.html">Terms</a>\n' +
-'  </div>\n' +
-'</footer>\n' +
-'<script>\n' +
-'function copyLink(){ navigator.clipboard.writeText(window.location.href); }\n' +
-'function shareX(){ window.open("https://twitter.com/intent/tweet?url=" + window.location.href); }\n' +
-'function goBack(){ if(document.referrer && document.referrer !== window.location.href){ window.history.back(); } else { window.location.href = "' + pathDepth + '/index.html"; } }\n' +
-'document.querySelectorAll(".hx-head").forEach(h=>{ h.addEventListener("click",()=>{ h.parentElement.classList.toggle("active"); }); });\n' +
-'<\/script>\n' +
-'</body>\n' +
-'</html>';
-}
-
-
-
-
-// ============================================
-// AUTO SITEMAP GENERATION
-// ============================================
-function generateSitemapXML(articles, siteUrl) {
-  const staticPages = [
-    { url: '/', changefreq: 'daily', priority: '1.0' },
-    { url: '/breaches/', changefreq: 'daily', priority: '0.9' },
-    { url: '/dark-web/', changefreq: 'daily', priority: '0.9' },
-    { url: '/ransomware/', changefreq: 'daily', priority: '0.9' },
-    { url: '/threat-actors/', changefreq: 'weekly', priority: '0.8' },
-    { url: '/signals/', changefreq: 'daily', priority: '0.8' },
-    { url: '/analysis/', changefreq: 'weekly', priority: '0.7' },
-    { url: '/about-us/', changefreq: 'monthly', priority: '0.5' },
-    { url: '/faq/', changefreq: 'monthly', priority: '0.5' },
-    { url: '/privacy-policy/', changefreq: 'yearly', priority: '0.3' },
-    { url: '/terms-of-service/', changefreq: 'yearly', priority: '0.3' }
-  ];
-
-  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
-  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
-
-  // Add static pages
-  staticPages.forEach(page => {
-    xml += '  <url>\n';
-    xml += '    <loc>' + siteUrl + page.url + '</loc>\n';
-    xml += '    <changefreq>' + page.changefreq + '</changefreq>\n';
-    xml += '    <priority>' + page.priority + '</priority>\n';
-    xml += '  </url>\n';
-  });
-
-  // Add all articles from articles.json
-  const today = new Date().toISOString().split('T')[0];
-  articles.forEach(article => {
-    const articleUrl = article.url.startsWith('http') 
-      ? article.url 
-      : siteUrl + '/' + article.url;
-    const lastmod = article.date || today;
-    
-    // Determine priority based on page and category
-    let priority = '0.8';
-    if (article.page === 'tech' || article.category === 'ransomware' || article.category === 'dark-web') {
-      priority = '0.9';
-    }
-    
-    xml += '  <url>\n';
-    xml += '    <loc>' + articleUrl + '</loc>\n';
-    xml += '    <lastmod>' + lastmod + '</lastmod>\n';
-    xml += '    <changefreq>weekly</changefreq>\n';
-    xml += '    <priority>' + priority + '</priority>\n';
-    xml += '  </url>\n';
-  });
-
-
-  xml += '</urlset>';
-  return xml;
-}
-
-// ============================================
-// AUTO ROBOTS.TXT GENERATION
-// ============================================
-function generateRobotsTXT(siteUrl) {
-  return `# Dyve HackaX - Cyber Intelligence Platform
-# Generated automatically on ${new Date().toISOString().split('T')[0]}
-# Do not edit manually - changes will be overwritten
-
-User-agent: *
-Allow: /
-Allow: /article/
-Allow: /breaches/
-Allow: /dark-web/
-Allow: /ransomware/
-Allow: /threat-actors/
-Allow: /signals/
-Allow: /analysis/
-Allow: /faq/
-Allow: /about-us/
-
-# Block admin/editor paths
-Disallow: /admin/
-Disallow: /editor/
-Disallow: /settings/
-Disallow: /drafts/
-Disallow: /published/
-Disallow: /*.json$
-Disallow: /assets/articles.json
-
-# Block duplicate content
-Disallow: /*?mode=edit
-Disallow: /*?ref=
-
-# Sitemaps
-Sitemap: ${siteUrl}/sitemap.xml
-
-# Crawl-delay for heavy bots
-User-agent: AhrefsBot
-Crawl-delay: 10
-
-User-agent: SemrushBot
-Crawl-delay: 10
-
-# Optimize for Google
-User-agent: Googlebot
-Allow: /
-Allow: /*.html$
-Allow: /*.css$
-Allow: /*.js$
-`;
-}
-
-// ============================================
-// UPDATE SITEMAP & ROBOTS ON GITHUB
-// ============================================
-async function updateSitemapAndRobots(config, articles) {
-  try {
-    const siteUrl = config.siteUrl || 'https://dyve.online';
-    
-    // Generate fresh sitemap
-    const sitemapXML = generateSitemapXML(articles, siteUrl);
-    const sitemapBase64 = btoa(unescape(encodeURIComponent(sitemapXML)));
-    
-    // Generate fresh robots.txt
-    const robotsTXT = generateRobotsTXT(siteUrl);
-    const robotsBase64 = btoa(unescape(encodeURIComponent(robotsTXT)));
-    
-    // Fetch current sitemap to get SHA (for update)
-    const sitemapRes = await fetch(`https://api.github.com/repos/${config.repo}/contents/sitemap.xml?ref=${config.branch}`, {
-      headers: { 'Authorization': `token ${config.token}` }
-    });
-    
-    let sitemapSha = '';
-    if (sitemapRes.ok) {
-      const sitemapData = await sitemapRes.json();
-      sitemapSha = sitemapData.sha;
-    }
-    
-    // Fetch current robots.txt to get SHA
-    const robotsRes = await fetch(`https://api.github.com/repos/${config.repo}/contents/robots.txt?ref=${config.branch}`, {
-      headers: { 'Authorization': `token ${config.token}` }
-    });
-    
-    let robotsSha = '';
-    if (robotsRes.ok) {
-      const robotsData = await robotsRes.json();
-      robotsSha = robotsData.sha;
-    }
-    
-    // Push updated sitemap.xml
-    const sitemapPayload = {
-      message: 'chore: auto-update sitemap.xml - new article published',
-      content: sitemapBase64,
-      branch: config.branch
-    };
-    if (sitemapSha) sitemapPayload.sha = sitemapSha;
-    
-    await fetch(`https://api.github.com/repos/${config.repo}/contents/sitemap.xml`, {
-      method: 'PUT',
-      headers: { 'Authorization': `token ${config.token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify(sitemapPayload)
-    });
-    
-    // Push updated robots.txt
-    const robotsPayload = {
-      message: 'chore: auto-update robots.txt',
-      content: robotsBase64,
-      branch: config.branch
-    };
-    if (robotsSha) robotsPayload.sha = robotsSha;
-    
-    await fetch(`https://api.github.com/repos/${config.repo}/contents/robots.txt`, {
-      method: 'PUT',
-      headers: { 'Authorization': `token ${config.token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify(robotsPayload)
-    });
-    
-    console.log('✅ Sitemap and robots.txt updated on GitHub');
-    return true;
-  } catch (error) {
-    console.error('Error updating sitemap/robots:', error);
-    return false;
-  }
-}
-
-// ============================================
-// PING GOOGLE FOR INSTANT INDEXING
-// ============================================
-async function pingGoogleIndexing(siteUrl) {
-  try {
-    // Method 1: Ping sitemap (simplest, works for all sites)
-    const pingUrl = `https://www.google.com/ping?sitemap=${encodeURIComponent(siteUrl + '/sitemap.xml')}`;
-    
-    // Use a no-cors fetch to ping Google (won't return response but triggers crawl)
-    await fetch(pingUrl, { mode: 'no-cors' });
-    
-    // Method 2: Also ping Bing for extra coverage
-    await fetch(`https://www.bing.com/ping?sitemap=${encodeURIComponent(siteUrl + '/sitemap.xml')}`, { mode: 'no-cors' });
-    
-    console.log('🔔 Google and Bing pinged for indexing');
-    return true;
-  } catch (error) {
-    console.error('Error pinging search engines:', error);
-    return false;
-  }
-}
-
-
-        // ============================================
-        // PUBLISH ENGINE
-        // ============================================
-        async function publishArticle() {
-            const config = getGitHubConfig();
-            
-            if (!config.token || !config.repo) {
-                showToast('❌ GitHub not configured! Go to Settings first.');
-                return;
-            }
-
-            const title = document.getElementById('titleInput').value.trim();
-            const description = document.getElementById('descriptionInput').value.trim();
-            const category = document.getElementById('categorySelect').value.trim();
-            const intelTag = document.getElementById('intelTagInput').value.trim() || 'INTEL';
-            const metaStatus = document.getElementById('metaStatusInput').value.trim() || 'Active Threat';
-            
-            const imgInput = document.getElementById('imageUrlInput');
-            const imageUrl = (imgInput ? imgInput.value.trim() : '') || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800';
-            
-            if (!title || !description) {
-                showToast('❌ Title and Description are required');
-                return;
-            }
-
-            const slug = window.isEditMode ? window.editArticleSlug : generateSlug(title);
-            const selectedPage = document.getElementById('pageSelect').value;
-            const publishBtn = document.getElementById('publishBtn');
-            publishBtn.classList.add('loading');
-            publishBtn.textContent = window.isEditMode ? 'Updating...' : 'Publishing...';
-
-                        try {
-                const today = new Date().toISOString().split('T')[0];
-                
-                // Determine article URL based on selected page
-                let articleUrl;
-                let pagePath = '';
-                
-                if (selectedPage === 'homepage') {
-                    // Default behavior - publish to main article folder
-                    const isNested = (category === 'dark-web' || category === 'ransomware');
-                    articleUrl = isNested ? `article/${category}/${slug}.html` : `article/${slug}.html`;
-                    pagePath = '';
-                } else {
-                    // Publish to specific page folder
-                    articleUrl = `${selectedPage}/${slug}.html`;
-                    pagePath = selectedPage + '/';
-                }
-
-
-                const editorContent = quill ? quill.getContents() : { ops: [] }; // Keep for articles.json state
-
-const editorHTML = quill ? quill.root.innerHTML : '';
-const ogPrompt = document.getElementById('ogImagePrompt') ? document.getElementById('ogImagePrompt').value.trim() : '';
-
-// Pass editorHTML and the new ogPrompt to the generator
-const htmlContent = generateArticleHTML(config.siteUrl, title, description, imageUrl, intelTag, metaStatus, category, slug, today, editorHTML, ogPrompt, selectedPage);
-
-
-
-                const htmlBase64 = btoa(unescape(encodeURIComponent(htmlContent)));
-
-                const fetchRes = await fetch(`https://api.github.com/repos/${config.repo}/contents/assets/articles.json?ref=${config.branch}`, {
-                    headers: { 'Authorization': `token ${config.token}` }
-                });
-                
-                let articles = [];
-                let jsonSha = '';
-                
-                if (fetchRes.ok) {
-                    const jsonData = await fetchRes.json();
-                    jsonSha = jsonData.sha;
-                    const decodedContent = atob(jsonData.content);
-                    articles = JSON.parse(decodedContent);
-                }
-
-                                const newArticle = {
-                    title: title,
-                    desc: description,
-                    image: imageUrl,
-                    url: articleUrl,
-                    tag: intelTag.toUpperCase(),
-                    meta: metaStatus,
-                    category: category,
-                    date: today,
-                    page: selectedPage, // Track which page this article belongs to
-                    content: JSON.stringify(editorContent)
-                };
-
-
-                if (window.isEditMode && window.editArticleIndex !== undefined) {
-                    articles[window.editArticleIndex] = newArticle;
-                } else {
-                    articles.unshift(newArticle);
-                }
-
-                const newJsonContent = JSON.stringify(articles, null, 2);
-                const jsonBase64 = btoa(unescape(encodeURIComponent(newJsonContent)));
-
-                await fetch(`https://api.github.com/repos/${config.repo}/contents/${articleUrl}`, {
-                    method: 'PUT',
-                    headers: { 'Authorization': `token ${config.token}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: `${window.isEditMode ? 'update' : 'feat'}: ${title}`, content: htmlBase64, branch: config.branch })
-                });
-
-                await fetch(`https://api.github.com/repos/${config.repo}/contents/assets/articles.json`, {
-                    method: 'PUT',
-                    headers: { 'Authorization': `token ${config.token}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: `${window.isEditMode ? 'update' : 'chore'}: articles.json`, content: jsonBase64, sha: jsonSha, branch: config.branch })
-                });
-
-                if (window.isEditMode) {
-                    localStorage.removeItem('dyve-edit-article');
-                    window.isEditMode = false;
-                    window.editArticleIndex = undefined;
-                    window.editArticleSlug = undefined;
-                    
-                    publishBtn.textContent = 'Update Intel';
-                    publishBtn.classList.remove('bg-yellow-500', 'hover:bg-yellow-600');
-                    publishBtn.classList.add('bg-dyve-accent', 'hover:bg-dyve-accentHover');
-                    
-                    showToast('✅ Article updated successfully! Redirecting...');
-                    setTimeout(() => { window.location.href = 'published.html'; }, 1500);
-                              } else {
-                    showToast('✅ Intel Published! Updating sitemap...');
-                    clearForm();
-                    await loadExistingArticles();
-                    
-                    // AUTO: Update sitemap.xml and robots.txt
-                    const sitemapUpdated = await updateSitemapAndRobots(config, articles);
-                    
-                    if (sitemapUpdated) {
-                        showToast('🗺️ Sitemap updated! Pinging Google...');
-                        
-                        // AUTO: Ping Google for instant indexing
-                        await pingGoogleIndexing(config.siteUrl);
-                        
-                        showToast(' Published, sitemap updated & Google notified!');
-                    } else {
-                        showToast('✅ Published! (Sitemap update failed - check console)');
-                    }
-                }
-
-
-            } catch (error) {
-                console.error('Publish error:', error);
-                showToast('❌ Error: ' + error.message);
-            } finally {
-                publishBtn.classList.remove('loading');
-                publishBtn.textContent = window.isEditMode ? 'Update Intel' : 'Publish Intel';
-            }
-        }
-
-                function clearForm() {
-            document.getElementById('titleInput').value = '';
-            document.getElementById('descriptionInput').value = '';
-            document.getElementById('categorySelect').value = 'breach';
-            document.getElementById('pageSelect').value = 'homepage'; // Reset to homepage
-            document.getElementById('intelTagInput').value = '';
-            document.getElementById('metaStatusInput').value = '';
-            const imgInput = document.getElementById('imageUrlInput');
-            if (imgInput) imgInput.value = '';
-            document.getElementById('slugPreview').textContent = 'your-intel-slug';
-            document.getElementById('descCharCount').textContent = '0';
-            document.getElementById('seoAnalysis').innerHTML = '<div class="text-sm text-gray-500">Start writing to see SEO suggestions...</div>';
-            document.getElementById('linkSuggestions').innerHTML = '<div class="text-sm text-gray-500">Publish articles to see suggestions...</div>';
-            if (quill) quill.setContents([]);
-            const preview = document.getElementById('featuredImagePreview');
-            if (preview) preview.classList.add('hidden');
-        }
-
-
-        // ============================================
-        // GITHUB CONFIG & STATUS
-        // ============================================
-        function getGitHubConfig() {
-            const settings = JSON.parse(localStorage.getItem('dyve-settings') || '{}');
-            return {
-                token: settings.githubToken || '',
-                repo: settings.githubRepo || '',
-                branch: settings.githubBranch || 'main',
-                siteUrl: settings.siteUrl || 'https://dyve.online'
-            };
-        }
-
-        async function checkGitHubConnection() {
-            const config = getGitHubConfig();
-            const statusDot = document.getElementById('statusDot');
-            const statusText = document.getElementById('statusText');
-            const refreshIcon = document.getElementById('refreshIcon');
-            
-            refreshIcon.classList.add('animate-spin');
-            statusText.textContent = 'Checking...';
-            statusDot.className = 'w-2 h-2 rounded-full bg-yellow-500';
-            
-            if (!config.token || !config.repo) {
-                statusDot.className = 'w-2 h-2 rounded-full bg-red-500';
-                statusText.textContent = 'Not Configured';
-                refreshIcon.classList.remove('animate-spin');
-                return false;
-            }
-            
-            try {
-                const response = await fetch(`https://api.github.com/repos/${config.repo}`, {
-                    headers: { 'Authorization': `token ${config.token}` }
-                });
-                
-                if (response.ok) {
-                    statusDot.className = 'w-2 h-2 rounded-full bg-green-500';
-                    statusText.textContent = 'Connected';
-                    refreshIcon.classList.remove('animate-spin');
-                    return true;
-                } else {
-                    statusDot.className = 'w-2 h-2 rounded-full bg-red-500';
-                    statusText.textContent = 'Connection Failed';
-                    refreshIcon.classList.remove('animate-spin');
-                    return false;
-                }
-            } catch (error) {
-                statusDot.className = 'w-2 h-2 rounded-full bg-red-500';
-                statusText.textContent = 'Offline';
-                refreshIcon.classList.remove('animate-spin');
-                return false;
-            }
-        }
-
-        // ============================================
-        // INITIALIZATION
-        // ============================================
-        document.addEventListener('DOMContentLoaded', () => {
-            quill = new Quill('#editor', {
-                theme: 'snow',
-                placeholder: 'Begin intelligence report...',
-                modules: {
-                    toolbar: {
-                        container: [
-                            [{ 'header': [1, 2, 3, false] }],
-                            ['bold', 'italic', 'underline', 'strike'],
-                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                            ['blockquote', 'code-block'],
-                            ['link', 'image'],
-                            ['clean']
-                        ],
-                        handlers: {
-                            image: imageHandler
-                        }
-                    }
-                }
-            });
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const mode = urlParams.get('mode');
-            
-            if (mode === 'edit') {
-                const editData = JSON.parse(localStorage.getItem('dyve-edit-article') || '{}');
-                
-                if (editData && editData.title) {
-                    document.getElementById('titleInput').value = editData.title || '';
-                    document.getElementById('descriptionInput').value = editData.desc || '';
-                    document.getElementById('categorySelect').value = editData.category || 'breach';
-                    document.getElementById('intelTagInput').value = editData.tag || '';
-                    document.getElementById('metaStatusInput').value = editData.meta || '';
-                    
-                    const imgInput = document.getElementById('imageUrlInput');
-                    if (imgInput) imgInput.value = editData.image || '';
-                    
-                    const publishBtn = document.getElementById('publishBtn');
-                    publishBtn.textContent = 'Update Intel';
-                    publishBtn.classList.remove('bg-dyve-accent', 'hover:bg-dyve-accentHover');
-                    publishBtn.classList.add('bg-yellow-500', 'hover:bg-yellow-600');
-                    
-                    window.isEditMode = true;
-                    window.editArticleIndex = editData.index;
-                    window.editArticleSlug = editData.slug;
-                    
-                    if (editData.content) {
-                        try {
-                            quill.setContents(JSON.parse(editData.content));
-                            showToast('📝 Editing article - loaded from local draft');
-                        } catch(e) {
-                            console.error("Failed to parse edit content", e);
-                        }
-                                        } else {
-                        const config = getGitHubConfig();
-                        // Use the full URL from the article data to support nested categories
-                        const fetchPath = editData.url || `article/${editData.slug}.html`;
-                        fetch(`https://api.github.com/repos/${config.repo}/contents/${fetchPath}?ref=${config.branch}`, {
-                            headers: { 'Authorization': `token ${config.token}` }
-                        })
-
-                                               .then(res => res.json())
-                        .then(data => {
-                            if (data.content) {
-                                // FIX: Added UTF-8 decoding to prevent mojibake (ÃÂ characters)
-                                const htmlContent = decodeURIComponent(escape(atob(data.content)));
-                                const bodyMatch = htmlContent.match(/<div class="content"[^>]*>([\s\S]*?)<\/div>\s*<\/main>/);
-                                if (bodyMatch && bodyMatch[1]) {
-                                    const delta = simpleHtmlToDelta(bodyMatch[1].trim());
-                                    quill.setContents(delta);
-                                    showToast('✅ Article content loaded from GitHub');
-                                }
-                            }
-                        })
-
-                        .catch(error => {
-                            console.error('Error loading article content:', error);
-                        });
-                    }
-                }
-            }
-
-            document.getElementById('titleInput').addEventListener('input', (e) => {
-                document.getElementById('slugPreview').textContent = generateSlug(e.target.value) || 'your-intel-slug';
-            });
-
-            document.getElementById('descriptionInput').addEventListener('input', (e) => {
-                const len = e.target.value.length;
-                document.getElementById('descCharCount').textContent = len + '/160 characters';
-                
-                const qualityEl = document.getElementById('descQuality');
-                if (len === 0) {
-                    qualityEl.textContent = 'Waiting for input...';
-                    qualityEl.className = 'text-gray-400';
-                } else if (len >= 140 && len <= 160) {
-                    qualityEl.textContent = '✅ Perfect length for SEO';
-                    qualityEl.className = 'desc-quality-good font-bold';
-                } else if (len >= 120 && len < 140) {
-                    qualityEl.textContent = '⚠️ Good, but could be longer';
-                    qualityEl.className = 'desc-quality-warn';
-                } else if (len > 160) {
-                    qualityEl.textContent = '❌ Too long (will be truncated)';
-                    qualityEl.className = 'desc-quality-bad';
-                } else {
-                    qualityEl.textContent = '⚠️ Too short for optimal CTR';
-                    qualityEl.className = 'desc-quality-warn';
-                }
-            });
-
-            document.getElementById('featuredImageInput').addEventListener('change', handleFeaturedImageUpload);
-                        document.getElementById('analyzeSeoBtn').addEventListener('click', analyzeSEO);
-            document.getElementById('suggestLinksBtn').addEventListener('click', suggestInternalLinks);
-                        document.getElementById('generateAutoSeoBtn').addEventListener('click', generateAutoSEO);
-            document.getElementById('autoGenerateDescBtn').addEventListener('click', autoGenerateMetaDescription);
-            
-            // AI Assistant Panel Toggle
-            const aiBtn = document.getElementById('aiAssistantBtn');
-            const aiPanel = document.getElementById('aiAssistantPanel');
-            const closeAiBtn = document.getElementById('closeAiPanel');
-            
-            aiBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                aiPanel.classList.toggle('active');
-            });
-            
-            closeAiBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                aiPanel.classList.remove('active');
-            });
-            
-            document.addEventListener('click', (e) => {
-                if (!aiPanel.contains(e.target) && !aiBtn.contains(e.target)) {
-                    aiPanel.classList.remove('active');
-                }
-            });
-            
-            // AI Action Buttons
-            document.querySelectorAll('.ai-action').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const action = btn.dataset.action;
-                    aiPanel.classList.remove('active');
-                    
-                    switch(action) {
-                        case 'grammar': aiGrammarCheck(); break;
-                        case 'shorter': aiMakeShorter(); break;
-                        case 'longer': aiMakeLonger(); break;
-                        case 'seo': aiGenerateSEOTags(); break;
-                        case 'generate': aiGenerateContent(); break;
-                        case 'translate': aiTranslate(); break;
-                        case 'color': aiChangeColors(); break;
-                    }
-                });
-            });
-            
-            // Custom AI Prompt
-            document.getElementById('aiCustomBtn').addEventListener('click', aiCustomAction);
-            document.getElementById('aiCustomPrompt').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') aiCustomAction();
-            });
-
-
-            document.getElementById('saveDraftBtn').addEventListener('click', saveDraft);
-            document.getElementById('publishBtn').addEventListener('click', publishArticle);
-
-            loadExistingArticles();
-            setupStickyMenu();
-            checkGitHubConnection();
-            
-            document.getElementById('refreshStatusBtn').addEventListener('click', () => {
-                checkGitHubConnection();
-            });
-
-            const savedDraft = localStorage.getItem('dyve-draft');
-            if (savedDraft) {
-                try {
-                    const draft = JSON.parse(savedDraft);
-                    document.getElementById('titleInput').value = draft.title || '';
-                    document.getElementById('descriptionInput').value = draft.description || '';
-                    document.getElementById('categorySelect').value = draft.category || 'breach';
-                    document.getElementById('intelTagInput').value = draft.intelTag || '';
-                    document.getElementById('metaStatusInput').value = draft.metaStatus || '';
-                    const imgInput = document.getElementById('imageUrlInput');
-                    if (imgInput) imgInput.value = draft.imageUrl || '';
-                    
-                    if (draft.content && quill) {
-                        quill.setContents(draft.content);
-                    }
-                    
-                    document.getElementById('titleInput').dispatchEvent(new Event('input'));
-                    document.getElementById('descriptionInput').dispatchEvent(new Event('input'));
-                    
-                    localStorage.removeItem('dyve-draft');
-                    localStorage.removeItem('dyve-draft-index');
-                    showToast('📝 Draft loaded successfully');
-                } catch (e) {
-                    console.error('Failed to load draft', e);
-                }
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                overlay.classList.add('hidden', 'opacity-0');
+                document.body.style.overflow = '';
             }
         });
-    </script>
 
-    <!-- Register Service Worker -->
-    <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/admin/sw.js')
-          .then(registration => {
-            console.log('[SW] Registered:', registration.scope);
-          })
-          .catch(error => {
-            console.error('[SW] Registration failed:', error);
-          });
-      });
-    }
+        // Live clock in header (real time)
+        function tick() {
+            const el = $('liveClock');
+            if (el) el.textContent = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) + ' • ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        }
+        tick();
+        setInterval(tick, 30000);
+
+        // Time-based greeting (real)
+        const h = new Date().getHours();
+        const greet = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+        $('welcomeTitle').textContent = greet + ', Admin';
+
+        initData();
+    });
     </script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+</script>
+
+
 </body>
 </html>
