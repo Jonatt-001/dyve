@@ -1,36 +1,56 @@
 {
-  "name": "Dyve HackaX Intelligence Dashboard",
-  "short_name": "Dyve Intel",
-  "description": "Cyber intelligence publishing platform for Dyve HackaX",
-  "start_url": "/admin/",
+  "name": "Dyve Intelligence Admin",
+  "short_name": "Dyve Admin",
+  "description": "Publishing console for Dyve Tech and HackaX intelligence platforms.",
+  "id": "./",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
   "background_color": "#020403",
-  "theme_color": "#00ffaa",
-  "scope": "/admin/",
+  "theme_color": "#020403",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["news", "productivity", "developer tools"],
+  "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/logo.png",
-      "sizes": "512x512",
+      "src": "logo.png",
+      "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ],
-  "categories": ["productivity", "utilities"],
-  "shortcuts": [
-    {
-      "name": "New Article",
-      "short_name": "New",
-      "description": "Create new intelligence report",
-      "url": "/admin/",
-      "icons": [{ "src": "/logo.png", "sizes": "192x192" }]
+      "purpose": "any"
     },
     {
-      "name": "Published",
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Tech Article",
+      "short_name": "Tech Editor",
+      "description": "Open the Dyve Tech editor",
+      "url": "./tech-editor/index.html"
+    },
+    {
+      "name": "New HackaX Article",
+      "short_name": "HackaX Editor",
+      "description": "Open the HackaX editor",
+      "url": "./hackax/index.html"
+    },
+    {
+      "name": "Published Articles",
       "short_name": "Published",
-      "description": "View published articles",
-      "url": "/admin/published.html",
-      "icons": [{ "src": "/logo.png", "sizes": "192x192" }]
+      "url": "./published.html"
     }
   ]
 }
