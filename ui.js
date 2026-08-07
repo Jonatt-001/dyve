@@ -14,10 +14,27 @@ const drawerHTML = `
   </div>
 
   <nav class="drawer-nav">
-    <a href="/index.html"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span>Intel Feed</span></a>
-    <a href="/breaches/index.html"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0110 0v4"></path></svg><span>Breach Surveillance</span></a>
-    <a href="/dark-web/index.html"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 000 20 14.5 14.5 0 000-20"></path><path d="M2 12h20"></path></svg><span>Dark Web Intelligence</span></a>
-    <a href="/ransomware/index.html"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><span>Ransomware Intelligence</span></a>
+    <a href="/index.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <span>Intel Feed</span>
+    </a>
+    <a href="/breaches/index.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0110 0v4"></path></svg>
+      <span>Breach Surveillance</span>
+    </a>
+    <a href="/dark-web/index.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 000 20 14.5 14.5 0 000-20"></path><path d="M2 12h20"></path></svg>
+      <span>Dark Web Intelligence</span>
+    </a>
+    <a href="/ransomware/index.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      <span>Ransomware Intelligence</span>
+    </a>
+    <!-- NEW: Latest on Tech -->
+    <a href="/latest-tech/index.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+      <span>Latest on Tech</span>
+    </a>
   </nav>
 
   <div class="drawer-divider"></div>
@@ -60,6 +77,8 @@ const headerHTML = `
     <span data-link="/breaches/index.html">Breaches</span>
     <span data-link="/dark-web/index.html">Dark Web</span>
     <span data-link="/ransomware/index.html">Ransomware</span>
+    <!-- NEW: Latest on Tech -->
+    <span data-link="/latest-tech/index.html">Tech</span>
   </div>
 </div>
 `;
