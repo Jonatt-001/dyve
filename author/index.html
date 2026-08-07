@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>DYVE TECH - Intelligence Unit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <div class="cursor"></div>
+<div class="cursor-border"></div>
+<header>
+  <a href="#home" class="logo"
+    ><img
+      width="250"
+      src="https://via.placeholder.com/250x50/111111/FFFFFF?text=DYVE+TECH"
+      alt="DYVE TECH"
+    />
+    DYVE TECH</a
+  >
+  <nav class="site-nav">
+    <ul class="underline-menu">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#speakers">Focus Areas</a></li>
+      <li><a href="#schedule">Reports</a></li>
+      <li><a href="#location">Network</a></li>
+      <li><a href="#sponsors">Ecosystem</a></li>
+    </ul>
+  </nav>
+</header>
+<input type="checkbox" id="burger-toggle" />
+<label for="burger-toggle" class="burger-menu">
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+</label>
+<div class="overlay"></div>
+<nav class="burger-nav">
+  <ul>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#speakers">Focus Areas</a></li>
+    <li><a href="#schedule">Reports</a></li>
+    <li><a href="#location">Network</a></li>
+    <li><a href="#sponsors">Ecosystem</a></li>
+  </ul>
+</nav>
+<main>
+  <section class="hero-section" id="home">
+    <h1>
+      DYVE INTELLIGENCE
+    </h1>
+    <h2>Global Tech Analysis & Insights</h2>
+    <a
+      class="btn btn-ghost btn-through"
+      href="https://www.dyve.online/tech"
+      target="_blank"
+    >
+      Read Latest Reports
+    </a>
+  </section>
+  <section class="normal-section" id="about">
+    <div class="titles">
+      <h1 class="cross-bar-glitch" data-slice="20">ABOUT</h1>
+      <h2 class="staggered-rise-in">The Intelligence Unit</h2>
+    </div>
+    <div class="description">
+      <p class="fade-up">
+        The DYVE TECH INTELLIGENCE UNIT is dedicated to analyzing the most critical shifts in the global technology landscape. From Agentic AI to quantum computing, we provide actionable insights for enterprise and tech leaders.
+      </p>
+      <p class="fade-up">
+        Our research focuses on how autonomous agents are reshaping workflows, the rapid evolution of deepfake technology, and the emergence of new cybersecurity challenges in 2026 and beyond.
+      </p>
+      <p class="fade-up">
+        We also track geopolitical tech strategies, including Europe’s IRIS² satellite internet initiative and the ongoing debates over data privacy and user data access.
+      </p>
+      <p class="fade-up">
+        Our mission is to cut through the noise, delivering high-value intelligence on open-source platforms, vibe-coding, and the future of global connectivity.
+      </p>
+    </div>
+  </section>
+  <section class="normal-section" id="speakers">
+    <div class="titles">
+      <h1 class="cross-bar-glitch" data-slice="20">RESEARCH</h1>
+      <h2 class="staggered-rise-in">Focus Areas</h2>
+    </div>
+    <!-- Dynamic container for the cards -->
+    <div class="speakers-cards" id="focus-areas-container">
+      <!-- Cards will be injected here by JavaScript -->
+    </div>
+  </section>
+
+  <section class="normal-section" id="schedule">
+    <div class="titles">
+      <h1 class="cross-bar-glitch" data-slice="20">REPORTS</h1>
+      <h2 class="staggered-rise-in">Recent Publications</h2>
+    </div>
+    <ul class="timeline">
+      <li class="timeline__line"></li>
+      <li class="timeline__item start">
+        <div class="info">
+          <div class="dot"></div>
+          <time class="time">Aug 8</time>
+          <h4 class="title">Latest Update</h4>
+        </div>
+      </li>
+      <li class="timeline__item">
+        <div class="info">
+          <div class="dot"></div>
+          <time class="time">Aug 7</time>
+          <h4 class="speaker">DYVE Unit</h4>
+          <h4 class="title">
+            <a
+              target="_blank"
+              href="https://www.dyve.online/tech"
+              >Cloudflare open-sources vibe-coding platform
+            </a>
+          </h4>
+        </div>
+        <div class="content">
+          Cloudflare has open-sourced its Cloudflare OS platform, a 'vibe-coding' tool designed specifically for people who aren't traditional coders, lowering the barrier to software development.
+        </div>
+      </li>
+      <li class="timeline__item">
+        <div class="info">
+          <div class="dot"></div>
+          <time class="time">Aug 6</time>
+          <h4 class="speaker">DYVE Unit</h4>
+          <h4 class="title">
+            <a
+              target="_blank"
+              href="https://www.dyve.online/tech"
+              >Europe Finalizes Ambitious Plans for IRIS²</a
+            >
+          </h4>
+        </div>
+        <div class="content">
+          Are we about to witness a new space race for global internet supremacy? The EU is finalizing plans for its 'sovereign' satellite internet project to compete directly with Starlink.
+        </div>
+      </li>
+      <li class="timeline__item break">
+        <div class="info">
+          <div class="dot"></div>
+          <time class="time">Aug 5</time>
+          <h4 class="title">Analysis Break</h4>
+        </div>
+      </li>
+      <li class="timeline__item">
+        <div class="info">
+          <div class="dot"></div>
+          <time class="time">Aug 4</time>
+          <h4 class="speaker">DYVE Unit</h4>
+          <h4 class="title">
+            <a
+              target="_blank"
+              href="https://www.dyve.online/tech"
+              >Apple issues new challenge against UK order</a
+            >
+          </h4>
+        </div>
+        <div class="content">
+          Apple is challenging a UK order that requires it to provide access to private user data, sparking a major debate over digital privacy and corporate responsibility.
+        </div>
+      </li>
+      <li class="timeline__item">
+        <div class="info">
+          <div class="dot"></div>
+          <time class="time">Aug 3</time>
+          <h4 class="speaker">DYVE Unit</h4>
+          <h4 class="title">
+            <a
+              target="_blank"
+              href="https://www.dyve.online/tech"
+              >Quantum Breakthrough: Neural Networks</a
+            >
+          </h4>
+        </div>
+        <div class="content">
+          New quantum neural networks are smashing processing speed records, signaling a massive leap toward practical, real-world quantum applications in data science and cryptography.
+        </div>
+      </li>
+      <li class="timeline__item">
+        <div class="info">
+          <div class="dot"></div>
+          <time class="time">Aug 2</time>
+          <h4 class="speaker">DYVE Unit</h4>
+          <h4 class="title">
+            <a
+              target="_blank"
+              href="https://www.dyve.online/tech"
+              >Agentic AI Revolution</a
+            >
+          </h4>
+        </div>
+        <div class="content">
+          How autonomous agents are actively reshaping enterprise workflows in 2026. Understanding agentic AI is no longer optional—it's a competitive advantage for modern operations.
+        </div>
+      </li>
+      <li class="timeline__item break">
+        <div class="info">
+          <div class="dot"></div>
+          <time class="time">Aug 1</time>
+          <h4 class="title">Research Pause</h4>
+        </div>
+      </li>
+      <li class="timeline__item">
+        <div class="info">
+          <div class="dot"></div>
+          <time class="time">Jul 31</time>
+          <h4 class="speaker">DYVE Unit</h4>
+          <h4 class="title">
+            <a
+              target="_blank"
+              href="https://www.dyve.online/tech"
+              >AI Security Threats & Deepfakes</a
+            >
+          </h4>
+        </div>
+        <div class="content">
+          Deepfake technology evolves rapidly, presenting new cybersecurity challenges. As AI-generated media becomes indistinguishable from reality, corporate security and media literacy are critical.
+        </div>
+      </li>
+      <li class="timeline__item">
+        <div class="info">
+          <div class="dot"></div>
+          <time class="time">Jul 30</time>
+          <h4 class="speaker">DYVE Unit</h4>
+          <h4 class="title">
+            <a
+              target="_blank"
+              href="https://www.dyve.online/tech"
+              >The Future of Global Connectivity</a
+            >
+          </h4>
+        </div>
+        <div class="content">
+          An overview of the geopolitical tech strategies shaping the future of the internet, focusing on digital sovereignty and the infrastructure required to support next-gen autonomous networks.
+        </div>
+      </li>
+      <li class="timeline__item end">
+        <div class="info">
+          <div class="dot"></div>
+          <time class="time">Jul 29</time>
+          <h4 class="title">End of Feed</h4>
+        </div>
+      </li>
+    </ul>
+  </section>
+  <section class="normal-section" id="location">
+    <div class="titles">
+      <h1 class="cross-bar-glitch" data-slice="20">NETWORK</h1>
+      <h2 class="staggered-rise-in">Digital Presence</h2>
+    </div>
+    <div class="place">
+      <div class="marker fade-in">
+        <div class="pin"></div>
+        <div class="shadow"></div>
+      </div>
+      <div class="place-name cross-bar-glitch" data-slice="20">
+        DYVE.ONLINE
+      </div>
+    </div>
+    <div id="map" class="fade-in"></div>
+  </section>
+  <section class="normal-section" id="sponsors">
+    <div class="titles">
+      <h1 class="cross-bar-glitch" data-slice="20">ECOSYSTEM</h1>
+      <h2 class="staggered-rise-in">Data Sources & Frameworks</h2>
+    </div>
+    <ul class="sponsors-list">
+      <li class="fade-up">
+        <a href="https://www.cloudflare.com/" target="_blank">
+          <img src="https://via.placeholder.com/400x100/EEEEEE/333333?text=Cloudflare" alt="Cloudflare" />
+        </a>
+        <div>Source</div>
+      </li>
+      <li class="fade-up">
+        <a href="https://commission.europa.eu/" target="_blank">
+          <img src="https://via.placeholder.com/400x100/EEEEEE/333333?text=EU+Commission" alt="European Commission" />
+        </a>
+        <div>Source</div>
+      </li>
+      <li class="fade-up">
+        <a href="https://www.w3.org/" target="_blank">
+          <img src="https://via.placeholder.com/400x100/EEEEEE/333333?text=W3C" alt="W3C" />
+        </a>
+        <div>Source</div>
+      </li>
+      <li class="fade-up">
+        <a href="https://www.apple.com/" target="_blank">
+          <img src="https://via.placeholder.com/400x100/EEEEEE/333333?text=Apple" alt="Apple" />
+        </a>
+        <div>Source</div>
+      </li>
+      <li class="fade-up">
+        <a href="https://opensource.org/" target="_blank">
+          <img src="https://via.placeholder.com/400x100/EEEEEE/333333?text=OSI" alt="Open Source Initiative" />
+        </a>
+        <div>Partner</div>
+      </li>
+      <li class="fade-up">
+        <a href="https://www.weforum.org/" target="_blank">
+          <img src="https://via.placeholder.com/400x100/EEEEEE/333333?text=WEF" alt="Global Tech Forums" />
+        </a>
+        <div>Partner</div>
+      </li>
+      <li class="fade-up">
+        <a href="https://www.cybersecurity-alliance.org/" target="_blank">
+          <img src="https://via.placeholder.com/400x100/EEEEEE/333333?text=CSA" alt="Cybersecurity Alliance" />
+        </a>
+        <div>Partner</div>
+      </li>
+      <li class="fade-up">
+        <a href="https://qiskit.org/" target="_blank"
+          ><img
+            src="https://via.placeholder.com/400x100/EEEEEE/333333?text=Qiskit"
+            alt="Quantum Research Network"
+        /></a>
+        <div>Partner</div>
+      </li>
+      <li class="fade-up">
+        <a href="https://www.itu.int/" target="_blank"
+          ><img src="https://via.placeholder.com/400x100/EEEEEE/333333?text=ITU" alt="Satellite Comms Org"
+        /></a>
+        <div>Partner</div>
+      </li>
+      <li class="fade-up">
+        <a href="https://edps.europa.eu/" target="_blank"
+          ><img src="https://via.placeholder.com/400x100/EEEEEE/333333?text=EDPS" alt="Digital Privacy Watch"
+        /></a>
+        <div>Partner</div>
+      </li>
+    </ul>
+  </section>
+</main>
+    <script src='https://api.map.baidu.com/api?v=3.0&amp;ak=fQhFT2lC66DszI30AOkLCKu0720e3Mca'></script><script  src="./script.js"></script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('focus-areas-container');
+
+  // Changed to './assets/articles.json' (assuming assets folder is next to this HTML file)
+  fetch('../assets/articles.json')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status} (Check if file exists)`);
+      }
+      return response.json();
+    })
+    .then(articles => {
+      console.log('Successfully loaded articles:', articles); // Check browser console (F12)
+      
+      const focusAreas = {};
+      
+      articles.forEach(article => {
+        // Safely get category, default to 'general'
+        const category = (article.category || article.meta || 'general').toLowerCase();
+        if (!focusAreas[category]) {
+          focusAreas[category] = {
+            title: category.charAt(0).toUpperCase() + category.slice(1),
+            count: 0,
+            latestDesc: '',
+            category: category
+          };
+        }
+        focusAreas[category].count++;
+        if (article.desc) {
+          focusAreas[category].latestDesc = article.desc;
+        }
+      });
+
+      const categoryInfo = {
+        'trends': { title: 'Tech Trends', info: 'Latest Developments<br />Emerging Technologies', icon: 'TRD' },
+        'ai': { title: 'Artificial Intelligence', info: 'AI & Machine Learning<br />Neural Networks', icon: 'AI' },
+        'security': { title: 'Cybersecurity', info: 'Threat Analysis<br />Security Breaches', icon: 'SEC' },
+        'cloud': { title: 'Cloud Infrastructure', info: 'Cloud Services<br />Distributed Systems', icon: 'CLD' },
+        'quantum': { title: 'Quantum Computing', info: 'Quantum Systems<br />Processing Power', icon: 'QTM' },
+        'news': { title: 'Tech News', info: 'Industry Updates<br />Breaking Stories', icon: 'NEWS' },
+        'general': { title: 'General Tech', info: 'Broad Technology<br />Updates & Insights', icon: 'GEN' }
+      };
+
+      const cardsHTML = Object.values(focusAreas).map(area => {
+        const info = categoryInfo[area.category] || { 
+          title: area.title, 
+          info: `${area.count} Articles<br />Latest Updates`,
+          icon: area.category.toUpperCase().slice(0, 3)
+        };
+        
+        return `
+        <div class="card">
+          <div class="card-borders">
+            <div class="border-top"></div>
+            <div class="border-right"></div>
+            <div class="border-bottom"></div>
+            <div class="border-left"></div>
+          </div>
+          <div class="card-content">
+            <img src="https://via.placeholder.com/150/333333/FFFFFF?text=${info.icon}" class="avatar" alt="${info.title}" />
+            <div class="username">${info.title}</div>
+            <div class="info">${info.info}</div>
+          </div>
+        </div>
+        `;
+      }).join('');
+
+      container.innerHTML = cardsHTML;
+    })
+    .catch(error => {
+      console.error('Error loading focus areas:', error);
+      // This will show a visible error on the page so you know it's a path/server issue
+      container.innerHTML = `
+        <div style="text-align:center; padding: 30px; border: 1px dashed #ff6b6b; color: #ff6b6b; border-radius: 8px;">
+          <strong>Could not load articles.json</strong><br><br>
+          1. Are you running a local server? (e.g., VS Code Live Server)<br>
+          2. Is the file path correct? Expected: <code>./assets/articles.json</code><br>
+          <small style="color: #999;">Console error: ${error.message}</small>
+        </div>
+      `;
+    });
+});
+</script>
+
+  </body>
+  
+</html>
