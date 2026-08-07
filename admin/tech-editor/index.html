@@ -863,7 +863,6 @@ function generateTechArticleHTML(siteUrl, title, desc, image, tag, category, slu
     const categoryLabels = { 'ai': 'Artificial Intelligence', 'tools': 'Developer Tools', 'coding': 'Coding', 'analysis': 'Deep Dive', 'trends': 'Tech Trends', 'tutorials': 'Tutorials', 'breach': 'Breach Intel', 'dark-web': 'Dark Web' };
     const categoryLabel = categoryLabels[category] || 'Tech';
 
-    // Routes that ACTUALLY exist on the site — guarantees no broken links
     const categoryRoutes = { 'ai': '../tech/', 'tools': '../tech/', 'coding': '../tech/', 'analysis': '../analysis/', 'trends': '../tech/', 'tutorials': '../tech/', 'breach': '../breaches/', 'dark-web': '../dark-web/' };
     const tagRoutes = { 'Analysis': '../analysis/', 'Deep Dive': '../analysis/' };
     const categoryRoute = categoryRoutes[category] || '../tech/';
@@ -884,6 +883,10 @@ function generateTechArticleHTML(siteUrl, title, desc, image, tag, category, slu
     let articleBody = '<p><em>No content available.</em></p>';
     if (articleHTML && articleHTML.trim() !== '' && articleHTML !== '<p><br></p>') articleBody = articleHTML;
 
+    // Extract keywords for related articles matching
+    const keywords = desc.toLowerCase().match(/\b[a-z]{4,}\b/g) || [];
+    const uniqueKeywords = [...new Set(keywords)].slice(0, 10).join(', ');
+
     return `<!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -892,7 +895,7 @@ function generateTechArticleHTML(siteUrl, title, desc, image, tag, category, slu
 <meta name="theme-color" content="#fbfaf8">
 <title>${safeTitle} | Dyve Tech</title>
 <meta name="description" content="${safeDesc}">
-<meta name="keywords" content="${tag}, ${categoryLabel}, Dyve Tech, AI News, Technology">
+<meta name="keywords" content="${tag}, ${categoryLabel}, Dyve Tech, AI News, Technology, ${uniqueKeywords}">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <link rel="canonical" href="${canonicalUrl}">
 <meta property="og:type" content="article">
@@ -920,11 +923,22 @@ function generateTechArticleHTML(siteUrl, title, desc, image, tag, category, slu
   "author": { "@type": "Organization", "name": "Dyve Tech Intelligence Unit" },
   "publisher": { "@type": "Organization", "name": "Dyve Tech", "logo": { "@type": "ImageObject", "url": "${siteUrl}/logo.png" } },
   "datePublished": "${date}",
-  "articleSection": "${categoryLabel}"
+  "articleSection": "${categoryLabel}",
+  "keywords": "${uniqueKeywords}"
+}
+<\/script>
+<script type="application/ld+json" id="relatedArticlesSchema">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Related Articles",
+  "description": "Articles related to ${safeTitle}",
+  "numberOfItems": 4,
+  "itemListElement": []
 }
 <\/script>
 <style>
-:root{--bg:#fbfaf8;--ink:#00001a;--body-c:#21242b;--muted:#6d7078;--accent:#f15e50;--accent-d:#d94a3e;--line:#e5e1d8;--rule:#141414}
+:root{--bg:#fbfaf8;--ink:#00001a;--body-c:#21242b;--muted:#6d7078;--accent:#f15e50;--accent-d:#d94a3e;--line:#e5e1d8;--rule:#141414;--related-bg:#0f172a;--related-accent:#38bdf8;--related-card:#1e293b;--related-hover:#334155}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--body-c);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -973,17 +987,48 @@ h1{font-family:'Maven Pro',sans-serif;font-weight:900;color:var(--ink);font-size
 .tags-label{font-size:.7rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-right:4px}
 .chip{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:#333;background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 16px;transition:.25s}
 .chip:hover{background:var(--accent);border-color:var(--accent);color:#fff;transform:translateY(-2px)}
-.related{max-width:1080px;margin:76px auto 0;padding:0 20px}
-.related h2{font-family:'Maven Pro',sans-serif;font-weight:800;color:var(--ink);font-size:1.4rem;margin-bottom:22px;display:flex;align-items:center;gap:14px}
-.related h2::after{content:'';flex:1;height:1px;background:var(--line)}
-.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.rcard{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;text-decoration:none;transition:.3s;display:block}
-.rcard:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(0,0,26,.08)}
-.rcard img{height:160px;width:100%;object-fit:cover}
-.rcard .txt{padding:16px 16px 18px}
-.rcard h3{font-size:.98rem;font-weight:700;color:var(--ink);line-height:1.45;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.rcard time{font-size:.72rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
-@media(max-width:860px){.rgrid{grid-template-columns:1fr}}
+
+/* ENHANCED RELATED ARTICLES SECTION */
+.related{max-width:1200px;margin:96px auto 0;padding:0 20px}
+.related h2{font-family:'Maven Pro',sans-serif;font-weight:800;color:var(--ink);font-size:1.6rem;margin-bottom:32px;display:flex;align-items:center;gap:12px}
+.related h2 svg{width:28px;height:28px;color:var(--accent)}
+.related-intro{max-width:700px;color:var(--muted);font-size:.95rem;margin-bottom:32px;line-height:1.6}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.rcard{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;text-decoration:none;transition:all .3s cubic-bezier(.4,0,.2,1);display:block;position:relative}
+.rcard:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,26,.12);border-color:var(--accent)}
+.rcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-d));transform:scaleX(0);transition:transform .3s}
+.rcard:hover::before{transform:scaleX(1)}
+.rcard img{height:180px;width:100%;object-fit:cover}
+.rcard .txt{padding:20px}
+.rcard h3{font-size:1.05rem;font-weight:700;color:var(--ink);line-height:1.45;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.9em}
+.rcard .meta{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.rcard .category{font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);background:#fef3f2;padding:4px 10px;border-radius:6px}
+.rcard time{font-size:.75rem;color:var(--muted);letter-spacing:.05em}
+.rcard p{font-size:.85rem;color:var(--muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* MID-ARTICLE RELATED SECTION (DIFFERENT COLOR SCHEME) */
+.related-mid{max-width:100%;margin:48px 0;padding:40px 32px;background:var(--related-bg);border-radius:16px;position:relative;overflow:hidden}
+.related-mid::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--related-accent),#0ea5e9,#38bdf8)}
+.related-mid h2{font-family:'Maven Pro',sans-serif;font-weight:800;color:#fff;font-size:1.4rem;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.related-mid h2 svg{width:24px;height:24px;color:var(--related-accent)}
+.related-mid .subtitle{color:#94a3b8;font-size:.9rem;margin-bottom:28px}
+.related-mid-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.related-mid-card{background:var(--related-card);border-radius:12px;overflow:hidden;text-decoration:none;transition:all .3s;display:flex;flex-direction:column}
+.related-mid-card:hover{background:var(--related-hover);transform:translateY(-4px)}
+.related-mid-card img{height:140px;width:100%;object-fit:cover}
+.related-mid-card .content{padding:18px;flex:1;display:flex;flex-direction:column}
+.related-mid-card h3{font-size:.95rem;font-weight:700;color:#fff;line-height:1.4;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.related-mid-card .tag{font-size:.65rem;font-weight:700;color:var(--related-accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.related-mid-card time{font-size:.75rem;color:#64748b}
+.related-cta{text-align:center;margin-top:28px}
+.related-cta a{display:inline-flex;align-items:center;gap:8px;color:var(--related-accent);font-weight:600;text-decoration:none;font-size:.9rem;transition:all .2s}
+.related-cta a:hover{color:#7dd3fc;gap:12px}
+.related-cta svg{width:18px;height:18px;transition:transform .2s}
+.related-cta a:hover svg{transform:translateX(4px)}
+
+@media(max-width:900px){.rgrid{grid-template-columns:1fr}.related-mid-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.related-mid{padding:28px 20px;margin:36px 0}}
+
 footer{margin-top:84px;background:#00001a;color:#fff;padding:46px 20px;text-align:center}
 .fbrand{font-family:'Maven Pro',sans-serif;font-weight:800;letter-spacing:.06em}
 .fbrand span{color:var(--accent)}
@@ -1063,8 +1108,29 @@ ${articleBody}
     </div>
   </article>
 
+  <!-- MID-ARTICLE RELATED SECTION (injected after 3rd paragraph) -->
+  <div id="midArticleRelated" class="related-mid" hidden>
+    <h2>
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+      Continue Reading
+    </h2>
+    <p class="subtitle">Deepen your understanding with these related insights</p>
+    <div class="related-mid-grid" id="midRelatedGrid"></div>
+    <div class="related-cta">
+      <a href="../tech/">
+        Explore all articles
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- BOTTOM RELATED SECTION -->
   <section class="related" id="relatedSection" hidden>
-    <h2>More from Dyve Tech</h2>
+    <h2>
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+      More from Dyve Tech
+    </h2>
+    <p class="related-intro">Explore more articles on similar topics, curated based on content relevance and category alignment.</p>
     <div class="rgrid" id="relatedGrid"></div>
   </section>
 </main>
@@ -1098,34 +1164,163 @@ function copyLink(){
   if(navigator.clipboard){navigator.clipboard.writeText(location.href).then(function(){toast('Link copied ✓');});}
   else{window.prompt('Copy link:',location.href);}
 }
+
+// SMART RELATED ARTICLES LOADER
 (function(){
-  var grid=document.getElementById('relatedGrid');var sec=document.getElementById('relatedSection');
+  var grid=document.getElementById('relatedGrid');
+  var midGrid=document.getElementById('midRelatedGrid');
+  var midSection=document.getElementById('midArticleRelated');
+  var sec=document.getElementById('relatedSection');
+  
   if(!grid||!sec)return;
+  
   fetch('../assets/articles.json').then(function(r){return r.ok?r.json():null;}).then(function(list){
     if(!list||!list.length)return;
+    
     var cur=location.pathname.split('/').pop()||'';
-    var items=[];
-    for(var i=0;i<list.length&&items.length<3;i++){
-      var a=list[i];if(!a||!a.url)continue;
-      var clean=String(a.url).replace(/^\/+/,'');
+    var curCategory='${category}';
+    var curTag='${tag}';
+    var curTitle='${safeTitle}'.toLowerCase();
+    var curDesc='${safeDesc}'.toLowerCase();
+    
+    // Extract keywords from current article
+    var curKeywords=(curDesc+' '+curTitle).match(/\\b[a-z]{4,}\\b/g)||[];
+    var keywordSet=new Set(curKeywords);
+    
+    var scored=[];
+    for(var i=0;i<list.length;i++){
+      var a=list[i];
+      if(!a||!a.url)continue;
+      var clean=String(a.url).replace(/^\\/+/,'');
       if(clean.split('/').pop()===cur)continue;
       if(a.page&&a.page!=='tech')continue;
-      items.push(a);
+      
+      var score=0;
+      var reasons=[];
+      
+      // Category match (highest weight)
+      if(a.category===curCategory||a.meta===curCategory){
+        score+=40;
+        reasons.push('category');
+      }
+      
+      // Tag match
+      if(a.tag===curTag){
+        score+=20;
+        reasons.push('tag');
+      }
+      
+      // Keyword matching in title and description
+      var aTitle=(a.title||'').toLowerCase();
+      var aDesc=(a.desc||'').toLowerCase();
+      var aText=aTitle+' '+aDesc;
+      var matchedKeywords=[];
+      
+      keywordSet.forEach(function(kw){
+        if(aText.includes(kw)){
+          score+=5;
+          matchedKeywords.push(kw);
+        }
+      });
+      
+      if(matchedKeywords.length>=3){
+        score+=15;
+        reasons.push('keywords');
+      }
+      
+      // Recency boost (articles from last 60 days)
+      if(a.date){
+        var daysOld=(new Date()-new Date(a.date))/(1000*60*60*24);
+        if(daysOld<60) score+=10;
+      }
+      
+      if(score>=15){
+        scored.push({article:a,score:score,reasons:reasons,matchedKeywords:matchedKeywords.slice(0,3)});
+      }
     }
-    if(!items.length)return;
-    var html='';
-    for(var j=0;j<items.length;j++){
-      var b=items[j];
-      var href='../'+String(b.url).replace(/^\/+/,'');
-      var img=b.image||'../dyve-placeholder.jpg';
-      var dt='';
-      if(b.date){var d=new Date(b.date);if(!isNaN(d))dt=d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
-      html+='<a class="rcard" href="'+href+'">'
-          +'<img src="'+img+'" alt="" loading="lazy" onerror="this.onerror=null;this.src=\'../dyve-placeholder.jpg\';">'
-          +'<div class="txt"><h3>'+(b.title||'')+'</h3><time>'+dt+'</time></div></a>';
+    
+    // Sort by score and take top 6
+    scored.sort(function(x,y){return y.score-x.score;});
+    var topArticles=scored.slice(0,6);
+    
+    if(topArticles.length===0)return;
+    
+    // Update schema.org structured data
+    var schema=document.getElementById('relatedArticlesSchema');
+    if(schema){
+      var itemList=topArticles.map(function(item,idx){
+        return{
+          '@type':'ListItem',
+          'position':idx+1,
+          'url':'../'+item.article.url,
+          'name':item.article.title
+        };
+      });
+      var schemaData=JSON.parse(schema.text);
+      schemaData.itemListElement=itemList;
+      schema.text=JSON.stringify(schemaData);
     }
-    grid.innerHTML=html;sec.hidden=false;
-  }).catch(function(){});
+    
+    // Split: first 2 for mid-article, rest for bottom
+    var midArticles=topArticles.slice(0,2);
+    var bottomArticles=topArticles.slice(2,6);
+    
+    // Render mid-article section
+    if(midArticles.length>0&&midGrid&&midSection){
+      var midHtml='';
+      for(var j=0;j<midArticles.length;j++){
+        var b=midArticles[j].article;
+        var href='../'+String(b.url).replace(/^\\/+/,'');
+        var img=b.image||'../dyve-placeholder.jpg';
+        var dt='';
+        if(b.date){var d=new Date(b.date);if(!isNaN(d))dt=d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+        var catLabel=b.category?b.category.toUpperCase():'TECH';
+        midHtml+='<a class="related-mid-card" href="'+href+'">'
+            +'<img src="'+img+'" alt="" loading="lazy" onerror="this.onerror=null;this.src=\'../dyve-placeholder.jpg\';">'
+            +'<div class="content">'
+            +'<div class="tag">'+catLabel+'</div>'
+            +'<h3>'+(b.title||'')+'</h3>'
+            +'<time>'+dt+'</time>'
+            +'</div></a>';
+      }
+      midGrid.innerHTML=midHtml;
+      midSection.hidden=false;
+      
+      // Inject mid-article section after 3rd paragraph
+      setTimeout(function(){
+        var body=document.querySelector('.body');
+        if(body){
+          var paragraphs=body.querySelectorAll('p');
+          if(paragraphs.length>=3){
+            paragraphs[2].insertAdjacentElement('afterend',midSection);
+          }
+        }
+      },100);
+    }
+    
+    // Render bottom section
+    if(bottomArticles.length>0){
+      var html='';
+      for(var k=0;k<bottomArticles.length;k++){
+        var c=bottomArticles[k].article;
+        var href='../'+String(c.url).replace(/^\\/+/,'');
+        var img=c.image||'../dyve-placeholder.jpg';
+        var dt='';
+        if(c.date){var d2=new Date(c.date);if(!isNaN(d2))dt=d2.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+        var catLabel=c.category?c.category.toUpperCase():'TECH';
+        html+='<a class="rcard" href="'+href+'" data-score="'+bottomArticles[k].score+'">'
+            +'<img src="'+img+'" alt="" loading="lazy" onerror="this.onerror=null;this.src=\'../dyve-placeholder.jpg\';">'
+            +'<div class="txt">'
+            +'<div class="meta"><span class="category">'+catLabel+'</span><time>'+dt+'</time></div>'
+            +'<h3>'+(c.title||'')+'</h3>'
+            +'<p>'+(c.desc||'').substring(0,120)+'...</p>'
+            +'</div></a>';
+      }
+      grid.innerHTML=html;
+      sec.hidden=false;
+    }
+    
+  }).catch(function(e){console.warn('Related articles load failed:',e);});
 })();
 <\/script>
 </body>
