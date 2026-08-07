@@ -133,18 +133,6 @@
     "delta": "assets/deltas/tech-claude.json"
   },
   {
-    "title": "Spotify Music",
-    "desc": "Comprehensive Data Breach report covering mode. Spotify is adding a new mode to its phone app for people who like to listen to m Stay informed with Dyve HackaX.",
-    "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800",
-    "url": "analysis/spotify-music.html",
-    "tag": "LIVE INTEL",
-    "meta": "Routine Update",
-    "category": "breach",
-    "date": "2026-08-03",
-    "page": "analysis",
-    "delta": "assets/deltas/analysis-spotify-music.json"
-  },
-  {
     "title": "Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets",
     "desc": "A coordinated breach operation has surfaced millions of credentials across underground forums.",
     "image": "https://tungstensecure.com/wp-content/uploads/2025/05/Cyber-Threat-Intelligence-Pakistan.jpg",
