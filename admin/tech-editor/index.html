@@ -290,7 +290,13 @@
             <span>Publish Article</span>
         </button>
         <div class="fab-drawer-divider"></div>
+        <button id="fabInternalLink" class="fab-drawer-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+            <span>Smart Internal Links</span>
+        </button>
+        <div class="fab-drawer-divider"></div>
         <button class="fab-drawer-item" onclick="window.location.href='../published.html'">
+
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
             <span>Published</span>
         </button>
@@ -302,6 +308,27 @@
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
             <span>Settings</span>
         </button>
+    </div>
+    <!-- Smart Internal Link Modal -->
+    <div id="internalLinkModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-[1002] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 fade-in border border-gray-100">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-[#f15e50]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                    Smart Internal Links
+                </h3>
+                <button onclick="closeInternalLinkModal()" class="text-gray-400 hover:text-gray-600 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <p class="text-sm text-gray-600 mb-4">Analyzing your content against published articles to find the best linking opportunities.</p>
+            <div id="internalLinkSuggestions" class="space-y-3 max-h-80 overflow-y-auto pr-1">
+                <!-- Suggestions injected here -->
+            </div>
+            <div class="mt-5 flex justify-end">
+                <button onclick="closeInternalLinkModal()" class="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition">Close</button>
+            </div>
+        </div>
     </div>
 
 
@@ -1517,6 +1544,166 @@ loadEditData = async function() {
         localStorage.removeItem('dyve-edit-article');
     }
 };
+
+// ==========================================
+// SMART INTERNAL LINK INJECTOR
+// ==========================================
+async function analyzeAndSuggestInternalLinks() {
+    const modal = document.getElementById('internalLinkModal');
+    const suggestionsContainer = document.getElementById('internalLinkSuggestions');
+    
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    suggestionsContainer.innerHTML = `
+        <div class="text-center text-gray-500 py-8">
+            <div class="animate-spin inline-block w-8 h-8 border-2 border-[#f15e50] border-t-transparent rounded-full mb-3"></div>
+            <p class="text-sm font-medium">Scanning published articles...</p>
+            <p class="text-xs text-gray-400 mt-1">Extracting keywords & matching content</p>
+        </div>`;
+
+    const text = quill.getText().toLowerCase();
+    const title = document.getElementById('titleInput').value.toLowerCase();
+    const words = (text + ' ' + title).match(/\b[a-z]{4,}\b/g) || [];
+    
+    const stopWords = new Set(['this','that','with','from','have','will','your','about','into','over','under','more','most','other','some','such','than','then','them','they','their','there','these','those','which','while','where','when','what','were','been','could','would','should','because','between','through','during','before','after','each','very','just','also','only','same','not','and','but','for','the','you','are','was','is','it','of','in','on','at','to','by','an','or','as','if','we','us','our','out','off','again','here','how','all','any','both','few','its','own','too','can','cannot','without','within','across','against','around','towards','upon','whether','since','until','however','therefore','though','although','even','ever','never','always','often','really','still','yet','perhaps','indeed','almost','quite','rather','simply','article','tech','dyve','technology','system','process','using','based','make','made','like','good','best','work','works','time','new','one','two','way','ways','use','used','data','code']);
+    
+    const freq = {};
+    words.forEach(w => { if (!stopWords.has(w)) freq[w] = (freq[w] || 0) + 1; });
+    const topKeywords = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 6).map(e => e[0]);
+
+    if (topKeywords.length === 0) {
+        suggestionsContainer.innerHTML = '<p class="text-sm text-red-500 text-center py-4">Not enough unique words to analyze. Write more content first.</p>';
+        return;
+    }
+
+    try {
+        const config = getGitHubConfig();
+        const { articles } = await fetchArticlesJson(config);
+        const currentSlug = editingOriginalSlug || generateSlug(document.getElementById('titleInput').value);
+        
+        const suggestions = [];
+        for (const article of articles) {
+            if (!article || !article.url) continue;
+            if (currentSlug && article.url.includes(currentSlug)) continue; // Skip current draft
+            
+            let score = 0;
+            let matchedKeyword = '';
+            const articleTitleLower = (article.title || '').toLowerCase();
+            const articleDescLower = (article.desc || '').toLowerCase();
+            
+            for (const kw of topKeywords) {
+                if (articleTitleLower.includes(kw)) {
+                    score += 5; // Title match is very strong
+                    if (!matchedKeyword) matchedKeyword = kw;
+                } else if (articleDescLower && articleDescLower.includes(kw)) {
+                    score += 2; // Description match is good
+                    if (!matchedKeyword) matchedKeyword = kw;
+                }
+            }
+            
+            if (score >= 2) {
+                suggestions.push({
+                    title: article.title,
+                    url: `../${article.url}`, // Relative path for internal linking
+                    score: score,
+                    keyword: matchedKeyword
+                });
+            }
+        }
+        
+        suggestions.sort((a, b) => b.score - a.score);
+        const topSuggestions = suggestions.slice(0, 4); // Top 4 matches
+        
+        if (topSuggestions.length === 0) {
+            suggestionsContainer.innerHTML = `
+                <div class="text-center py-6">
+                    <svg class="w-10 h-10 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <p class="text-sm text-gray-500">No strong keyword matches found in published articles.</p>
+                    <p class="text-xs text-gray-400 mt-1">Try adding more specific technical terms to your draft.</p>
+                </div>`;
+            return;
+        }
+        
+        suggestionsContainer.innerHTML = topSuggestions.map((s) => `
+            <div class="border border-gray-200 rounded-lg p-3 hover:border-[#f15e50] hover:bg-[#fef3f2] transition bg-white group">
+                <div class="flex justify-between items-start gap-3">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-gray-900 line-clamp-2 group-hover:text-[#f15e50] transition">${s.title}</p>
+                        <p class="text-xs text-gray-500 mt-1.5 flex items-center gap-1">
+                            <span>Matches keyword:</span>
+                            <span class="font-mono bg-gray-100 group-hover:bg-white px-1.5 py-0.5 rounded text-[#f15e50] font-semibold border border-gray-200 group-hover:border-[#f15e50]/30">"${s.keyword}"</span>
+                        </p>
+                    </div>
+                    <button onclick="injectInternalLink('${s.keyword.replace(/'/g, "\\'")}', '${s.url}')" class="px-3 py-1.5 text-xs font-bold text-white bg-[#f15e50] rounded-md hover:bg-[#d94a3e] transition whitespace-nowrap shadow-sm flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                        Inject
+                    </button>
+                </div>
+            </div>
+        `).join('');
+        
+    } catch (error) {
+        console.error('Internal link analysis error:', error);
+        suggestionsContainer.innerHTML = `
+            <div class="text-center py-6">
+                <svg class="w-10 h-10 text-red-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <p class="text-sm text-red-500 font-medium">Failed to fetch published articles.</p>
+                <p class="text-xs text-gray-400 mt-1">Check your GitHub connection in Settings.</p>
+            </div>`;
+    }
+}
+
+function injectInternalLink(keyword, url) {
+    const text = quill.getText();
+    const lowerText = text.toLowerCase();
+    const lowerKeyword = keyword.toLowerCase();
+    
+    let searchIndex = 0;
+    let found = false;
+    let insertIndex = -1;
+    
+    // Find first occurrence of the keyword that is NOT already a link
+    while (true) {
+        const idx = lowerText.indexOf(lowerKeyword, searchIndex);
+        if (idx === -1) break;
+        
+        // Check if this occurrence is already inside a link
+        const formats = quill.getFormat(idx, lowerKeyword.length);
+        if (!formats.link) {
+            insertIndex = idx;
+            found = true;
+            break;
+        }
+        searchIndex = idx + lowerKeyword.length;
+    }
+    
+    if (found && insertIndex !== -1) {
+        quill.formatText(insertIndex, lowerKeyword.length, 'link', url);
+        quill.setSelection(insertIndex + lowerKeyword.length); // Move cursor after link
+        showToast(`✅ Successfully linked "${keyword}"`);
+        closeInternalLinkModal();
+    } else {
+        showToast('⚠️ Keyword not found in text or is already linked.');
+    }
+}
+
+function closeInternalLinkModal() {
+    const modal = document.getElementById('internalLinkModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+// Attach event listener to the new FAB button
+document.addEventListener('DOMContentLoaded', () => {
+    const fabInternalLinkBtn = document.getElementById('fabInternalLink');
+    if (fabInternalLinkBtn) {
+        fabInternalLinkBtn.addEventListener('click', () => {
+            window.closeFabDrawer();
+            analyzeAndSuggestInternalLinks();
+        });
+    }
+});
+
 
 
 </script>
