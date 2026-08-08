@@ -1,5 +1,17 @@
 [
   {
+    "title": "HM",
+    "desc": "Discover insights on hm. Interactive Example PreviewCodeHTML\nCSS\nJS\n\nInteractive Example PreviewCodeHTML\nCSS\nJS. Learn more with Dyve Tech.",
+    "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800",
+    "url": "tech/hm.html",
+    "tag": "News",
+    "meta": "tools",
+    "category": "tools",
+    "date": "2026-08-08",
+    "page": "tech",
+    "delta": "assets/deltas/tech-hm.json"
+  },
+  {
     "title": "Tertiary",
     "desc": "Test running",
     "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800",
