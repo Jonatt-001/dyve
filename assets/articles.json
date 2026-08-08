@@ -1,5 +1,17 @@
 [
   {
+    "title": "API Server: Explained like Never Before (Episode 4)",
+    "desc": "Discover insights on api server: explained like never before (episode 4). Welcome to Episode 4 of K8s-With-Pravesh. Learn more with Dyve Tech.",
+    "image": "https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786206637/p3zqylprgx2iwquqnvni.webp",
+    "url": "tech/api-server-explained-like-never-before-episode-4.html",
+    "tag": "Tutorial",
+    "meta": "trends",
+    "category": "trends",
+    "date": "2026-08-08",
+    "page": "tech",
+    "delta": "assets/deltas/tech-api-server-explained-like-never-before-episode-4.json"
+  },
+  {
     "title": "Cloudflare Wallets Will Let AI Agents Pay for APIs Safely Online",
     "desc": "Cloudflare is building programmable wallets that let AI agents pay for APIs, data and online content without asking a human to approve every small transaction.",
     "image": "https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786191899/gpjmiw8mectub3vgbd0f.png",
