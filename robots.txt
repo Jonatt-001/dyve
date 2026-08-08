@@ -1,6 +1,5 @@
 # Dyve HackaX - Cyber Intelligence Platform
-# Generated automatically on 2026-08-03
-# Do not edit manually - changes will be overwritten
+# Auto-generated - do not edit manually
 
 User-agent: *
 Allow: /
@@ -11,35 +10,10 @@ Allow: /ransomware/
 Allow: /threat-actors/
 Allow: /signals/
 Allow: /analysis/
-Allow: /faq/
-Allow: /about-us/
 
-# Block admin/editor paths
 Disallow: /admin/
 Disallow: /editor/
-Disallow: /settings/
-Disallow: /drafts/
-Disallow: /published/
 Disallow: /*.json$
 Disallow: /assets/articles.json
 
-# Block duplicate content
-Disallow: /*?mode=edit
-Disallow: /*?ref=
-
-# Sitemaps
 Sitemap: https://dyve.online/sitemap.xml
-
-# Crawl-delay for heavy bots
-User-agent: AhrefsBot
-Crawl-delay: 10
-
-User-agent: SemrushBot
-Crawl-delay: 10
-
-# Optimize for Google
-User-agent: Googlebot
-Allow: /
-Allow: /*.html$
-Allow: /*.css$
-Allow: /*.js$
