@@ -56,6 +56,12 @@
     <priority>0.3</priority>
   </url>
   <url>
+    <loc>https://dyve.online/tech/api-server-explained-like-never-before-episode-4.html</loc>
+    <lastmod>2026-08-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://dyve.online/tech/cloudflare-wallets-will-let-ai-agents-pay-for-apis-safely-online.html</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>
