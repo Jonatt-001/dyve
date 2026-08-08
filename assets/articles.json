@@ -1,5 +1,17 @@
 [
   {
+    "title": "HMkk",
+    "desc": "Discover insights on hmkk. . Learn more with Dyve Tech.",
+    "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800",
+    "url": "tech/hmkk.html",
+    "tag": "News",
+    "meta": "ai",
+    "category": "ai",
+    "date": "2026-08-08",
+    "page": "tech",
+    "delta": "assets/deltas/tech-hmkk.json"
+  },
+  {
     "title": "Cloudflare launches Kitesurf, a browser built for AI agents",
     "desc": "Discover insights on cloudflare launches kitesurf, a browser built for ai agents. Cloudflare is the latest company to join the race to build a new web browse...",
     "image": "https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786138831/j7wxjxy6ehbnczjijhme.jpg",
