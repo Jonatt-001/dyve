@@ -1,319 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Data Breaches & Cyber Incidents — Live Threat Intelligence | Dyve HackaX</title>
-
-<meta name="description" content="Track recent data breaches, credential leaks, and cyber incidents. Dyve HackaX provides real-time breach intelligence and threat analysis.">
-
+<title>Cybersecurity Breach Intelligence | Dyve Tech</title>
+<meta name="description" content="Cybersecurity breach intelligence, security developments and incident analysis from Dyve Tech.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <link rel="canonical" href="https://dyve.online/breaches/">
-<meta name="robots" content="index, follow">
-
-<link rel="stylesheet" href="../style.css">
-<link rel="stylesheet" href="../divider.css">
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<!-- ENHANCED SCHEMA -->
-<script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@type": "CollectionPage",
- "name": "Cyber Breaches",
- "url": "https://dyve.online/breaches/",
- "mainEntity": [
-  {
-    "@type": "Article",
-    "name": "Financial sector credential leak",
-    "about": "Cyber Attack",
-    "mentions": ["GhostRoot"]
-  }
- ]
-}
-</script>
-
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cybersecurity Breach Intelligence | Dyve Tech">
+<meta property="og:description" content="Cybersecurity breach intelligence, security developments and incident analysis from Dyve Tech.">
+<meta property="og:url" content="https://dyve.online/breaches/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cybersecurity Breach Intelligence | Dyve Tech">
+<meta name="twitter:description" content="Cybersecurity breach intelligence, security developments and incident analysis from Dyve Tech.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Maven+Pro:wght@700;800;900&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Cybersecurity Breach Intelligence | Dyve Tech","description":"Cybersecurity breach intelligence, security developments and incident analysis from Dyve Tech.","url":"https://dyve.online/breaches/","isPartOf":{"@type":"WebSite","name":"Dyve Tech","url":"https://dyve.online"},"publisher":{"@type":"Organization","name":"Dyve Tech Intelligence Unit"},"mainEntity":{"@type":"ItemList","itemListElement":[{"@type":"ListItem","position":1,"url":"https://dyve.online/article/article-credential-leak.html","name":"Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets"},{"@type":"ListItem","position":2,"url":"https://dyve.online/article/article-zero-day.html","name":"Zero-Day Vulnerability Discovered in Authentication API"}]}}</script>
 <style>
-
-/* =========================
-   BREACHES PAGE — TIMELINE UI
-========================= */
-
-/* hero */
-.breach-title {
-  text-align: center;
-  font-size: 26px;
-  margin-top: 40px;
-}
-
-.breach-title span {
-  display: block;
-  font-size: 12px;
-  opacity: 0.6;
-  margin-top: 6px;
-}
-
-/* alert bar */
-.breach-alert {
-  margin: 20px auto;
-  max-width: 600px;
-  text-align: center;
-  font-size: 13px;
-  color: #ff4d4d;
-  background: rgba(255,0,0,0.08);
-  border: 1px solid rgba(255,0,0,0.25);
-  padding: 10px;
-  border-radius: 6px;
-}
-
-/* feed */
-.breach-feed {
-  max-width: 800px;
-  margin: 30px auto 80px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-/* item */
-.breach-item {
-  display: grid;
-  grid-template-columns: 90px 1fr auto;
-  gap: 14px;
-  padding: 16px;
-  background: #030605;
-  border: 1px solid rgba(255,255,255,0.05);
-  border-radius: 10px;
-  transition: all 0.2s ease;
-}
-
-.breach-item:hover {
-  transform: translateY(-2px);
-}
-
-/* time */
-.breach-time {
-  font-size: 12px;
-  opacity: 0.5;
-}
-
-/* content */
-.breach-content h2 {
-  font-size: 15px;
-  margin-bottom: 6px;
-}
-
-.breach-content p {
-  font-size: 13px;
-  opacity: 0.7;
-}
-
-/* tag */
-.breach-tag {
-  font-size: 11px;
-  padding: 4px 8px;
-  border-radius: 4px;
-}
-
-/* severity colors */
-.breach-item.critical {
-  border-left: 3px solid #ff3b3b;
-}
-.breach-item.critical .breach-tag {
-  background: #ff3b3b;
-  color: #fff;
-}
-
-.breach-item.high {
-  border-left: 3px solid #ff914d;
-}
-.breach-item.high .breach-tag {
-  background: #ff914d;
-}
-
-.breach-item.medium {
-  border-left: 3px solid #ffaa00;
-}
-.breach-item.medium .breach-tag {
-  background: #ffaa00;
-}
-
-/* mobile */
-@media (max-width: 600px) {
-
-  .breach-item {
-    grid-template-columns: 1fr;
-  }
-
-  .breach-time {
-    margin-bottom: 6px;
-  }
-
-}
-
-/* =========================
-   INTEL CONNECTIONS (NEW)
-========================= */
-
-.breach-links {
-  margin-top: 10px;
-  font-size: 12px;
-  opacity: 0.85;
-}
-
-.breach-links a {
-  color: #00ffaa;
-  text-decoration: none;
-}
-
-.breach-links a:hover {
-  text-decoration: underline;
-}
-
-.intel-chain {
-  font-size: 11px;
-  opacity: 0.4;
-  margin-top: 6px;
-}
-
+:root{--bg:#fbfaf8;--ink:#00001a;--body:#252832;--muted:#70747d;--accent:#f15e50;--accent-d:#d94a3e;--line:#e5e1d8;--card:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--body);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+.site-top{position:sticky;top:0;z-index:20;background:rgba(251,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.site-top-in{max-width:1180px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{font-family:Maven Pro,Inter,sans-serif;font-weight:900;letter-spacing:.07em;color:var(--ink)}
+.brand span{color:var(--accent)}
+.nav{display:flex;gap:18px;font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.nav a:hover{color:var(--accent)}
+.wrap{max-width:1180px;margin:auto;padding:0 20px}
+.hero{padding:62px 0 34px;border-bottom:1px solid var(--line)}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;color:var(--accent);font-size:.7rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-family:Maven Pro,Inter,sans-serif;color:var(--ink);font-size:clamp(2.3rem,6vw,4.8rem);line-height:1.03;letter-spacing:-.035em;max-width:900px}
+.hero p{max-width:760px;margin-top:20px;color:var(--muted);font-size:1.05rem;line-height:1.7}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 14px;font-size:.75rem;font-weight:800;color:#444}
+.featured{display:grid;grid-template-columns:1.35fr .65fr;gap:24px;padding:34px 0}
+.featured-card{border-radius:16px;overflow:hidden;background:#111827;color:#fff;min-height:390px;position:relative}
+.featured-card img{width:100%;height:100%;min-height:390px;object-fit:cover;opacity:.72}
+.featured-card .overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.84),rgba(0,0,0,.06) 70%)}
+.featured-content{position:absolute;left:26px;right:26px;bottom:25px}
+.featured-content .tag{display:inline-block;background:var(--accent);color:#fff;padding:7px 10px;font-size:.65rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase;margin-bottom:13px}
+.featured-content h2{font-family:Maven Pro,Inter,sans-serif;font-size:clamp(1.6rem,4vw,2.7rem);line-height:1.1}
+.featured-content p{color:#d6d8dd;margin-top:12px;line-height:1.55;max-width:700px}
+.featured-side{display:flex;flex-direction:column;gap:14px}
+.mini{display:grid;grid-template-columns:110px 1fr;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px}
+.mini img{width:110px;height:84px;object-fit:cover;border-radius:8px}
+.mini h3{font-family:Maven Pro,Inter,sans-serif;color:var(--ink);font-size:.95rem;line-height:1.25}
+.mini .meta{font-size:.68rem;color:#8a8c93;margin-top:8px}
+.section-head{display:flex;align-items:center;gap:14px;margin:20px 0}
+.section-head h2{font-family:Maven Pro,Inter,sans-serif;color:var(--ink);font-size:1.3rem}
+.section-line{height:2px;flex:1;background:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;padding-bottom:60px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 14px 35px rgba(0,0,0,.08)}
+.thumb{position:relative;aspect-ratio:16/10;background:#e5e7eb;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover;transition:transform .45s}
+.card:hover .thumb img{transform:scale(1.04)}
+.thumb .tag{position:absolute;left:12px;bottom:12px;background:#fff;color:#111;padding:7px 9px;font-size:.63rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+.card-body{padding:18px}
+.card-body .category{font-size:.65rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.card-body h2{font-family:Maven Pro,Inter,sans-serif;color:var(--ink);font-size:1.2rem;line-height:1.25}
+.card-body p{font-size:.86rem;color:#6d7078;line-height:1.55;margin-top:9px}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px;color:#8a8c93;font-size:.66rem;text-transform:uppercase;letter-spacing:.07em}
+footer{background:#00001a;color:#fff;text-align:center;padding:45px 20px}
+footer .brand{color:#fff}
+footer p{color:#73798b;font-size:.75rem;margin-top:12px}
+@media(max-width:900px){.featured{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.nav{display:none}.hero{padding:45px 0 28px}.grid{grid-template-columns:1fr}.featured-card,.featured-card img{min-height:330px}}
 </style>
 </head>
-
 <body>
+<header class="site-top">
+    <div class="site-top-in">
+        <a class="brand" href="../">DYVE<span>|</span>TECH</a>
+        <nav class="nav" aria-label="Primary">
+            <a href="../tech/">Latest</a>
+            <a href="../">Home</a>
+            <a href="../tech/">Technology</a>
+        </nav>
+    </div>
+</header>
 
-<div class="header">
-  <div class="topbar">
-    <div class="menu-icon"></div>
-    <div class="logo">DYVE<span style="opacity:.5">|</span>HACKAX</div>
-  </div>
+<main>
+<div class="wrap">
+    <section class="hero">
+        <div class="eyebrow">Breach Intel</div>
+        <h1>Cybersecurity Breach Intelligence</h1>
+        <p>Cybersecurity breach intelligence, security developments and incident analysis from Dyve Tech.</p>
+        <div class="stats">
+            <span class="stat">2 published articles</span>
+            <span class="stat">Static category index</span>
+        </div>
+    </section>
 
-  <div class="nav">
-    <span data-link="../index.html">Intel</span>
-    <span class="active">Breaches</span>
-    <span data-link="../dark-web/index.html">Dark Web</span>
-    <span data-link="../signals/index.html">Signals</span>
-    <span data-link="../threat-actors/index.html">Threat Actors</span>
-  </div>
-</div>
-
-<div class="container">
-
-<h1 class="breach-title">
-  Live Breach Intelligence
-  <span>Data Leaks, Credential Exposure & Incident Tracking</span>
-</h1>
-
-<div class="breach-alert">
-  ● New breach signals detected — monitoring active sources
-</div>
-
-<div class="divider"></div>
-
-<div class="breach-feed">
-
-  <!-- BREACH 1 -->
-  <div class="breach-item critical" id="breach-1">
-
-    <div class="breach-time">2 min ago</div>
-
-    <div class="breach-content">
-      <h2>Financial sector credential leak detected</h2>
-      <p>Over 2.3M credentials linked to US banking systems surfaced in underground forums.</p>
-
-      <!-- INTEL CHAIN -->
-      <div class="intel-chain">
-        Signal → Breach → Actor → Dark Web
-      </div>
-
-      <!-- CONNECTIONS -->
-      <div class="breach-links">
-        Signal:
-        <a href="../signals/index.html#signal-1">Credential spike →</a><br>
-        Actor:
-        <a href="../threat-actors/index.html#actor-1">GhostRoot →</a><br>
-        Source:
-        <a href="../dark-web/index.html">Underground forum →</a>
-      </div>
-
+    <div class="section-head">
+        <h2>Latest Breach Intel</h2>
+        <span class="section-line"></span>
     </div>
 
-    <span class="breach-tag">Critical</span>
-
-  </div>
-
-  <!-- BREACH 2 -->
-  <div class="breach-item high" id="breach-2">
-
-    <div class="breach-time">12 min ago</div>
-
-    <div class="breach-content">
-      <h2>Healthcare provider data exposure</h2>
-      <p>Internal database access reportedly listed for sale with patient records.</p>
-
-      <div class="intel-chain">
-        Signal → Breach → Marketplace
-      </div>
-
-      <div class="breach-links">
-        Signal:
-        <a href="../signals/index.html#signal-2">Domain anomaly →</a><br>
-        Source:
-        <a href="../dark-web/index.html">Marketplace listing →</a>
-      </div>
-
-    </div>
-
-    <span class="breach-tag">High Risk</span>
-
-  </div>
-
-  <!-- BREACH 3 -->
-  <div class="breach-item medium" id="breach-3">
-
-    <div class="breach-time">34 min ago</div>
-
-    <div class="breach-content">
-      <h2>Corporate email dump circulating</h2>
-      <p>Thousands of enterprise email credentials shared across multiple forums.</p>
-
-      <div class="intel-chain">
-        Signal → Breach → Actor
-      </div>
-
-      <div class="breach-links">
-        Signal:
-        <a href="../signals/index.html#signal-1">Credential anomaly →</a><br>
-        Actor:
-        <a href="../threat-actors/index.html">View actors →</a>
-      </div>
-
-    </div>
-
-    <span class="breach-tag">Medium</span>
-
-  </div>
-
+    <section class="grid" aria-label="Breach Intel articles">
+        
+<article class="card">
+    <a class="card-link" href="../article/article-credential-leak.html">
+        <div class="thumb">
+            <img src="https://tungstensecure.com/wp-content/uploads/2025/05/Cyber-Threat-Intelligence-Pakistan.jpg" alt="Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets" loading="lazy" width="640" height="400">
+            <span class="tag">LIVE INTEL</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Breach Intel</div>
+            <h2>Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets</h2>
+            <p>A coordinated breach operation has surfaced millions of credentials across underground forums.</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 12, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="../article/article-zero-day.html">
+        <div class="thumb">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRELGUPLZGzdyHRJARBf-lP9gTRhjhkJZRzfzgaletP7QP14L0qBEoYzajU&amp;s=10" alt="Zero-Day Vulnerability Discovered in Authentication API" loading="lazy" width="640" height="400">
+            <span class="tag">CRITICAL</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Breach Intel</div>
+            <h2>Zero-Day Vulnerability Discovered in Authentication API</h2>
+            <p>A critical zero-day flaw enables authentication bypass and session hijacking.</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 12, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+    </section>
 </div>
+</main>
 
-</div>
-
-<footer class="dyve-footer">
-  <div class="dyve-core">
-    <div class="dyve-title">DYVE HACKAX</div>
-    <p class="dyve-desc">Real-time breach intelligence & monitoring</p>
-  </div>
+<footer>
+    <div class="brand">DYVE<span>|</span>TECH</div>
+    <p>© 2026 Dyve Tech Intelligence Unit. All rights reserved.</p>
 </footer>
-
-<script>
-document.querySelectorAll(".nav span").forEach(item => {
-  item.addEventListener("click", () => {
-    const link = item.getAttribute("data-link");
-    if (!link) return;
-    window.location.href = link;
-  });
-});
-</script>
-
 </body>
 </html>
