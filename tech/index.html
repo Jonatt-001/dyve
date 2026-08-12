@@ -1,2174 +1,570 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5.0">
 
-    <!-- =========================
-         PRIMARY SEO
-    ========================= -->
-    <title>Dyve Tech — AI, Technology News, Developer Insights & Analysis</title>
-
-    <meta
-        name="description"
-        content="Dyve Tech covers artificial intelligence, emerging technology, developer tools, coding, cybersecurity, quantum computing and the ideas shaping the future."
-    >
-
-    <meta
-        name="author"
-        content="Dyve Tech Editorial Team"
-    >
-
-    <meta
-        name="robots"
-        content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-    >
-
-    <meta
-        name="googlebot"
-        content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-    >
-
-    <meta name="theme-color" content="#fffdfa">
-    <meta name="color-scheme" content="light">
-    <meta name="application-name" content="Dyve Tech">
-
-    <link rel="canonical" href="https://dyve.online/tech/">
-    <link rel="alternate" hreflang="en" href="https://dyve.online/tech/">
-    <link rel="icon" href="https://dyve.online/favicon.ico">
-
-    <!-- =========================
-         PERFORMANCE
-    ========================= -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <!-- =========================
-         OPEN GRAPH
-    ========================= -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Dyve Tech — AI, Technology News & Developer Insights">
-    <meta
-        property="og:description"
-        content="Artificial intelligence, technology, developer tools, coding, cybersecurity, quantum computing and deep-dive analysis from Dyve Tech."
-    >
-    <meta property="og:url" content="https://dyve.online/tech/">
-    <meta property="og:site_name" content="Dyve Tech">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:image" content="https://dyve.online/assets/tech-og-image.jpg">
-    <meta property="og:image:alt" content="Dyve Tech — Artificial Intelligence and Technology News">
-
-    <!-- =========================
-         TWITTER / X
-    ========================= -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Dyve Tech — AI, Technology News & Developer Insights">
-    <meta
-        name="twitter:description"
-        content="Artificial intelligence, technology news, developer insights, coding, cybersecurity and emerging technology analysis."
-    >
-    <meta name="twitter:image" content="https://dyve.online/assets/tech-og-image.jpg">
-    <meta name="twitter:image:alt" content="Dyve Tech technology and artificial intelligence coverage">
-
-    <!-- =========================
-         FONTS
-    ========================= -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Maven+Pro:wght@600;700;800;900&display=swap"
-        rel="stylesheet"
-    >
-
-    <!-- =========================
-         TAILWIND
-         NOTE:
-         For final production deployment, compile Tailwind
-         locally instead of using the CDN.
-    ========================= -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- =========================
-         STRUCTURED DATA
-    ========================= -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@graph": [
-            {
-                "@type": "Organization",
-                "@id": "https://dyve.online/#organization",
-                "name": "Dyve Tech",
-                "url": "https://dyve.online/tech/",
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://dyve.online/assets/tech-og-image.jpg"
-                }
-            },
-            {
-                "@type": "WebSite",
-                "@id": "https://dyve.online/#website",
-                "url": "https://dyve.online/",
-                "name": "Dyve",
-                "publisher": {
-                    "@id": "https://dyve.online/#organization"
-                },
-                "inLanguage": "en"
-            },
-            {
-                "@type": "CollectionPage",
-                "@id": "https://dyve.online/tech/#webpage",
-                "url": "https://dyve.online/tech/",
-                "name": "Dyve Tech — AI, Technology News, Developer Insights & Analysis",
-                "description": "Artificial intelligence, technology, developer tools, coding, cybersecurity, quantum computing and emerging technology coverage from Dyve Tech.",
-                "isPartOf": {
-                    "@id": "https://dyve.online/#website"
-                },
-                "publisher": {
-                    "@id": "https://dyve.online/#organization"
-                },
-                "inLanguage": "en"
-            }
-        ]
-    }
-    </script>
-
-    <style>
-        :root {
-            --primary: #f15e50;
-            --primary-dark: #d94a3e;
-            --ink: #00001a;
-            --muted: #5d5f79;
-            --gold: #e9ab53;
-            --surface: #fffdfa;
-            --border: #e5e7eb;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--surface);
-            color: var(--ink);
-            text-rendering: optimizeLegibility;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .font-heading {
-            font-family: 'Maven Pro', sans-serif;
-        }
-
-        .text-primary {
-            color: var(--primary);
-        }
-
-        .bg-primary {
-            background-color: var(--primary);
-        }
-
-        .hover\:bg-primary:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .nav-link {
-            position: relative;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--primary);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after,
-        .nav-link[aria-current="page"]::after {
-            width: 100%;
-        }
-
-        .article-card {
-            transition:
-                transform 0.3s ease,
-                box-shadow 0.3s ease;
-        }
-
-        .article-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-        }
-
-        .skeleton {
-            background:
-                linear-gradient(
-                    90deg,
-                    #f0f0f0 25%,
-                    #e0e0e0 50%,
-                    #f0f0f0 75%
-                );
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-
-        @keyframes loading {
-            0% {
-                background-position: 200% 0;
-            }
-
-            100% {
-                background-position: -200% 0;
-            }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .focus-ring:focus-visible,
-        a:focus-visible,
-        button:focus-visible,
-        input:focus-visible {
-            outline: 3px solid rgba(241, 94, 80, 0.35);
-            outline-offset: 3px;
-        }
-
-        .topic-link {
-            transition:
-                color 0.2s ease,
-                background-color 0.2s ease,
-                border-color 0.2s ease;
-        }
-
-        .topic-link:hover {
-            color: var(--primary);
-            border-color: rgba(241, 94, 80, 0.35);
-            background-color: rgba(241, 94, 80, 0.04);
-        }
-
-        .breadcrumb-separator {
-            color: #9ca3af;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            html {
-                scroll-behavior: auto;
-            }
-
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latest Technology News, AI &amp; Developer Intelligence | Dyve Tech</title>
+<meta name="description" content="Latest technology news, artificial intelligence, developer tools, programming and emerging tech intelligence from Dyve Tech.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://dyve.online/tech/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Latest Technology News, AI &amp; Developer Intelligence | Dyve Tech">
+<meta property="og:description" content="Latest technology news, artificial intelligence, developer tools, programming and emerging tech intelligence from Dyve Tech.">
+<meta property="og:url" content="https://dyve.online/tech/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Latest Technology News, AI &amp; Developer Intelligence | Dyve Tech">
+<meta name="twitter:description" content="Latest technology news, artificial intelligence, developer tools, programming and emerging tech intelligence from Dyve Tech.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Maven+Pro:wght@700;800;900&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Latest Technology News, AI \u0026 Developer Intelligence | Dyve Tech","description":"Latest technology news, artificial intelligence, developer tools, programming and emerging tech intelligence from Dyve Tech.","url":"https://dyve.online/tech/","publisher":{"@type":"Organization","name":"Dyve Tech Intelligence Unit"},"mainEntity":{"@type":"ItemList","itemListElement":[{"@type":"ListItem","position":1,"url":"https://dyve.online/tech/how-to-effectively-deploy-code-with-claude-code.html","name":"How to Effectively Deploy Code With Claude Code"},{"@type":"ListItem","position":2,"url":"https://dyve.online/article/article-credential-leak.html","name":"Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets"},{"@type":"ListItem","position":3,"url":"https://dyve.online/article/article-zero-day.html","name":"Zero-Day Vulnerability Discovered in Authentication API"},{"@type":"ListItem","position":4,"url":"https://dyve.online/article/article-exfiltration.html","name":"Encrypted Messaging Platform Exploited for Data Exfiltration"},{"@type":"ListItem","position":5,"url":"https://dyve.online/article/article-credential-stuffing.html","name":"Credential Stuffing Attacks Explained"},{"@type":"ListItem","position":6,"url":"https://dyve.online/article/article-data-breach-response.html","name":"Data Breach Response Playbook (2026)"},{"@type":"ListItem","position":7,"url":"https://dyve.online/article/dark-web/index.html","name":"Dark Web Secrets: What Really Happens Beyond the Surface Web"},{"@type":"ListItem","position":8,"url":"https://dyve.online/article/dark-web/dark-web-how-it-works.html","name":"How the Dark Web Actually Works (Tor, Onion Routing, Encryption)"},{"@type":"ListItem","position":9,"url":"https://dyve.online/article/dark-web/dark-web-marketplaces.html","name":"Dark Web Marketplaces Explained (Vendors, Escrow, Trade Systems)"},{"@type":"ListItem","position":10,"url":"https://dyve.online/article/dark-web/dark-web-hacker-economy.html","name":"What Hackers Buy on the Dark Web (Access, Exploits, Data)"},{"@type":"ListItem","position":11,"url":"https://dyve.online/article/dark-web/dark-web-monitoring.html","name":"Dark Web Monitoring Systems (How Organizations Track Threats)"},{"@type":"ListItem","position":12,"url":"https://dyve.online/article/dark-web/dark-web-risks.html","name":"Is the Dark Web Dangerous? Risks, Myths \u0026 Reality"},{"@type":"ListItem","position":13,"url":"https://dyve.online/tech/elon-musk-says-starship-flight-13-recovery-not-looking-good-despite-successful-splashdown.html","name":"Elon Musk says Starship Flight 13 recovery ‘not looking good’ despite successful splashdown"},{"@type":"ListItem","position":14,"url":"https://dyve.online/tech/ransomware-attacks-surge-20-in-july-what-you-need-to-know.html","name":"Ransomware Attacks Surge 20% in July: What You Need to Know"},{"@type":"ListItem","position":15,"url":"https://dyve.online/tech/api-server-explained-like-never-before-episode-4.html","name":"API Server: Explained like Never Before (Episode 4)"},{"@type":"ListItem","position":16,"url":"https://dyve.online/tech/cloudflare-wallets-will-let-ai-agents-pay-for-apis-safely-online.html","name":"Cloudflare Wallets Will Let AI Agents Pay for APIs Safely Online"},{"@type":"ListItem","position":17,"url":"https://dyve.online/tech/cloudflare-launches-kitesurf-a-browser-built-for-ai-agents.html","name":"Cloudflare launches Kitesurf, a browser built for AI agents"},{"@type":"ListItem","position":18,"url":"https://dyve.online/tech/improving-gpt56-sol-in-chatgptand-expanding-access-to-gpt56-luna-for-free-users.html","name":"Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT‑5.6 Luna for free users"},{"@type":"ListItem","position":19,"url":"https://dyve.online/tech/responding-to-the-next-frontier-of-critical-cyber-capabilities.html","name":"Responding to the next frontier of critical cyber capabilities"},{"@type":"ListItem","position":20,"url":"https://dyve.online/tech/cloudflare-open-sources-vibe-coding-platform-for-people-who-arent-coders.html","name":"Cloudflare open-sources vibe-coding platform for people who aren’t coders"},{"@type":"ListItem","position":21,"url":"https://dyve.online/tech/europe-finalizes-ambitious-plans-for-iris-the-eus-sovereign-starlink-competitor.html","name":"Europe Finalizes Ambitious Plans for IRIS²: The EU’s ‘Sovereign’ Starlink Competitor"},{"@type":"ListItem","position":22,"url":"https://dyve.online/tech/apple-issues-new-challenge-against-uk-order-for-access-to-private-user-data.html","name":"Apple issues new challenge against UK order for access to private user data"},{"@type":"ListItem","position":23,"url":"https://dyve.online/tech/quantum-breakthrough-how-new-quantum-neural-networks-are-smashing-processing-speed-records.html","name":"Quantum Breakthrough: How New Quantum Neural Networks Are Smashing Processing Speed Records"},{"@type":"ListItem","position":24,"url":"https://dyve.online/tech/teads-files-suit-against-google-seeks-financial-compensation-after-antitrust-ruling.html","name":"Teads files suit against Google; seeks financial compensation after antitrust ruling"},{"@type":"ListItem","position":25,"url":"https://dyve.online/tech/the-agentic-ai-revolution.html","name":"The Agentic AI Revolution"},{"@type":"ListItem","position":26,"url":"https://dyve.online/tech/claude-opus-5-became-downright-ruthless-when-tasked-with-running-a-vending-machine.html","name":"Claude Opus 5 became downright ruthless when tasked with running a vending machine"},{"@type":"ListItem","position":27,"url":"https://dyve.online/tech/claude.html","name":"Claude"}]}}</script>
+<style>
+:root{--bg:#fbfaf8;--ink:#00001a;--body:#252832;--muted:#70747d;--accent:#f15e50;--accent-d:#d94a3e;--line:#e5e1d8;--card:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--body);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+.site-top{position:sticky;top:0;z-index:20;background:rgba(251,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.site-top-in{max-width:1180px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{font-family:Maven Pro,Inter,sans-serif;font-weight:900;letter-spacing:.07em;color:var(--ink)}
+.brand span{color:var(--accent)}
+.nav{display:flex;gap:18px;font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.nav a:hover{color:var(--accent)}
+.wrap{max-width:1180px;margin:auto;padding:0 20px}
+.hero{padding:62px 0 34px;border-bottom:1px solid var(--line)}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;color:var(--accent);font-size:.7rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-family:Maven Pro,Inter,sans-serif;color:var(--ink);font-size:clamp(2.3rem,6vw,4.8rem);line-height:1.03;letter-spacing:-.035em;max-width:900px}
+.hero p{max-width:760px;margin-top:20px;color:var(--muted);font-size:1.05rem;line-height:1.7}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 14px;font-size:.75rem;font-weight:800;color:#444}
+.featured{display:grid;grid-template-columns:1.35fr .65fr;gap:24px;padding:34px 0}
+.featured-card{border-radius:16px;overflow:hidden;background:#111827;color:#fff;min-height:390px;position:relative}
+.featured-card img{width:100%;height:100%;min-height:390px;object-fit:cover;opacity:.72}
+.featured-card .overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.84),rgba(0,0,0,.06) 70%)}
+.featured-content{position:absolute;left:26px;right:26px;bottom:25px}
+.featured-content .tag{display:inline-block;background:var(--accent);color:#fff;padding:7px 10px;font-size:.65rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase;margin-bottom:13px}
+.featured-content h2{font-family:Maven Pro,Inter,sans-serif;font-size:clamp(1.6rem,4vw,2.7rem);line-height:1.1}
+.featured-content p{color:#d6d8dd;margin-top:12px;line-height:1.55;max-width:700px}
+.featured-side{display:flex;flex-direction:column;gap:14px}
+.mini{display:grid;grid-template-columns:110px 1fr;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px}
+.mini img{width:110px;height:84px;object-fit:cover;border-radius:8px}
+.mini h3{font-family:Maven Pro,Inter,sans-serif;color:var(--ink);font-size:.95rem;line-height:1.25}
+.mini .meta{font-size:.68rem;color:#8a8c93;margin-top:8px}
+.section-head{display:flex;align-items:center;gap:14px;margin:20px 0}
+.section-head h2{font-family:Maven Pro,Inter,sans-serif;color:var(--ink);font-size:1.3rem}
+.section-line{height:2px;flex:1;background:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;padding-bottom:60px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 14px 35px rgba(0,0,0,.08)}
+.thumb{position:relative;aspect-ratio:16/10;background:#e5e7eb;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover;transition:transform .45s}
+.card:hover .thumb img{transform:scale(1.04)}
+.thumb .tag{position:absolute;left:12px;bottom:12px;background:#fff;color:#111;padding:7px 9px;font-size:.63rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+.card-body{padding:18px}
+.card-body .category{font-size:.65rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.card-body h2{font-family:Maven Pro,Inter,sans-serif;color:var(--ink);font-size:1.2rem;line-height:1.25}
+.card-body p{font-size:.86rem;color:#6d7078;line-height:1.55;margin-top:9px}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px;color:#8a8c93;font-size:.66rem;text-transform:uppercase;letter-spacing:.07em}
+footer{background:#00001a;color:#fff;text-align:center;padding:45px 20px}
+footer .brand{color:#fff}
+footer p{color:#73798b;font-size:.75rem;margin-top:12px}
+@media(max-width:900px){.featured{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.nav{display:none}.hero{padding:45px 0 28px}.grid{grid-template-columns:1fr}.featured-card,.featured-card img{min-height:330px}}
+</style>
 </head>
-
-<body class="bg-[#fffdfa] p-4 sm:p-6 md:p-8 min-[1200px]:px-[5%] min-[1440px]:px-[12%]">
-
-    <!-- =========================
-         OVERLAY
-    ========================= -->
-    <div
-        id="overlay"
-        class="fixed inset-0 bg-black opacity-50 hidden z-30"
-        aria-hidden="true"
-    ></div>
-
-    <!-- =========================
-         HEADER
-    ========================= -->
-    <header
-        class="flex justify-between items-center my-4 mb-8 md:mx-6 min-[1200px]:mx-0 min-[1200px]:mb-7 min-[1200px]:mt-10"
-    >
-
-        <!-- LOGO -->
-        <a
-            href="https://dyve.online/tech/"
-            class="logo flex items-center gap-3 focus-ring"
-            aria-label="Dyve Tech home"
-        >
-            <svg
-                width="32"
-                height="32"
-                viewBox="0 0 32 32"
-                fill="none"
-                aria-hidden="true"
-            >
-                <path
-                    d="M13.7692 19.9074L16.0003 17.656L18.2314 19.9074L16.0003 22.1588L13.7692 19.9074Z"
-                    fill="#f15e50"
-                ></path>
-
-                <path
-                    d="M11.4438 17.5608L15.953 13.0106L13.722 10.7593L9.21275 15.3095L11.4438 17.5608Z"
-                    fill="#f15e50"
-                ></path>
-
-                <path
-                    d="M20.5569 17.5608L22.7879 15.3095L20.5569 13.0582L18.3259 15.3095L20.5569 17.5608Z"
-                    fill="#f15e50"
-                ></path>
-
-                <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM11.6722 8.13447C12.811 6.98529 14.6329 6.98529 15.7717 8.13447L18.2785 10.6641L18.5071 10.4334C19.646 9.28421 21.4678 9.2842 22.6067 10.4334L25.3028 13.154C26.4753 14.3372 26.4753 16.2818 25.3028 17.465L17.1392 25.7028C16.8601 25.9845 16.5076 26.1416 16.1466 26.1749C15.6884 26.2173 15.2158 26.0604 14.8615 25.7028L6.6979 17.465C5.52538 16.2818 5.52537 14.3372 6.6979 13.154L11.6722 8.13447Z"
-                    fill="#f15e50"
-                ></path>
-            </svg>
-
-            <span class="font-heading font-bold text-xl text-[#00001a]">
-                DYVE TECH
-            </span>
-        </a>
-
-        <!-- NAVIGATION -->
-        <nav
-            class="group relative"
-            aria-label="Primary navigation"
-        >
-
-            <!-- MOBILE MENU BUTTON -->
-            <button
-                type="button"
-                id="menuBtn"
-                class="lg:hidden cursor-pointer w-10 h-10 flex items-center justify-center rounded focus-ring"
-                aria-label="Open navigation"
-                aria-expanded="false"
-                aria-controls="mobileNavigation"
-            >
-                <svg
-                    width="25"
-                    height="25"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    aria-hidden="true"
-                >
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
-
-            <!-- MOBILE NAV -->
-            <div
-                id="mobileNavigation"
-                class="navigation-list bg-[#fffdfa] h-full w-2/3 fixed z-40 right-0 top-0 min-[500px]:w-1/2 md:w-1/3 hidden shadow-xl"
-                aria-hidden="true"
-            >
-
-                <button
-                    type="button"
-                    id="closeIcon"
-                    class="float-right mx-4 my-8 cursor-pointer w-10 h-10 flex items-center justify-center rounded focus-ring"
-                    aria-label="Close navigation"
-                >
-                    <svg
-                        width="25"
-                        height="25"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        aria-hidden="true"
-                    >
-                        <line x1="5" y1="5" x2="19" y2="19"></line>
-                        <line x1="19" y1="5" x2="5" y2="19"></line>
-                    </svg>
-                </button>
-
-                <ul class="navbar-list ml-5 mr-5 mt-[10rem] font-heading space-y-5">
-
-                    <li>
-                        <a
-                            href="https://dyve.online/"
-                            class="navbar-link text-[#00001a] font-semibold hover:text-[#f15e50] transition"
-                        >
-                            Home
-                        </a>
-                    </li>
-
-                    <li>
-                        <a
-                            href="https://dyve.online/tech/"
-                            class="navbar-link text-[#f15e50] font-bold"
-                            aria-current="page"
-                        >
-                            Tech
-                        </a>
-                    </li>
-
-                    <li>
-                        <a
-                            href="https://dyve.online/ai/"
-                            class="navbar-link text-[#00001a] font-semibold hover:text-[#f15e50] transition"
-                        >
-                            Artificial Intelligence
-                        </a>
-                    </li>
-
-                    <li>
-                        <a
-                            href="https://dyve.online/developers/"
-                            class="navbar-link text-[#00001a] font-semibold hover:text-[#f15e50] transition"
-                        >
-                            Developers
-                        </a>
-                    </li>
-
-                    <li>
-                        <a
-                            href="https://dyve.online/coding/"
-                            class="navbar-link text-[#00001a] font-semibold hover:text-[#f15e50] transition"
-                        >
-                            Coding
-                        </a>
-                    </li>
-
-                    <li>
-                        <a
-                            href="https://dyve.online/cybersecurity/"
-                            class="navbar-link text-[#00001a] font-semibold hover:text-[#f15e50] transition"
-                        >
-                            Cybersecurity
-                        </a>
-                    </li>
-
-                </ul>
-            </div>
-
-            <!-- DESKTOP NAV -->
-            <ul
-                class="navbar-list hidden lg:inline-flex gap-[2rem] lg:gap-[2.5rem] items-center justify-center font-heading"
-            >
-                <li>
-                    <a
-                        href="https://dyve.online/"
-                        class="nav-link text-[#00001a] font-semibold"
-                    >
-                        Home
-                    </a>
-                </li>
-
-                <li>
-                    <a
-                        href="https://dyve.online/tech/"
-                        class="nav-link text-[#f15e50] font-bold"
-                        aria-current="page"
-                    >
-                        Tech
-                    </a>
-                </li>
-
-                <li>
-                    <a
-                        href="https://dyve.online/ai/"
-                        class="nav-link text-[#00001a] font-semibold"
-                    >
-                        Artificial Intelligence
-                    </a>
-                </li>
-
-                <li>
-                    <a
-                        href="https://dyve.online/developers/"
-                        class="nav-link text-[#00001a] font-semibold"
-                    >
-                        Developers
-                    </a>
-                </li>
-
-                <li>
-                    <a
-                        href="https://dyve.online/coding/"
-                        class="nav-link text-[#00001a] font-semibold"
-                    >
-                        Coding
-                    </a>
-                </li>
-
-                <li>
-                    <a
-                        href="https://dyve.online/cybersecurity/"
-                        class="nav-link text-[#00001a] font-semibold"
-                    >
-                        Cybersecurity
-                    </a>
-                </li>
-            </ul>
+<body>
+<header class="site-top">
+    <div class="site-top-in">
+        <a class="brand" href="../">DYVE<span>|</span>TECH</a>
+        <nav class="nav" aria-label="Primary">
+            <a href="./">Latest</a>
+            <a href="../">Home</a>
+            <a href="../breaches/">Security</a>
+            <a href="../analysis/">Analysis</a>
         </nav>
-    </header>
-
-    <!-- =========================
-         BREADCRUMBS
-    ========================= -->
-    <nav
-        aria-label="Breadcrumb"
-        class="max-w-6xl mx-auto mb-5"
-    >
-        <ol class="flex flex-wrap items-center gap-2 text-sm text-[#5d5f79]">
-            <li>
-                <a
-                    href="https://dyve.online/"
-                    class="hover:text-[#f15e50] transition focus-ring"
-                >
-                    Dyve
-                </a>
-            </li>
-
-            <li class="breadcrumb-separator" aria-hidden="true">
-                /
-            </li>
-
-            <li
-                class="font-semibold text-[#00001a]"
-                aria-current="page"
-            >
-                Tech
-            </li>
-        </ol>
-    </nav>
-
-    <!-- =========================
-         MAIN
-    ========================= -->
-    <main>
-
-        <!-- =========================
-             SEO INTRODUCTION
-        ========================= -->
-        <section
-            class="max-w-6xl mx-auto mb-10"
-            aria-labelledby="page-title"
-        >
-            <p class="text-[#f15e50] font-heading font-bold text-xs uppercase tracking-[0.18em] mb-3">
-                DYVE TECHNOLOGY DESK
-            </p>
-
-            <h1
-                id="page-title"
-                class="font-heading font-extrabold text-[2.3rem] md:text-[3.2rem] leading-tight text-[#00001a] max-w-4xl"
-            >
-                Artificial Intelligence, Technology News & Developer Insights
-            </h1>
-
-            <p class="mt-5 text-[#5d5f79] text-[1rem] md:text-[1.08rem] leading-8 max-w-3xl">
-                Dyve Tech covers artificial intelligence, emerging technologies,
-                developer tools, coding, cybersecurity, quantum computing and
-                the technologies shaping businesses and society. Explore the
-                latest developments, practical explainers, technical insights
-                and in-depth analysis.
-            </p>
-
-            <!-- TOPIC LINKS -->
-            <nav
-                aria-label="Technology topics"
-                class="mt-6 flex flex-wrap gap-2"
-            >
-                <a
-                    href="https://dyve.online/ai/"
-                    class="topic-link border border-[#e5e7eb] rounded-full px-4 py-2 text-sm font-semibold text-[#00001a]"
-                >
-                    Artificial Intelligence
-                </a>
-
-                <a
-                    href="https://dyve.online/developers/"
-                    class="topic-link border border-[#e5e7eb] rounded-full px-4 py-2 text-sm font-semibold text-[#00001a]"
-                >
-                    Developers
-                </a>
-
-                <a
-                    href="https://dyve.online/coding/"
-                    class="topic-link border border-[#e5e7eb] rounded-full px-4 py-2 text-sm font-semibold text-[#00001a]"
-                >
-                    Coding
-                </a>
-
-                <a
-                    href="https://dyve.online/cybersecurity/"
-                    class="topic-link border border-[#e5e7eb] rounded-full px-4 py-2 text-sm font-semibold text-[#00001a]"
-                >
-                    Cybersecurity
-                </a>
-
-                <a
-                    href="https://dyve.online/tech/quantum-computing.html"
-                    class="topic-link border border-[#e5e7eb] rounded-full px-4 py-2 text-sm font-semibold text-[#00001a]"
-                >
-                    Quantum Computing
-                </a>
-            </nav>
-        </section>
-
-        <!-- =========================
-             FEATURED + NEW
-        ========================= -->
-        <section
-            class="lg:flex lg:gap-4 lg:mb-8 min-[1200px]:gap-7 max-w-6xl mx-auto"
-            aria-label="Latest technology coverage"
-        >
-
-            <!-- FEATURED -->
-            <section
-                class="min-[1200px]:w-[68%]"
-                aria-labelledby="featured-heading"
-            >
-
-                <h2
-                    id="featured-heading"
-                    class="sr-only"
-                >
-                    Featured technology story
-                </h2>
-
-                <article
-                    id="heroContainer"
-                    class="bg-white rounded-lg overflow-hidden mb-6 border border-[#eee] shadow-sm"
-                >
-
-                    <a
-                        id="heroLink"
-                        href="https://dyve.online/tech/"
-                        class="block focus-ring"
-                    >
-                        <div class="relative">
-                            <img
-                                src="https://dyve.online/dyve-placeholder.jpg"
-                                alt="Latest Dyve Tech story"
-                                id="heroImage"
-                                width="1200"
-                                height="675"
-                                class="w-full h-64 md:h-96 object-cover"
-                                fetchpriority="high"
-                                decoding="async"
-                            >
-                        </div>
-
-                        <div class="p-6">
-
-                            <span
-                                id="heroTag"
-                                class="text-[#f15e50] font-bold text-xs uppercase tracking-wider mb-2 block"
-                            >
-                                TECH INTELLIGENCE
-                            </span>
-
-                            <h2
-                                id="heroTitle"
-                                class="font-heading font-extrabold text-[2rem] md:text-[2.5rem] leading-tight pb-5 min-[1440px]:text-[3rem] text-[#00001a]"
-                            >
-                                Latest technology intelligence from Dyve Tech
-                            </h2>
-
-                            <p
-                                id="heroExcerpt"
-                                class="text-[#5d5f79] text-[0.92rem] leading-7 pb-6 md:w-4/5"
-                            >
-                                Explore the latest developments in artificial intelligence,
-                                technology, developer platforms, cybersecurity and emerging computing.
-                            </p>
-
-                            <span
-                                class="inline-flex bg-[#f15e50] text-[#fffdfa] font-bold tracking-[0.2em] text-xs py-4 px-8 uppercase"
-                            >
-                                Read Story
-                            </span>
-
-                        </div>
-                    </a>
-
-                </article>
-
-            </section>
-
-            <!-- NEW -->
-            <aside
-                class="h-[100%] bg-[#00001a] text-[#fffdfa] px-6 py-4 my-10 lg:my-0 lg:mt-8 min-[1200px]:w-[32%] min-[1200px]:py-6 min-[1200px]:px-7 rounded-lg"
-                aria-labelledby="new-heading"
-            >
-
-                <h2
-                    id="new-heading"
-                    class="text-[1.8rem] font-heading font-bold text-[#e9ab53] mb-6 min-[1200px]:text-[2.4rem]"
-                >
-                    New
-                </h2>
-
-                <div id="newArticlesList">
-
-                    <div
-                        class="border-b border-[#5d5f79] mb-6 skeleton h-28 rounded"
-                        aria-hidden="true"
-                    ></div>
-
-                    <div
-                        class="border-b border-[#5d5f79] mb-6 skeleton h-28 rounded"
-                        aria-hidden="true"
-                    ></div>
-
-                    <div
-                        class="skeleton h-28 rounded"
-                        aria-hidden="true"
-                    ></div>
-
-                </div>
-
-                <button
-                    id="loadMoreBtn"
-                    type="button"
-                    class="hidden w-full mt-2 mb-4 bg-[#f15e50] text-[#fffdfa] font-heading font-bold tracking-[0.2em] text-xs py-4 uppercase rounded hover:bg-[#d94a3e] transition duration-300 ease-in-out focus-ring"
-                >
-                    Load More Stories
-                </button>
-
-            </aside>
-
-        </section>
-
-        <!-- =========================
-             FEATURED TOPICS
-        ========================= -->
-        <section
-            class="max-w-6xl mx-auto"
-            aria-labelledby="featured-topics-heading"
-        >
-
-            <h2
-                id="featured-topics-heading"
-                class="sr-only"
-            >
-                Featured technology articles
-            </h2>
-
-            <div
-                id="featuredArticles"
-                class="lg:flex lg:gap-4 min-[1200px]:gap-0"
-            >
-
-                <!-- STATIC SEO-FRIENDLY FALLBACK LINKS -->
-                <article
-                    class="flex gap-5 my-8 lg:w-1/3 article-card"
-                >
-                    <a
-                        href="https://dyve.online/tech/the-agentic-ai-revolution.html"
-                        class="flex gap-5 w-full focus-ring"
-                    >
-                        <div class="w-28 h-28 flex-shrink-0 lg:w-24 lg:h-24">
-                            <img
-                                src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=400&auto=format&fit=crop"
-                                width="400"
-                                height="400"
-                                loading="lazy"
-                                decoding="async"
-                                class="w-full h-full object-cover rounded"
-                                alt="Artificial intelligence agent systems"
-                            >
-                        </div>
-
-                        <div>
-                            <span class="text-[#c5c6ce] font-heading font-bold text-[2.5rem] lg:text-[1.8rem]">
-                                01
-                            </span>
-
-                            <h3 class="text-[#00001a] font-bold text-[1.14rem] lg:font-extrabold lg:my-1 hover:text-[#f15e50] transition">
-                                Agentic AI Revolution
-                            </h3>
-
-                            <p class="text-[#5d5f79] text-[0.92rem] leading-7 lg:leading-6">
-                                How autonomous AI agents are reshaping enterprise workflows.
-                            </p>
-                        </div>
-                    </a>
-                </article>
-
-                <article
-                    class="flex gap-5 my-8 lg:w-1/3 article-card"
-                >
-                    <a
-                        href="https://dyve.online/tech/quantum-neural-networks.html"
-                        class="flex gap-5 w-full focus-ring"
-                    >
-                        <div class="w-28 h-28 flex-shrink-0 lg:w-24 lg:h-24">
-                            <img
-                                src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=400&auto=format&fit=crop"
-                                width="400"
-                                height="400"
-                                loading="lazy"
-                                decoding="async"
-                                class="w-full h-full object-cover rounded"
-                                alt="Quantum computing research visualization"
-                            >
-                        </div>
-
-                        <div>
-                            <span class="text-[#c5c6ce] font-heading font-bold text-[2.5rem] lg:text-[1.8rem]">
-                                02
-                            </span>
-
-                            <h3 class="text-[#00001a] font-bold text-[1.14rem] lg:font-extrabold lg:my-1 hover:text-[#f15e50] transition">
-                                Quantum Neural Networks
-                            </h3>
-
-                            <p class="text-[#5d5f79] text-[0.92rem] leading-7 lg:leading-6 lg:pr-2">
-                                Exploring new developments where quantum computing meets machine learning.
-                            </p>
-                        </div>
-                    </a>
-                </article>
-
-                <article
-                    class="flex gap-5 my-8 lg:w-1/3 article-card"
-                >
-                    <a
-                        href="https://dyve.online/tech/deepfake-tech-evolves.html"
-                        class="flex gap-5 w-full focus-ring"
-                    >
-                        <div class="w-28 h-28 flex-shrink-0 lg:w-24 lg:h-24">
-                            <img
-                                src="https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=400&auto=format&fit=crop"
-                                width="400"
-                                height="400"
-                                loading="lazy"
-                                decoding="async"
-                                class="w-full h-full object-cover rounded"
-                                alt="Cybersecurity and deepfake technology"
-                            >
-                        </div>
-
-                        <div>
-                            <span class="text-[#c5c6ce] font-heading font-bold text-[2.5rem] lg:text-[1.8rem]">
-                                03
-                            </span>
-
-                            <h3 class="text-[#00001a] font-bold text-[1.14rem] lg:font-extrabold lg:my-1 hover:text-[#f15e50] transition">
-                                AI Security Threats
-                            </h3>
-
-                            <p class="text-[#5d5f79] text-[0.92rem] leading-7 lg:leading-6">
-                                How rapidly evolving AI systems are changing the cybersecurity landscape.
-                            </p>
-                        </div>
-                    </a>
-                </article>
-
-            </div>
-        </section>
-
-        <!-- =========================
-             TOPIC HUB
-        ========================= -->
-        <section
-            class="max-w-6xl mx-auto mt-10"
-            aria-labelledby="topic-hub-heading"
-        >
-
-            <div class="border-t border-[#e5e7eb] pt-10">
-
-                <p class="text-[#f15e50] font-heading font-bold text-xs uppercase tracking-[0.18em] mb-3">
-                    EXPLORE DYVE TECH
-                </p>
-
-                <h2
-                    id="topic-hub-heading"
-                    class="font-heading font-extrabold text-2xl md:text-3xl text-[#00001a] mb-4"
-                >
-                    Technology topics
-                </h2>
-
-                <p class="text-[#5d5f79] leading-7 max-w-3xl mb-7">
-                    Explore focused coverage across artificial intelligence,
-                    software development, cybersecurity, coding and emerging
-                    computing technologies.
-                </p>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-
-                    <a
-                        href="https://dyve.online/ai/"
-                        class="border border-[#e5e7eb] rounded-lg p-5 hover:border-[#f15e50] transition focus-ring"
-                    >
-                        <h3 class="font-heading font-bold text-lg text-[#00001a]">
-                            Artificial Intelligence
-                        </h3>
-                        <p class="text-sm text-[#5d5f79] mt-2 leading-6">
-                            AI models, agents, machine learning, generative AI and emerging applications.
-                        </p>
-                    </a>
-
-                    <a
-                        href="https://dyve.online/developers/"
-                        class="border border-[#e5e7eb] rounded-lg p-5 hover:border-[#f15e50] transition focus-ring"
-                    >
-                        <h3 class="font-heading font-bold text-lg text-[#00001a]">
-                            Developers
-                        </h3>
-                        <p class="text-sm text-[#5d5f79] mt-2 leading-6">
-                            Developer platforms, frameworks, APIs, engineering workflows and tools.
-                        </p>
-                    </a>
-
-                    <a
-                        href="https://dyve.online/coding/"
-                        class="border border-[#e5e7eb] rounded-lg p-5 hover:border-[#f15e50] transition focus-ring"
-                    >
-                        <h3 class="font-heading font-bold text-lg text-[#00001a]">
-                            Coding
-                        </h3>
-                        <p class="text-sm text-[#5d5f79] mt-2 leading-6">
-                            Programming concepts, languages, practical development and software engineering.
-                        </p>
-                    </a>
-
-                    <a
-                        href="https://dyve.online/cybersecurity/"
-                        class="border border-[#e5e7eb] rounded-lg p-5 hover:border-[#f15e50] transition focus-ring"
-                    >
-                        <h3 class="font-heading font-bold text-lg text-[#00001a]">
-                            Cybersecurity
-                        </h3>
-                        <p class="text-sm text-[#5d5f79] mt-2 leading-6">
-                            Security research, threats, defensive technology and digital risk.
-                        </p>
-                    </a>
-
-                    <a
-                        href="https://dyve.online/tech/quantum-computing.html"
-                        class="border border-[#e5e7eb] rounded-lg p-5 hover:border-[#f15e50] transition focus-ring"
-                    >
-                        <h3 class="font-heading font-bold text-lg text-[#00001a]">
-                            Quantum Computing
-                        </h3>
-                        <p class="text-sm text-[#5d5f79] mt-2 leading-6">
-                            Quantum processors, algorithms, research and the future of computing.
-                        </p>
-                    </a>
-
-                    <a
-                        href="https://dyve.online/tech/"
-                        class="border border-[#e5e7eb] rounded-lg p-5 hover:border-[#f15e50] transition focus-ring"
-                    >
-                        <h3 class="font-heading font-bold text-lg text-[#00001a]">
-                            Latest Technology
-                        </h3>
-                        <p class="text-sm text-[#5d5f79] mt-2 leading-6">
-                            The latest stories, analysis and developments from the Dyve Tech desk.
-                        </p>
-                    </a>
-
-                </div>
-
-            </div>
-        </section>
-
-        <!-- =========================
-             EDITORIAL CONTEXT
-        ========================= -->
-        <section
-            class="max-w-6xl mx-auto mt-14"
-            aria-labelledby="editorial-heading"
-        >
-
-            <div class="bg-[#f7f5f0] rounded-lg p-7 md:p-10">
-
-                <p class="text-[#f15e50] font-heading font-bold text-xs uppercase tracking-[0.18em] mb-3">
-                    ABOUT THIS DESK
-                </p>
-
-                <h2
-                    id="editorial-heading"
-                    class="font-heading font-extrabold text-2xl md:text-3xl text-[#00001a] mb-4"
-                >
-                    Technology coverage built for understanding
-                </h2>
-
-                <p class="text-[#5d5f79] leading-8 max-w-4xl">
-                    Dyve Tech follows the technologies, companies, platforms,
-                    research and ideas changing the digital landscape. Our
-                    coverage combines technology reporting with explainers,
-                    practical guides and analysis designed to make complex
-                    developments easier to understand.
-                </p>
-
-                <div class="mt-6 flex flex-wrap gap-4">
-
-                    <a
-                        href="https://dyve.online/about/"
-                        class="font-semibold text-[#00001a] hover:text-[#f15e50] transition focus-ring"
-                    >
-                        About Dyve
-                    </a>
-
-                    <a
-                        href="https://dyve.online/editorial-policy/"
-                        class="font-semibold text-[#00001a] hover:text-[#f15e50] transition focus-ring"
-                    >
-                        Editorial Policy
-                    </a>
-
-                    <a
-                        href="https://dyve.online/contact/"
-                        class="font-semibold text-[#00001a] hover:text-[#f15e50] transition focus-ring"
-                    >
-                        Contact
-                    </a>
-
-                </div>
-
-            </div>
-        </section>
-
-        <!-- =========================
-             NEWSLETTER
-        ========================= -->
-        <section
-            class="max-w-6xl mx-auto mt-16 mb-8 bg-[#00001a] text-[#fffdfa] rounded-lg p-8 md:p-12 text-center"
-            aria-labelledby="newsletter-heading"
-        >
-
-            <h2
-                id="newsletter-heading"
-                class="font-heading font-bold text-2xl md:text-3xl mb-4"
-            >
-                Stay in the Loop
-            </h2>
-
-            <p class="text-[#9ca3af] mb-8 max-w-lg mx-auto">
-                Curated AI news, technology updates and deep dives delivered to your inbox.
-            </p>
-
-            <form
-                id="newsletterForm"
-                class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto"
-            >
-
-                <label
-                    for="newsletterEmail"
-                    class="sr-only"
-                >
-                    Email address
-                </label>
-
-                <input
-                    id="newsletterEmail"
-                    type="email"
-                    name="email"
-                    autocomplete="email"
-                    placeholder="Your email address"
-                    required
-                    class="flex-1 px-6 py-3 rounded bg-[#1f2937] border border-[#374151] text-white focus:outline-none focus:border-[#f15e50]"
-                >
-
-                <button
-                    type="submit"
-                    class="bg-[#f15e50] text-white font-bold px-8 py-3 rounded hover:bg-[#d94a3e] transition duration-300 focus-ring"
-                >
-                    Subscribe
-                </button>
-
-            </form>
-
-            <p
-                id="newsletterMessage"
-                class="hidden mt-4 text-sm text-[#9ca3af]"
-                aria-live="polite"
-            ></p>
-
-        </section>
-
-    </main>
-
-    <!-- =========================
-         FOOTER
-    ========================= -->
-    <footer
-        class="mt-16 bg-[#00001a] text-white rounded-t-2xl p-8 md:p-12"
-    >
-
-        <div class="max-w-6xl mx-auto">
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-
-                <!-- BRAND -->
-                <div>
-
-                    <a
-                        href="https://dyve.online/tech/"
-                        class="flex items-center gap-3 mb-4 focus-ring"
-                        aria-label="Dyve Tech home"
-                    >
-
-                        <svg
-                            width="32"
-                            height="32"
-                            viewBox="0 0 32 32"
-                            fill="none"
-                            aria-hidden="true"
-                        >
-                            <path
-                                d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z"
-                                fill="#f15e50"
-                            ></path>
-                        </svg>
-
-                        <span class="font-heading font-bold text-xl">
-                            DYVE TECH
-                        </span>
-
-                    </a>
-
-                    <p class="text-gray-400 text-sm leading-relaxed">
-                        Artificial intelligence, technology news, developer insights
-                        and deep-dive analysis from Dyve Tech.
-                    </p>
-
-                </div>
-
-                <!-- TOPICS -->
-                <div>
-
-                    <h2 class="font-heading font-bold text-lg mb-4 text-[#e9ab53]">
-                        Topics
-                    </h2>
-
-                    <ul class="space-y-2 text-sm">
-
-                        <li>
-                            <a
-                                href="https://dyve.online/ai/"
-                                class="text-gray-400 hover:text-[#f15e50] transition"
-                            >
-                                Artificial Intelligence
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                href="https://dyve.online/developers/"
-                                class="text-gray-400 hover:text-[#f15e50] transition"
-                            >
-                                Developers
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                href="https://dyve.online/coding/"
-                                class="text-gray-400 hover:text-[#f15e50] transition"
-                            >
-                                Coding
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                href="https://dyve.online/cybersecurity/"
-                                class="text-gray-400 hover:text-[#f15e50] transition"
-                            >
-                                Cybersecurity
-                            </a>
-                        </li>
-
-                    </ul>
-
-                </div>
-
-                <!-- DYVE -->
-                <div>
-
-                    <h2 class="font-heading font-bold text-lg mb-4 text-[#e9ab53]">
-                        Dyve
-                    </h2>
-
-                    <ul class="space-y-2 text-sm">
-
-                        <li>
-                            <a
-                                href="https://dyve.online/"
-                                class="text-gray-400 hover:text-[#f15e50] transition"
-                            >
-                                Dyve Home
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                href="https://dyve.online/about/"
-                                class="text-gray-400 hover:text-[#f15e50] transition"
-                            >
-                                About
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                href="https://dyve.online/editorial-policy/"
-                                class="text-gray-400 hover:text-[#f15e50] transition"
-                            >
-                                Editorial Policy
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                href="https://dyve.online/contact/"
-                                class="text-gray-400 hover:text-[#f15e50] transition"
-                            >
-                                Contact
-                            </a>
-                        </li>
-
-                    </ul>
-
-                </div>
-
-                <!-- SOCIAL -->
-                <div>
-
-                    <h2 class="font-heading font-bold text-lg mb-4 text-[#e9ab53]">
-                        Connect
-                    </h2>
-
-                    <div class="flex gap-4">
-
-                        <a
-                            href="https://x.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Dyve on X"
-                            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#f15e50] transition focus-ring"
-                        >
-                            <svg
-                                width="18"
-                                height="18"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                aria-hidden="true"
-                            >
-                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817-5.964 6.817H1.683l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"></path>
-                            </svg>
-                        </a>
-
-                        <a
-                            href="https://www.linkedin.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Dyve on LinkedIn"
-                            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#f15e50] transition focus-ring"
-                        >
-                            <svg
-                                width="18"
-                                height="18"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                aria-hidden="true"
-                            >
-                                <path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3A2 2 0 1 0 5.25 7 2 2 0 0 0 5.25 3ZM20.44 13.42c0-3.46-1.84-5.07-4.3-5.07-1.98 0-2.86 1.09-3.35 1.86V8.5H9.41V20h3.38v-5.69c0-1.5.28-2.96 2.15-2.96 1.84 0 1.86 1.72 1.86 3.06V20h3.64v-6.58Z"></path>
-                            </svg>
-                        </a>
-
-                        <a
-                            href="https://github.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Dyve on GitHub"
-                            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#f15e50] transition focus-ring"
-                        >
-                            <svg
-                                width="18"
-                                height="18"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                aria-hidden="true"
-                            >
-                                <path d="M12 .5A11.5 11.5 0 0 0 8.36 22.91c.58.11.79-.25.79-.56v-2.17c-3.22.7-3.9-1.55-3.9-1.55-.53-1.34-1.3-1.7-1.3-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.04 1.77 2.72 1.26 3.38.96.1-.75.41-1.26.74-1.55-2.57-.29-5.27-1.29-5.27-5.73 0-1.27.45-2.31 1.19-3.12-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.19a11.1 11.1 0 0 1 5.8 0c2.21-1.5 3.18-1.19 3.18-1.19.63 1.59.23 2.77.11 3.06.74.81 1.19 1.85 1.19 3.12 0 4.45-2.71 5.44-5.29 5.73.42.36.79 1.07.79 2.16v3.2c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"></path>
-                            </svg>
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="border-t border-white/10 pt-8 text-center">
-
-                <p class="text-gray-400 text-sm">
-                    © 2026 Dyve Tech. All rights reserved.
-                </p>
-
-            </div>
-
+    </div>
+</header>
+
+<main>
+<div class="wrap">
+    <section class="hero">
+        <div class="eyebrow">Dyve Tech Intelligence</div>
+        <h1>Technology, AI &amp; Developer Intelligence.</h1>
+        <p>Latest technology news, artificial intelligence, developer tools, programming and emerging tech intelligence from Dyve Tech.</p>
+        <div class="stats">
+            <span class="stat">27 published articles</span>
+            <span class="stat">6 active categories</span>
+            <span class="stat">Static SEO index</span>
         </div>
-
-    </footer>
-
-    <!-- =========================
-         NOSCRIPT FALLBACK
-         IMPORTANT:
-         Keeps core article discovery available when
-         JavaScript is unavailable.
-    ========================= -->
-    <noscript>
-
-        <section
-            class="max-w-6xl mx-auto mt-10 mb-10"
-            aria-labelledby="noscript-heading"
-        >
-
-            <h2
-                id="noscript-heading"
-                class="font-heading font-bold text-2xl text-[#00001a] mb-5"
-            >
-                Latest Dyve Tech stories
-            </h2>
-
-            <ul class="space-y-3">
-
-                <li>
-                    <a
-                        href="https://dyve.online/tech/what-is-information-architecture-in-ux.html"
-                        class="text-[#00001a] font-semibold hover:text-[#f15e50]"
-                    >
-                        What Is Information Architecture in UX?
-                    </a>
-                </li>
-
-                <li>
-                    <a
-                        href="https://dyve.online/tech/quantum-neural-networks.html"
-                        class="text-[#00001a] font-semibold hover:text-[#f15e50]"
-                    >
-                        Quantum Neural Networks
-                    </a>
-                </li>
-
-                <li>
-                    <a
-                        href="https://dyve.online/tech/eu-ai-regulations.html"
-                        class="text-[#00001a] font-semibold hover:text-[#f15e50]"
-                    >
-                        EU AI Regulations
-                    </a>
-                </li>
-
-                <li>
-                    <a
-                        href="https://dyve.online/tech/edge-computing-iot.html"
-                        class="text-[#00001a] font-semibold hover:text-[#f15e50]"
-                    >
-                        Edge Computing and the IoT Revolution
-                    </a>
-                </li>
-
-            </ul>
-
-        </section>
-
-    </noscript>
-
-    <script>
-        'use strict';
-
-        /*
-         * ============================================================
-         * DYVE TECH
-         * Production-safe category page controller
-         * ============================================================
-         */
-
-        const SITE_ORIGIN = 'https://dyve.online';
-        const TECH_BASE = '/tech/';
-        const ARTICLES_ENDPOINT = '/assets/articles.json';
-        const FALLBACK_IMG = 'https://dyve.online/dyve-placeholder.jpg';
-
-        const INITIAL_SIDEBAR_COUNT = 3;
-        const LOAD_MORE_BATCH = 3;
-
-        let allArticles = [];
-        let sidebarShown = 0;
-
-        /*
-         * ============================================================
-         * DOM REFERENCES
-         * ============================================================
-         */
-
-        const menuBtn = document.getElementById('menuBtn');
-        const closeIcon = document.getElementById('closeIcon');
-        const navigationList = document.getElementById('mobileNavigation');
-        const overlay = document.getElementById('overlay');
-
-        const heroLink = document.getElementById('heroLink');
-        const heroImage = document.getElementById('heroImage');
-        const heroTag = document.getElementById('heroTag');
-        const heroTitle = document.getElementById('heroTitle');
-        const heroExcerpt = document.getElementById('heroExcerpt');
-
-        const newArticlesList = document.getElementById('newArticlesList');
-        const loadMoreBtn = document.getElementById('loadMoreBtn');
-
-        const newsletterForm = document.getElementById('newsletterForm');
-        const newsletterMessage = document.getElementById('newsletterMessage');
-
-        /*
-         * ============================================================
-         * MOCK FALLBACK DATA
-         * ============================================================
-         */
-
-        const mockArticles = [
-            {
-                title: 'What is Information Architecture in UX?',
-                excerpt: 'A deep dive into how structuring information shapes user experience and drives product success. Learn about the principles of organizing content, creating intuitive navigation systems, and designing information hierarchies that help users find what they need quickly and efficiently.',
-                image: 'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?q=80&w=1200&auto=format&fit=crop',
-                tag: 'UX Design',
-                date: '2026-08-02',
-                author: 'Dyve Tech Editorial Team',
-                url: 'what-is-information-architecture-in-ux.html',
-                page: 'tech'
-            },
-            {
-                title: 'Quantum Neural Networks Achieve Breakthrough',
-                excerpt: 'Researchers demonstrate quantum advantage in machine learning tasks, opening new possibilities for drug discovery and cryptography. This breakthrough marks a significant milestone in quantum computing applications.',
-                image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=800&auto=format&fit=crop',
-                tag: 'Quantum Computing',
-                date: '2026-08-01',
-                author: 'Dyve Tech Editorial Team',
-                url: 'quantum-neural-networks.html',
-                page: 'tech'
-            },
-            {
-                title: 'New EU AI Regulations Take Effect',
-                excerpt: 'The European Union AI Act introduces requirements for high-risk artificial intelligence systems and establishes a significant framework for AI governance.',
-                image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=800&auto=format&fit=crop',
-                tag: 'Artificial Intelligence',
-                date: '2026-07-30',
-                author: 'Dyve Tech Editorial Team',
-                url: 'eu-ai-regulations.html',
-                page: 'tech'
-            },
-            {
-                title: 'Edge Computing Powers IoT Revolution',
-                excerpt: 'Decentralized processing brings computation closer to data sources, reducing latency and enabling real-time decision making for connected systems.',
-                image: 'https://images.unsplash.com/photo-1558002038-1091a166111c?q=80&w=800&auto=format&fit=crop',
-                tag: 'Infrastructure',
-                date: '2026-07-28',
-                author: 'Dyve Tech Editorial Team',
-                url: 'edge-computing-iot.html',
-                page: 'tech'
-            }
-        ];
-
-        /*
-         * ============================================================
-         * TEXT HELPERS
-         * ============================================================
-         */
-
-        function getExcerpt(article) {
-            if (!article || typeof article !== 'object') {
-                return '';
-            }
-
-            return String(
-                article.excerpt ||
-                article.desc ||
-                article.description ||
-                ''
-            ).trim();
-        }
-
-        function getAuthor(article) {
-            if (!article || typeof article !== 'object') {
-                return 'Dyve Tech Editorial Team';
-            }
-
-            return String(
-                article.author ||
-                article.meta ||
-                'Dyve Tech Editorial Team'
-            ).trim();
-        }
-
-        function getImage(article) {
-            if (!article || typeof article !== 'object') {
-                return FALLBACK_IMG;
-            }
-
-            const image =
-                article.image ||
-                article.img ||
-                article.thumbnail ||
-                article.featured_image ||
-                FALLBACK_IMG;
-
-            return isSafeImageUrl(image)
-                ? String(image)
-                : FALLBACK_IMG;
-        }
-
-        function getTitle(article) {
-            if (!article || typeof article !== 'object') {
-                return 'Dyve Tech story';
-            }
-
-            return String(
-                article.title ||
-                article.headline ||
-                'Dyve Tech story'
-            ).trim();
-        }
-
-        /*
-         * ============================================================
-         * SECURITY / URL HELPERS
-         * ============================================================
-         */
-
-        function isSafeImageUrl(value) {
-            if (!value) {
-                return false;
-            }
-
-            try {
-                const url = new URL(String(value), SITE_ORIGIN);
-
-                return (
-                    url.protocol === 'https:' &&
-                    (
-                        url.hostname === 'dyve.online' ||
-                        url.hostname.endsWith('.dyve.online') ||
-                        url.hostname === 'images.unsplash.com'
-                    )
-                );
-            } catch (error) {
-                return false;
-            }
-        }
-
-        function normalizeArticleUrl(value, index = 0) {
-            const fallbackSlug = `article-${index + 1}.html`;
-
-            if (!value) {
-                return `${TECH_BASE}${fallbackSlug}`;
-            }
-
-            let raw = String(value).trim();
-
-            /*
-             * Reject dangerous protocols.
-             */
-            if (
-                /^javascript:/i.test(raw) ||
-                /^data:/i.test(raw) ||
-                /^vbscript:/i.test(raw)
-            ) {
-                return `${TECH_BASE}${fallbackSlug}`;
-            }
-
-            /*
-             * Handle absolute URLs.
-             */
-            try {
-                if (/^https?:\/\//i.test(raw)) {
-                    const absolute = new URL(raw);
-
-                    if (absolute.origin !== SITE_ORIGIN) {
-                        return `${TECH_BASE}${fallbackSlug}`;
-                    }
-
-                    raw = absolute.pathname;
-                }
-            } catch (error) {
-                return `${TECH_BASE}${fallbackSlug}`;
-            }
-
-            /*
-             * Remove query/hash for clean canonical article URLs.
-             */
-            raw = raw.split('?')[0].split('#')[0];
-
-            /*
-             * Normalize slashes.
-             */
-            raw = raw
-                .replace(/^\/+/, '')
-                .replace(/\/+$/, '');
-
-            /*
-             * Remove duplicate tech/ prefix.
-             */
-            if (raw.toLowerCase().startsWith('tech/')) {
-                raw = raw.substring(5);
-            }
-
-            /*
-             * Remove accidental leading www.dyve.online paths.
-             */
-            raw = raw.replace(/^www\.dyve\.online\//i, '');
-
-            if (!raw) {
-                return `${TECH_BASE}${fallbackSlug}`;
-            }
-
-            /*
-             * Keep nested paths but prevent the URL from leaving /tech/.
-             */
-            if (raw.includes('/')) {
-                raw = raw
-                    .split('/')
-                    .filter(Boolean)
-                    .join('/');
-            }
-
-            /*
-             * Enforce .html article routing.
-             */
-            if (!/\.[a-z0-9]{2,8}$/i.test(raw)) {
-                raw += '.html';
-            }
-
-            return `${TECH_BASE}${raw}`;
-        }
-
-        function isTechArticle(article) {
-            if (!article || typeof article !== 'object') {
-                return false;
-            }
-
-            if (article.page) {
-                return String(article.page).toLowerCase() === 'tech';
-            }
-
-            const clean = String(article.url || '')
-                .replace(/^\/+/, '')
-                .toLowerCase();
-
-            return clean.startsWith('tech/');
-        }
-
-        /*
-         * ============================================================
-         * HTML ESCAPING
-         * ============================================================
-         */
-
-        function escapeHtml(value) {
-            return String(value ?? '')
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
-        }
-
-        /*
-         * ============================================================
-         * DATE HELPERS
-         * ============================================================
-         */
-
-        function formatDate(value) {
-            if (!value) {
-                return '';
-            }
-
-            const parsed = new Date(value);
-
-            if (Number.isNaN(parsed.getTime())) {
-                return '';
-            }
-
-            return parsed.toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric'
-            });
-        }
-
-        /*
-         * ============================================================
-         * MOBILE NAVIGATION
-         * ============================================================
-         */
-
-        function openMenu() {
-            if (!navigationList || !overlay || !menuBtn) {
-                return;
-            }
-
-            navigationList.classList.remove('hidden');
-            overlay.classList.remove('hidden');
-
-            navigationList.setAttribute('aria-hidden', 'false');
-            menuBtn.setAttribute('aria-expanded', 'true');
-
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeMenu() {
-            if (!navigationList || !overlay || !menuBtn) {
-                return;
-            }
-
-            navigationList.classList.add('hidden');
-            overlay.classList.add('hidden');
-
-            navigationList.setAttribute('aria-hidden', 'true');
-            menuBtn.setAttribute('aria-expanded', 'false');
-
-            document.body.style.overflow = '';
-        }
-
-        if (menuBtn) {
-            menuBtn.addEventListener('click', openMenu);
-        }
-
-        if (closeIcon) {
-            closeIcon.addEventListener('click', closeMenu);
-        }
-
-        if (overlay) {
-            overlay.addEventListener('click', closeMenu);
-        }
-
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape') {
-                closeMenu();
-            }
-        });
-
-        /*
-         * ============================================================
-         * HERO
-         * ============================================================
-         */
-
-        function renderHero(article) {
-            if (!article) {
-                return;
-            }
-
-            const title = getTitle(article);
-            const excerpt = getExcerpt(article);
-            const image = getImage(article);
-            const tag = String(
-                article.tag ||
-                article.category ||
-                'TECH INTELLIGENCE'
-            ).trim();
-
-            const articleUrl = normalizeArticleUrl(article.url, 0);
-
-            heroLink.href = articleUrl;
-
-            heroImage.src = image;
-            heroImage.alt = title;
-            heroImage.loading = 'eager';
-            heroImage.fetchPriority = 'high';
-
-            heroImage.onerror = function () {
-                this.onerror = null;
-                this.src = FALLBACK_IMG;
-            };
-
-            heroTag.textContent = tag;
-            heroTitle.textContent = title;
-
-            const truncatedExcerpt =
-                excerpt.length > 280
-                    ? `${excerpt.substring(0, 280).trim()}...`
-                    : excerpt;
-
-            heroExcerpt.textContent =
-                truncatedExcerpt ||
-                'Explore the latest technology developments and analysis from Dyve Tech.';
-
-            document.getElementById('heroContainer').classList.add('fade-in');
-
-            updateCollectionSchema();
-        }
-
-        /*
-         * ============================================================
-         * SIDEBAR ARTICLES
-         * ============================================================
-         */
-
-        function appendSidebarItems(articles, baseIndex) {
-            if (!newArticlesList || !Array.isArray(articles)) {
-                return;
-            }
-
-            articles.forEach(function (article, i) {
-                const index = baseIndex + i;
-
-                const title = getTitle(article);
-                const excerpt = getExcerpt(article);
-                const image = getImage(article);
-                const author = getAuthor(article);
-                const date = formatDate(article.date);
-                const articleUrl = normalizeArticleUrl(article.url, index);
-
-                const displayText = excerpt
-                    ? excerpt.length > 90
-                        ? `${excerpt.substring(0, 90).trim()}...`
-                        : excerpt
-                    : author;
-
-                const articleElement = document.createElement('article');
-
-                articleElement.className =
-                    'border-b border-[#5d5f79] mb-6 pb-6 fade-in';
-
-                articleElement.style.animationDelay =
-                    `${i * 100}ms`;
-
-                articleElement.innerHTML = `
-                    <a
-                        href="${escapeHtml(articleUrl)}"
-                        class="flex items-center gap-4 group focus-ring"
-                    >
-
-                        <div class="flex-1 min-w-0">
-
-                            <h3
-                                class="text-[1.05rem] font-bold mb-2 leading-snug min-[1200px]:text-[1.15rem] group-hover:text-[#e9ab53] transition duration-300"
-                            >
-                                ${escapeHtml(title)}
-                            </h3>
-
-                            <p
-                                class="text-[#c5c6ce] text-[0.85rem] leading-6 line-clamp-3"
-                            >
-                                ${escapeHtml(displayText)}
-                                ${date ? ` · ${escapeHtml(date)}` : ''}
-                            </p>
-
-                        </div>
-
-                        <div
-                            class="w-20 h-20 min-[1200px]:w-24 min-[1200px]:h-24 flex-shrink-0 rounded overflow-hidden bg-[#10102a]"
-                        >
-
-                            <img
-                                src="${escapeHtml(image)}"
-                                alt="${escapeHtml(title)}"
-                                width="96"
-                                height="96"
-                                loading="lazy"
-                                decoding="async"
-                                class="w-full h-full object-cover transition duration-300 group-hover:scale-105"
-                            >
-
-                        </div>
-
-                    </a>
-                `;
-
-                const imageElement =
-                    articleElement.querySelector('img');
-
-                if (imageElement) {
-                    imageElement.addEventListener('error', function () {
-                        this.onerror = null;
-                        this.src = FALLBACK_IMG;
-                    });
-                }
-
-                newArticlesList.appendChild(articleElement);
-            });
-        }
-
-        /*
-         * ============================================================
-         * LOAD MORE
-         * ============================================================
-         */
-
-        function updateLoadMoreBtn() {
-            if (!loadMoreBtn) {
-                return;
-            }
-
-            const remaining =
-                allArticles.length -
-                1 -
-                sidebarShown;
-
-            loadMoreBtn.classList.toggle(
-                'hidden',
-                remaining <= 0
-            );
-        }
-
-        function handleLoadMore() {
-            const pool = allArticles.slice(1);
-
-            const next = pool.slice(
-                sidebarShown,
-                sidebarShown + LOAD_MORE_BATCH
-            );
-
-            if (!next.length) {
-                updateLoadMoreBtn();
-                return;
-            }
-
-            appendSidebarItems(
-                next,
-                1 + sidebarShown
-            );
-
-            sidebarShown += next.length;
-
-            updateLoadMoreBtn();
-        }
-
-        /*
-         * ============================================================
-         * ITEMLIST STRUCTURED DATA
-         * ============================================================
-         */
-
-        function updateCollectionSchema() {
-            if (!Array.isArray(allArticles) || !allArticles.length) {
-                return;
-            }
-
-            const itemList = allArticles
-                .slice(0, 20)
-                .map(function (article, index) {
-                    return {
-                        '@type': 'ListItem',
-                        position: index + 1,
-                        name: getTitle(article),
-                        url: `${SITE_ORIGIN}${normalizeArticleUrl(
-                            article.url,
-                            index
-                        )}`
-                    };
-                });
-
-            let schemaElement =
-                document.getElementById(
-                    'dyveArticleListSchema'
-                );
-
-            if (!schemaElement) {
-                schemaElement =
-                    document.createElement('script');
-
-                schemaElement.type =
-                    'application/ld+json';
-
-                schemaElement.id =
-                    'dyveArticleListSchema';
-
-                document.head.appendChild(
-                    schemaElement
-                );
-            }
-
-            schemaElement.textContent =
-                JSON.stringify({
-                    '@context': 'https://schema.org',
-                    '@type': 'ItemList',
-                    '@id': 'https://dyve.online/tech/#article-list',
-                    itemListElement: itemList
-                });
-        }
-
-        /*
-         * ============================================================
-         * LOAD ARTICLES
-         * ============================================================
-         */
-
-        async function loadContent() {
-            try {
-                const response =
-                    await fetch(
-                        ARTICLES_ENDPOINT,
-                        {
-                            method: 'GET',
-                            headers: {
-                                Accept: 'application/json'
-                            },
-                            cache: 'no-cache'
-                        }
-                    );
-
-                if (!response.ok) {
-                    throw new Error(
-                        `Articles request failed: ${response.status}`
-                    );
-                }
-
-                const json =
-                    await response.json();
-
-                let data = [];
-
-                if (
-                    json &&
-                    Array.isArray(json.tech)
-                ) {
-                    data = json.tech;
-                } else if (
-                    Array.isArray(json)
-                ) {
-                    data = json.filter(
-                        isTechArticle
-                    );
-                }
-
-                data = data.filter(function (article) {
-                    return (
-                        article &&
-                        typeof article === 'object' &&
-                        getTitle(article)
-                    );
-                });
-
-                if (!data.length) {
-                    throw new Error(
-                        'No valid Tech articles found.'
-                    );
-                }
-
-                allArticles = data;
-
-            } catch (error) {
-
-                console.warn(
-                    'Dyve Tech: article feed unavailable. Using fallback data.',
-                    error
-                );
-
-                allArticles = mockArticles;
-            }
-
-            /*
-             * HERO
-             */
-            renderHero(
-                allArticles[0]
-            );
-
-            /*
-             * SIDEBAR
-             */
-            newArticlesList.innerHTML = '';
-
-            const pool =
-                allArticles.slice(1);
-
-            sidebarShown =
-                Math.min(
-                    INITIAL_SIDEBAR_COUNT,
-                    pool.length
-                );
-
-            appendSidebarItems(
-                pool.slice(
-                    0,
-                    sidebarShown
-                ),
-                1
-            );
-
-            updateLoadMoreBtn();
-
-            /*
-             * STRUCTURED DATA
-             */
-            updateCollectionSchema();
-        }
-
-        /*
-         * ============================================================
-         * NEWSLETTER
-         * ============================================================
-         */
-
-        if (newsletterForm) {
-            newsletterForm.addEventListener(
-                'submit',
-                function (event) {
-                    event.preventDefault();
-
-                    if (!newsletterMessage) {
-                        return;
-                    }
-
-                    newsletterMessage.textContent =
-                        'Thanks for subscribing to Dyve Tech.';
-
-                    newsletterMessage.classList.remove(
-                        'hidden'
-                    );
-
-                    newsletterForm.reset();
-                }
-            );
-        }
-
-        /*
-         * ============================================================
-         * LOAD MORE EVENT
-         * ============================================================
-         */
-
-        if (loadMoreBtn) {
-            loadMoreBtn.addEventListener(
-                'click',
-                handleLoadMore
-            );
-        }
-
-        /*
-         * ============================================================
-         * INITIALIZE
-         * ============================================================
-         */
-
-        if (
-            document.readyState === 'loading'
-        ) {
-            document.addEventListener(
-                'DOMContentLoaded',
-                loadContent
-            );
-        } else {
-            loadContent();
-        }
-
-    </script>
-
+    </section>
+
+    
+<section class="featured">
+    <a class="featured-card" href="./how-to-effectively-deploy-code-with-claude-code.html">
+        <img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786529481/zeql3nxn0mabbkctlrly.png" alt="How to Effectively Deploy Code With Claude Code" width="1200" height="760">
+        <div class="overlay"></div>
+        <div class="featured-content">
+            <span class="tag">Guide</span>
+            <h2>How to Effectively Deploy Code With Claude Code</h2>
+            <p>Now that we have coding agents writing most, if not all, of the code that is used for different applications, the bottle. Dyve Tech intelligence on that, hav...</p>
+        </div>
+    </a>
+    <div class="featured-side">
+        
+        <a class="mini" href="./article/article-credential-leak.html">
+            <img src="https://tungstensecure.com/wp-content/uploads/2025/05/Cyber-Threat-Intelligence-Pakistan.jpg" alt="Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets" loading="lazy" width="220" height="168">
+            <div>
+                <h3>Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets</h3>
+                <div class="meta">Aug 12, 2026 · 4 MIN READ</div>
+            </div>
+        </a>
+        <a class="mini" href="./article/article-zero-day.html">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRELGUPLZGzdyHRJARBf-lP9gTRhjhkJZRzfzgaletP7QP14L0qBEoYzajU&amp;s=10" alt="Zero-Day Vulnerability Discovered in Authentication API" loading="lazy" width="220" height="168">
+            <div>
+                <h3>Zero-Day Vulnerability Discovered in Authentication API</h3>
+                <div class="meta">Aug 12, 2026 · 4 MIN READ</div>
+            </div>
+        </a>
+        <a class="mini" href="./article/article-exfiltration.html">
+            <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&amp;w=800" alt="Encrypted Messaging Platform Exploited for Data Exfiltration" loading="lazy" width="220" height="168">
+            <div>
+                <h3>Encrypted Messaging Platform Exploited for Data Exfiltration</h3>
+                <div class="meta">Aug 12, 2026 · 4 MIN READ</div>
+            </div>
+        </a>
+    </div>
+</section>
+
+    <div class="section-head">
+        <h2>Latest Intelligence</h2>
+        <span class="section-line"></span>
+    </div>
+
+    <section class="grid" aria-label="Latest Dyve Tech articles">
+        
+<article class="card">
+    <a class="card-link" href="./article/article-credential-stuffing.html">
+        <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&amp;w=800" alt="Credential Stuffing Attacks Explained" loading="lazy" width="640" height="400">
+            <span class="tag">ATTACK VECTOR</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Deep Dive Analysis</div>
+            <h2>Credential Stuffing Attacks Explained</h2>
+            <p>How hackers turn leaked passwords into large-scale account takeovers.</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 12, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./article/article-data-breach-response.html">
+        <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&amp;w=800" alt="Data Breach Response Playbook (2026)" loading="lazy" width="640" height="400">
+            <span class="tag">DEFENSE</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Deep Dive Analysis</div>
+            <h2>Data Breach Response Playbook (2026)</h2>
+            <p>Step-by-step incident response strategy for modern cyber attacks.</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 12, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./article/dark-web/index.html">
+        <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&amp;w=1200" alt="Dark Web Secrets: What Really Happens Beyond the Surface Web" loading="lazy" width="640" height="400">
+            <span class="tag">CORE INTEL</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Dark Web</div>
+            <h2>Dark Web Secrets: What Really Happens Beyond the Surface Web</h2>
+            <p>Inside the hidden internet: marketplaces, threat actors, and cyber intelligence systems.</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 12, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./article/dark-web/dark-web-how-it-works.html">
+        <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&amp;w=800" alt="How the Dark Web Actually Works (Tor, Onion Routing, Encryption)" loading="lazy" width="640" height="400">
+            <span class="tag">INFRASTRUCTURE</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Dark Web</div>
+            <h2>How the Dark Web Actually Works (Tor, Onion Routing, Encryption)</h2>
+            <p>Technical breakdown of Tor, hidden services, and layered encryption systems.</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 12, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./article/dark-web/dark-web-marketplaces.html">
+        <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&amp;w=800" alt="Dark Web Marketplaces Explained (Vendors, Escrow, Trade Systems)" loading="lazy" width="640" height="400">
+            <span class="tag">MARKET</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Dark Web</div>
+            <h2>Dark Web Marketplaces Explained (Vendors, Escrow, Trade Systems)</h2>
+            <p>How underground marketplaces operate, including trust systems and transactions.</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 12, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./article/dark-web/dark-web-hacker-economy.html">
+        <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&amp;w=800" alt="What Hackers Buy on the Dark Web (Access, Exploits, Data)" loading="lazy" width="640" height="400">
+            <span class="tag">THREAT ECONOMY</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Dark Web</div>
+            <h2>What Hackers Buy on the Dark Web (Access, Exploits, Data)</h2>
+            <p>Inside the hacker economy: credentials, exploits, and access trading.</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 12, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./article/dark-web/dark-web-monitoring.html">
+        <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&amp;w=800" alt="Dark Web Monitoring Systems (How Organizations Track Threats)" loading="lazy" width="640" height="400">
+            <span class="tag">DEFENSE</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Dark Web</div>
+            <h2>Dark Web Monitoring Systems (How Organizations Track Threats)</h2>
+            <p>How companies detect leaks, threats, and attack planning in real time.</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 12, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./article/dark-web/dark-web-risks.html">
+        <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&amp;w=800" alt="Is the Dark Web Dangerous? Risks, Myths &amp; Reality" loading="lazy" width="640" height="400">
+            <span class="tag">RISK ANALYSIS</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Dark Web</div>
+            <h2>Is the Dark Web Dangerous? Risks, Myths &amp; Reality</h2>
+            <p>Separating myths from reality and understanding actual risks.</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 12, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./elon-musk-says-starship-flight-13-recovery-not-looking-good-despite-successful-splashdown.html">
+        <div class="thumb">
+            <img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786220839/cl40hnujcxcdehgiwv58.jpg" alt="Elon Musk says Starship Flight 13 recovery ‘not looking good’ despite successful splashdown" loading="lazy" width="640" height="400">
+            <span class="tag">News</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Tech Trends</div>
+            <h2>Elon Musk says Starship Flight 13 recovery ‘not looking good’ despite successful splashdown</h2>
+            <p>SpaceX&#39;s attempt to recover its Flight 13 Starship from the Indian Ocean is facing fresh challenges, with CEO Elon Musk . Dyve Tech intelligence on spacex, a...</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 8, 2026</span>
+                <span>2 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./ransomware-attacks-surge-20-in-july-what-you-need-to-know.html">
+        <div class="thumb">
+            <img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786218048/l594nfnpgsmyn5vo0clk.jpg" alt="Ransomware Attacks Surge 20% in July: What You Need to Know" loading="lazy" width="640" height="400">
+            <span class="tag">News</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Tech Trends</div>
+            <h2>Ransomware Attacks Surge 20% in July: What You Need to Know</h2>
+            <p>Ransomware attacks have seen a significant surge, with a nearly 20 percent increase in July, according to a report by UK. Dyve Tech intelligence on ransomwar...</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 8, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./api-server-explained-like-never-before-episode-4.html">
+        <div class="thumb">
+            <img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786206637/p3zqylprgx2iwquqnvni.webp" alt="API Server: Explained like Never Before (Episode 4)" loading="lazy" width="640" height="400">
+            <span class="tag">Tutorial</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Tech Trends</div>
+            <h2>API Server: Explained like Never Before (Episode 4)</h2>
+            <p>Discover insights on api server: explained like never before (episode 4). Welcome to Episode 4 of K8s-With-Pravesh. Learn more with Dyve Tech.</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 8, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./cloudflare-wallets-will-let-ai-agents-pay-for-apis-safely-online.html">
+        <div class="thumb">
+            <img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786191899/gpjmiw8mectub3vgbd0f.png" alt="Cloudflare Wallets Will Let AI Agents Pay for APIs Safely Online" loading="lazy" width="640" height="400">
+            <span class="tag">News</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Tech Trends</div>
+            <h2>Cloudflare Wallets Will Let AI Agents Pay for APIs Safely Online</h2>
+            <p>Cloudflare is building programmable wallets that let AI agents pay for APIs, data and online content without asking a human to approve every small transaction.</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 8, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./cloudflare-launches-kitesurf-a-browser-built-for-ai-agents.html">
+        <div class="thumb">
+            <img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786138831/j7wxjxy6ehbnczjijhme.jpg" alt="Cloudflare launches Kitesurf, a browser built for AI agents" loading="lazy" width="640" height="400">
+            <span class="tag">News</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Tech Trends</div>
+            <h2>Cloudflare launches Kitesurf, a browser built for AI agents</h2>
+            <p>Discover insights on cloudflare launches kitesurf, a browser built for ai agents. Cloudflare is the latest company to join the race to build a new web browse...</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 7, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./improving-gpt56-sol-in-chatgptand-expanding-access-to-gpt56-luna-for-free-users.html">
+        <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&amp;w=800" alt="Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT‑5.6 Luna for free users" loading="lazy" width="640" height="400">
+            <span class="tag">News</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Tech Trends</div>
+            <h2>Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT‑5.6 Luna for free users</h2>
+            <p>Discover insights on improving gpt‑5.6 sol in chatgpt—and expanding access to gpt‑5.6 luna for free users. Our mission is to ensure that artificial general i...</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 7, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./responding-to-the-next-frontier-of-critical-cyber-capabilities.html">
+        <div class="thumb">
+            <img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786136661/qzkutmnr9rc7te5zdvna.jpg" alt="Responding to the next frontier of critical cyber capabilities" loading="lazy" width="640" height="400">
+            <span class="tag">News</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Artificial Intelligence</div>
+            <h2>Responding to the next frontier of critical cyber capabilities</h2>
+            <p>Cybersecurity is rapidly changing as models become more capable in ways that can both strengthen cyberdefenses and enabl. Dyve Tech intelligence on cybersecu...</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 7, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./cloudflare-open-sources-vibe-coding-platform-for-people-who-arent-coders.html">
+        <div class="thumb">
+            <img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786130124/pcyiqib92li3ydz0kesa.jpg" alt="Cloudflare open-sources vibe-coding platform for people who aren’t coders" loading="lazy" width="640" height="400">
+            <span class="tag">News</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Tech Trends</div>
+            <h2>Cloudflare open-sources vibe-coding platform for people who aren’t coders</h2>
+            <p>Discover insights on cloudflare open-sources vibe-coding platform for people who aren’t coders. Cloudflare has open-sourced its Cloudflare OS platform, which...</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 7, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./europe-finalizes-ambitious-plans-for-iris-the-eus-sovereign-starlink-competitor.html">
+        <div class="thumb">
+            <img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786125072/gut9xkzmflzeqles1z8a.jpg" alt="Europe Finalizes Ambitious Plans for IRIS²: The EU’s ‘Sovereign’ Starlink Competitor" loading="lazy" width="640" height="400">
+            <span class="tag">News</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Tech Trends</div>
+            <h2>Europe Finalizes Ambitious Plans for IRIS²: The EU’s ‘Sovereign’ Starlink Competitor</h2>
+            <p>Are we about to witness a new space race for global internet supremacy? The European Union has officially moved past the planning stage for IRIS², its highly anticipated low Ear...</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 7, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./apple-issues-new-challenge-against-uk-order-for-access-to-private-user-data.html">
+        <div class="thumb">
+            <img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/q_auto,f_auto,w_1200/v1785848661/oewfwawo3gipdz0kxpn2.png" alt="Apple issues new challenge against UK order for access to private user data" loading="lazy" width="640" height="400">
+            <span class="tag">News</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Tech Trends</div>
+            <h2>Apple issues new challenge against UK order for access to private user data</h2>
+            <p>Discover insights on apple issues new challenge against uk order for access to private user data. The tech giant has not told BBC News what the complaint rel...</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 4, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./quantum-breakthrough-how-new-quantum-neural-networks-are-smashing-processing-speed-records.html">
+        <div class="thumb">
+            <img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1785805246/uljfwbqzukr66bwd2vfd.jpg" alt="Quantum Breakthrough: How New Quantum Neural Networks Are Smashing Processing Speed Records" loading="lazy" width="640" height="400">
+            <span class="tag">News</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Tech Trends</div>
+            <h2>Quantum Breakthrough: How New Quantum Neural Networks Are Smashing Processing Speed Records</h2>
+            <p>Discover insights on quantum breakthrough: how new quantum neural networks are smashing processing speed records. The tech world is no stranger to the phrase...</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 4, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./teads-files-suit-against-google-seeks-financial-compensation-after-antitrust-ruling.html">
+        <div class="thumb">
+            <img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1785799406/tfzwmct1r3xjdioqosv1.jpg" alt="Teads files suit against Google; seeks financial compensation after antitrust ruling" loading="lazy" width="640" height="400">
+            <span class="tag">News</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Tech Trends</div>
+            <h2>Teads files suit against Google; seeks financial compensation after antitrust ruling</h2>
+            <p>Discover insights on teads files suit against google; seeks financial compensation after antitrust ruling. Teads Holding (TEAD) has filed a suit against Goog...</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 3, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./the-agentic-ai-revolution.html">
+        <div class="thumb">
+            <img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1785796034/hjnseprht7mxyaxcoum8.png" alt="The Agentic AI Revolution" loading="lazy" width="640" height="400">
+            <span class="tag">News</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Artificial Intelligence</div>
+            <h2>The Agentic AI Revolution</h2>
+            <p>For years, artificial intelligence in the enterprise has felt like a brilliant but stubbornly reactive assistant. Dyve Tech intelligence on years, artificial...</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 3, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./claude-opus-5-became-downright-ruthless-when-tasked-with-running-a-vending-machine.html">
+        <div class="thumb">
+            <img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1785795767/l7uujccjfwplnsjcym5j.jpg" alt="Claude Opus 5 became downright ruthless when tasked with running a vending machine" loading="lazy" width="640" height="400">
+            <span class="tag">News</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Artificial Intelligence</div>
+            <h2>Claude Opus 5 became downright ruthless when tasked with running a vending machine</h2>
+            <p>For a year now, the AI safety testing firm Andon Labs has given frontier models various real-world tasks to determine ho. Dyve Tech intelligence on year, saf...</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 3, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+<article class="card">
+    <a class="card-link" href="./claude.html">
+        <div class="thumb">
+            <img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1785794861/xb9s9y9msq1nyflinnvs.jpg" alt="Claude" loading="lazy" width="640" height="400">
+            <span class="tag">News</span>
+        </div>
+        <div class="card-body">
+            <div class="category">Artificial Intelligence</div>
+            <h2>Claude</h2>
+            <p>Discover insights on claude. For a year now, the AI safety testing firm Andon Labs has given frontier models various real-world t. Learn more with Dyve Tech.</p>
+            <div class="meta">
+                <span>Dyve Tech Intelligence Unit</span>
+                <span>Aug 3, 2026</span>
+                <span>4 min read</span>
+            </div>
+        </div>
+    </a>
+</article>
+    </section>
+</div>
+</main>
+
+<footer>
+    <div class="brand">DYVE<span>|</span>TECH</div>
+    <p>© 2026 Dyve Tech Intelligence Unit. All rights reserved.</p>
+</footer>
 </body>
 </html>
