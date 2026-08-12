@@ -18,144 +18,188 @@
     "title": "Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets",
     "desc": "A coordinated breach operation has surfaced millions of credentials across underground forums.",
     "image": "https://tungstensecure.com/wp-content/uploads/2025/05/Cyber-Threat-Intelligence-Pakistan.jpg",
-    "url": "article/article-credential-leak.html",
+    "url": "tech/article-credential-leak.html",
     "tag": "LIVE INTEL",
     "meta": "breach",
     "category": "breach",
     "date": "2026-08-12",
     "page": "tech",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "legacyUrls": [
+      "article/article-credential-leak.html"
+    ],
+    "delta": "assets/deltas/tech-article-credential-leak.json"
   },
   {
     "title": "Zero-Day Vulnerability Discovered in Authentication API",
     "desc": "A critical zero-day flaw enables authentication bypass and session hijacking.",
     "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRELGUPLZGzdyHRJARBf-lP9gTRhjhkJZRzfzgaletP7QP14L0qBEoYzajU&s=10",
-    "url": "article/article-zero-day.html",
+    "url": "tech/article-zero-day.html",
     "tag": "CRITICAL",
     "meta": "breach",
     "category": "breach",
     "date": "2026-08-12",
     "page": "tech",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "legacyUrls": [
+      "article/article-zero-day.html"
+    ],
+    "delta": "assets/deltas/tech-article-zero-day.json"
   },
   {
     "title": "Encrypted Messaging Platform Exploited for Data Exfiltration",
     "desc": "Threat actors leverage encrypted channels for covert data movement.",
     "image": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=800",
-    "url": "article/article-exfiltration.html",
+    "url": "tech/article-exfiltration.html",
     "tag": "DARK WEB",
     "meta": "dark-web",
     "category": "dark-web",
     "date": "2026-08-12",
     "page": "tech",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "legacyUrls": [
+      "article/article-exfiltration.html"
+    ],
+    "delta": "assets/deltas/tech-article-exfiltration.json"
   },
   {
     "title": "Credential Stuffing Attacks Explained",
     "desc": "How hackers turn leaked passwords into large-scale account takeovers.",
     "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800",
-    "url": "article/article-credential-stuffing.html",
+    "url": "tech/article-credential-stuffing.html",
     "tag": "ATTACK VECTOR",
     "meta": "analysis",
     "category": "analysis",
     "date": "2026-08-12",
     "page": "tech",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "legacyUrls": [
+      "article/article-credential-stuffing.html"
+    ],
+    "delta": "assets/deltas/tech-article-credential-stuffing.json"
   },
   {
     "title": "Data Breach Response Playbook (2026)",
     "desc": "Step-by-step incident response strategy for modern cyber attacks.",
     "image": "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&w=800",
-    "url": "article/article-data-breach-response.html",
+    "url": "tech/article-data-breach-response.html",
     "tag": "DEFENSE",
     "meta": "analysis",
     "category": "analysis",
     "date": "2026-08-12",
     "page": "tech",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "legacyUrls": [
+      "article/article-data-breach-response.html"
+    ],
+    "delta": "assets/deltas/tech-article-data-breach-response.json"
   },
   {
     "title": "Dark Web Secrets: What Really Happens Beyond the Surface Web",
     "desc": "Inside the hidden internet: marketplaces, threat actors, and cyber intelligence systems.",
     "image": "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=1200",
-    "url": "article/dark-web/index.html",
+    "url": "tech/dark-web.html",
     "tag": "CORE INTEL",
     "meta": "dark-web",
     "category": "dark-web",
     "date": "2026-08-12",
     "page": "tech",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "legacyUrls": [
+      "article/dark-web/index.html"
+    ],
+    "delta": "assets/deltas/tech-dark-web.json"
   },
   {
     "title": "How the Dark Web Actually Works (Tor, Onion Routing, Encryption)",
     "desc": "Technical breakdown of Tor, hidden services, and layered encryption systems.",
     "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800",
-    "url": "article/dark-web/dark-web-how-it-works.html",
+    "url": "tech/dark-web-how-it-works.html",
     "tag": "INFRASTRUCTURE",
     "meta": "dark-web",
     "category": "dark-web",
     "date": "2026-08-12",
     "page": "tech",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "legacyUrls": [
+      "article/dark-web/dark-web-how-it-works.html"
+    ],
+    "delta": "assets/deltas/tech-dark-web-how-it-works.json"
   },
   {
     "title": "Dark Web Marketplaces Explained (Vendors, Escrow, Trade Systems)",
     "desc": "How underground marketplaces operate, including trust systems and transactions.",
     "image": "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&w=800",
-    "url": "article/dark-web/dark-web-marketplaces.html",
+    "url": "tech/dark-web-marketplaces.html",
     "tag": "MARKET",
     "meta": "dark-web",
     "category": "dark-web",
     "date": "2026-08-12",
     "page": "tech",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "legacyUrls": [
+      "article/dark-web/dark-web-marketplaces.html"
+    ],
+    "delta": "assets/deltas/tech-dark-web-marketplaces.json"
   },
   {
     "title": "What Hackers Buy on the Dark Web (Access, Exploits, Data)",
     "desc": "Inside the hacker economy: credentials, exploits, and access trading.",
     "image": "https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=800",
-    "url": "article/dark-web/dark-web-hacker-economy.html",
+    "url": "tech/dark-web-hacker-economy.html",
     "tag": "THREAT ECONOMY",
     "meta": "dark-web",
     "category": "dark-web",
     "date": "2026-08-12",
     "page": "tech",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "legacyUrls": [
+      "article/dark-web/dark-web-hacker-economy.html"
+    ],
+    "delta": "assets/deltas/tech-dark-web-hacker-economy.json"
   },
   {
     "title": "Dark Web Monitoring Systems (How Organizations Track Threats)",
     "desc": "How companies detect leaks, threats, and attack planning in real time.",
     "image": "https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=800",
-    "url": "article/dark-web/dark-web-monitoring.html",
+    "url": "tech/dark-web-monitoring.html",
     "tag": "DEFENSE",
     "meta": "dark-web",
     "category": "dark-web",
     "date": "2026-08-12",
     "page": "tech",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "legacyUrls": [
+      "article/dark-web/dark-web-monitoring.html"
+    ],
+    "delta": "assets/deltas/tech-dark-web-monitoring.json"
   },
   {
     "title": "Is the Dark Web Dangerous? Risks, Myths & Reality",
     "desc": "Separating myths from reality and understanding actual risks.",
     "image": "https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&w=800",
-    "url": "article/dark-web/dark-web-risks.html",
+    "url": "tech/dark-web-risks.html",
     "tag": "RISK ANALYSIS",
     "meta": "dark-web",
     "category": "dark-web",
     "date": "2026-08-12",
     "page": "tech",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "legacyUrls": [
+      "article/dark-web/dark-web-risks.html"
+    ],
+    "delta": "assets/deltas/tech-dark-web-risks.json"
   },
   {
     "title": "Elon Musk says Starship Flight 13 recovery ‘not looking good’ despite successful splashdown",

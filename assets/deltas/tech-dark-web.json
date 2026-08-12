@@ -1,0 +1,175 @@
+{
+  "ops": [
+    {
+      "insert": "[ INTELLIGENCE DOMAIN ] / DARK WEB / CORE SYSTEM\n"
+    },
+    {
+      "insert": "Dark Web Secrets: What Really Happens Beyond the Surface Web\n",
+      "attributes": {
+        "header": 1
+      }
+    },
+    {
+      "insert": "The dark web is not a myth, not a mystery, and definitely not just a hacker playground. It is an operational layer of the internet where data, exploits, identities, and access are traded in real-time.\nHackaX Intelligence Unit • Strategic Intelligence • 2026\n"
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=1200"
+      }
+    },
+    {
+      "insert": "\n"
+    },
+    {
+      "insert": "What the Dark Web Actually Is\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "The dark web is a segment of the internet that requires specialized software such as Tor to access. Unlike the surface web, which is indexed and searchable, dark web environments are intentionally hidden, encrypted, and resistant to traditional tracking.\nThis architecture enables anonymity—but also enables criminal ecosystems to operate with reduced visibility.\n"
+    },
+    {
+      "insert": "Why It Exists\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Originally designed for privacy and secure communication, the dark web has evolved into a parallel economy where digital assets are exchanged outside conventional oversight.\nToday, it supports:\n• Anonymous communication networks\n • Underground marketplaces\n • Data breach distribution channels\n • Exploit and malware trading\n"
+    },
+    {
+      "insert": "Inside the Dark Web Economy\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "The dark web operates like a structured economy. Vendors, brokers, and buyers interact through reputation systems, escrow services, and encrypted channels.\nAssets Sold: Credentials, exploits, access\n Payment: Cryptocurrency (BTC, Monero)\n Trust Model: Reputation + escrow\n Primary Risk: Law enforcement infiltration\nContrary to popular belief, this ecosystem is not chaotic. It is organized, competitive, and often highly professional.\n"
+    },
+    {
+      "insert": "What Hackers Actually Buy\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Threat actors rarely “hack everything from scratch.” Instead, they acquire access.\nCommon purchases include:\n• Compromised login credentials\n • Corporate VPN access\n • Zero-day exploits\n • Remote access tools\nThis model drastically lowers the barrier to entry for attacks.\n"
+    },
+    {
+      "insert": "Dark Web Monitoring (Real Intelligence Layer)\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Organizations no longer wait for breaches to surface publicly. They monitor dark web channels in real-time to detect:\n• Leaked credentials\n • Mentions of company infrastructure\n • Early-stage attack planning\nThis transforms security from reactive to proactive.\n"
+    },
+    {
+      "insert": "Reality vs Myth\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "The dark web is often exaggerated. Not everything there is illegal—but the highest-risk activity happens there.\nThe real danger is not accessing it. The danger is being exposed on it.\n"
+    },
+    {
+      "insert": "Strategic Insight\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "The dark web represents a shift in cyber warfare. Attacks are no longer isolated actions. They are part of a broader supply chain of access, tools, and intelligence.\nUnderstanding this ecosystem is no longer optional. It is foundational.\n"
+    },
+    {
+      "insert": "Dark Web Intelligence Nodes\n",
+      "attributes": {
+        "header": 3
+      }
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-how-it-works.html"
+      }
+    },
+    {
+      "insert": "How the Dark Web Actually Works (Tor, Encryption)\n",
+      "attributes": {
+        "link": "dark-web-how-it-works.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-marketplaces.html"
+      }
+    },
+    {
+      "insert": "Dark Web Marketplaces Explained\n",
+      "attributes": {
+        "link": "dark-web-marketplaces.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://assets.weforum.org/article/image/large_Uc8rFqX1jZqCB5P3lgtTS0a2nVnAM0hvxlep_N3-xkw.png"
+      },
+      "attributes": {
+        "link": "dark-web-hacker-economy.html"
+      }
+    },
+    {
+      "insert": "What Hackers Buy on the Dark Web\n",
+      "attributes": {
+        "link": "dark-web-hacker-economy.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-monitoring.html"
+      }
+    },
+    {
+      "insert": "Dark Web Monitoring Systems\n",
+      "attributes": {
+        "link": "dark-web-monitoring.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-risks.html"
+      }
+    },
+    {
+      "insert": "Is the Dark Web Dangerous?\n",
+      "attributes": {
+        "link": "dark-web-risks.html"
+      }
+    }
+  ]
+}

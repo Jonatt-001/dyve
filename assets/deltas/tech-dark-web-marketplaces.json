@@ -1,0 +1,193 @@
+{
+  "ops": [
+    {
+      "insert": "[ DARK WEB ] / MARKETPLACES / ECONOMY\n"
+    },
+    {
+      "insert": "Dark Web Marketplaces Explained: How Underground Markets Really Work\n",
+      "attributes": {
+        "header": 1
+      }
+    },
+    {
+      "insert": "Dark web marketplaces are structured, competitive platforms where stolen data, exploits, and system access are traded. They function less like chaos—and more like highly organized digital economies.\nHackaX Intelligence Unit • Market Analysis • 2026\n"
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&w=1200"
+      }
+    },
+    {
+      "insert": "\nMarketplace Model = Vendor listings + escrow\n Payments = Cryptocurrency (BTC, Monero)\n Trust = Reputation systems\n Risk = Exit scams + law enforcement takedowns\n"
+    },
+    {
+      "insert": "What Are Dark Web Marketplaces?\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Dark web marketplaces are hidden platforms where digital assets are bought and sold anonymously. These include stolen credentials, malware, exploits, and even direct access to corporate systems.\nThey operate similarly to e-commerce platforms—but without regulation.\n"
+    },
+    {
+      "insert": "How Transactions Work\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Buyers do not directly trust sellers. Instead, marketplaces use escrow systems.\nFunds are held until the buyer confirms delivery, reducing fraud.\nStep 1: Buyer selects product\n Step 2: Payment held in escrow\n Step 3: Seller delivers asset\n Step 4: Funds released\n"
+    },
+    {
+      "insert": "Vendor Reputation Systems\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Each seller builds a reputation based on successful transactions. High-rated vendors can charge more and attract repeat buyers.\nThis creates a competitive ecosystem where reliability directly impacts profit.\n"
+    },
+    {
+      "insert": "What Is Sold on These Markets?\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Common listings include:\n• Leaked username/password combinations\n • Corporate VPN or RDP access\n • Credit card data\n • Exploit kits and malware\n • Phishing tools\nThis allows attackers to purchase capabilities instead of building them.\n"
+    },
+    {
+      "insert": "Exit Scams and Market Shutdowns\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Markets often disappear suddenly. Operators may shut down platforms and steal escrow funds—known as exit scams.\nLaw enforcement also periodically dismantles major marketplaces.\n"
+    },
+    {
+      "insert": "Why This Matters\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Dark web marketplaces are the backbone of modern cybercrime.\nThey transform isolated hackers into part of a scalable, global supply chain.\n"
+    },
+    {
+      "insert": "Strategic Insight\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Cyber attacks are no longer just technical operations. They are economic transactions.\nUnderstanding these marketplaces means understanding how attacks are funded, scaled, and executed.\nTo understand the infrastructure behind these markets, see "
+    },
+    {
+      "insert": "how the dark web actually works",
+      "attributes": {
+        "link": "dark-web-how-it-works.html"
+      }
+    },
+    {
+      "insert": ".\nFor the broader ecosystem, explore "
+    },
+    {
+      "insert": "Dark Web Intelligence Core",
+      "attributes": {
+        "link": "./index.html"
+      }
+    },
+    {
+      "insert": ".\n"
+    },
+    {
+      "insert": "Continue Dark Web Analysis\n",
+      "attributes": {
+        "header": 3
+      }
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-how-it-works.html"
+      }
+    },
+    {
+      "insert": "How the Dark Web Works\n",
+      "attributes": {
+        "link": "dark-web-how-it-works.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=600"
+      },
+      "attributes": {
+        "link": "./index.html"
+      }
+    },
+    {
+      "insert": "Dark Web Core Intelligence\n",
+      "attributes": {
+        "link": "./index.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://assets.weforum.org/article/image/large_Uc8rFqX1jZqCB5P3lgtTS0a2nVnAM0hvxlep_N3-xkw.png"
+      },
+      "attributes": {
+        "link": "dark-web-hacker-economy.html"
+      }
+    },
+    {
+      "insert": "Hacker Economy Explained\n",
+      "attributes": {
+        "link": "dark-web-hacker-economy.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-monitoring.html"
+      }
+    },
+    {
+      "insert": "Dark Web Monitoring\n",
+      "attributes": {
+        "link": "dark-web-monitoring.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-risks.html"
+      }
+    },
+    {
+      "insert": "Dark Web Risks\n",
+      "attributes": {
+        "link": "dark-web-risks.html"
+      }
+    }
+  ]
+}

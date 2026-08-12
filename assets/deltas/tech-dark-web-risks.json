@@ -1,0 +1,220 @@
+{
+  "ops": [
+    {
+      "insert": "[ DARK WEB ] / RISK ANALYSIS / THREAT EXPOSURE\n"
+    },
+    {
+      "insert": "Is the Dark Web Dangerous? Risks, Threats & Safety Explained\n",
+      "attributes": {
+        "header": 1
+      }
+    },
+    {
+      "insert": "The dark web is often portrayed as inherently dangerous. In reality, the risk depends on how it is used, what is accessed, and how exposed a user or organization becomes within its ecosystem.\nHackaX Intelligence Unit • Risk Assessment • 2026\n"
+    },
+    {
+      "insert": {
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCAGLPeySW6-MiD8nE2q1fOvTO7TLkrTml9Qv-pBJM3_aQcACa1jDapeE&s=10"
+      }
+    },
+    {
+      "insert": "\nRisk Type = Exposure-based\n Main Threat = Data compromise\n User Danger = Context dependent\n Biggest Risk = Being listed, not browsing\n"
+    },
+    {
+      "insert": "Is the Dark Web Actually Dangerous?\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "The dark web itself is not inherently dangerous. It is simply a network built for anonymity.\nThe risk comes from what exists within it—marketplaces, data leaks, and threat actors.\n"
+    },
+    {
+      "insert": "1. Exposure to Stolen Data\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "One of the biggest risks is not visiting the dark web—but appearing on it.\nLeaked credentials, emails, and personal data are frequently traded across underground platforms.\nIf your data is exposed, attackers can:\n• Take over accounts\n • Access financial systems\n • Launch targeted attacks\n"
+    },
+    {
+      "insert": "2. Scams and Fraud\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Dark web marketplaces are filled with scams.\nBuyers can lose funds through:\n• Fake listings\n • Exit scams\n • Non-delivered products\nThere is no consumer protection.\n"
+    },
+    {
+      "insert": "3. Malware and Malicious Content\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Some sites distribute malware directly.\nThis includes:\n• Trojan downloads\n • Keyloggers\n • Browser exploits\nUsers without proper security controls are vulnerable.\n"
+    },
+    {
+      "insert": "4. Law Enforcement Monitoring\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Contrary to popular belief, the dark web is not beyond surveillance.\nLaw enforcement agencies actively monitor:\n• Marketplaces\n • Forums\n • Transaction patterns\nUsers engaging in illegal activity can be tracked over time.\n"
+    },
+    {
+      "insert": "5. False Sense of Anonymity\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Many users assume Tor guarantees complete anonymity.\nIt does not.\nMisconfiguration, behavioral patterns, or leaks can expose identity.\n"
+    },
+    {
+      "insert": "Is Tor Safe?\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Tor itself is a secure technology designed for privacy.\nHowever:\n• It does not protect against user mistakes\n • It does not filter malicious content\n • It does not guarantee full anonymity\n"
+    },
+    {
+      "insert": "Real Risk: Individuals vs Organizations\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "For individuals, risk is mostly situational.\nFor organizations, the risk is significantly higher:\n• Data leaks\n • Credential exposure\n • Targeted attacks\n"
+    },
+    {
+      "insert": "Strategic Insight\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "The dark web is not dangerous because it exists.\nIt becomes dangerous when:\n• Your data appears there\n • Your systems are listed\n • Your access is being sold\nThe real threat is not exploration. The real threat is exposure.\nLearn how threats are detected: "
+    },
+    {
+      "insert": "dark web monitoring systems",
+      "attributes": {
+        "link": "dark-web-monitoring.html"
+      }
+    },
+    {
+      "insert": ".\nUnderstand the economy behind attacks: "
+    },
+    {
+      "insert": "what hackers buy",
+      "attributes": {
+        "link": "dark-web-hacker-economy.html"
+      }
+    },
+    {
+      "insert": ".\nReturn to the intelligence hub: "
+    },
+    {
+      "insert": "Dark Web Core Intelligence",
+      "attributes": {
+        "link": "./index.html"
+      }
+    },
+    {
+      "insert": ".\n"
+    },
+    {
+      "insert": "Continue Dark Web Analysis\n",
+      "attributes": {
+        "header": 3
+      }
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-monitoring.html"
+      }
+    },
+    {
+      "insert": "Dark Web Monitoring\n",
+      "attributes": {
+        "link": "dark-web-monitoring.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-marketplaces.html"
+      }
+    },
+    {
+      "insert": "Marketplaces\n",
+      "attributes": {
+        "link": "dark-web-marketplaces.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://assets.weforum.org/article/image/large_Uc8rFqX1jZqCB5P3lgtTS0a2nVnAM0hvxlep_N3-xkw.png"
+      },
+      "attributes": {
+        "link": "dark-web-hacker-economy.html"
+      }
+    },
+    {
+      "insert": "Hacker Economy\n",
+      "attributes": {
+        "link": "dark-web-hacker-economy.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-how-it-works.html"
+      }
+    },
+    {
+      "insert": "How It Works\n",
+      "attributes": {
+        "link": "dark-web-how-it-works.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=600"
+      },
+      "attributes": {
+        "link": "./index.html"
+      }
+    },
+    {
+      "insert": "Core Page\n",
+      "attributes": {
+        "link": "./index.html"
+      }
+    }
+  ]
+}

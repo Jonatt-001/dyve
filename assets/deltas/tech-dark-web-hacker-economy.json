@@ -1,0 +1,211 @@
+{
+  "ops": [
+    {
+      "insert": "[ DARK WEB ] / ECONOMY / ATTACK SUPPLY CHAIN\n"
+    },
+    {
+      "insert": "What Hackers Buy on the Dark Web: Inside the Cybercrime Economy\n",
+      "attributes": {
+        "header": 1
+      }
+    },
+    {
+      "insert": "Modern cyber attacks are rarely built from scratch. Instead, attackers purchase tools, data, and access from an underground economy designed to scale attacks quickly and efficiently.\nHackaX Intelligence Unit • Threat Economy Analysis • 2026\n"
+    },
+    {
+      "insert": {
+        "image": "https://assets.weforum.org/article/image/large_Uc8rFqX1jZqCB5P3lgtTS0a2nVnAM0hvxlep_N3-xkw.png"
+      }
+    },
+    {
+      "insert": "\nAttack Model = Buy → Deploy → Scale\n Barrier to Entry = Low\n Primary Currency = Crypto\n Key Advantage = Speed\n"
+    },
+    {
+      "insert": "The Shift: From Hackers to Buyers\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "The biggest misconception in cybersecurity is that attackers build everything themselves.\nIn reality, most attackers operate like buyers in a marketplace. They acquire access, tools, and data—then execute attacks using pre-built components.\n"
+    },
+    {
+      "insert": "1. Stolen Credentials\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Credentials are the most traded asset on the dark web.\nThese include:\n• Email and password combinations\n • Banking login details\n • Enterprise credentials\n • Admin-level access\nWith valid credentials, attackers bypass security entirely.\n"
+    },
+    {
+      "insert": "2. Initial Access (The Real Gold)\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Access brokers sell entry points into corporate systems.\nExamples:\n• RDP (Remote Desktop) access\n • VPN credentials\n • Cloud infrastructure access\nThis allows attackers to skip the hardest part of hacking—getting in.\n"
+    },
+    {
+      "insert": "3. Exploits and Zero-Day Vulnerabilities\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Advanced attackers purchase vulnerabilities instead of discovering them.\nThese exploits can target:\n• Authentication systems\n • APIs\n • Operating systems\n • Enterprise software\nZero-day = Unknown vulnerability\n Value = Extremely high\n Usage = Targeted attacks\n"
+    },
+    {
+      "insert": "4. Malware and Attack Kits\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Malware is sold as a service.\nAttackers can buy:\n• Ransomware kits\n • Phishing frameworks\n • Keyloggers\n • Botnets\nSome platforms even offer customer support and updates.\n"
+    },
+    {
+      "insert": "5. Full Attack Packages\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "In many cases, attackers buy complete “attack bundles.”\nThese include:\n• Access + malware + instructions\n • Target-specific configurations\n • Automated deployment tools\nThis turns cybercrime into a plug-and-play operation.\n"
+    },
+    {
+      "insert": "Why This Changes Everything\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "The dark web economy removes technical barriers.\nAnyone with money and intent can launch attacks.\n"
+    },
+    {
+      "insert": "Strategic Insight\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Cybersecurity is no longer just about defense against skilled hackers.\nIt is about defending against a marketplace that sells attack capability at scale.\nThe threat is no longer expertise. The threat is accessibility.\nTo understand where these transactions happen, see "
+    },
+    {
+      "insert": "dark web marketplaces",
+      "attributes": {
+        "link": "dark-web-marketplaces.html"
+      }
+    },
+    {
+      "insert": ".\nTo understand the infrastructure powering it, see "
+    },
+    {
+      "insert": "how the dark web works",
+      "attributes": {
+        "link": "dark-web-how-it-works.html"
+      }
+    },
+    {
+      "insert": ".\nReturn to the core intelligence hub: "
+    },
+    {
+      "insert": "Dark Web Intelligence Overview",
+      "attributes": {
+        "link": "./index.html"
+      }
+    },
+    {
+      "insert": ".\n"
+    },
+    {
+      "insert": "Continue Dark Web Analysis\n",
+      "attributes": {
+        "header": 3
+      }
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-marketplaces.html"
+      }
+    },
+    {
+      "insert": "Dark Web Marketplaces\n",
+      "attributes": {
+        "link": "dark-web-marketplaces.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-how-it-works.html"
+      }
+    },
+    {
+      "insert": "How the Dark Web Works\n",
+      "attributes": {
+        "link": "dark-web-how-it-works.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=600"
+      },
+      "attributes": {
+        "link": "./index.html"
+      }
+    },
+    {
+      "insert": "Dark Web Core Page\n",
+      "attributes": {
+        "link": "./index.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-monitoring.html"
+      }
+    },
+    {
+      "insert": "Dark Web Monitoring\n",
+      "attributes": {
+        "link": "dark-web-monitoring.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-risks.html"
+      }
+    },
+    {
+      "insert": "Dark Web Risks\n",
+      "attributes": {
+        "link": "dark-web-risks.html"
+      }
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "ops": [
+    {
+      "insert": "[ DARK WEB ] / INFRASTRUCTURE / TOR NETWORK\n"
+    },
+    {
+      "insert": "How the Dark Web Actually Works (Tor, Hidden Services, Encryption Explained)\n",
+      "attributes": {
+        "header": 1
+      }
+    },
+    {
+      "insert": "The dark web is not a separate internet—it is a routing system built on layered encryption and anonymized network paths. At its core is Tor, a protocol designed to make tracking nearly impossible.\nHackaX Intelligence Unit • Technical Breakdown • 2026\n"
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1200"
+      }
+    },
+    {
+      "insert": "\nDark Web = Encrypted routing layer\n Core Technology = Tor (The Onion Router)\n Key Feature = Multi-layer anonymization\n Primary Use = Privacy + hidden services\n"
+    },
+    {
+      "insert": "What is the Tor Network?\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Tor (The Onion Router) is the foundation of the dark web. It is a decentralized network that routes internet traffic through multiple nodes, encrypting data at each step to hide its origin and destination.\nInstead of connecting directly to a website, your request travels through a chain of relays, making it extremely difficult to trace.\n"
+    },
+    {
+      "insert": "How Onion Routing Works\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Onion routing is the core mechanism behind Tor. Data is wrapped in multiple layers of encryption—like layers of an onion.\nEach relay in the network removes one encryption layer, revealing only the next destination, not the full path.\nUser → Entry Node → Relay Node → Exit Node → Destination\n Each step = encrypted layer removed\n No single node knows full route\nThis design ensures that no single point in the network can identify both the sender and the receiver.\n"
+    },
+    {
+      "insert": "What Are Hidden Services (.onion)?\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Hidden services are websites that exist entirely داخل the Tor network. They use .onion domains and are not accessible through normal browsers.\nUnlike traditional websites, both the user and the server remain anonymous.\nThis allows platforms to operate without revealing physical location or infrastructure.\n"
+    },
+    {
+      "insert": "Encryption Layers and Privacy\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Tor uses layered encryption combined with randomized routing paths. Every connection is rebuilt dynamically, preventing consistent tracking.\nThis makes surveillance significantly harder compared to the surface web.\n"
+    },
+    {
+      "insert": "Why This Matters for Cyber Intelligence\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "Understanding how the dark web works is essential for threat intelligence.\nAttackers rely on this infrastructure to:\n• Trade stolen credentials\n • Share exploits\n • Coordinate attacks\n • Sell unauthorized access\nOrganizations counter this by monitoring hidden services and analyzing traffic patterns across anonymized networks.\n"
+    },
+    {
+      "insert": "Strategic Insight\n",
+      "attributes": {
+        "header": 2
+      }
+    },
+    {
+      "insert": "The dark web is not dangerous because of its technology. It is dangerous because of how that technology is used.\nTor enables privacy—but it also enables invisibility.\nAnd in cybersecurity, what cannot be seen cannot be controlled.\nFor a full breakdown of the ecosystem, see "
+    },
+    {
+      "insert": "Dark Web Secrets: Core Intelligence Overview",
+      "attributes": {
+        "link": "./index.html"
+      }
+    },
+    {
+      "insert": ".\n"
+    },
+    {
+      "insert": "Continue Dark Web Analysis\n",
+      "attributes": {
+        "header": 3
+      }
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=600"
+      },
+      "attributes": {
+        "link": "./index.html"
+      }
+    },
+    {
+      "insert": "Dark Web Secrets (Core Page)\n",
+      "attributes": {
+        "link": "./index.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-marketplaces.html"
+      }
+    },
+    {
+      "insert": "Dark Web Marketplaces Explained\n",
+      "attributes": {
+        "link": "dark-web-marketplaces.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://assets.weforum.org/article/image/large_Uc8rFqX1jZqCB5P3lgtTS0a2nVnAM0hvxlep_N3-xkw.png"
+      },
+      "attributes": {
+        "link": "dark-web-hacker-economy.html"
+      }
+    },
+    {
+      "insert": "What Hackers Buy on the Dark Web\n",
+      "attributes": {
+        "link": "dark-web-hacker-economy.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-monitoring.html"
+      }
+    },
+    {
+      "insert": "Dark Web Monitoring Systems\n",
+      "attributes": {
+        "link": "dark-web-monitoring.html"
+      }
+    },
+    {
+      "insert": " "
+    },
+    {
+      "insert": {
+        "image": "https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&w=600"
+      },
+      "attributes": {
+        "link": "dark-web-risks.html"
+      }
+    },
+    {
+      "insert": "Is the Dark Web Dangerous?\n",
+      "attributes": {
+        "link": "dark-web-risks.html"
+      }
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "ops": [
+    {
+      "insert": "[ LIVE INTEL FEED ] / INCIDENT RESPONSE / CRITICAL\n"
+    },
+    {
+      "attributes": {
+        "header": 1
+      },
+      "insert": "Data Breach: What To Do Immediately (Step-by-Step Response Guide)\n"
+    },
+    {
+      "insert": "A data breach is only the beginning. The actions taken in the first hours determine whether exposure turns into full account compromise, financial loss, or contained risk.\nHackaX Intelligence Unit • Updated 1h ago • Action Required\n"
+    },
+    {
+      "attributes": {
+        "alt": "Data breach response cybersecurity"
+      },
+      "insert": {
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0Dumxp0W6FV1af4MKUk7JDWbeTFYSoZxG-SU8Cgz5iV6XHazjSoXqfwU&s=10"
+      }
+    },
+    {
+      "insert": "\nCopy Share\nA data breach is no longer a rare event—it is an expected reality of the modern digital ecosystem. From large-scale credential leaks to silent data exfiltration campaigns, millions of users are exposed every year. The real danger, however, is not the breach itself—it is what happens in the minutes and hours after exposure.\nThis guide provides a complete, step-by-step response framework for individuals and organizations affected by a data breach. Whether your credentials were exposed in a breach like the "
+    },
+    {
+      "attributes": {
+        "link": "article-credential-leak.html"
+      },
+      "insert": "12M account credential leak"
+    },
+    {
+      "insert": " or compromised through a vulnerability such as a "
+    },
+    {
+      "attributes": {
+        "link": "article-zero-day.html"
+      },
+      "insert": "zero-day authentication exploit"
+    },
+    {
+      "insert": ", immediate action is critical.\n"
+    },
+    {
+      "attributes": {
+        "header": 2
+      },
+      "insert": "Step 1: Identify What Was Exposed\n"
+    },
+    {
+      "insert": "Not all breaches are equal. The first step is understanding exactly what data has been compromised.\nEmail addresses\n Passwords\n Phone numbers\n Financial data\n Session tokens\n Personal identity information\nIf passwords or session tokens are exposed, assume active risk. Attackers can immediately begin account takeover attempts using credential stuffing techniques.\n"
+    },
+    {
+      "attributes": {
+        "header": 2
+      },
+      "insert": "Step 2: Change Passwords Immediately\n"
+    },
+    {
+      "insert": "This sounds obvious, yet most users delay it—and that delay is where attackers win.\nFocus on:\n• Primary email account\n • Banking and fintech platforms\n • Cloud storage (Google Drive, iCloud)\n • Developer tools (GitHub, AWS)\n • Social accounts\nIf you reused the same password across multiple services, assume all of them are compromised.\n"
+    },
+    {
+      "attributes": {
+        "header": 2
+      },
+      "insert": "Step 3: Enable Multi-Factor Authentication (MFA)\n"
+    },
+    {
+      "insert": "Passwords alone are no longer sufficient. MFA adds a second verification layer that significantly reduces the success rate of account takeover attacks.\nUse:\n• Authenticator apps (preferred)\n • Hardware keys (advanced)\n • SMS (better than nothing)\nAvoid relying solely on passwords—especially after a breach.\n"
+    },
+    {
+      "attributes": {
+        "header": 2
+      },
+      "insert": "Step 4: Invalidate Active Sessions\n"
+    },
+    {
+      "insert": "Many users change passwords but forget one critical thing: attackers may already have active sessions.\nYou must:\n• Log out of all devices\n • Revoke active sessions\n • Disconnect unknown devices\nThis is especially important in cases involving session hijacking or token-based attacks.\n"
+    },
+    {
+      "attributes": {
+        "header": 2
+      },
+      "insert": "Step 5: Monitor Financial Activity\n"
+    },
+    {
+      "insert": "If any financial data may have been exposed, begin active monitoring immediately.\nWatch for:\n• Unauthorized transactions\n • Suspicious login alerts\n • New payment methods added\n • Withdrawal attempts\nIn high-risk cases, freeze accounts temporarily or notify your bank.\n"
+    },
+    {
+      "attributes": {
+        "header": 2
+      },
+      "insert": "Step 6: Watch for Secondary Attacks\n"
+    },
+    {
+      "insert": "A breach rarely exists in isolation. Once attackers gain access, they often escalate.\nCommon follow-ups include:\n• Phishing emails pretending to be security alerts\n • SIM swap attempts\n • Password reset abuse\n • Social engineering attacks\nRemain alert for unusual messages or requests.\n"
+    },
+    {
+      "attributes": {
+        "header": 2
+      },
+      "insert": "Step 7: Check If You’re Part of Known Breaches\n"
+    },
+    {
+      "insert": "Use breach intelligence platforms or internal monitoring systems to determine where your data has appeared.\nThis helps you:\n• Understand exposure scope\n • Identify affected platforms\n • Prioritize response actions\n"
+    },
+    {
+      "attributes": {
+        "header": 2
+      },
+      "insert": "Step 8: Secure Your Devices\n"
+    },
+    {
+      "insert": "If the breach originated from malware or compromise, changing passwords alone will not help.\nPerform:\n• Full antivirus scan\n • Remove suspicious extensions\n • Update operating system\n • Reset compromised devices (if necessary)\n"
+    },
+    {
+      "attributes": {
+        "header": 2
+      },
+      "insert": "Step 9: Notify Stakeholders (For Organizations)\n"
+    },
+    {
+      "insert": "If you are a business or developer, transparency is not optional.\nNotify:\n• Affected users\n • Internal teams\n • Regulatory bodies (if required)\nFailure to respond quickly increases both damage and liability.\n"
+    },
+    {
+      "attributes": {
+        "header": 2
+      },
+      "insert": "Why Speed Matters\n"
+    },
+    {
+      "insert": "Most account takeovers occur within hours of a breach becoming public or circulating in underground markets.\nAttackers operate at scale and speed. Your response must be faster.\n"
+    },
+    {
+      "attributes": {
+        "blockquote": true
+      },
+      "insert": "> SYSTEM NOTE: delay between breach exposure and user response directly correlates with compromise probability\n"
+    },
+    {
+      "attributes": {
+        "header": 2
+      },
+      "insert": "Strategic Takeaway\n"
+    },
+    {
+      "insert": "A data breach is not a single event—it is the beginning of an attack chain. The difference between compromise and containment depends entirely on how quickly and effectively you respond.\nUsers who act immediately can neutralize most threats. Those who delay often become part of the next wave of exploited accounts."
+    }
+  ]
+}
