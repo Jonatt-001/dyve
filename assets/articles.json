@@ -1,5 +1,29 @@
 [
   {
+    "title": "Commerzbank Cybercrime: €30 Million Stolen",
+    "desc": "Latest on commerzbank cybercrime: €30 million stolen. A recent cybercrime operation has led to the arrest of four individuals in Brazil and the ch...",
+    "image": "https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786736939/nehidqhs7i5p1scbjopd.jpg",
+    "url": "tech/commerzbank-cybercrime-30-million-stolen.html",
+    "tag": "News",
+    "meta": "trends",
+    "category": "trends",
+    "date": "2026-08-14",
+    "page": "tech",
+    "delta": "assets/deltas/tech-commerzbank-cybercrime-30-million-stolen.json",
+    "readTime": 4,
+    "author": "Dyve Tech Intelligence Unit",
+    "modified": "2026-08-14T19:57:16.081Z",
+    "createdAt": "2026-08-14T19:57:16.081Z",
+    "seoTitle": "Commerzbank Cybercrime: €30 Million Stolen",
+    "focusKeyword": "cybersecurity, cybercrime",
+    "keywords": [
+      "credential theft",
+      "cybercrime"
+    ],
+    "sourceUrl": "",
+    "ogPrompt": "Cybercrime operation illustration"
+  },
+  {
     "title": "Facebook's Creator Studio App: AI-Powered Tools for Content Creators",
     "desc": "Facebook launches Creator Studio app with AI-powered tools for creators",
     "image": "https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786639583/yoo4yb4qbwoertvc2bmm.jpg",
@@ -12,7 +36,12 @@
     "delta": "assets/deltas/tech-facebooks-creator-studio-app-ai-powered-tools-for-content-creators.json",
     "readTime": 3,
     "author": "Dyve Tech Intelligence Unit",
-    "ogPrompt": "Facebook Creator Studio app logo"
+    "ogPrompt": "Facebook Creator Studio app logo",
+    "modified": "2026-08-13",
+    "seoTitle": "Facebook's Creator Studio App: AI-Powered Tools for Content Creators",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": ""
   },
   {
     "title": "How to Effectively Deploy Code With Claude Code",
@@ -27,7 +56,12 @@
     "delta": "assets/deltas/tech-how-to-effectively-deploy-code-with-claude-code.json",
     "readTime": 7,
     "author": "Dyve Tech Intelligence Unit",
-    "ogPrompt": "Modern technology visualization of How to Effectively Deploy Code With Claude Code. Focus on that, have, coding, agents, writing. Editorial, premium, high-tech aesthetic, clean composition, no text."
+    "ogPrompt": "Modern technology visualization of How to Effectively Deploy Code With Claude Code. Focus on that, have, coding, agents, writing. Editorial, premium, high-tech aesthetic, clean composition, no text.",
+    "modified": "2026-08-12",
+    "seoTitle": "How to Effectively Deploy Code With Claude Code",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": ""
   },
   {
     "title": "Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets",
@@ -44,7 +78,13 @@
     "legacyUrls": [
       "article/article-credential-leak.html"
     ],
-    "delta": "assets/deltas/tech-article-credential-leak.json"
+    "delta": "assets/deltas/tech-article-credential-leak.json",
+    "modified": "2026-08-12",
+    "seoTitle": "Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Zero-Day Vulnerability Discovered in Authentication API",
@@ -61,7 +101,13 @@
     "legacyUrls": [
       "article/article-zero-day.html"
     ],
-    "delta": "assets/deltas/tech-article-zero-day.json"
+    "delta": "assets/deltas/tech-article-zero-day.json",
+    "modified": "2026-08-12",
+    "seoTitle": "Zero-Day Vulnerability Discovered in Authentication API",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Encrypted Messaging Platform Exploited for Data Exfiltration",
@@ -78,7 +124,13 @@
     "legacyUrls": [
       "article/article-exfiltration.html"
     ],
-    "delta": "assets/deltas/tech-article-exfiltration.json"
+    "delta": "assets/deltas/tech-article-exfiltration.json",
+    "modified": "2026-08-12",
+    "seoTitle": "Encrypted Messaging Platform Exploited for Data Exfiltration",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Credential Stuffing Attacks Explained",
@@ -95,7 +147,13 @@
     "legacyUrls": [
       "article/article-credential-stuffing.html"
     ],
-    "delta": "assets/deltas/tech-article-credential-stuffing.json"
+    "delta": "assets/deltas/tech-article-credential-stuffing.json",
+    "modified": "2026-08-12",
+    "seoTitle": "Credential Stuffing Attacks Explained",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Data Breach Response Playbook (2026)",
@@ -112,7 +170,13 @@
     "legacyUrls": [
       "article/article-data-breach-response.html"
     ],
-    "delta": "assets/deltas/tech-article-data-breach-response.json"
+    "delta": "assets/deltas/tech-article-data-breach-response.json",
+    "modified": "2026-08-12",
+    "seoTitle": "Data Breach Response Playbook (2026)",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Dark Web Secrets: What Really Happens Beyond the Surface Web",
@@ -129,7 +193,13 @@
     "legacyUrls": [
       "article/dark-web/index.html"
     ],
-    "delta": "assets/deltas/tech-dark-web.json"
+    "delta": "assets/deltas/tech-dark-web.json",
+    "modified": "2026-08-12",
+    "seoTitle": "Dark Web Secrets: What Really Happens Beyond the Surface Web",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "How the Dark Web Actually Works (Tor, Onion Routing, Encryption)",
@@ -146,7 +216,13 @@
     "legacyUrls": [
       "article/dark-web/dark-web-how-it-works.html"
     ],
-    "delta": "assets/deltas/tech-dark-web-how-it-works.json"
+    "delta": "assets/deltas/tech-dark-web-how-it-works.json",
+    "modified": "2026-08-12",
+    "seoTitle": "How the Dark Web Actually Works (Tor, Onion Routing, Encryption)",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Dark Web Marketplaces Explained (Vendors, Escrow, Trade Systems)",
@@ -163,7 +239,13 @@
     "legacyUrls": [
       "article/dark-web/dark-web-marketplaces.html"
     ],
-    "delta": "assets/deltas/tech-dark-web-marketplaces.json"
+    "delta": "assets/deltas/tech-dark-web-marketplaces.json",
+    "modified": "2026-08-12",
+    "seoTitle": "Dark Web Marketplaces Explained (Vendors, Escrow, Trade Systems)",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "What Hackers Buy on the Dark Web (Access, Exploits, Data)",
@@ -180,7 +262,13 @@
     "legacyUrls": [
       "article/dark-web/dark-web-hacker-economy.html"
     ],
-    "delta": "assets/deltas/tech-dark-web-hacker-economy.json"
+    "delta": "assets/deltas/tech-dark-web-hacker-economy.json",
+    "modified": "2026-08-12",
+    "seoTitle": "What Hackers Buy on the Dark Web (Access, Exploits, Data)",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Dark Web Monitoring Systems (How Organizations Track Threats)",
@@ -197,7 +285,13 @@
     "legacyUrls": [
       "article/dark-web/dark-web-monitoring.html"
     ],
-    "delta": "assets/deltas/tech-dark-web-monitoring.json"
+    "delta": "assets/deltas/tech-dark-web-monitoring.json",
+    "modified": "2026-08-12",
+    "seoTitle": "Dark Web Monitoring Systems (How Organizations Track Threats)",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Is the Dark Web Dangerous? Risks, Myths & Reality",
@@ -214,7 +308,13 @@
     "legacyUrls": [
       "article/dark-web/dark-web-risks.html"
     ],
-    "delta": "assets/deltas/tech-dark-web-risks.json"
+    "delta": "assets/deltas/tech-dark-web-risks.json",
+    "modified": "2026-08-12",
+    "seoTitle": "Is the Dark Web Dangerous? Risks, Myths & Reality",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Elon Musk says Starship Flight 13 recovery ‘not looking good’ despite successful splashdown",
@@ -228,7 +328,13 @@
     "page": "tech",
     "delta": "assets/deltas/tech-elon-musk-says-starship-flight-13-recovery-not-looking-good-despite-successful-splashdown.json",
     "readTime": 2,
-    "author": "Dyve Tech Intelligence Unit"
+    "author": "Dyve Tech Intelligence Unit",
+    "modified": "2026-08-08",
+    "seoTitle": "Elon Musk says Starship Flight 13 recovery ‘not looking good’ despite successful splashdown",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Ransomware Attacks Surge 20% in July: What You Need to Know",
@@ -242,7 +348,13 @@
     "page": "tech",
     "delta": "assets/deltas/tech-ransomware-attacks-surge-20-in-july-what-you-need-to-know.json",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "modified": "2026-08-08",
+    "seoTitle": "Ransomware Attacks Surge 20% in July: What You Need to Know",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "API Server: Explained like Never Before (Episode 4)",
@@ -256,7 +368,13 @@
     "page": "tech",
     "delta": "assets/deltas/tech-api-server-explained-like-never-before-episode-4.json",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "modified": "2026-08-08",
+    "seoTitle": "API Server: Explained like Never Before (Episode 4)",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Cloudflare Wallets Will Let AI Agents Pay for APIs Safely Online",
@@ -270,7 +388,13 @@
     "page": "tech",
     "delta": "assets/deltas/tech-cloudflare-wallets-will-let-ai-agents-pay-for-apis-safely-online.json",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "modified": "2026-08-08",
+    "seoTitle": "Cloudflare Wallets Will Let AI Agents Pay for APIs Safely Online",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Cloudflare launches Kitesurf, a browser built for AI agents",
@@ -284,7 +408,13 @@
     "page": "tech",
     "delta": "assets/deltas/tech-cloudflare-launches-kitesurf-a-browser-built-for-ai-agents.json",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "modified": "2026-08-07",
+    "seoTitle": "Cloudflare launches Kitesurf, a browser built for AI agents",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT‑5.6 Luna for free users",
@@ -298,7 +428,13 @@
     "page": "tech",
     "delta": "assets/deltas/tech-improving-gpt56-sol-in-chatgptand-expanding-access-to-gpt56-luna-for-free-users.json",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "modified": "2026-08-07",
+    "seoTitle": "Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT‑5.6 Luna for free users",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Responding to the next frontier of critical cyber capabilities",
@@ -312,7 +448,13 @@
     "page": "tech",
     "delta": "assets/deltas/tech-responding-to-the-next-frontier-of-critical-cyber-capabilities.json",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "modified": "2026-08-07",
+    "seoTitle": "Responding to the next frontier of critical cyber capabilities",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Cloudflare open-sources vibe-coding platform for people who aren’t coders",
@@ -326,7 +468,13 @@
     "page": "tech",
     "delta": "assets/deltas/tech-cloudflare-open-sources-vibe-coding-platform-for-people-who-arent-coders.json",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "modified": "2026-08-07",
+    "seoTitle": "Cloudflare open-sources vibe-coding platform for people who aren’t coders",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Europe Finalizes Ambitious Plans for IRIS²: The EU’s ‘Sovereign’ Starlink Competitor",
@@ -340,7 +488,13 @@
     "page": "tech",
     "delta": "assets/deltas/tech-europe-finalizes-ambitious-plans-for-iris-the-eus-sovereign-starlink-competitor.json",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "modified": "2026-08-07",
+    "seoTitle": "Europe Finalizes Ambitious Plans for IRIS²: The EU’s ‘Sovereign’ Starlink Competitor",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Apple issues new challenge against UK order for access to private user data",
@@ -355,7 +509,12 @@
     "page": "tech",
     "delta": "assets/deltas/tech-apple-issues-new-challenge-against-uk-order-for-access-to-private-user-data.json",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "seoTitle": "Apple issues new challenge against UK order for access to private user data",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Quantum Breakthrough: How New Quantum Neural Networks Are Smashing Processing Speed Records",
@@ -369,7 +528,13 @@
     "page": "tech",
     "delta": "assets/deltas/tech-quantum-breakthrough-how-new-quantum-neural-networks-are-smashing-processing-speed-records.json",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "modified": "2026-08-04",
+    "seoTitle": "Quantum Breakthrough: How New Quantum Neural Networks Are Smashing Processing Speed Records",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Teads files suit against Google; seeks financial compensation after antitrust ruling",
@@ -383,7 +548,13 @@
     "page": "tech",
     "delta": "assets/deltas/tech-teads-files-suit-against-google-seeks-financial-compensation-after-antitrust-ruling.json",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "modified": "2026-08-03",
+    "seoTitle": "Teads files suit against Google; seeks financial compensation after antitrust ruling",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "The Agentic AI Revolution",
@@ -397,7 +568,13 @@
     "page": "tech",
     "delta": "assets/deltas/tech-the-agentic-ai-revolution.json",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "modified": "2026-08-03",
+    "seoTitle": "The Agentic AI Revolution",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Claude Opus 5 became downright ruthless when tasked with running a vending machine",
@@ -411,7 +588,13 @@
     "page": "tech",
     "delta": "assets/deltas/tech-claude-opus-5-became-downright-ruthless-when-tasked-with-running-a-vending-machine.json",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "modified": "2026-08-03",
+    "seoTitle": "Claude Opus 5 became downright ruthless when tasked with running a vending machine",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   },
   {
     "title": "Claude",
@@ -425,6 +608,12 @@
     "page": "tech",
     "delta": "assets/deltas/tech-claude.json",
     "author": "Dyve Tech Intelligence Unit",
-    "readTime": 4
+    "readTime": 4,
+    "modified": "2026-08-03",
+    "seoTitle": "Claude",
+    "focusKeyword": "",
+    "keywords": [],
+    "sourceUrl": "",
+    "ogPrompt": ""
   }
 ]

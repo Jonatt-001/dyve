@@ -1,19 +1,8 @@
-# Dyve HackaX - Cyber Intelligence Platform
-# Auto-generated - do not edit manually
-
 User-agent: *
 Allow: /
-Allow: /article/
-Allow: /breaches/
-Allow: /dark-web/
-Allow: /ransomware/
-Allow: /threat-actors/
-Allow: /signals/
-Allow: /analysis/
 
 Disallow: /admin/
 Disallow: /editor/
-Disallow: /*.json$
-Disallow: /assets/articles.json
+Disallow: /assets/deltas/
 
 Sitemap: https://dyve.online/sitemap.xml
