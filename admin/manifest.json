@@ -1,19 +1,28 @@
 {
   "name": "Dyve Intelligence Admin",
   "short_name": "Dyve Admin",
-  "description": "Publishing console for Dyve Tech and HackaX intelligence platforms.",
+  "description": "Production publishing workspace for Dyve Tech and HackaX intelligence platforms.",
   "id": "./",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
   "orientation": "portrait-primary",
   "background_color": "#020403",
   "theme_color": "#020403",
   "lang": "en",
   "dir": "ltr",
-  "categories": ["news", "productivity", "developer tools"],
+  "categories": [
+    "news",
+    "productivity",
+    "developer tools"
+  ],
   "prefer_related_applications": false,
+
   "icons": [
     {
       "src": "logo.png",
@@ -25,32 +34,49 @@
       "src": "logo.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     }
   ],
+
   "shortcuts": [
     {
       "name": "New Tech Article",
       "short_name": "Tech Editor",
-      "description": "Open the Dyve Tech editor",
-      "url": "./tech-editor/index.html"
+      "description": "Open the Dyve Tech publishing editor.",
+      "url": "./tech-editor/index.html",
+      "icons": [
+        {
+          "src": "logo.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "New HackaX Article",
       "short_name": "HackaX Editor",
-      "description": "Open the HackaX editor",
-      "url": "./hackax/index.html"
+      "description": "Open the HackaX intelligence editor.",
+      "url": "./hackax/index.html",
+      "icons": [
+        {
+          "src": "logo.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "Published Articles",
       "short_name": "Published",
-      "url": "./published.html"
+      "description": "Open the published article manager.",
+      "url": "./published.html",
+      "icons": [
+        {
+          "src": "logo.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }
