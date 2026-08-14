@@ -1,9 +1,16 @@
-# Dyve HackaX - Cyber Intelligence Platform
-# Auto-generated - do not edit manually
+# DYVE - Production robots policy
+# Generated automatically by GitHub Actions.
+# Do not edit manually.
 
 User-agent: *
 Allow: /
-Allow: /article/
+
+# Canonical editorial sections
+Allow: /tech/
+Allow: /ai/
+Allow: /developers/
+Allow: /coding/
+Allow: /cybersecurity/
 Allow: /breaches/
 Allow: /dark-web/
 Allow: /ransomware/
@@ -11,9 +18,13 @@ Allow: /threat-actors/
 Allow: /signals/
 Allow: /analysis/
 
+# Private/application surfaces
 Disallow: /admin/
 Disallow: /editor/
-Disallow: /*.json$
+Disallow: /tech-editor/
+Disallow: /assets/deltas/
+
+# Internal article database is not a public search destination.
 Disallow: /assets/articles.json
 
 Sitemap: https://dyve.online/sitemap.xml
