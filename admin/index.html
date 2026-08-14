@@ -5,89 +5,247 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dyve Intelligence — Dashboard</title>
 
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#020403">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Dyve Admin">
-<link rel="apple-touch-icon" href="logo.png">
+    <link rel="manifest" href="/admin/manifest.json">
+    <meta name="theme-color" content="#020403">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Dyve Admin">
+    <link rel="apple-touch-icon" href="/admin/logo.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #020403;
             color: #e8f0ee;
         }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #020403; }
-        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #00ffaa; }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #020403;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00ffaa;
+        }
 
         .glass-panel {
             background: rgba(10, 15, 13, 0.6);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         .nav-item.active {
             background: rgba(0, 255, 170, 0.1);
             color: #00ffaa;
             border-right: 3px solid #00ffaa;
         }
-        .platform-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        @media (hover: hover) {
-            .platform-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5); }
-            .platform-card.hackax:hover { border-color: rgba(0, 255, 170, 0.5); box-shadow: 0 20px 40px -10px rgba(0, 255, 170, 0.15); }
-            .platform-card.tech:hover { border-color: rgba(241, 94, 80, 0.5); box-shadow: 0 20px 40px -10px rgba(241, 94, 80, 0.15); }
+
+        .platform-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        @media (hover: hover) {
+            .platform-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+            }
+
+            .platform-card.hackax:hover {
+                border-color: rgba(0, 255, 170, 0.5);
+                box-shadow: 0 20px 40px -10px rgba(0, 255, 170, 0.15);
+            }
+
+            .platform-card.tech:hover {
+                border-color: rgba(241, 94, 80, 0.5);
+                box-shadow: 0 20px 40px -10px rgba(241, 94, 80, 0.15);
+            }
+        }
+
         .skeleton {
-            background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
+            background: linear-gradient(
+                90deg,
+                rgba(255,255,255,0.04) 25%,
+                rgba(255,255,255,0.09) 50%,
+                rgba(255,255,255,0.04) 75%
+            );
             background-size: 200% 100%;
             animation: loading 1.4s infinite;
             border-radius: 6px;
         }
-        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
     </style>
 </head>
+
 <body class="min-h-screen flex overflow-hidden">
 
     <!-- SIDEBAR -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#030605] border-r border-white/5 flex flex-col transform -translate-x-full md:translate-x-0 md:static md:flex transition-transform duration-300 ease-in-out">
+    <aside
+        id="sidebar"
+        class="fixed inset-y-0 left-0 z-50 w-64 bg-[#030605] border-r border-white/5 flex flex-col transform -translate-x-full md:translate-x-0 md:static md:flex transition-transform duration-300 ease-in-out"
+    >
         <div class="h-16 flex items-center justify-between px-6 border-b border-white/5">
             <div class="flex items-center">
                 <svg width="28" height="28" viewBox="0 0 32 32" fill="none" class="text-[#00ffaa] mr-3">
-                    <path d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z" fill="currentColor"></path>
+                    <path
+                        d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z"
+                        fill="currentColor"
+                    ></path>
                 </svg>
-                <span class="font-bold text-lg tracking-wide text-white">DYVE<span class="text-[#00ffaa]">|</span>ADMIN</span>
+
+                <span class="font-bold text-lg tracking-wide text-white">
+                    DYVE<span class="text-[#00ffaa]">|</span>ADMIN
+                </span>
             </div>
-            <button id="closeSidebarBtn" class="md:hidden text-gray-400 hover:text-white p-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+
+            <button
+                id="closeSidebarBtn"
+                class="md:hidden text-gray-400 hover:text-white p-2"
+            >
+                <svg
+                    class="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                    ></path>
+                </svg>
             </button>
         </div>
 
         <nav class="flex-1 py-6 space-y-1 overflow-y-auto">
-            <a href="#" class="nav-item active flex items-center px-6 py-3 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+
+            <a
+                href="/admin/index.html"
+                class="nav-item active flex items-center px-6 py-3 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+            >
+                <svg
+                    class="w-5 h-5 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                    ></path>
+                </svg>
                 Dashboard
             </a>
-            <a href="published.html" class="nav-item flex items-center px-6 py-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+
+            <a
+                href="/admin/published.html"
+                class="nav-item flex items-center px-6 py-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+            >
+                <svg
+                    class="w-5 h-5 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                    ></path>
+                </svg>
                 All Articles
             </a>
-            <a href="drafts.html" class="nav-item flex items-center px-6 py-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+
+            <a
+                href="/admin/drafts.html"
+                class="nav-item flex items-center px-6 py-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+            >
+                <svg
+                    class="w-5 h-5 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    ></path>
+                </svg>
                 Drafts
             </a>
-            <a href="#" class="nav-item flex items-center px-6 py-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+
+            <a
+                href="#"
+                class="nav-item flex items-center px-6 py-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+            >
+                <svg
+                    class="w-5 h-5 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                    ></path>
+                </svg>
                 Analytics
             </a>
+
         </nav>
 
         <div class="p-4 border-t border-white/5">
-            <a href="settings.html" class="flex items-center px-2 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 3.35 0 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 01-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.915-1.543 2.37-2.37 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            <a
+                href="/admin/settings.html"
+                class="flex items-center px-2 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors"
+            >
+                <svg
+                    class="w-5 h-5 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10.325 4.317c.426-1.756 3.35 0 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 01-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c1.543-.94-.826-3.31-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.915-1.543 2.37-2.37 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                    ></path>
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                </svg>
                 Settings
             </a>
         </div>
@@ -98,26 +256,71 @@
 
         <!-- TOP HEADER -->
         <header class="h-16 glass-panel flex items-center justify-between px-4 md:px-6 z-30 sticky top-0">
+
             <div class="flex items-center md:hidden">
-                <button id="mobileMenuBtn" class="text-gray-400 hover:text-white p-2 -ml-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                <button
+                    id="mobileMenuBtn"
+                    class="text-gray-400 hover:text-white p-2 -ml-2"
+                >
+                    <svg
+                        class="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"
+                        ></path>
+                    </svg>
                 </button>
             </div>
 
             <div class="hidden md:flex items-center text-sm text-gray-400">
                 <span>Home</span>
-                <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+
+                <svg
+                    class="w-4 h-4 mx-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
+                    ></path>
+                </svg>
+
                 <span class="text-white">Dashboard</span>
             </div>
 
             <div class="flex items-center gap-4">
-                <span id="liveClock" class="text-xs text-gray-500 hidden sm:block font-medium"></span>
+
+                <span
+                    id="liveClock"
+                    class="text-xs text-gray-500 hidden sm:block font-medium"
+                ></span>
+
                 <div class="flex items-center gap-3 pl-4 border-l border-white/10">
+
                     <div class="text-right hidden sm:block">
-                        <div class="text-sm font-medium text-white">Admin User</div>
-                        <div class="text-xs text-gray-400">Chief Editor</div>
+                        <div class="text-sm font-medium text-white">
+                            Admin User
+                        </div>
+
+                        <div class="text-xs text-gray-400">
+                            Chief Editor
+                        </div>
                     </div>
-                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#00ffaa] to-emerald-600 flex items-center justify-center text-[#020403] font-bold text-sm">AU</div>
+
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#00ffaa] to-emerald-600 flex items-center justify-center text-[#020403] font-bold text-sm">
+                        AU
+                    </div>
+
                 </div>
             </div>
         </header>
@@ -127,126 +330,429 @@
 
             <!-- Welcome -->
             <div class="mb-6 md:mb-8">
-                <h1 class="text-2xl md:text-3xl font-bold text-white mb-2" id="welcomeTitle">Welcome back, Admin</h1>
-                <p class="text-gray-400 text-sm md:text-base">Here's what's happening across your intelligence platforms today.</p>
+
+                <h1
+                    class="text-2xl md:text-3xl font-bold text-white mb-2"
+                    id="welcomeTitle"
+                >
+                    Welcome back, Admin
+                </h1>
+
+                <p class="text-gray-400 text-sm md:text-base">
+                    Here's what's happening across your intelligence platforms today.
+                </p>
+
             </div>
 
             <!-- Error / offline banner -->
-            <div id="dataBanner" class="hidden mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 flex items-center justify-between gap-3">
-                <span class="text-sm text-red-300" id="dataBannerMsg">Couldn't load the article database.</span>
-                <button onclick="initData()" class="text-sm font-semibold text-white bg-red-500/80 hover:bg-red-500 px-3 py-1.5 rounded-lg transition flex-shrink-0">Retry</button>
+            <div
+                id="dataBanner"
+                class="hidden mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 flex items-center justify-between gap-3"
+            >
+                <span
+                    class="text-sm text-red-300"
+                    id="dataBannerMsg"
+                >
+                    Couldn't load the article database.
+                </span>
+
+                <button
+                    onclick="initData()"
+                    class="text-sm font-semibold text-white bg-red-500/80 hover:bg-red-500 px-3 py-1.5 rounded-lg transition flex-shrink-0"
+                >
+                    Retry
+                </button>
             </div>
 
             <!-- Stats Grid (REAL DATA) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+
                 <div class="glass-panel rounded-xl p-5">
+
                     <div class="flex items-center justify-between mb-4">
+
                         <div class="p-2 bg-[#00ffaa]/10 rounded-lg">
-                            <svg class="w-6 h-6 text-[#00ffaa]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <svg
+                                class="w-6 h-6 text-[#00ffaa]"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                ></path>
+                            </svg>
                         </div>
-                        <span id="statTotalBadge" class="hidden text-xs font-medium text-[#00ffaa] bg-[#00ffaa]/10 px-2 py-1 rounded"></span>
+
+                        <span
+                            id="statTotalBadge"
+                            class="hidden text-xs font-medium text-[#00ffaa] bg-[#00ffaa]/10 px-2 py-1 rounded"
+                        ></span>
+
                     </div>
-                    <div class="text-2xl font-bold text-white" id="statTotal"><div class="skeleton h-8 w-16"></div></div>
-                    <div class="text-sm text-gray-400">Published Articles</div>
+
+                    <div
+                        class="text-2xl font-bold text-white"
+                        id="statTotal"
+                    >
+                        <div class="skeleton h-8 w-16"></div>
+                    </div>
+
+                    <div class="text-sm text-gray-400">
+                        Published Articles
+                    </div>
+
                 </div>
 
                 <div class="glass-panel rounded-xl p-5">
+
                     <div class="flex items-center justify-between mb-4">
+
                         <div class="p-2 bg-yellow-500/10 rounded-lg">
-                            <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                            <svg
+                                class="w-6 h-6 text-yellow-500"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                ></path>
+                            </svg>
                         </div>
+
                     </div>
-                    <div class="text-2xl font-bold text-white" id="statDrafts">0</div>
-                    <div class="text-sm text-gray-400">Pending Drafts</div>
-                    <div class="text-xs text-gray-500 mt-1" id="statDraftsSub">Tech: 0 • HackaX: 0</div>
+
+                    <div
+                        class="text-2xl font-bold text-white"
+                        id="statDrafts"
+                    >
+                        0
+                    </div>
+
+                    <div class="text-sm text-gray-400">
+                        Pending Drafts
+                    </div>
+
+                    <div
+                        class="text-xs text-gray-500 mt-1"
+                        id="statDraftsSub"
+                    >
+                        Tech: 0 • HackaX: 0
+                    </div>
+
                 </div>
 
                 <div class="glass-panel rounded-xl p-5">
+
                     <div class="flex items-center justify-between mb-4">
+
                         <div class="p-2 bg-[#f15e50]/10 rounded-lg">
-                            <svg class="w-6 h-6 text-[#f15e50]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            <svg
+                                class="w-6 h-6 text-[#f15e50]"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                ></path>
+                            </svg>
                         </div>
+
                     </div>
-                    <div class="text-2xl font-bold text-white" id="statTech"><div class="skeleton h-8 w-12"></div></div>
-                    <div class="text-sm text-gray-400">Tech Articles</div>
-                    <div class="text-xs text-gray-500 mt-1" id="statTechSub">HackaX: —</div>
+
+                    <div
+                        class="text-2xl font-bold text-white"
+                        id="statTech"
+                    >
+                        <div class="skeleton h-8 w-12"></div>
+                    </div>
+
+                    <div class="text-sm text-gray-400">
+                        Tech Articles
+                    </div>
+
+                    <div
+                        class="text-xs text-gray-500 mt-1"
+                        id="statTechSub"
+                    >
+                        HackaX: —
+                    </div>
+
                 </div>
 
                 <div class="glass-panel rounded-xl p-5">
+
                     <div class="flex items-center justify-between mb-4">
+
                         <div class="p-2 bg-blue-500/10 rounded-lg">
-                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <svg
+                                class="w-6 h-6 text-blue-500"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                ></path>
+                            </svg>
                         </div>
+
                     </div>
-                    <div class="text-2xl font-bold text-white" id="statLast"><div class="skeleton h-8 w-16"></div></div>
-                    <div class="text-sm text-gray-400">Last Publish</div>
-                    <div class="text-xs text-gray-500 mt-1 truncate" id="statLastSub">—</div>
+
+                    <div
+                        class="text-2xl font-bold text-white"
+                        id="statLast"
+                    >
+                        <div class="skeleton h-8 w-16"></div>
+                    </div>
+
+                    <div class="text-sm text-gray-400">
+                        Last Publish
+                    </div>
+
+                    <div
+                        class="text-xs text-gray-500 mt-1 truncate"
+                        id="statLastSub"
+                    >
+                        —
+                    </div>
+
                 </div>
+
             </div>
 
             <!-- Platform Selection -->
-            <h2 class="text-lg font-semibold text-white mb-4">Create New Content</h2>
+            <h2 class="text-lg font-semibold text-white mb-4">
+                Create New Content
+            </h2>
+
             <div class="grid md:grid-cols-2 gap-4 md:gap-6 mb-10">
-                <div class="platform-card hackax glass-panel rounded-2xl p-6 cursor-pointer border border-transparent relative overflow-hidden group" onclick="window.location.href='hackax/index.html'">
+
+                <!-- HACKAX -->
+                <div
+                    class="platform-card hackax glass-panel rounded-2xl p-6 cursor-pointer border border-transparent relative overflow-hidden group"
+                    onclick="window.location.href='/admin/hackax/index.html'"
+                >
+
                     <div class="absolute top-0 right-0 w-32 h-32 bg-[#00ffaa]/5 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-[#00ffaa]/10 transition-all"></div>
+
                     <div class="relative z-10">
+
                         <div class="flex items-start justify-between mb-6">
+
                             <div class="w-14 h-14 bg-gradient-to-br from-[#00ffaa] to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-[#00ffaa]/20">
-                                <svg class="w-7 h-7 text-[#020403]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+
+                                <svg
+                                    class="w-7 h-7 text-[#020403]"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                                    ></path>
+                                </svg>
+
                             </div>
-                            <span class="px-3 py-1 bg-[#00ffaa]/10 text-[#00ffaa] text-xs font-bold rounded-full border border-[#00ffaa]/20">CYBERSECURITY</span>
+
+                            <span class="px-3 py-1 bg-[#00ffaa]/10 text-[#00ffaa] text-xs font-bold rounded-full border border-[#00ffaa]/20">
+                                CYBERSECURITY
+                            </span>
+
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2">HackaX Intelligence</h3>
-                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Publish threat intelligence, breach surveillance, dark web monitoring, and ransomware analysis.</p>
+
+                        <h3 class="text-xl font-bold text-white mb-2">
+                            HackaX Intelligence
+                        </h3>
+
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                            Publish threat intelligence, breach surveillance, dark web monitoring, and ransomware analysis.
+                        </p>
+
                         <div class="flex items-center text-[#00ffaa] font-semibold text-sm group-hover:translate-x-1 transition-transform">
                             Open Editor
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+
+                            <svg
+                                class="w-4 h-4 ml-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                ></path>
+                            </svg>
+
                         </div>
+
                     </div>
+
                 </div>
 
-                <div class="platform-card tech glass-panel rounded-2xl p-6 cursor-pointer border border-transparent relative overflow-hidden group" onclick="window.location.href='tech-editor/index.html'">
+                <!-- TECH -->
+                <div
+                    class="platform-card tech glass-panel rounded-2xl p-6 cursor-pointer border border-transparent relative overflow-hidden group"
+                    onclick="window.location.href='/admin/tech-editor/index.html'"
+                >
+
                     <div class="absolute top-0 right-0 w-32 h-32 bg-[#f15e50]/5 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-[#f15e50]/10 transition-all"></div>
+
                     <div class="relative z-10">
+
                         <div class="flex items-start justify-between mb-6">
+
                             <div class="w-14 h-14 bg-gradient-to-br from-[#f15e50] to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-[#f15e50]/20">
-                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+
+                                <svg
+                                    class="w-7 h-7 text-white"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                    ></path>
+                                </svg>
+
                             </div>
-                            <span class="px-3 py-1 bg-[#f15e50]/10 text-[#f15e50] text-xs font-bold rounded-full border border-[#f15e50]/20">TECHNOLOGY</span>
+
+                            <span class="px-3 py-1 bg-[#f15e50]/10 text-[#f15e50] text-xs font-bold rounded-full border border-[#f15e50]/20">
+                                TECHNOLOGY
+                            </span>
+
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2">Dyve Tech</h3>
-                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Publish artificial intelligence news, developer tools, coding resources, and deep-dive analysis.</p>
+
+                        <h3 class="text-xl font-bold text-white mb-2">
+                            Dyve Tech
+                        </h3>
+
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                            Publish artificial intelligence news, developer tools, coding resources, and deep-dive analysis.
+                        </p>
+
                         <div class="flex items-center text-[#f15e50] font-semibold text-sm group-hover:translate-x-1 transition-transform">
                             Open Editor
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+
+                            <svg
+                                class="w-4 h-4 ml-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                ></path>
+                            </svg>
+
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
 
-            <!-- Recent Publications (REAL DATA) -->
+            <!-- Recent Publications -->
             <div class="glass-panel rounded-xl border border-white/5 overflow-hidden">
+
                 <div class="px-4 md:px-6 py-4 border-b border-white/5 flex items-center justify-between">
-                    <h3 class="font-semibold text-white">Recent Publications</h3>
-                    <a href="hackax/published.html" class="text-sm text-[#00ffaa] hover:underline">View All</a>
+
+                    <h3 class="font-semibold text-white">
+                        Recent Publications
+                    </h3>
+
+                    <a
+                        href="/admin/hackax/published.html"
+                        class="text-sm text-[#00ffaa] hover:underline"
+                    >
+                        View All
+                    </a>
+
                 </div>
+
                 <div class="overflow-x-auto">
+
                     <table class="w-full text-left text-sm text-gray-400 min-w-[640px]">
+
                         <thead class="bg-white/5 text-xs uppercase font-medium text-gray-500">
+
                             <tr>
-                                <th class="px-6 py-3">Article Title</th>
-                                <th class="px-6 py-3">Platform</th>
-                                <th class="px-6 py-3">Status</th>
-                                <th class="px-6 py-3">Date</th>
-                                <th class="px-6 py-3 text-right">Action</th>
+                                <th class="px-6 py-3">
+                                    Article Title
+                                </th>
+
+                                <th class="px-6 py-3">
+                                    Platform
+                                </th>
+
+                                <th class="px-6 py-3">
+                                    Status
+                                </th>
+
+                                <th class="px-6 py-3">
+                                    Date
+                                </th>
+
+                                <th class="px-6 py-3 text-right">
+                                    Action
+                                </th>
                             </tr>
+
                         </thead>
-                        <tbody id="recentBody" class="divide-y divide-white/5">
-                            <tr><td colspan="5" class="px-6 py-4"><div class="skeleton h-6 w-full"></div></td></tr>
-                            <tr><td colspan="5" class="px-6 py-4"><div class="skeleton h-6 w-full"></div></td></tr>
-                            <tr><td colspan="5" class="px-6 py-4"><div class="skeleton h-6 w-full"></div></td></tr>
+
+                        <tbody
+                            id="recentBody"
+                            class="divide-y divide-white/5"
+                        >
+
+                            <tr>
+                                <td colspan="5" class="px-6 py-4">
+                                    <div class="skeleton h-6 w-full"></div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="5" class="px-6 py-4">
+                                    <div class="skeleton h-6 w-full"></div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="5" class="px-6 py-4">
+                                    <div class="skeleton h-6 w-full"></div>
+                                </td>
+                            </tr>
+
                         </tbody>
+
                     </table>
+
                 </div>
             </div>
 
@@ -257,94 +763,187 @@
     // ==========================================
     // HELPERS
     // ==========================================
-    function $(id) { return document.getElementById(id); }
+
+    function $(id) {
+        return document.getElementById(id);
+    }
 
     function safeParse(str, fallback) {
         try {
             const v = JSON.parse(str);
             return (v === null || v === undefined) ? fallback : v;
-        } catch (e) { return fallback; }
+        } catch (e) {
+            return fallback;
+        }
     }
 
     function escapeHtml(s) {
         if (s === null || s === undefined) return '';
+
         const div = document.createElement('div');
         div.textContent = String(s);
+
         return div.innerHTML;
     }
 
     function parseDate(d) {
         if (!d) return null;
+
         const t = new Date(d);
+
         return isNaN(t.getTime()) ? null : t;
     }
 
     function formatDate(d) {
         const t = parseDate(d);
+
         if (!t) return d || '—';
-        return t.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+        return t.toLocaleDateString(
+            'en-US',
+            {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            }
+        );
     }
 
     function timeAgo(d) {
         const t = parseDate(d);
+
         if (!t) return '—';
-        const days = Math.floor((Date.now() - t.getTime()) / 86400000);
+
+        const days = Math.floor(
+            (Date.now() - t.getTime()) / 86400000
+        );
+
         if (days <= 0) return 'Today';
         if (days === 1) return '1d ago';
         if (days < 7) return days + 'd ago';
         if (days < 30) return Math.floor(days / 7) + 'w ago';
+
         return formatDate(t);
     }
 
     function isTech(a) {
         if (!a) return false;
-        if (String(a.page || '').toLowerCase() === 'tech') return true;
-        return String(a.url || '').replace(/^\/+/, '').toLowerCase().startsWith('tech/');
+
+        if (
+            String(a.page || '').toLowerCase() === 'tech'
+        ) {
+            return true;
+        }
+
+        return String(a.url || '')
+            .replace(/^\/+/, '')
+            .toLowerCase()
+            .startsWith('tech/');
     }
 
     function cleanUrl(a) {
-        return String((a && a.url) || '#').replace(/^\/+/, '');
+        return String(
+            (a && a.url) || '#'
+        ).replace(/^\/+/, '');
     }
 
     // ==========================================
     // REAL DATA LOADING
     // ==========================================
+
     async function fetchArticles() {
         const sources = [];
 
-        // 1) Local / same-origin copy (works on dyve.online)
-        sources.push('assets/articles.json');
+        // 1) Local / same-origin copy
+        sources.push('/admin/assets/articles.json');
 
-        // 2) Your GitHub repo (raw) — read from saved Settings
+        // 2) GitHub repository from saved Settings
         try {
-            const settings = safeParse(localStorage.getItem('dyve-settings'), {});
-            if (settings && settings.githubRepo) {
-                const branch = settings.githubBranch || 'main';
-                sources.push('https://raw.githubusercontent.com/' + settings.githubRepo + '/' + branch + '/assets/articles.json');
+            const settings = safeParse(
+                localStorage.getItem('dyve-settings'),
+                {}
+            );
+
+            if (
+                settings &&
+                settings.githubRepo
+            ) {
+                const branch =
+                    settings.githubBranch || 'main';
+
+                sources.push(
+                    'https://raw.githubusercontent.com/' +
+                    settings.githubRepo +
+                    '/' +
+                    branch +
+                    '/assets/articles.json'
+                );
             }
-        } catch (e) { /* ignore bad settings */ }
-
-        // 3) Live site as last resort
-        sources.push('https://dyve.online/assets/articles.json');
-
-        for (let i = 0; i < sources.length; i++) {
-            try {
-                const res = await fetch(sources[i], { cache: 'no-store' });
-                if (!res.ok) continue;                    // 404/500 → try next source
-                const json = JSON.parse(await res.text()); // throws if HTML error page
-                if (Array.isArray(json)) return json;
-            } catch (e) { /* try next source */ }
+        } catch (e) {
+            /* ignore bad settings */
         }
-        return null; // truly unreachable (offline + nothing cached)
+
+        // 3) Live site fallback
+        sources.push(
+            'https://dyve.online/assets/articles.json'
+        );
+
+        for (
+            let i = 0;
+            i < sources.length;
+            i++
+        ) {
+            try {
+                const res = await fetch(
+                    sources[i],
+                    {
+                        cache: 'no-store'
+                    }
+                );
+
+                if (!res.ok) continue;
+
+                const json =
+                    JSON.parse(
+                        await res.text()
+                    );
+
+                if (Array.isArray(json)) {
+                    return json;
+                }
+            } catch (e) {
+                /* try next source */
+            }
+        }
+
+        return null;
     }
 
-
     function getDraftCounts() {
-        const tech = safeParse(localStorage.getItem('dyve-tech-drafts'), []);
-        const hack = safeParse(localStorage.getItem('dyve-hackax-drafts'), []);
+        const tech = safeParse(
+            localStorage.getItem(
+                'dyve-tech-drafts'
+            ),
+            []
+        );
+
+        const hack = safeParse(
+            localStorage.getItem(
+                'dyve-hackax-drafts'
+            ),
+            []
+        );
+
         return {
-            tech: Array.isArray(tech) ? tech.length : 0,
-            hack: Array.isArray(hack) ? hack.length : 0
+            tech:
+                Array.isArray(tech)
+                    ? tech.length
+                    : 0,
+
+            hack:
+                Array.isArray(hack)
+                    ? hack.length
+                    : 0
         };
     }
 
@@ -352,207 +951,650 @@
         $('dataBanner').classList.add('hidden');
 
         // Drafts are always local & real
-        const drafts = getDraftCounts();
-        $('statDrafts').textContent = drafts.tech + drafts.hack;
-        $('statDraftsSub').textContent = 'Tech: ' + drafts.tech + ' • HackaX: ' + drafts.hack;
+        const drafts =
+            getDraftCounts();
 
-        const articles = await fetchArticles();
+        $('statDrafts').textContent =
+            drafts.tech + drafts.hack;
+
+        $('statDraftsSub').textContent =
+            'Tech: ' +
+            drafts.tech +
+            ' • HackaX: ' +
+            drafts.hack;
+
+        const articles =
+            await fetchArticles();
 
         if (articles === null) {
+
             $('statTotal').textContent = '—';
             $('statTech').textContent = '—';
             $('statTechSub').textContent = 'HackaX: —';
             $('statLast').textContent = '—';
-            $('statLastSub').textContent = 'Database unreachable';
-            $('recentBody').innerHTML = '<tr><td colspan="5" class="px-6 py-6 text-center text-gray-500">Couldn\'t load the article database. Check your connection or settings.</td></tr>';
+            $('statLastSub').textContent =
+                'Database unreachable';
+
+            $('recentBody').innerHTML =
+                '<tr><td colspan="5" class="px-6 py-6 text-center text-gray-500">Couldn\\'t load the article database. Check your connection or settings.</td></tr>';
+
             $('dataBanner').classList.remove('hidden');
+
             return;
         }
 
-        // ---- Stat 1: total published + real weekly activity
-        const total = articles.length;
-        $('statTotal').textContent = total;
+        // ---- Stat 1
+        const total =
+            articles.length;
 
-        const week = 7 * 86400000;
-        const thisWeek = articles.filter(a => { const t = parseDate(a.date); return t && (Date.now() - t.getTime()) < week; }).length;
-        const badge = $('statTotalBadge');
-        badge.classList.remove('hidden');
-        badge.textContent = '+' + thisWeek + ' this week';
-        if (thisWeek === 0) { badge.className = 'text-xs font-medium text-gray-400 bg-white/5 px-2 py-1 rounded'; }
-        else { badge.className = 'text-xs font-medium text-[#00ffaa] bg-[#00ffaa]/10 px-2 py-1 rounded'; }
+        $('statTotal').textContent =
+            total;
 
-        // ---- Stat 3: platform split
-        const techCount = articles.filter(isTech).length;
-        $('statTech').textContent = techCount;
-        $('statTechSub').textContent = 'HackaX: ' + (total - techCount);
+        const week =
+            7 * 86400000;
 
-        // ---- Stat 4: most recent publish
-        let newest = null;
-        articles.forEach(a => {
-            const t = parseDate(a.date);
-            if (t && (!newest || t > newest.t)) newest = { t: t, a: a };
-        });
-        if (newest) {
-            $('statLast').textContent = timeAgo(newest.t);
-            $('statLastSub').textContent = newest.a.title || 'Untitled';
+        const thisWeek =
+            articles.filter(
+                a => {
+                    const t =
+                        parseDate(a.date);
+
+                    return (
+                        t &&
+                        (
+                            Date.now() -
+                            t.getTime()
+                        ) < week
+                    );
+                }
+            ).length;
+
+        const badge =
+            $('statTotalBadge');
+
+        badge.classList.remove(
+            'hidden'
+        );
+
+        badge.textContent =
+            '+' +
+            thisWeek +
+            ' this week';
+
+        if (thisWeek === 0) {
+
+            badge.className =
+                'text-xs font-medium text-gray-400 bg-white/5 px-2 py-1 rounded';
+
         } else {
-            $('statLast').textContent = '—';
-            $('statLastSub').textContent = 'No publications yet';
+
+            badge.className =
+                'text-xs font-medium text-[#00ffaa] bg-[#00ffaa]/10 px-2 py-1 rounded';
         }
 
-        // ---- Recent publications table (top 6 by date)
-        const sorted = articles.slice().sort((a, b) => {
-            const ta = parseDate(a.date) ? parseDate(a.date).getTime() : 0;
-            const tb = parseDate(b.date) ? parseDate(b.date).getTime() : 0;
-            return tb - ta;
-        }).slice(0, 6);
+        // ---- Stat 3
+        const techCount =
+            articles.filter(
+                isTech
+            ).length;
 
-        if (sorted.length === 0) {
-            $('recentBody').innerHTML = '<tr><td colspan="5" class="px-6 py-6 text-center text-gray-500">No published articles yet. Create your first one above.</td></tr>';
+        $('statTech').textContent =
+            techCount;
+
+        $('statTechSub').textContent =
+            'HackaX: ' +
+            (total - techCount);
+
+        // ---- Stat 4
+        let newest = null;
+
+        articles.forEach(
+            a => {
+
+                const t =
+                    parseDate(a.date);
+
+                if (
+                    t &&
+                    (
+                        !newest ||
+                        t > newest.t
+                    )
+                ) {
+                    newest = {
+                        t: t,
+                        a: a
+                    };
+                }
+            }
+        );
+
+        if (newest) {
+
+            $('statLast').textContent =
+                timeAgo(newest.t);
+
+            $('statLastSub').textContent =
+                newest.a.title ||
+                'Untitled';
+
+        } else {
+
+            $('statLast').textContent =
+                '—';
+
+            $('statLastSub').textContent =
+                'No publications yet';
+        }
+
+        // ---- Recent publications
+        const sorted =
+            articles
+                .slice()
+                .sort(
+                    (a, b) => {
+
+                        const ta =
+                            parseDate(a.date)
+                                ? parseDate(a.date).getTime()
+                                : 0;
+
+                        const tb =
+                            parseDate(b.date)
+                                ? parseDate(b.date).getTime()
+                                : 0;
+
+                        return tb - ta;
+                    }
+                )
+                .slice(0, 6);
+
+        if (
+            sorted.length === 0
+        ) {
+
+            $('recentBody').innerHTML =
+                '<tr><td colspan="5" class="px-6 py-6 text-center text-gray-500">No published articles yet. Create your first one above.</td></tr>';
+
             return;
         }
 
-        $('recentBody').innerHTML = sorted.map(a => {
-            const tech = isTech(a);
-            const platformBadge = tech
-                ? '<span class="px-2 py-1 bg-[#f15e50]/10 text-[#f15e50] text-xs rounded border border-[#f15e50]/20">Tech</span>'
-                : '<span class="px-2 py-1 bg-[#00ffaa]/10 text-[#00ffaa] text-xs rounded border border-[#00ffaa]/20">HackaX</span>';
+        $('recentBody').innerHTML =
+            sorted.map(
+                a => {
 
-            const editBtn = tech
-                ? '<button data-edit-url="' + escapeHtml(cleanUrl(a)) + '" class="edit-btn text-gray-400 hover:text-white transition-colors p-1" title="Edit in Tech Editor"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>'
-                : '';
+                    const tech =
+                        isTech(a);
 
-            return '<tr class="hover:bg-white/5 transition-colors">' +
-                '<td class="px-6 py-4 font-medium text-white max-w-[280px] truncate">' + escapeHtml(a.title || 'Untitled') + '</td>' +
-                '<td class="px-6 py-4">' + platformBadge + '</td>' +
-                '<td class="px-6 py-4"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> Published</span></td>' +
-                '<td class="px-6 py-4 whitespace-nowrap">' + formatDate(a.date) + '</td>' +
-                '<td class="px-6 py-4"><div class="flex items-center justify-end gap-2">' +
-                    editBtn +
-                    '<a href="' + escapeHtml(cleanUrl(a)) + '" class="text-gray-400 hover:text-[#00ffaa] transition-colors p-1" title="View live" target="_blank" rel="noopener"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a>' +
-                '</div></td></tr>';
-        }).join('');
+                    const platformBadge =
+                        tech
+                            ? '<span class="px-2 py-1 bg-[#f15e50]/10 text-[#f15e50] text-xs rounded border border-[#f15e50]/20">Tech</span>'
+                            : '<span class="px-2 py-1 bg-[#00ffaa]/10 text-[#00ffaa] text-xs rounded border border-[#00ffaa]/20">HackaX</span>';
 
-        // Wire edit buttons -> hand article to the Tech editor's edit mode
-        document.querySelectorAll('.edit-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const url = btn.getAttribute('data-edit-url');
-                const index = articles.findIndex(x => cleanUrl(x) === url);
-                if (index === -1) return;
-                const a = articles[index];
-                const slug = url.split('/').pop().replace(/\.html$/i, '');
-                localStorage.setItem('dyve-edit-article', JSON.stringify({
-                    index: index,
-                    slug: slug,
-                    title: a.title || '',
-                    desc: a.desc || '',
-                    image: a.image || '',
-                    meta: a.meta || a.category || '',
-                    category: a.category || '',
-                    tag: a.tag || '',
-                    delta: a.delta || null
-                }));
-                window.location.href = 'tech-editor/index.html?mode=edit';
-            });
-        });
+                    const editBtn =
+                        tech
+                            ? '<button data-edit-url="' +
+                              escapeHtml(
+                                  cleanUrl(a)
+                              ) +
+                              '" class="edit-btn text-gray-400 hover:text-white transition-colors p-1" title="Edit in Tech Editor"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>'
+                            : '';
+
+                    return (
+                        '<tr class="hover:bg-white/5 transition-colors">' +
+
+                        '<td class="px-6 py-4 font-medium text-white max-w-[280px] truncate">' +
+                        escapeHtml(
+                            a.title ||
+                            'Untitled'
+                        ) +
+                        '</td>' +
+
+                        '<td class="px-6 py-4">' +
+                        platformBadge +
+                        '</td>' +
+
+                        '<td class="px-6 py-4"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> Published</span></td>' +
+
+                        '<td class="px-6 py-4 whitespace-nowrap">' +
+                        formatDate(a.date) +
+                        '</td>' +
+
+                        '<td class="px-6 py-4"><div class="flex items-center justify-end gap-2">' +
+
+                        editBtn +
+
+                        '<a href="' +
+                        escapeHtml(
+                            cleanUrl(a)
+                        ) +
+                        '" class="text-gray-400 hover:text-[#00ffaa] transition-colors p-1" title="View live" target="_blank" rel="noopener"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a>' +
+
+                        '</div></td></tr>'
+                    );
+                }
+            ).join('');
+
+        // Wire edit buttons
+        document
+            .querySelectorAll('.edit-btn')
+            .forEach(
+                btn => {
+
+                    btn.addEventListener(
+                        'click',
+                        () => {
+
+                            const url =
+                                btn.getAttribute(
+                                    'data-edit-url'
+                                );
+
+                            const index =
+                                articles.findIndex(
+                                    x =>
+                                        cleanUrl(x) ===
+                                        url
+                                );
+
+                            if (
+                                index === -1
+                            ) {
+                                return;
+                            }
+
+                            const a =
+                                articles[index];
+
+                            const slug =
+                                url
+                                    .split('/')
+                                    .pop()
+                                    .replace(
+                                        /\.html$/i,
+                                        ''
+                                    );
+
+                            localStorage.setItem(
+                                'dyve-edit-article',
+                                JSON.stringify({
+                                    index:
+                                        index,
+
+                                    slug:
+                                        slug,
+
+                                    title:
+                                        a.title ||
+                                        '',
+
+                                    desc:
+                                        a.desc ||
+                                        '',
+
+                                    image:
+                                        a.image ||
+                                        '',
+
+                                    meta:
+                                        a.meta ||
+                                        a.category ||
+                                        '',
+
+                                    category:
+                                        a.category ||
+                                        '',
+
+                                    tag:
+                                        a.tag ||
+                                        '',
+
+                                    delta:
+                                        a.delta ||
+                                        null
+                                })
+                            );
+
+                            window.location.href =
+                                '/admin/tech-editor/index.html?mode=edit';
+                        }
+                    );
+                }
+            );
     }
 
     // ==========================================
     // MOBILE DRAWER + MISC
     // ==========================================
-    document.addEventListener('DOMContentLoaded', () => {
-        const mobileMenuBtn = $('mobileMenuBtn');
-        const closeSidebarBtn = $('closeSidebarBtn');
-        const sidebar = $('sidebar');
 
-        let overlay = $('mobileOverlay');
-        if (!overlay) {
-            overlay = document.createElement('div');
-            overlay.id = 'mobileOverlay';
-            overlay.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden md:hidden transition-opacity duration-300 opacity-0';
-            document.body.appendChild(overlay);
+    document.addEventListener(
+        'DOMContentLoaded',
+        () => {
+
+            const mobileMenuBtn =
+                $('mobileMenuBtn');
+
+            const closeSidebarBtn =
+                $('closeSidebarBtn');
+
+            const sidebar =
+                $('sidebar');
+
+            let overlay =
+                $('mobileOverlay');
+
+            if (!overlay) {
+
+                overlay =
+                    document.createElement(
+                        'div'
+                    );
+
+                overlay.id =
+                    'mobileOverlay';
+
+                overlay.className =
+                    'fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden md:hidden transition-opacity duration-300 opacity-0';
+
+                document.body.appendChild(
+                    overlay
+                );
+            }
+
+            function openMenu() {
+
+                sidebar.classList.remove(
+                    '-translate-x-full'
+                );
+
+                sidebar.classList.add(
+                    'translate-x-0'
+                );
+
+                overlay.classList.remove(
+                    'hidden'
+                );
+
+                setTimeout(
+                    () =>
+                        overlay.classList.remove(
+                            'opacity-0'
+                        ),
+                    10
+                );
+
+                document.body.style.overflow =
+                    'hidden';
+            }
+
+            function closeMenu() {
+
+                sidebar.classList.remove(
+                    'translate-x-0'
+                );
+
+                sidebar.classList.add(
+                    '-translate-x-full'
+                );
+
+                overlay.classList.add(
+                    'opacity-0'
+                );
+
+                document.body.style.overflow =
+                    '';
+
+                setTimeout(
+                    () =>
+                        overlay.classList.add(
+                            'hidden'
+                        ),
+                    300
+                );
+            }
+
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener(
+                    'click',
+                    openMenu
+                );
+            }
+
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener(
+                    'click',
+                    closeMenu
+                );
+            }
+
+            if (overlay) {
+                overlay.addEventListener(
+                    'click',
+                    closeMenu
+                );
+            }
+
+            document
+                .querySelectorAll('.nav-item')
+                .forEach(
+                    link => {
+
+                        link.addEventListener(
+                            'click',
+                            function (e) {
+
+                                if (
+                                    this.getAttribute(
+                                        'href'
+                                    ) === '#'
+                                ) {
+                                    e.preventDefault();
+                                }
+
+                                if (
+                                    window.innerWidth <
+                                    768
+                                ) {
+                                    closeMenu();
+                                }
+                            }
+                        );
+                    }
+                );
+
+            window.addEventListener(
+                'resize',
+                () => {
+
+                    if (
+                        window.innerWidth >=
+                        768
+                    ) {
+
+                        overlay.classList.add(
+                            'hidden',
+                            'opacity-0'
+                        );
+
+                        document.body.style.overflow =
+                            '';
+                    }
+                }
+            );
+
+            // Live clock
+            function tick() {
+
+                const el =
+                    $('liveClock');
+
+                if (el) {
+
+                    const now =
+                        new Date();
+
+                    el.textContent =
+                        now.toLocaleDateString(
+                            'en-US',
+                            {
+                                weekday:
+                                    'short',
+                                month:
+                                    'short',
+                                day:
+                                    'numeric'
+                            }
+                        ) +
+                        ' • ' +
+                        now.toLocaleTimeString(
+                            'en-US',
+                            {
+                                hour:
+                                    '2-digit',
+                                minute:
+                                    '2-digit'
+                            }
+                        );
+                }
+            }
+
+            tick();
+
+            setInterval(
+                tick,
+                30000
+            );
+
+            // Time-based greeting
+            const h =
+                new Date().getHours();
+
+            const greet =
+                h < 12
+                    ? 'Good morning'
+                    : h < 17
+                        ? 'Good afternoon'
+                        : 'Good evening';
+
+            $('welcomeTitle').textContent =
+                greet +
+                ', Admin';
+
+            initData();
+        }
+    );
+    </script>
+
+    <!-- =====================================================
+         DYVE ADMIN SERVICE WORKER REGISTRATION
+         Canonical worker:
+         /admin/sw.js
+
+         Explicit scope:
+         /admin/
+
+         This prevents relative-path ambiguity and ensures
+         the worker controls the entire admin application.
+    ====================================================== -->
+    <script>
+    (function () {
+        'use strict';
+
+        if (!('serviceWorker' in navigator)) {
+            return;
         }
 
-        function openMenu() {
-            sidebar.classList.remove('-translate-x-full');
-            sidebar.classList.add('translate-x-0');
-            overlay.classList.remove('hidden');
-            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
-            document.body.style.overflow = 'hidden';
-        }
-        function closeMenu() {
-            sidebar.classList.remove('translate-x-0');
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('opacity-0');
-            document.body.style.overflow = '';
-            setTimeout(() => overlay.classList.add('hidden'), 300);
-        }
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register(
+                '/admin/sw.js',
+                {
+                    scope: '/admin/',
+                    updateViaCache: 'none'
+                }
+            )
+            .then(function (registration) {
 
-        if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMenu);
-        if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', closeMenu);
-        if (overlay) overlay.addEventListener('click', closeMenu);
+                console.log(
+                    '[Dyve Admin] Service Worker registered:',
+                    registration.scope
+                );
 
-        document.querySelectorAll('.nav-item').forEach(link => {
-            link.addEventListener('click', function (e) {
-                if (this.getAttribute('href') === '#') e.preventDefault();
-                if (window.innerWidth < 768) closeMenu();
+                /*
+                 * Ask the browser to check for a newer
+                 * service worker immediately.
+                 */
+                registration.update().catch(function () {});
+
+                /*
+                 * If a new worker is waiting, allow the
+                 * application to activate it immediately.
+                 */
+                if (registration.waiting) {
+                    registration.waiting.postMessage({
+                        type: 'SKIP_WAITING'
+                    });
+                }
+
+                registration.addEventListener(
+                    'updatefound',
+                    function () {
+
+                        var newWorker =
+                            registration.installing;
+
+                        if (!newWorker) {
+                            return;
+                        }
+
+                        newWorker.addEventListener(
+                            'statechange',
+                            function () {
+
+                                if (
+                                    newWorker.state ===
+                                    'installed' &&
+                                    navigator.serviceWorker.controller
+                                ) {
+                                    newWorker.postMessage({
+                                        type:
+                                            'SKIP_WAITING'
+                                    });
+                                }
+                            }
+                        );
+                    }
+                );
+            })
+            .catch(function (error) {
+                console.error(
+                    '[Dyve Admin] Service Worker registration failed:',
+                    error
+                );
             });
         });
 
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 768) {
-                overlay.classList.add('hidden', 'opacity-0');
-                document.body.style.overflow = '';
+        /*
+         * Reload once when a new service worker takes
+         * control so the dashboard immediately uses the
+         * new application shell/assets.
+         */
+        var refreshing = false;
+
+        navigator.serviceWorker.addEventListener(
+            'controllerchange',
+            function () {
+
+                if (refreshing) {
+                    return;
+                }
+
+                refreshing = true;
+
+                window.location.reload();
             }
-        });
-
-        // Live clock in header (real time)
-        function tick() {
-            const el = $('liveClock');
-            if (el) el.textContent = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) + ' • ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        }
-        tick();
-        setInterval(tick, 30000);
-
-        // Time-based greeting (real)
-        const h = new Date().getHours();
-        const greet = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
-        $('welcomeTitle').textContent = greet + ', Admin';
-
-        initData();
-    });
+        );
+    })();
     </script>
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", async () => {
-    try {
-      const registration = await navigator.serviceWorker.register(
-        "/admin/sw.js",
-        {
-          scope: "/admin/"
-        }
-      );
-
-      console.log(
-        "[Dyve Admin] Service Worker registered:",
-        registration.scope
-      );
-
-      if (registration.waiting) {
-        registration.waiting.postMessage({
-          type: "SKIP_WAITING"
-        });
-      }
-    } catch (error) {
-      console.error(
-        "[Dyve Admin] Service Worker registration failed:",
-        error
-      );
-    }
-  });
-}
-</script>
-
 
 </body>
 </html>
