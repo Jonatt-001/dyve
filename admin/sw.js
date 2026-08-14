@@ -58,28 +58,25 @@ const CORE_ASSETS = [
 const ROUTE_SHELLS = [
   {
     test: (url) =>
-      url.pathname === '/' ||
-      url.pathname.endsWith('/index.html') &&
-      !url.pathname.includes('/hackax/') &&
-      !url.pathname.includes('/tech-editor/'),
+      url.pathname === '/admin/' ||
+      url.pathname === '/admin/index.html',
     shell: './index.html'
   },
 
   {
     test: (url) =>
-      url.pathname === '/hackax/' ||
-      url.pathname.includes('/hackax/index.html'),
+      url.pathname === '/admin/hackax/' ||
+      url.pathname === '/admin/hackax/index.html',
     shell: './hackax/index.html'
   },
 
   {
     test: (url) =>
-      url.pathname === '/tech-editor/' ||
-      url.pathname.includes('/tech-editor/index.html'),
+      url.pathname === '/admin/tech-editor/' ||
+      url.pathname === '/admin/tech-editor/index.html',
     shell: './tech-editor/index.html'
   }
 ];
-
 /* =====================================================
    NETWORK-FIRST HOSTS
 ===================================================== */
