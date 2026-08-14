@@ -2,10 +2,21 @@
    DYVE ADMIN — PRODUCTION SERVICE WORKER
    =====================================================
 
-   Coverage:
-   • /                 → Dyve Admin
-   • /hackax/          → HackaX editor
-   • /tech-editor/     → Tech Editor
+   Actual application scope:
+
+   https://www.dyve.online/admin/
+
+   Routes:
+   • /admin/                  → Dyve Admin
+   • /admin/index.html        → Dyve Admin
+   • /admin/hackax/           → HackaX editor
+   • /admin/hackax/index.html → HackaX editor
+   • /admin/tech-editor/      → Tech Editor
+   • /admin/tech-editor/index.html
+                              → Tech Editor
+   • /admin/published.html    → Published content
+   • /admin/drafts.html       → Draft workspace
+   • /admin/settings.html     → Admin settings
 
    Architecture:
    • GitHub API is NEVER intercepted.
@@ -17,7 +28,7 @@
    • Same-origin static assets = stale-while-revalidate.
    • CDN assets = stale-while-revalidate.
    • Runtime cache is automatically bounded.
-   • Old application caches are removed on activation.
+   • Old Dyve Admin caches are removed on activation.
    • Navigation preload is enabled where supported.
 
    IMPORTANT:
@@ -25,12 +36,32 @@
    are deliberately left completely untouched.
 ===================================================== */
 
-const VERSION = '2.0.0';
+const VERSION = '2.1.0';
 
 const CORE_CACHE = `dyve-admin-core-v${VERSION}`;
 const RUNTIME_CACHE = `dyve-admin-runtime-v${VERSION}`;
 
 const MAX_RUNTIME_ENTRIES = 100;
+
+/* =====================================================
+   APPLICATION SCOPE
+===================================================== */
+
+/*
+ * The worker is installed from:
+ *
+ * https://www.dyve.online/admin/sw.js
+ *
+ * Therefore the registration scope is:
+ *
+ * https://www.dyve.online/admin/
+ *
+ * We deliberately derive the scope dynamically instead
+ * of hardcoding "/admin/" so relative routing remains
+ * portable and consistent with the existing application.
+ */
+const ADMIN_SCOPE =
+  new URL('./', self.registration.scope);
 
 /* =====================================================
    APPLICATION SHELL
@@ -42,7 +73,10 @@ const CORE_ASSETS = [
   './manifest.json',
   './sw.js',
   './logo.png',
+
   './published.html',
+  './drafts.html',
+  './settings.html',
 
   './hackax/',
   './hackax/index.html',
@@ -55,28 +89,39 @@ const CORE_ASSETS = [
    ROUTE-AWARE OFFLINE SHELLS
 ===================================================== */
 
+/*
+ * IMPORTANT:
+ *
+ * These paths are deliberately relative.
+ *
+ * Because this worker lives under /admin/:
+ *
+ * ./index.html
+ *     → /admin/index.html
+ *
+ * ./hackax/index.html
+ *     → /admin/hackax/index.html
+ *
+ * ./tech-editor/index.html
+ *     → /admin/tech-editor/index.html
+ */
 const ROUTE_SHELLS = [
   {
-    test: (url) =>
-      url.pathname === '/admin/' ||
-      url.pathname === '/admin/index.html',
+    route: 'admin',
     shell: './index.html'
   },
 
   {
-    test: (url) =>
-      url.pathname === '/admin/hackax/' ||
-      url.pathname === '/admin/hackax/index.html',
+    route: 'hackax',
     shell: './hackax/index.html'
   },
 
   {
-    test: (url) =>
-      url.pathname === '/admin/tech-editor/' ||
-      url.pathname === '/admin/tech-editor/index.html',
+    route: 'tech-editor',
     shell: './tech-editor/index.html'
   }
 ];
+
 /* =====================================================
    NETWORK-FIRST HOSTS
 ===================================================== */
@@ -119,6 +164,7 @@ self.addEventListener('install', (event) => {
       .then(async (cache) => {
         /*
          * Cache assets individually.
+         *
          * One missing/non-critical asset must not prevent
          * the entire service worker from installing.
          */
@@ -171,15 +217,22 @@ async function cleanupOldCaches() {
       .filter((cacheName) => {
         /*
          * Only remove caches belonging to Dyve Admin.
-         * Never touch unrelated application caches.
+         *
+         * Never touch caches belonging to unrelated
+         * applications installed on the same origin.
          */
         const isDyveCache =
           cacheName.startsWith('dyve-admin-core-') ||
           cacheName.startsWith('dyve-admin-runtime-');
 
-        return isDyveCache && !validCaches.has(cacheName);
+        return (
+          isDyveCache &&
+          !validCaches.has(cacheName)
+        );
       })
-      .map((cacheName) => caches.delete(cacheName))
+      .map((cacheName) =>
+        caches.delete(cacheName)
+      )
   );
 }
 
@@ -210,7 +263,9 @@ async function enableNavigationPreload() {
 self.addEventListener('message', (event) => {
   const data = event.data;
 
-  if (!data) return;
+  if (!data) {
+    return;
+  }
 
   /*
    * Force the waiting service worker to activate.
@@ -225,6 +280,7 @@ self.addEventListener('message', (event) => {
 
   /*
    * Delete runtime content only.
+   *
    * Core application assets remain intact.
    */
   if (
@@ -238,7 +294,8 @@ self.addEventListener('message', (event) => {
   }
 
   /*
-   * Full application cache reset.
+   * Full Dyve Admin cache reset.
+   *
    * Useful from Settings / maintenance controls.
    */
   if (
@@ -281,7 +338,11 @@ self.addEventListener('fetch', (event) => {
    * Only GET requests are eligible.
    *
    * This is critical:
-   * publishing operations must never be intercepted.
+   *
+   * PUT / POST / PATCH / DELETE requests are never
+   * intercepted by this service worker.
+   *
+   * Publishing therefore continues directly to GitHub.
    */
   if (req.method !== 'GET') {
     return;
@@ -293,8 +354,18 @@ self.addEventListener('fetch', (event) => {
      1. GITHUB API — NEVER INTERCEPT
   =================================================== */
 
+  if (url.hostname === 'api.github.com') {
+    return;
+  }
+
+  /*
+   * Keep GitHub API/publishing completely outside the
+   * service-worker request pipeline.
+   *
+   * This additional guard protects against unusual
+   * GitHub-hosted API-style paths.
+   */
   if (
-    url.hostname === 'api.github.com' ||
     url.hostname.endsWith('.githubusercontent.com') &&
     url.pathname.includes('/api/')
   ) {
@@ -306,9 +377,24 @@ self.addEventListener('fetch', (event) => {
   =================================================== */
 
   if (req.mode === 'navigate') {
+    /*
+     * Only handle same-origin Admin navigation.
+     *
+     * This prevents the Admin worker from becoming
+     * responsible for unrelated external destinations.
+     */
+    if (url.origin !== ADMIN_SCOPE.origin) {
+      return;
+    }
+
+    if (!isWithinAdminScope(url)) {
+      return;
+    }
+
     event.respondWith(
       navigationHandler(event, req)
     );
+
     return;
   }
 
@@ -316,12 +402,11 @@ self.addEventListener('fetch', (event) => {
      3. ARTICLES DATABASE
   =================================================== */
 
-  if (
-    isArticlesRequest(url)
-  ) {
+  if (isArticlesRequest(url)) {
     event.respondWith(
       networkFirst(req)
     );
+
     return;
   }
 
@@ -330,11 +415,14 @@ self.addEventListener('fetch', (event) => {
   =================================================== */
 
   if (
-    NETWORK_FIRST_HOSTS.includes(url.hostname)
+    NETWORK_FIRST_HOSTS.includes(
+      url.hostname
+    )
   ) {
     event.respondWith(
       networkFirst(req)
     );
+
     return;
   }
 
@@ -343,12 +431,17 @@ self.addEventListener('fetch', (event) => {
   =================================================== */
 
   if (
-    CACHEABLE_DESTINATIONS.includes(req.destination) ||
-    CDN_HOSTS.includes(url.hostname)
+    CACHEABLE_DESTINATIONS.includes(
+      req.destination
+    ) ||
+    CDN_HOSTS.includes(
+      url.hostname
+    )
   ) {
     event.respondWith(
       staleWhileRevalidate(req)
     );
+
     return;
   }
 
@@ -358,15 +451,166 @@ self.addEventListener('fetch', (event) => {
 });
 
 /* =====================================================
+   ADMIN SCOPE CHECK
+===================================================== */
+
+function isWithinAdminScope(url) {
+  const scopePath =
+    normalizePath(
+      ADMIN_SCOPE.pathname
+    );
+
+  const requestPath =
+    normalizePath(
+      url.pathname
+    );
+
+  if (scopePath === '/') {
+    return true;
+  }
+
+  return (
+    requestPath === scopePath ||
+    requestPath.startsWith(
+      scopePath + '/'
+    )
+  );
+}
+
+/* =====================================================
+   PATH NORMALIZATION
+===================================================== */
+
+function normalizePath(pathname) {
+  if (!pathname) {
+    return '/';
+  }
+
+  let normalized =
+    pathname.replace(
+      /\/+/g,
+      '/'
+    );
+
+  if (
+    normalized.length > 1 &&
+    normalized.endsWith('/')
+  ) {
+    normalized =
+      normalized.slice(
+        0,
+        -1
+      );
+  }
+
+  return normalized;
+}
+
+/* =====================================================
+   ADMIN ROUTE RESOLUTION
+===================================================== */
+
+/*
+ * Converts:
+
+ * /admin/
+ * /admin/index.html
+
+ * into:
+ * admin
+
+ *
+ * Converts:
+
+ * /admin/hackax/
+ * /admin/hackax/index.html
+
+ * into:
+ * hackax
+
+ *
+ * Converts:
+
+ * /admin/tech-editor/
+ * /admin/tech-editor/index.html
+
+ * into:
+ * tech-editor
+ */
+function getAdminRoute(url) {
+  if (
+    url.origin !== ADMIN_SCOPE.origin
+  ) {
+    return null;
+  }
+
+  const scopePath =
+    normalizePath(
+      ADMIN_SCOPE.pathname
+    );
+
+  const requestPath =
+    normalizePath(
+      url.pathname
+    );
+
+  if (
+    requestPath !== scopePath &&
+    !requestPath.startsWith(
+      scopePath + '/'
+    )
+  ) {
+    return null;
+  }
+
+  let relativePath =
+    requestPath.slice(
+      scopePath.length
+    );
+
+  relativePath =
+    relativePath.replace(
+      /^\/+/,
+      ''
+    );
+
+  if (
+    relativePath === '' ||
+    relativePath === 'index.html'
+  ) {
+    return 'admin';
+  }
+
+  if (
+    relativePath === 'hackax' ||
+    relativePath === 'hackax/index.html'
+  ) {
+    return 'hackax';
+  }
+
+  if (
+    relativePath === 'tech-editor' ||
+    relativePath === 'tech-editor/index.html'
+  ) {
+    return 'tech-editor';
+  }
+
+  return null;
+}
+
+/* =====================================================
    ARTICLES REQUEST DETECTION
 ===================================================== */
 
 function isArticlesRequest(url) {
-  const pathname = url.pathname.toLowerCase();
+  const pathname =
+    url.pathname.toLowerCase();
 
   return (
-    pathname.endsWith('/articles.json') ||
-    pathname.endsWith('articles.json')
+    pathname.endsWith(
+      '/articles.json'
+    ) ||
+    pathname === 'articles.json'
   );
 }
 
@@ -374,7 +618,10 @@ function isArticlesRequest(url) {
    NAVIGATION HANDLER
 ===================================================== */
 
-async function navigationHandler(event, req) {
+async function navigationHandler(
+  event,
+  req
+) {
   /*
    * Navigation preload can provide the network response
    * before the service worker finishes bootstrapping.
@@ -403,11 +650,13 @@ async function navigationHandler(event, req) {
     );
   }
 
-  /*
-   * Standard network-first navigation.
-   */
+  /* ===================================================
+     NETWORK-FIRST NAVIGATION
+  =================================================== */
+
   try {
-    const fresh = await fetch(req);
+    const fresh =
+      await fetch(req);
 
     if (
       fresh &&
@@ -428,45 +677,49 @@ async function navigationHandler(event, req) {
       '[Dyve SW] Navigation network failed:',
       req.url
     );
-
-    /*
-     * First attempt exact navigation cache.
-     */
-    const exactCached =
-      await caches.match(req);
-
-    if (exactCached) {
-      return exactCached;
-    }
-
-    /*
-     * Then attempt search-cache matching.
-     */
-    const ignoredSearch =
-      await caches.match(
-        req,
-        { ignoreSearch: true }
-      );
-
-    if (ignoredSearch) {
-      return ignoredSearch;
-    }
-
-    /*
-     * Finally use the correct application shell
-     * for the current route.
-     */
-    const shell =
-      await getOfflineShell(
-        new URL(req.url)
-      );
-
-    if (shell) {
-      return shell;
-    }
-
-    return offlineResponse();
   }
+
+  /* ===================================================
+     EXACT CACHE
+  =================================================== */
+
+  const exactCached =
+    await caches.match(req);
+
+  if (exactCached) {
+    return exactCached;
+  }
+
+  /* ===================================================
+     CACHE WITHOUT QUERY STRING
+  =================================================== */
+
+  const ignoredSearch =
+    await caches.match(
+      req,
+      {
+        ignoreSearch: true
+      }
+    );
+
+  if (ignoredSearch) {
+    return ignoredSearch;
+  }
+
+  /* ===================================================
+     ROUTE-AWARE APPLICATION SHELL
+  =================================================== */
+
+  const shell =
+    await getOfflineShell(
+      new URL(req.url)
+    );
+
+  if (shell) {
+    return shell;
+  }
+
+  return offlineResponse();
 }
 
 /* =====================================================
@@ -477,9 +730,27 @@ async function cacheNavigationResponse(
   req,
   response
 ) {
+  /*
+   * Only cache valid responses.
+   *
+   * Never poison the navigation cache with a 404,
+   * 500 or other failed response.
+   */
+  if (
+    !response ||
+    (
+      !response.ok &&
+      response.type !== 'opaque'
+    )
+  ) {
+    return;
+  }
+
   try {
     const cache =
-      await caches.open(CORE_CACHE);
+      await caches.open(
+        CORE_CACHE
+      );
 
     await cache.put(
       req,
@@ -498,33 +769,47 @@ async function cacheNavigationResponse(
 ===================================================== */
 
 async function getOfflineShell(url) {
-  const route =
-    ROUTE_SHELLS.find(
-      (item) => item.test(url)
-    );
+  const routeName =
+    getAdminRoute(url);
 
-  if (!route) {
-    /*
-     * Unknown route:
-     * use the main admin shell.
-     */
-    return caches.match(
+  /*
+   * Known Admin route.
+   */
+  if (routeName) {
+    const route =
+      ROUTE_SHELLS.find(
+        (item) =>
+          item.route === routeName
+      );
+
+    if (route) {
+      const cached =
+        await caches.match(
+          route.shell
+        );
+
+      if (cached) {
+        return cached;
+      }
+    }
+  }
+
+  /*
+   * Unknown Admin route:
+   *
+   * Preserve the existing architecture and use the
+   * Admin application shell as the final fallback.
+   */
+  const adminShell =
+    await caches.match(
       './index.html'
     );
+
+  if (adminShell) {
+    return adminShell;
   }
 
-  const cached =
-    await caches.match(
-      route.shell
-    );
-
-  if (cached) {
-    return cached;
-  }
-
-  return caches.match(
-    './index.html'
-  );
+  return null;
 }
 
 /* =====================================================
@@ -564,7 +849,9 @@ async function networkFirst(req) {
     const cached =
       await caches.match(
         req,
-        { ignoreSearch: true }
+        {
+          ignoreSearch: true
+        }
       );
 
     if (cached) {
@@ -599,7 +886,8 @@ async function staleWhileRevalidate(req) {
     new URL(req.url);
 
   const isSameOrigin =
-    url.origin === self.location.origin;
+    url.origin ===
+    self.location.origin;
 
   const cacheName =
     isSameOrigin
@@ -614,6 +902,9 @@ async function staleWhileRevalidate(req) {
   const cached =
     await cache.match(req);
 
+  /*
+   * Background refresh.
+   */
   const update =
     fetch(req)
       .then(async (fresh) => {
@@ -659,7 +950,7 @@ async function staleWhileRevalidate(req) {
   }
 
   /*
-   * No cache:
+   * Nothing cached:
    * wait for the network.
    */
   const fresh =
@@ -673,7 +964,11 @@ async function staleWhileRevalidate(req) {
     '',
     {
       status: 503,
-      statusText: 'Offline'
+      statusText: 'Offline',
+      headers: {
+        'Cache-Control':
+          'no-store'
+      }
     }
   );
 }
@@ -690,7 +985,9 @@ async function trimCache(
     const keys =
       await cache.keys();
 
-    if (keys.length <= max) {
+    if (
+      keys.length <= max
+    ) {
       return;
     }
 
@@ -706,7 +1003,9 @@ async function trimCache(
     await Promise.all(
       removals.map(
         (request) =>
-          cache.delete(request)
+          cache.delete(
+            request
+          )
       )
     );
   } catch (error) {
@@ -731,15 +1030,24 @@ function offlineResponse() {
       <html lang="en">
         <head>
           <meta charset="utf-8">
+
           <meta
             name="viewport"
             content="width=device-width,initial-scale=1"
           >
+
           <meta
             name="theme-color"
             content="#020403"
           >
+
+          <meta
+            name="robots"
+            content="noindex,nofollow"
+          >
+
           <title>Dyve Admin — Offline</title>
+
           <style>
             * {
               box-sizing: border-box;
@@ -770,51 +1078,74 @@ function offlineResponse() {
               width: 100%;
               max-width: 420px;
               padding: 28px;
-              border: 1px solid rgba(255,255,255,.08);
+
+              border: 1px solid
+                rgba(255,255,255,.08);
+
               border-radius: 20px;
+
               background:
                 linear-gradient(
                   145deg,
                   rgba(20,35,31,.95),
                   rgba(3,7,6,.98)
                 );
+
               box-shadow:
-                0 24px 70px rgba(0,0,0,.55);
+                0 24px 70px
+                rgba(0,0,0,.55);
             }
 
             .eyebrow {
               margin-bottom: 12px;
+
               color: #c6a85a;
+
               font-size: 11px;
               font-weight: 700;
+
               letter-spacing: 2px;
+
               text-transform: uppercase;
             }
 
             h1 {
               margin: 0;
+
               font-size: 28px;
               line-height: 1.15;
             }
 
             p {
               margin: 14px 0 0;
+
               color: #9aa8a4;
+
               font-size: 15px;
               line-height: 1.6;
             }
 
             button {
               width: 100%;
+
               margin-top: 22px;
+
               padding: 13px 16px;
+
               border: 0;
               border-radius: 10px;
+
               background: #e8f0ee;
               color: #020403;
+
               font: inherit;
               font-weight: 700;
+
               cursor: pointer;
+            }
+
+            button:active {
+              transform: scale(.98);
             }
           </style>
         </head>
@@ -830,9 +1161,10 @@ function offlineResponse() {
             </h1>
 
             <p>
-              This workspace could not load the requested
-              page from the local application cache.
-              Reconnect and try again.
+              This workspace could not load the
+              requested page from the local
+              application cache. Reconnect and
+              try again.
             </p>
 
             <button
@@ -847,9 +1179,11 @@ function offlineResponse() {
     `,
     {
       status: 503,
+
       headers: {
         'Content-Type':
           'text/html; charset=utf-8',
+
         'Cache-Control':
           'no-store'
       }
