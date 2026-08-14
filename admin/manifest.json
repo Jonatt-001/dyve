@@ -1,97 +1,56 @@
 {
   "name": "Dyve Intelligence Admin",
   "short_name": "Dyve Admin",
-  "description": "Production publishing workspace for Dyve Tech and HackaX intelligence platforms.",
-
-  "id": "/admin/",
-  "start_url": "/admin/index.html",
-  "scope": "/admin/",
-
+  "description": "Publishing console for Dyve Tech and HackaX intelligence platforms.",
+  "id": "./",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "display_override": [
-    "window-controls-overlay",
-    "standalone",
-    "minimal-ui"
-  ],
-
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait-primary",
-
   "background_color": "#020403",
   "theme_color": "#020403",
-
   "lang": "en",
   "dir": "ltr",
-
-  "categories": [
-    "news",
-    "productivity",
-    "developer tools"
-  ],
-
+  "categories": ["news", "productivity", "developer tools"],
   "prefer_related_applications": false,
-
   "icons": [
     {
-      "src": "/admin/logo.png",
+      "src": "logo.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/admin/logo.png",
+      "src": "logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/admin/logo.png",
+      "src": "logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     }
   ],
-
   "shortcuts": [
     {
       "name": "New Tech Article",
       "short_name": "Tech Editor",
-      "description": "Open the Dyve Tech publishing editor.",
-      "url": "/admin/tech-editor/index.html",
-      "icons": [
-        {
-          "src": "/admin/logo.png",
-          "sizes": "192x192",
-          "type": "image/png"
-        }
-      ]
+      "description": "Open the Dyve Tech editor",
+      "url": "./tech-editor/index.html"
     },
-
     {
       "name": "New HackaX Article",
       "short_name": "HackaX Editor",
-      "description": "Open the HackaX intelligence editor.",
-      "url": "/admin/hackax/index.html",
-      "icons": [
-        {
-          "src": "/admin/logo.png",
-          "sizes": "192x192",
-          "type": "image/png"
-        }
-      ]
+      "description": "Open the HackaX editor",
+      "url": "./hackax/index.html"
     },
-
     {
       "name": "Published Articles",
       "short_name": "Published",
-      "description": "Open the published article manager.",
-      "url": "/admin/published.html",
-      "icons": [
-        {
-          "src": "/admin/logo.png",
-          "sizes": "192x192",
-          "type": "image/png"
-        }
-      ]
+      "url": "./published.html"
     }
   ]
 }
