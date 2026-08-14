@@ -2,34 +2,32 @@
    DYVE ADMIN — PRODUCTION SERVICE WORKER
    =====================================================
 
+   SERVICE WORKER LOCATION:
+   https://www.dyve.online/admin/sw.js
+
    APPLICATION ROOT:
    https://www.dyve.online/admin/
 
-   CANONICAL ROUTES:
-   • /admin/
-   • /admin/index.html
-   • /admin/hackax/
-   • /admin/hackax/index.html
-   • /admin/tech-editor/
-   • /admin/tech-editor/index.html
-   • /admin/published.html
-   • /admin/drafts.html
-   • /admin/settings.html
+   ROUTES:
+   • /admin/                    → Admin dashboard
+   • /admin/index.html          → Admin dashboard
+   • /admin/hackax/             → HackaX editor
+   • /admin/hackax/index.html   → HackaX editor
+   • /admin/tech-editor/        → Tech Editor
+   • /admin/tech-editor/index.html → Tech Editor
+   • /admin/published.html      → Published articles
 
    ARCHITECTURE:
-   • Service worker lives at /admin/sw.js.
-   • Service worker scope is /admin/.
    • GitHub API is NEVER intercepted.
    • Non-GET requests are NEVER intercepted.
-   • Publishing requests remain completely untouched.
    • HTML navigation = network-first.
-   • Offline navigation = route-aware shell fallback.
+   • Offline navigation = route-aware fallback.
    • articles.json = network-first.
    • GitHub raw content = network-first.
-   • Same-origin static assets = stale-while-revalidate.
+   • Static assets = stale-while-revalidate.
    • CDN assets = stale-while-revalidate.
-   • Runtime cache is automatically bounded.
-   • Old Dyve Admin caches are removed on activation.
+   • Runtime cache is bounded.
+   • Old Dyve Admin caches are removed.
    • Navigation preload is enabled where supported.
 
    IMPORTANT:
@@ -39,53 +37,30 @@
 
 const VERSION = '3.0.0';
 
+const ADMIN_ROOT = '/admin/';
+
 const CORE_CACHE = `dyve-admin-core-v${VERSION}`;
 const RUNTIME_CACHE = `dyve-admin-runtime-v${VERSION}`;
 
 const MAX_RUNTIME_ENTRIES = 100;
 
 /* =====================================================
-   APPLICATION SCOPE
-===================================================== */
-
-/*
- * This worker is expected to live at:
- *
- * https://www.dyve.online/admin/sw.js
- *
- * Therefore its registration scope should be:
- *
- * https://www.dyve.online/admin/
- *
- * We derive this dynamically so every relative asset
- * remains correctly rooted inside /admin/.
- */
-
-const ADMIN_SCOPE = new URL(
-  './',
-  self.registration.scope
-);
-
-/* =====================================================
    APPLICATION SHELL
 ===================================================== */
 
 const CORE_ASSETS = [
-  './',
-  './index.html',
-  './manifest.json',
-  './sw.js',
-  './logo.png',
+  '/admin/',
+  '/admin/index.html',
+  '/admin/manifest.json',
+  '/admin/sw.js',
+  '/admin/logo.png',
+  '/admin/published.html',
 
-  './published.html',
-  './drafts.html',
-  './settings.html',
+  '/admin/hackax/',
+  '/admin/hackax/index.html',
 
-  './hackax/',
-  './hackax/index.html',
-
-  './tech-editor/',
-  './tech-editor/index.html'
+  '/admin/tech-editor/',
+  '/admin/tech-editor/index.html'
 ];
 
 /* =====================================================
@@ -94,18 +69,52 @@ const CORE_ASSETS = [
 
 const ROUTE_SHELLS = [
   {
-    route: 'admin',
-    shell: './index.html'
+    test: (url) => {
+      const path = normalizePath(url.pathname);
+
+      return (
+        path === '/admin/' ||
+        path === '/admin/index.html'
+      );
+    },
+
+    shell: '/admin/index.html'
   },
 
   {
-    route: 'hackax',
-    shell: './hackax/index.html'
+    test: (url) => {
+      const path = normalizePath(url.pathname);
+
+      return (
+        path === '/admin/hackax/' ||
+        path === '/admin/hackax/index.html'
+      );
+    },
+
+    shell: '/admin/hackax/index.html'
   },
 
   {
-    route: 'tech-editor',
-    shell: './tech-editor/index.html'
+    test: (url) => {
+      const path = normalizePath(url.pathname);
+
+      return (
+        path === '/admin/tech-editor/' ||
+        path === '/admin/tech-editor/index.html'
+      );
+    },
+
+    shell: '/admin/tech-editor/index.html'
+  },
+
+  {
+    test: (url) => {
+      const path = normalizePath(url.pathname);
+
+      return path === '/admin/published.html';
+    },
+
+    shell: '/admin/published.html'
   }
 ];
 
@@ -149,19 +158,30 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CORE_CACHE)
       .then(async (cache) => {
-        /*
-         * Cache each asset independently.
-         *
-         * A single unavailable/non-critical asset must
-         * never prevent the service worker from installing.
-         */
         await Promise.allSettled(
           CORE_ASSETS.map(async (asset) => {
             try {
-              await cache.add(asset);
+              const response = await fetch(
+                new Request(asset, {
+                  cache: 'no-cache'
+                })
+              );
+
+              if (
+                response &&
+                (
+                  response.ok ||
+                  response.type === 'opaque'
+                )
+              ) {
+                await cache.put(
+                  asset,
+                  response
+                );
+              }
             } catch (error) {
               console.warn(
-                '[Dyve SW] Failed to precache:',
+                '[Dyve SW] Precache failed:',
                 asset,
                 error
               );
@@ -202,12 +222,6 @@ async function cleanupOldCaches() {
   await Promise.all(
     cacheNames
       .filter((cacheName) => {
-        /*
-         * Only remove caches belonging to Dyve Admin.
-         *
-         * Never touch unrelated caches belonging to
-         * other applications on the same origin.
-         */
         const isDyveCache =
           cacheName.startsWith('dyve-admin-core-') ||
           cacheName.startsWith('dyve-admin-runtime-');
@@ -217,9 +231,9 @@ async function cleanupOldCaches() {
           !validCaches.has(cacheName)
         );
       })
-      .map((cacheName) =>
-        caches.delete(cacheName)
-      )
+      .map((cacheName) => {
+        return caches.delete(cacheName);
+      })
   );
 }
 
@@ -254,9 +268,6 @@ self.addEventListener('message', (event) => {
     return;
   }
 
-  /*
-   * Force waiting service worker to activate.
-   */
   if (
     data === 'SKIP_WAITING' ||
     data.type === 'SKIP_WAITING'
@@ -265,9 +276,6 @@ self.addEventListener('message', (event) => {
     return;
   }
 
-  /*
-   * Delete runtime cache only.
-   */
   if (
     data === 'CLEAR_RUNTIME_CACHE' ||
     data.type === 'CLEAR_RUNTIME_CACHE'
@@ -275,12 +283,10 @@ self.addEventListener('message', (event) => {
     event.waitUntil(
       caches.delete(RUNTIME_CACHE)
     );
+
     return;
   }
 
-  /*
-   * Delete all Dyve Admin caches.
-   */
   if (
     data === 'CLEAR_ALL_CACHES' ||
     data.type === 'CLEAR_ALL_CACHES'
@@ -300,13 +306,15 @@ async function clearDyveCaches() {
 
   await Promise.all(
     cacheNames
-      .filter((cacheName) =>
-        cacheName.startsWith('dyve-admin-core-') ||
-        cacheName.startsWith('dyve-admin-runtime-')
-      )
-      .map((cacheName) =>
-        caches.delete(cacheName)
-      )
+      .filter((cacheName) => {
+        return (
+          cacheName.startsWith('dyve-admin-core-') ||
+          cacheName.startsWith('dyve-admin-runtime-')
+        );
+      })
+      .map((cacheName) => {
+        return caches.delete(cacheName);
+      })
   );
 }
 
@@ -318,12 +326,9 @@ self.addEventListener('fetch', (event) => {
   const req = event.request;
 
   /*
-   * ONLY GET requests are intercepted.
+   * NEVER intercept non-GET requests.
    *
-   * POST / PUT / PATCH / DELETE remain completely
-   * untouched.
-   *
-   * This is critical for GitHub publishing.
+   * This keeps publishing completely live.
    */
   if (req.method !== 'GET') {
     return;
@@ -332,15 +337,29 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
 
   /* ===================================================
-     1. GITHUB API — NEVER INTERCEPT
+     ONLY CONTROL /admin/
   =================================================== */
 
-  if (url.hostname === 'api.github.com') {
+  if (
+    url.origin === self.location.origin &&
+    !isAdminPath(url.pathname)
+  ) {
+    return;
+  }
+
+  /* ===================================================
+     GITHUB API — NEVER INTERCEPT
+  =================================================== */
+
+  if (
+    url.hostname === 'api.github.com'
+  ) {
     return;
   }
 
   /*
-   * Additional GitHub-hosted API guard.
+   * Never intercept GitHub API-like paths on
+   * githubusercontent.com either.
    */
   if (
     url.hostname.endsWith('.githubusercontent.com') &&
@@ -350,28 +369,10 @@ self.addEventListener('fetch', (event) => {
   }
 
   /* ===================================================
-     2. PAGE NAVIGATION
+     PAGE NAVIGATION
   =================================================== */
 
   if (req.mode === 'navigate') {
-    /*
-     * Only handle same-origin requests.
-     */
-    if (
-      url.origin !== ADMIN_SCOPE.origin
-    ) {
-      return;
-    }
-
-    /*
-     * Only handle requests inside /admin/.
-     */
-    if (
-      !isWithinAdminScope(url)
-    ) {
-      return;
-    }
-
     event.respondWith(
       navigationHandler(event, req)
     );
@@ -380,7 +381,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   /* ===================================================
-     3. ARTICLES DATABASE
+     ARTICLES DATABASE
   =================================================== */
 
   if (
@@ -394,7 +395,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   /* ===================================================
-     4. RAW GITHUB CONTENT
+     RAW GITHUB CONTENT
   =================================================== */
 
   if (
@@ -410,7 +411,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   /* ===================================================
-     5. STATIC / CDN ASSETS
+     STATIC / CDN ASSETS
   =================================================== */
 
   if (
@@ -427,40 +428,7 @@ self.addEventListener('fetch', (event) => {
 
     return;
   }
-
-  /*
-   * Everything else remains browser-controlled.
-   */
 });
-
-/* =====================================================
-   ADMIN SCOPE CHECK
-===================================================== */
-
-function isWithinAdminScope(url) {
-  const scopePath =
-    normalizePath(
-      ADMIN_SCOPE.pathname
-    );
-
-  const requestPath =
-    normalizePath(
-      url.pathname
-    );
-
-  if (
-    scopePath === '/'
-  ) {
-    return true;
-  }
-
-  return (
-    requestPath === scopePath ||
-    requestPath.startsWith(
-      scopePath + '/'
-    )
-  );
-}
 
 /* =====================================================
    PATH NORMALIZATION
@@ -471,107 +439,33 @@ function normalizePath(pathname) {
     return '/';
   }
 
-  let normalized =
-    pathname.replace(
-      /\/+/g,
-      '/'
-    );
+  let path = pathname;
 
+  /*
+   * Remove duplicate trailing slash except root.
+   */
   if (
-    normalized.length > 1 &&
-    normalized.endsWith('/')
+    path.length > 1 &&
+    path.endsWith('/')
   ) {
-    normalized =
-      normalized.slice(
-        0,
-        -1
-      );
+    path = path.slice(0, -1);
   }
 
-  return normalized;
+  return path;
 }
 
 /* =====================================================
-   ADMIN ROUTE RESOLUTION
+   ADMIN PATH CHECK
 ===================================================== */
 
-function getAdminRoute(url) {
-  if (
-    url.origin !==
-    ADMIN_SCOPE.origin
-  ) {
-    return null;
-  }
+function isAdminPath(pathname) {
+  const path =
+    normalizePath(pathname);
 
-  const scopePath =
-    normalizePath(
-      ADMIN_SCOPE.pathname
-    );
-
-  const requestPath =
-    normalizePath(
-      url.pathname
-    );
-
-  /*
-   * Request must live under:
-   *
-   * /admin/
-   */
-  if (
-    requestPath !== scopePath &&
-    !requestPath.startsWith(
-      scopePath + '/'
-    )
-  ) {
-    return null;
-  }
-
-  let relativePath =
-    requestPath.slice(
-      scopePath.length
-    );
-
-  relativePath =
-    relativePath.replace(
-      /^\/+/,
-      ''
-    );
-
-  /* ===================================================
-     ADMIN ROOT
-  =================================================== */
-
-  if (
-    relativePath === '' ||
-    relativePath === 'index.html'
-  ) {
-    return 'admin';
-  }
-
-  /* ===================================================
-     HACKAX
-  =================================================== */
-
-  if (
-    relativePath === 'hackax' ||
-    relativePath === 'hackax/index.html'
-  ) {
-    return 'hackax';
-  }
-
-  /* ===================================================
-     TECH EDITOR
-  =================================================== */
-
-  if (
-    relativePath === 'tech-editor' ||
-    relativePath === 'tech-editor/index.html'
-  ) {
-    return 'tech-editor';
-  }
-
-  return null;
+  return (
+    path === '/admin' ||
+    path.startsWith('/admin/')
+  );
 }
 
 /* =====================================================
@@ -583,10 +477,7 @@ function isArticlesRequest(url) {
     url.pathname.toLowerCase();
 
   return (
-    pathname.endsWith(
-      '/articles.json'
-    ) ||
-    pathname === 'articles.json'
+    pathname.endsWith('/articles.json')
   );
 }
 
@@ -594,10 +485,7 @@ function isArticlesRequest(url) {
    NAVIGATION HANDLER
 ===================================================== */
 
-async function navigationHandler(
-  event,
-  req
-) {
+async function navigationHandler(event, req) {
   /*
    * Navigation preload.
    */
@@ -625,10 +513,9 @@ async function navigationHandler(
     );
   }
 
-  /* ===================================================
-     NETWORK-FIRST NAVIGATION
-  =================================================== */
-
+  /*
+   * Network first.
+   */
   try {
     const fresh =
       await fetch(req);
@@ -654,10 +541,9 @@ async function navigationHandler(
     );
   }
 
-  /* ===================================================
-     EXACT NAVIGATION CACHE
-  =================================================== */
-
+  /*
+   * Exact cache.
+   */
   const exactCached =
     await caches.match(req);
 
@@ -665,10 +551,9 @@ async function navigationHandler(
     return exactCached;
   }
 
-  /* ===================================================
-     CACHE WITHOUT QUERY STRING
-  =================================================== */
-
+  /*
+   * Ignore query parameters.
+   */
   const ignoredSearch =
     await caches.match(
       req,
@@ -681,10 +566,9 @@ async function navigationHandler(
     return ignoredSearch;
   }
 
-  /* ===================================================
-     ROUTE-AWARE OFFLINE SHELL
-  =================================================== */
-
+  /*
+   * Route-aware shell.
+   */
   const shell =
     await getOfflineShell(
       new URL(req.url)
@@ -705,19 +589,6 @@ async function cacheNavigationResponse(
   req,
   response
 ) {
-  /*
-   * Never cache failed HTTP responses.
-   */
-  if (
-    !response ||
-    (
-      !response.ok &&
-      response.type !== 'opaque'
-    )
-  ) {
-    return;
-  }
-
   try {
     const cache =
       await caches.open(
@@ -741,46 +612,32 @@ async function cacheNavigationResponse(
 ===================================================== */
 
 async function getOfflineShell(url) {
-  const routeName =
-    getAdminRoute(url);
-
-  /*
-   * Known Admin route.
-   */
-  if (routeName) {
-    const route =
-      ROUTE_SHELLS.find(
-        (item) =>
-          item.route === routeName
-      );
-
-    if (route) {
-      const cached =
-        await caches.match(
-          route.shell
-        );
-
-      if (cached) {
-        return cached;
-      }
-    }
-  }
-
-  /*
-   * Unknown route inside /admin/.
-   *
-   * Main Admin shell is the final fallback.
-   */
-  const adminShell =
-    await caches.match(
-      './index.html'
+  const route =
+    ROUTE_SHELLS.find(
+      (item) => item.test(url)
     );
 
-  if (adminShell) {
-    return adminShell;
+  if (!route) {
+    /*
+     * Unknown /admin/ route.
+     */
+    return caches.match(
+      '/admin/index.html'
+    );
   }
 
-  return null;
+  const cached =
+    await caches.match(
+      route.shell
+    );
+
+  if (cached) {
+    return cached;
+  }
+
+  return caches.match(
+    '/admin/index.html'
+  );
 }
 
 /* =====================================================
@@ -837,11 +694,9 @@ async function networkFirst(req) {
       }),
       {
         status: 503,
-
         headers: {
           'Content-Type':
             'application/json; charset=utf-8',
-
           'Cache-Control':
             'no-store'
         }
@@ -859,8 +714,7 @@ async function staleWhileRevalidate(req) {
     new URL(req.url);
 
   const isSameOrigin =
-    url.origin ===
-    self.location.origin;
+    url.origin === self.location.origin;
 
   const cacheName =
     isSameOrigin
@@ -875,9 +729,6 @@ async function staleWhileRevalidate(req) {
   const cached =
     await cache.match(req);
 
-  /*
-   * Refresh in the background.
-   */
   const update =
     fetch(req)
       .then(async (fresh) => {
@@ -916,15 +767,14 @@ async function staleWhileRevalidate(req) {
       .catch(() => null);
 
   /*
-   * Cached response wins immediately.
+   * Instant cached response.
    */
   if (cached) {
     return cached;
   }
 
   /*
-   * Nothing cached:
-   * wait for network.
+   * First request.
    */
   const fresh =
     await update;
@@ -937,12 +787,7 @@ async function staleWhileRevalidate(req) {
     '',
     {
       status: 503,
-      statusText: 'Offline',
-
-      headers: {
-        'Cache-Control':
-          'no-store'
-      }
+      statusText: 'Offline'
     }
   );
 }
@@ -977,15 +822,10 @@ async function trimCache(
     await Promise.all(
       removals.map(
         (request) =>
-          cache.delete(
-            request
-          )
+          cache.delete(request)
       )
     );
   } catch (error) {
-    /*
-     * Cache trimming is non-critical.
-     */
     console.warn(
       '[Dyve SW] Cache trimming failed:',
       error
@@ -1000,161 +840,141 @@ async function trimCache(
 function offlineResponse() {
   return new Response(
     `
-      <!doctype html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
 
-      <html lang="en">
-        <head>
-          <meta charset="utf-8">
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  >
 
-          <meta
-            name="viewport"
-            content="width=device-width,initial-scale=1"
-          >
+  <meta
+    name="theme-color"
+    content="#020403"
+  >
 
-          <meta
-            name="theme-color"
-            content="#020403"
-          >
+  <title>Dyve Admin — Offline</title>
 
-          <meta
-            name="robots"
-            content="noindex,nofollow"
-          >
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-          <title>Dyve Admin — Offline</title>
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #020403;
+      color: #e8f0ee;
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
 
-          <style>
-            * {
-              box-sizing: border-box;
-            }
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
 
-            html,
-            body {
-              margin: 0;
-              min-height: 100%;
-              background: #020403;
-              color: #e8f0ee;
-              font-family:
-                Inter,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
-            }
+    main {
+      width: 100%;
+      max-width: 420px;
+      padding: 28px;
 
-            body {
-              min-height: 100vh;
-              display: grid;
-              place-items: center;
-              padding: 24px;
-            }
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px;
 
-            main {
-              width: 100%;
-              max-width: 420px;
-              padding: 28px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(20,35,31,.95),
+          rgba(3,7,6,.98)
+        );
 
-              border: 1px solid
-                rgba(255,255,255,.08);
+      box-shadow:
+        0 24px 70px rgba(0,0,0,.55);
+    }
 
-              border-radius: 20px;
+    .eyebrow {
+      margin-bottom: 12px;
 
-              background:
-                linear-gradient(
-                  145deg,
-                  rgba(20,35,31,.95),
-                  rgba(3,7,6,.98)
-                );
+      color: #c6a85a;
 
-              box-shadow:
-                0 24px 70px
-                rgba(0,0,0,.55);
-            }
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
 
-            .eyebrow {
-              margin-bottom: 12px;
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.15;
+    }
 
-              color: #c6a85a;
+    p {
+      margin: 14px 0 0;
 
-              font-size: 11px;
-              font-weight: 700;
+      color: #9aa8a4;
 
-              letter-spacing: 2px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
 
-              text-transform: uppercase;
-            }
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 13px 16px;
 
-            h1 {
-              margin: 0;
+      border: 0;
+      border-radius: 10px;
 
-              font-size: 28px;
-              line-height: 1.15;
-            }
+      background: #e8f0ee;
+      color: #020403;
 
-            p {
-              margin: 14px 0 0;
+      font: inherit;
+      font-weight: 700;
 
-              color: #9aa8a4;
+      cursor: pointer;
+    }
+  </style>
+</head>
 
-              font-size: 15px;
-              line-height: 1.6;
-            }
+<body>
+  <main>
+    <div class="eyebrow">
+      DYVE ADMIN
+    </div>
 
-            button {
-              width: 100%;
+    <h1>
+      You're offline.
+    </h1>
 
-              margin-top: 22px;
+    <p>
+      This workspace could not load the requested
+      page from the local application cache.
+      Reconnect and try again.
+    </p>
 
-              padding: 13px 16px;
-
-              border: 0;
-              border-radius: 10px;
-
-              background: #e8f0ee;
-              color: #020403;
-
-              font: inherit;
-              font-weight: 700;
-
-              cursor: pointer;
-            }
-
-            button:active {
-              transform: scale(.98);
-            }
-          </style>
-        </head>
-
-        <body>
-          <main>
-            <div class="eyebrow">
-              DYVE ADMIN
-            </div>
-
-            <h1>
-              You're offline.
-            </h1>
-
-            <p>
-              This workspace could not load the
-              requested page from the local
-              application cache. Reconnect and
-              try again.
-            </p>
-
-            <button
-              type="button"
-              onclick="location.reload()"
-            >
-              Try Again
-            </button>
-          </main>
-        </body>
-      </html>
+    <button
+      type="button"
+      onclick="location.reload()"
+    >
+      Try Again
+    </button>
+  </main>
+</body>
+</html>
     `,
     {
       status: 503,
-
       headers: {
         'Content-Type':
           'text/html; charset=utf-8',
