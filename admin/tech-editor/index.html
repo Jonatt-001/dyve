@@ -3286,7 +3286,12 @@ h1{font-family:'Maven Pro',sans-serif;font-weight:900;color:var(--ink);font-size
 .share button:hover,.share a:hover{color:#fff;background:var(--accent);border-color:var(--accent);transform:translateY(-2px)}
 .share svg{width:16px;height:16px}
 .hero{max-width:980px;margin:38px auto 0}
-.hero img{width:100%;max-height:560px;object-fit:cover;border-radius:6px}
+.hero-media{position:relative;width:100%;aspect-ratio:1200 / 700;overflow:hidden;border-radius:6px;background:#17171b;isolation:isolate}
+.hero-media::before{content:"";position:absolute;inset:-24px;background-image:var(--hero-bg);background-size:cover;background-position:center;filter:blur(24px);transform:scale(1.08);opacity:.32;z-index:-2}
+.hero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.12));z-index:-1;pointer-events:none}
+.hero-media img.hero-main{position:relative;width:100%;height:100%;max-width:none;object-fit:contain;object-position:center;display:block;border-radius:0}
+.hero-media img.hero-bg-source{display:none}
+
 .sf-box{max-width:760px;margin:46px auto}
 .rule{border:none;border-top:1px solid var(--rule)}
 .standfirst{font-family:'Source Serif 4',Georgia,serif;font-style:italic;font-size:1.25rem;line-height:1.65;color:#565a63;padding:30px 4px 22px}
@@ -3392,7 +3397,9 @@ footer nav a{color:#9aa0b4;text-decoration:none;font-size:.85rem;letter-spacing:
     </header>
 
     <figure class="hero">
-        <img src="${safeImage}" alt="${safeImageAlt}" itemprop="image" width="1200" height="700" onerror="this.onerror=null;this.src='../dyve-placeholder.jpg';">
+        <div class="hero-media" style="--hero-bg:url('${safeImage}')">
+            <img class="hero-main" src="${safeImage}" alt="${safeImageAlt}" itemprop="image" width="1200" height="700" loading="eager" decoding="async" onerror="this.onerror=null;this.src='../dyve-placeholder.jpg';">
+        </div>
     </figure>
 
     <div class="sf-box">
