@@ -523,11 +523,34 @@
     });
     </script>
 <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('sw.js').catch(function () {});
-    });
-  }
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", async () => {
+    try {
+      const registration = await navigator.serviceWorker.register(
+        "/admin/sw.js",
+        {
+          scope: "/admin/"
+        }
+      );
+
+      console.log(
+        "[Dyve Admin] Service Worker registered:",
+        registration.scope
+      );
+
+      if (registration.waiting) {
+        registration.waiting.postMessage({
+          type: "SKIP_WAITING"
+        });
+      }
+    } catch (error) {
+      console.error(
+        "[Dyve Admin] Service Worker registration failed:",
+        error
+      );
+    }
+  });
+}
 </script>
 
 
