@@ -221,11 +221,6 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://dyve.online/tech/why-your-ai-coding-agent-keeps-breaking-production-and-how-git-blame-can-stop-it.html</loc>
-    <lastmod>2026-08-15</lastmod>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://dyve.online/terms-of-service/</loc>
     <lastmod>2026-08-15</lastmod>
     <priority>0.3</priority>
