@@ -1,5 +1,35 @@
 [
   {
+    "title": "Why Your AI Coding Agent Keeps Breaking Production (And How git blame Can Stop It)",
+    "desc": "Tech Article: <article class=\"article-content\"> <h1>Why Your AI Coding Agent Keeps Breaking Production (And How <code>git blame</code> Can Stop It</h1> <p>AI...",
+    "image": "https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786810907/m2oxrpzygwdkwbwddycj.jpg",
+    "url": "tech/why-your-ai-coding-agent-keeps-breaking-production-and-how-git-blame-can-stop-it.html",
+    "tag": "News",
+    "meta": "ai",
+    "category": "ai",
+    "date": "2026-08-15",
+    "page": "tech",
+    "delta": "assets/deltas/tech-why-your-ai-coding-agent-keeps-breaking-production-and-how-git-blame-can-stop-it.json",
+    "readTime": 18,
+    "author": "Dyve Tech Intelligence Unit",
+    "modified": "2026-08-15T16:24:04.921Z",
+    "createdAt": "2026-08-15T16:24:04.921Z",
+    "seoTitle": "Tech Article",
+    "focusKeyword": "Ai, artificial intelligence",
+    "keywords": [
+      "class",
+      "article-content",
+      "coding",
+      "agent",
+      "keeps",
+      "breaking",
+      "production",
+      "code"
+    ],
+    "sourceUrl": "",
+    "ogPrompt": "Modern technology visualization of Tech Article. Focus on class,article-content,coding,agent,keeps,breaking,production,code. Editorial, premium, high-tech aesthetic, clean composition, no text."
+  },
+  {
     "title": "Why AI Agents & ML Workflows Need a Durable AI Runtime",
     "desc": "Tech Article: The Death of the Static Pipeline: Why AI Agents and ML Workflows Need a Durable AI Runtime Works in the notebook, dies in the pipeline",
     "image": "https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786753557/tc76tip1can8j3tzrlly.jpg",
