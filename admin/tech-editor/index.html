@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dyve Tech — Intelligence Editor</title>
+    <title>Dyve Tech Intelligence Editor</title>
 
     <link rel="manifest" href="../manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -282,7 +282,7 @@
                 <div class="flex items-start justify-between gap-4 mb-4">
                     <div>
                         <h3 class="text-base font-extrabold text-[#00001a]">Static SEO Build Engine</h3>
-                        <p class="text-xs text-gray-500 mt-1">Publishing validates articles.json, generates section indexes from page, rebuilds article SEO/internal links, sitemap and redirects, then publishes the complete build atomically.</p>
+                        <p class="text-xs text-gray-500 mt-1">Publishing validates tech-articles.json, generates /tech/index.html, rebuilds article SEO/internal links, /tech/sitemap.xml and Tech redirects, then publishes the complete build atomically.</p>
                     </div>
                     <div class="flex flex-wrap justify-end gap-2">
                         <button id="migrateRoutesBtn" class="shrink-0 px-3 py-2 text-xs font-bold text-amber-700 border border-amber-300 bg-amber-50 rounded-lg hover:bg-amber-100 transition">
@@ -316,13 +316,19 @@
                         <select id="categorySelect" class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f15e50] text-white appearance-none cursor-pointer">
                             <option value="" disabled selected>Select Category</option>
                             <option value="ai">Artificial Intelligence</option>
+                            <option value="software">Software</option>
                             <option value="tools">Developer Tools</option>
                             <option value="coding">Coding &amp; Programming</option>
+                            <option value="developers">Developers &amp; Engineering</option>
+                            <option value="hardware">Hardware &amp; Computing</option>
+                            <option value="mobile">Mobile Technology</option>
+                            <option value="gadgets">Gadgets &amp; Devices</option>
+                            <option value="cloud">Cloud &amp; Infrastructure</option>
+                            <option value="startups">Startups &amp; Industry</option>
                             <option value="analysis">Deep Dive Analysis</option>
                             <option value="trends">Tech Trends</option>
-                            <option value="tutorials">Tutorials</option>
-                            <option value="breach">Breach Intel</option>
-                            <option value="dark-web">Dark Web</option>
+                            <option value="tutorials">Tutorials &amp; Guides</option>
+                            <option value="reviews">Reviews</option>
                         </select>
                     </div>
                     <div>
@@ -463,10 +469,10 @@
 
 <script>
 /* ============================================================
-   DYVE TECH INTELLIGENCE EDITOR
+   DYVE|TECH EDITOR
    Static publishing architecture:
-   editor -> articles.json -> article HTML -> category HTML
-   -> /tech/index.html -> sitemap.xml -> robots.txt
+   editor -> tech-articles.json -> article HTML -> category HTML
+   -> /tech/index.html -> /tech/sitemap.xml (root sitemap/robots remain site-level)
    ============================================================ */
 
 let currentDraftId = null;
@@ -669,72 +675,78 @@ async function prepareImageForCloudinary(file, contextLabel = 'image') {
 
 const STATIC_BUILD_CONFIG = {
     generateTechIndex: true,
-    generateCategoryPages: true,
+    generateCategoryPages: false,
     generateSitemap: true,
-    generateRobots: true,
+    generateRobots: false,
     maxArticlesPerIndex: 100,
     siteName: 'Dyve Tech',
-    publisherName: 'Dyve Tech Intelligence Unit',
-    defaultImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop'
+    publisherName: 'Dyve Tech Editorial Unit',
+    organizationName: 'Dyve',
+    publicationName: 'Dyve Tech',
+    defaultImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop',
+    articleDataPath: 'assets/tech-articles.json',
+    techSitemapPath: 'tech/sitemap.xml'
 };
 
 const SECTION_CONFIG = {
     tech: {
-        label: 'Tech',
-        title: 'Dyve Tech — AI, Technology News, Developer Insights & Analysis',
-        description: 'Artificial intelligence, technology, developer tools, coding, cybersecurity, quantum computing and emerging technology coverage from Dyve Tech.',
+        label: 'Technology',
+        title: 'Technology News & Intelligence | Dyve Tech',
+        description: 'Dyve Tech covers technology news, artificial intelligence, software, hardware, developer tools, mobile technology, cloud platforms, emerging technology and the digital products shaping how people and businesses operate.',
         route: 'tech/',
         indexFile: 'tech/index.html'
-    },
-    ai: {
-        label: 'Artificial Intelligence',
-        title: 'Artificial Intelligence News & Analysis | Dyve',
-        description: 'Artificial intelligence news, models, agents, research, tools and emerging AI developments from Dyve.',
-        route: 'ai/',
-        indexFile: 'ai/index.html'
-    },
-    developers: {
-        label: 'Developers',
-        title: 'Developer News, Tools & Engineering Insights | Dyve',
-        description: 'Developer platforms, APIs, frameworks, engineering workflows and software development intelligence from Dyve.',
-        route: 'developers/',
-        indexFile: 'developers/index.html'
-    },
-    coding: {
-        label: 'Coding',
-        title: 'Coding & Programming News, Guides & Insights | Dyve',
-        description: 'Programming languages, coding practices, software engineering and practical development coverage from Dyve.',
-        route: 'coding/',
-        indexFile: 'coding/index.html'
-    },
-    cybersecurity: {
-        label: 'Cybersecurity',
-        title: 'Cybersecurity News, Threat Intelligence & Analysis | Dyve',
-        description: 'Cybersecurity news, threat intelligence, vulnerabilities, defensive technology and digital risk analysis from Dyve.',
-        route: 'cybersecurity/',
-        indexFile: 'cybersecurity/index.html'
     }
 };
 
 const CATEGORY_CONFIG = {
     ai: {
         label: 'Artificial Intelligence',
-        title: 'Artificial Intelligence',
-        description: 'Artificial intelligence news, analysis, tools, models, agents and emerging AI developments from Dyve Tech.'
+        title: 'Artificial Intelligence News & Analysis',
+        description: 'AI news, models, agents, research, products, tools and emerging artificial intelligence developments from Dyve Tech.'
     },
     tools: {
         label: 'Developer Tools',
-        title: 'Developer Tools & Software Intelligence',
-        description: 'Developer tools, platforms, frameworks and software engineering intelligence from Dyve Tech.'
+        title: 'Developer Tools & Software',
+        description: 'Developer tools, platforms, frameworks, APIs and software engineering products covered by Dyve Tech.'
     },
     coding: {
         label: 'Coding & Programming',
-        title: 'Coding & Programming News',
-        description: 'Programming, software engineering, coding practices and developer intelligence from Dyve Tech.'
+        title: 'Coding & Programming',
+        description: 'Programming languages, development practices, software engineering and coding technology from Dyve Tech.'
+    },
+    software: {
+        label: 'Software',
+        title: 'Software News & Intelligence',
+        description: 'Software products, platforms, releases, applications and software industry developments from Dyve Tech.'
+    },
+    hardware: {
+        label: 'Hardware',
+        title: 'Hardware & Computing',
+        description: 'Computing hardware, processors, devices, infrastructure and hardware innovation from Dyve Tech.'
+    },
+    mobile: {
+        label: 'Mobile Technology',
+        title: 'Mobile Technology News',
+        description: 'Smartphones, mobile platforms, apps, operating systems and mobile technology developments from Dyve Tech.'
+    },
+    gadgets: {
+        label: 'Gadgets & Devices',
+        title: 'Gadgets & Devices',
+        description: 'Consumer devices, gadgets, wearables and connected technology covered by Dyve Tech.'
+    },
+    cloud: {
+        label: 'Cloud & Infrastructure',
+        title: 'Cloud & Digital Infrastructure',
+        description: 'Cloud platforms, infrastructure, developer services and digital systems shaping modern technology.'
+    },
+    developers: {
+        label: 'Developers',
+        title: 'Developer News & Engineering',
+        description: 'Developer platforms, APIs, frameworks, engineering workflows and software development intelligence from Dyve Tech.'
     },
     analysis: {
         label: 'Deep Dive Analysis',
-        title: 'Deep Dive Technology Analysis',
+        title: 'Technology Analysis & Deep Dives',
         description: 'Long-form technology analysis, explainers and strategic deep dives from Dyve Tech.'
     },
     trends: {
@@ -743,19 +755,19 @@ const CATEGORY_CONFIG = {
         description: 'Emerging technology trends, market shifts and important developments tracked by Dyve Tech.'
     },
     tutorials: {
-        label: 'Tutorials',
+        label: 'Tutorials & Guides',
         title: 'Technology Tutorials & Guides',
-        description: 'Practical technology tutorials, developer guides and technical explainers from Dyve Tech.'
+        description: 'Practical technology tutorials, technical guides and explainers from Dyve Tech.'
     },
-    breach: {
-        label: 'Breach Intel',
-        title: 'Cybersecurity Breach Intelligence',
-        description: 'Cybersecurity breach intelligence, security developments and incident analysis from Dyve Tech.'
+    startups: {
+        label: 'Startups & Industry',
+        title: 'Technology Startups & Industry',
+        description: 'Technology companies, startups, product launches, business moves and industry developments from Dyve Tech.'
     },
-    'dark-web': {
-        label: 'Dark Web',
-        title: 'Dark Web & Cyber Intelligence',
-        description: 'Cyber intelligence and security reporting from the darker edges of the technology ecosystem.'
+    reviews: {
+        label: 'Reviews',
+        title: 'Technology Reviews',
+        description: 'Independent technology product, software and service reviews from Dyve Tech.'
     }
 };
 
@@ -839,7 +851,7 @@ function resetBuildLog() {
 
 function getGitHubConfig() {
     try {
-        const settings = JSON.parse(localStorage.getItem('dyve-settings') || '{}');
+        const settings = JSON.parse(localStorage.getItem('dyve-tech-settings') || '{}');
         return {
             token: settings.githubToken || '',
             repo: settings.githubRepo || '',
@@ -880,40 +892,79 @@ function authHeaders(config, extra = {}) {
 }
 
 async function fetchArticlesJson(config) {
-    const metaRes = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/contents/assets/articles.json?ref=${encodeURIComponent(config.branch)}`,
+    const techPath = STATIC_BUILD_CONFIG.articleDataPath;
+    const request = path => fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
         { headers: authHeaders(config) }
     );
 
-    if (metaRes.status === 404) return { articles: [], sha: '' };
+    const metaRes = await request(techPath);
+
+    if (metaRes.status === 404) {
+        // One-time compatibility path: existing Tech records may still live in
+        // the former shared assets/articles.json. We only import records whose
+        // publication page is explicitly Tech and never write back to the shared file.
+        const legacyRes = await request('assets/articles.json');
+        if (legacyRes.status === 404) return { articles: [], sha: '', migratedFromLegacy: false };
+        if (!legacyRes.ok) {
+            const err = await legacyRes.json().catch(() => ({}));
+            throw new Error(`Legacy articles.json fetch failed: ${err.message || legacyRes.status}`);
+        }
+        const legacyMeta = await legacyRes.json();
+        let legacyText = legacyMeta.content ? b64ToUtf8(legacyMeta.content) : '';
+        if (!legacyText && legacyMeta.download_url) {
+            const rawRes = await fetchWithRetry(legacyMeta.download_url, { headers: authHeaders(config) });
+            if (rawRes.ok) legacyText = await rawRes.text();
+        }
+        let legacyArticles = [];
+        try { legacyArticles = legacyText.trim() ? JSON.parse(legacyText) : []; }
+        catch (e) { throw new Error('Legacy articles.json is corrupt — restore it before migrating Tech content.'); }
+        if (!Array.isArray(legacyArticles)) legacyArticles = [];
+        const techArticles = legacyArticles.filter(a => a && String(a.page || '').toLowerCase() === 'tech');
+        return { articles: techArticles, sha: '', migratedFromLegacy: techArticles.length > 0 };
+    }
+
     if (!metaRes.ok) {
         const err = await metaRes.json().catch(() => ({}));
-        throw new Error(`articles.json fetch failed: ${err.message || metaRes.status}`);
+        throw new Error(`tech-articles.json fetch failed: ${err.message || metaRes.status}`);
     }
 
     const meta = await metaRes.json();
     const sha = meta.sha || '';
     let text = '';
-
-    if (meta.content) {
-        text = b64ToUtf8(meta.content);
-    } else if (meta.download_url) {
+    if (meta.content) text = b64ToUtf8(meta.content);
+    else if (meta.download_url) {
         const rawRes = await fetchWithRetry(meta.download_url, { headers: authHeaders(config) });
         if (rawRes.ok) text = await rawRes.text();
     }
 
     text = (text || '').trim();
-    if (!text) return { articles: [], sha };
+    if (!text) return { articles: [], sha, migratedFromLegacy: false };
 
     let articles;
-    try {
-        articles = JSON.parse(text);
-    } catch (e) {
-        throw new Error('articles.json is corrupt — restore or reset it on GitHub');
-    }
-
+    try { articles = JSON.parse(text); }
+    catch (e) { throw new Error('tech-articles.json is corrupt — restore or reset it on GitHub'); }
     if (!Array.isArray(articles)) articles = [];
-    return { articles, sha };
+
+    // Strict publishing boundary:
+    // Tech Editor may only operate on records explicitly owned by Dyve Tech.
+    // Older Tech records that predate the `page` field are accepted only when
+    // their category is a known Dyve Tech category. HackaX/security records
+    // without a page marker are intentionally excluded.
+    const techArticles = articles.filter(article => {
+        if (!article || typeof article !== 'object') return false;
+
+        const page = String(article.page || '').trim().toLowerCase();
+
+        if (page === 'tech') return true;
+        if (page) return false;
+
+        const category = String(article.category || article.meta || '').trim().toLowerCase();
+
+        return Boolean(CATEGORY_CONFIG[category]);
+    });
+
+    return { articles: techArticles, sha, migratedFromLegacy: false };
 }
 
 async function githubCommitFiles(config, files, message) {
@@ -1119,7 +1170,7 @@ function normalizeArticle(article) {
 
     const title = String(article.title || '').trim();
     const url = String(article.url || '').replace(/^\/+/, '').trim();
-    const page = String(article.page || '').trim().toLowerCase();
+    const page = 'tech';
     const category = String(article.category || article.meta || 'ai').trim();
     const tag = String(article.tag || 'News').trim();
     const date = String(article.date || new Date().toISOString().slice(0, 10)).slice(0, 10);
@@ -1150,7 +1201,7 @@ function normalizeArticle(article) {
 
 function validateArticleSet(articles) {
     if (!Array.isArray(articles)) {
-        throw new Error('BUILD FAILED: articles.json must contain a JSON array.');
+        throw new Error('BUILD FAILED: tech-articles.json must contain a JSON array.');
     }
 
     const errors = [];
@@ -1172,10 +1223,14 @@ function validateArticleSet(articles) {
         }
 
         if (!SECTION_CONFIG[article.page]) {
-            errors.push(`Record #${number} "${article.title}": unknown page "${article.page}". Expected one of: ${Object.keys(SECTION_CONFIG).join(', ')}.`);
+            errors.push(`Record #${number} "${article.title}": invalid publication page "${article.page}". Tech Editor can publish only to /tech/.`);
         }
 
-        const expectedPrefix = `${article.page}/`;
+        if (!CATEGORY_CONFIG[article.category]) {
+            errors.push(`Record #${number} "${article.title}": category "${article.category}" is not a Dyve Tech category. Tech Editor cannot publish HackaX/security categories.`);
+        }
+
+        const expectedPrefix = 'tech/';
         const validCanonicalRoute =
             article.url.startsWith(expectedPrefix) &&
             article.url.endsWith('.html') &&
@@ -1216,7 +1271,7 @@ function validateArticleSet(articles) {
 
 function migrateLegacyRoutes(articles) {
     if (!Array.isArray(articles)) {
-        throw new Error('Cannot migrate: articles.json is not an array.');
+        throw new Error('Cannot migrate: tech-articles.json is not an array.');
     }
 
     const migrated = [];
@@ -1334,14 +1389,6 @@ function sectionUrl(siteUrl, page) {
     return `${siteUrl}/${sectionPath(page)}`;
 }
 
-function categoryPath(category) {
-    return `${String(category || '').replace(/^\/+|\/+$/g, '')}/`;
-}
-
-function categoryUrl(siteUrl, category) {
-    return `${siteUrl}/${categoryPath(category)}`;
-}
-
 function articleUrl(siteUrl, article) {
     return `${siteUrl}/${String(article.url).replace(/^\/+/, '')}`;
 }
@@ -1365,13 +1412,6 @@ function articleUrl(siteUrl, article) {
 
 function relativeFromTechToArticle(article) {
     return `./${String(article.url).replace(/^tech\//, '').replace(/^\/+/, '')}`;
-}
-
-function relativeFromTechToCategory(category) {
-    const path = categoryPath(category);
-    if (path === 'tech/') return './';
-    if (path.startsWith('tech/')) return `./${path.replace(/^tech\//, '')}`;
-    return `../${path}`;
 }
 
 function formatDate(date) {
@@ -1418,61 +1458,31 @@ function buildArticleCard(article, context = 'tech') {
 
 function buildIndexStyles() {
     return `
-:root{--bg:#fbfaf8;--ink:#00001a;--body:#252832;--muted:#70747d;--accent:#f15e50;--accent-d:#d94a3e;--line:#e5e1d8;--card:#fff}
+:root{--bg:#020403;--bg2:#040806;--panel:#060b09;--panel2:#08110e;--text:#f2f7f5;--muted:rgba(242,247,245,.62);--muted2:rgba(242,247,245,.42);--line:rgba(255,255,255,.075);--line2:rgba(255,255,255,.045);--green:#00ffaa;--green2:#00d995;--greenSoft:rgba(0,255,170,.075);--greenLine:rgba(0,255,170,.18);--max:1180px}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--body);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}
-img{display:block;max-width:100%}
-.site-top{position:sticky;top:0;z-index:20;background:rgba(251,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.site-top-in{max-width:1180px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.brand{font-family:Maven Pro,Inter,sans-serif;font-weight:900;letter-spacing:.07em;color:var(--ink)}
-.brand span{color:var(--accent)}
-.nav{display:flex;gap:18px;font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
-.nav a:hover{color:var(--accent)}
-.wrap{max-width:1180px;margin:auto;padding:0 20px}
-.hero{padding:62px 0 34px;border-bottom:1px solid var(--line)}
-.eyebrow{display:inline-flex;gap:8px;align-items:center;color:var(--accent);font-size:.7rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;margin-bottom:18px}
-.hero h1{font-family:Maven Pro,Inter,sans-serif;color:var(--ink);font-size:clamp(2.3rem,6vw,4.8rem);line-height:1.03;letter-spacing:-.035em;max-width:900px}
-.hero p{max-width:760px;margin-top:20px;color:var(--muted);font-size:1.05rem;line-height:1.7}
-.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
-.stat{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 14px;font-size:.75rem;font-weight:800;color:#444}
-.featured{display:grid;grid-template-columns:1.35fr .65fr;gap:24px;padding:34px 0}
-.featured-card{border-radius:16px;overflow:hidden;background:#111827;color:#fff;min-height:390px;position:relative}
-.featured-card img{width:100%;height:100%;min-height:390px;object-fit:cover;opacity:.72}
-.featured-card .overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.84),rgba(0,0,0,.06) 70%)}
-.featured-content{position:absolute;left:26px;right:26px;bottom:25px}
-.featured-content .tag{display:inline-block;background:var(--accent);color:#fff;padding:7px 10px;font-size:.65rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase;margin-bottom:13px}
-.featured-content h2{font-family:Maven Pro,Inter,sans-serif;font-size:clamp(1.6rem,4vw,2.7rem);line-height:1.1}
-.featured-content p{color:#d6d8dd;margin-top:12px;line-height:1.55;max-width:700px}
-.featured-side{display:flex;flex-direction:column;gap:14px}
-.mini{display:grid;grid-template-columns:110px 1fr;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px}
-.mini img{width:110px;height:84px;object-fit:cover;border-radius:8px}
-.mini h3{font-family:Maven Pro,Inter,sans-serif;color:var(--ink);font-size:.95rem;line-height:1.25}
-.mini .meta{font-size:.68rem;color:#8a8c93;margin-top:8px}
-.section-head{display:flex;align-items:center;gap:14px;margin:20px 0}
-.section-head h2{font-family:Maven Pro,Inter,sans-serif;color:var(--ink);font-size:1.3rem}
-.section-line{height:2px;flex:1;background:var(--accent)}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;padding-bottom:60px}
-.card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:transform .25s,box-shadow .25s}
-.card:hover{transform:translateY(-4px);box-shadow:0 14px 35px rgba(0,0,0,.08)}
-.thumb{position:relative;aspect-ratio:16/10;background:#e5e7eb;overflow:hidden}
-.thumb img{width:100%;height:100%;object-fit:cover;transition:transform .45s}
-.card:hover .thumb img{transform:scale(1.04)}
-.thumb .tag{position:absolute;left:12px;bottom:12px;background:#fff;color:#111;padding:7px 9px;font-size:.63rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
-.card-body{padding:18px}
-.card-body .category{font-size:.65rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
-.card-body h2{font-family:Maven Pro,Inter,sans-serif;color:var(--ink);font-size:1.2rem;line-height:1.25}
-.card-body p{font-size:.86rem;color:#6d7078;line-height:1.55;margin-top:9px}
-.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px;color:#8a8c93;font-size:.66rem;text-transform:uppercase;letter-spacing:.07em}
-footer{background:#00001a;color:#fff;text-align:center;padding:45px 20px}
-footer .brand{color:#fff}
-footer p{color:#73798b;font-size:.75rem;margin-top:12px}
-@media(max-width:900px){.featured{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:640px){.nav{display:none}.hero{padding:45px 0 28px}.grid{grid-template-columns:1fr}.featured-card,.featured-card img{min-height:330px}}
+html{scroll-behavior:smooth;background:var(--bg);color-scheme:dark}
+body{background:radial-gradient(circle at 50% -12%,rgba(0,255,170,.075),transparent 32%),radial-gradient(circle at 90% 35%,rgba(0,255,170,.025),transparent 28%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}img{display:block;max-width:100%}::selection{background:var(--green);color:#00130c}
+.site-top{position:sticky;top:0;z-index:30;border-bottom:1px solid var(--line2);background:rgba(2,4,3,.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:.25s}
+.site-top.scrolled{box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.site-top-in{width:min(100%,var(--max));min-height:76px;margin:auto;padding:0 18px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:24px}
+.brand,.footer-brand{font-family:Audiowide,Inter,sans-serif;font-size:16px;letter-spacing:.06em;color:#edf5f2;white-space:nowrap}.brand span,.footer-brand span{color:rgba(237,245,242,.43)}
+.nav{display:flex;justify-content:center;gap:25px;overflow-x:auto;scrollbar-width:none;font-family:Audiowide,Inter,sans-serif;font-size:9px;letter-spacing:.08em;text-transform:uppercase}.nav::-webkit-scrollbar{display:none}.nav a{position:relative;padding:28px 0;color:rgba(255,255,255,.43);white-space:nowrap}.nav a:hover,.nav a.active{color:#edf7f3}.nav a.active:after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--green);box-shadow:0 0 12px rgba(0,255,170,.35)}
+.signal-link{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 12px;border:1px solid var(--greenLine);border-radius:9px;color:var(--green);font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;background:rgba(0,255,170,.035)}
+.wrap{width:min(100%,var(--max));margin:auto;padding:0 18px}.breadcrumb{display:flex;gap:8px;align-items:center;padding-top:18px;color:rgba(255,255,255,.27);font-family:Audiowide,Inter,sans-serif;font-size:7px;letter-spacing:.09em}.breadcrumb span:last-child{color:rgba(0,255,170,.72)}
+.hero{padding:66px 0 40px;border-bottom:1px solid var(--line2);position:relative}.hero:before{content:"";position:absolute;top:0;left:25%;width:50%;height:360px;background:radial-gradient(circle,rgba(0,255,170,.06),transparent 68%);pointer-events:none}.eyebrow{position:relative;display:inline-flex;align-items:center;gap:8px;color:var(--green);font-family:Audiowide,Inter,sans-serif;font-size:9px;letter-spacing:.1em;text-transform:uppercase}.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 13px rgba(0,255,170,.7);display:inline-block;flex:0 0 auto}
+.hero h1{position:relative;max-width:920px;margin-top:18px;font-family:Audiowide,Inter,sans-serif;font-weight:400;font-size:clamp(2.2rem,7vw,5.6rem);line-height:1.02;letter-spacing:-.035em;color:#f2f7f5}.hero p{position:relative;max-width:770px;margin-top:20px;color:var(--muted);font-size:14px;line-height:1.8}.hero-actions{position:relative;display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}.hero-btn{min-height:44px;display:inline-flex;align-items:center;gap:10px;padding:0 15px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.02);color:rgba(255,255,255,.72);font-size:10px;font-weight:800}.hero-btn.primary{background:var(--green);border-color:var(--green);color:#00130c}.hero-btn span{font-size:14px}.stats{position:relative;display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}.stat{padding:8px 11px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.018);color:var(--muted2);font-size:9px}.stat strong{color:rgba(255,255,255,.78);font-weight:800;margin-right:3px}
+.featured{display:grid;grid-template-columns:1.42fr .58fr;gap:14px;padding:34px 0 56px}.featured-card{position:relative;min-height:470px;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#050a08}.featured-card img{width:100%;height:100%;min-height:470px;object-fit:cover;opacity:.58}.featured-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.2) 35%,rgba(0,0,0,.9) 100%)}.featured-content{position:absolute;left:25px;right:25px;bottom:24px}.featured-kicker{display:flex;align-items:center;gap:8px;margin-bottom:12px;color:rgba(255,255,255,.66);font-family:Audiowide,Inter,sans-serif;font-size:8px;letter-spacing:.09em;text-transform:uppercase}.featured-content .tag,.mini-tag{display:inline-flex;color:var(--green);font-family:Audiowide,Inter,sans-serif;font-size:7px;letter-spacing:.1em;text-transform:uppercase}.featured-content h2{max-width:850px;margin-top:9px;font-family:Space Grotesk,Inter,sans-serif;font-size:clamp(1.6rem,4vw,3rem);line-height:1.08;letter-spacing:-.035em}.featured-content p{max-width:720px;margin-top:11px;color:rgba(255,255,255,.62);font-size:11px;line-height:1.65}.featured-meta{display:flex;gap:8px;margin-top:15px;color:rgba(255,255,255,.4);font-size:8px;letter-spacing:.07em;text-transform:uppercase}
+.featured-side{display:flex;flex-direction:column;gap:10px}.mini{display:grid;grid-template-columns:105px 1fr;gap:12px;min-height:105px;padding:9px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.018);transition:.22s}.mini:hover{border-color:var(--greenLine);background:rgba(0,255,170,.035);transform:translateY(-2px)}.mini img{width:105px;height:87px;object-fit:cover;border-radius:8px}.mini-body{padding:3px 2px}.mini h3{margin-top:7px;font-family:Space Grotesk,Inter,sans-serif;font-size:13px;line-height:1.28;color:rgba(255,255,255,.84)}.mini .meta{margin-top:9px;color:var(--muted2);font-size:7px;letter-spacing:.06em;text-transform:uppercase}
+.section-head{display:flex;align-items:flex-end;gap:16px;margin:0 0 20px}.section-head>div{min-width:max-content}.section-index{display:block;margin-bottom:7px;color:rgba(255,255,255,.25);font-family:Audiowide,Inter,sans-serif;font-size:7px;letter-spacing:.1em}.section-head h2{font-family:Audiowide,Inter,sans-serif;font-size:20px;font-weight:400;letter-spacing:-.01em}.section-line{height:1px;flex:1;background:linear-gradient(90deg,var(--greenLine),transparent)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding-bottom:74px}.card{overflow:hidden;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.014);transition:.22s}.card:hover{border-color:var(--greenLine);transform:translateY(-3px);background:rgba(0,255,170,.025);box-shadow:0 16px 35px rgba(0,0,0,.22)}.card-link{display:block}.thumb{position:relative;aspect-ratio:16/10;overflow:hidden;background:#07100c}.thumb img{width:100%;height:100%;object-fit:cover;opacity:.82;transition:transform .45s,opacity .45s}.card:hover .thumb img{transform:scale(1.045);opacity:1}.thumb .tag{position:absolute;left:10px;bottom:10px;padding:6px 8px;border:1px solid rgba(0,255,170,.18);border-radius:6px;background:rgba(2,4,3,.84);color:var(--green);font-family:Audiowide,Inter,sans-serif;font-size:6px;letter-spacing:.08em;text-transform:uppercase}.card-body{padding:16px}.card-body .category{color:var(--green);font-family:Audiowide,Inter,sans-serif;font-size:7px;letter-spacing:.1em;text-transform:uppercase}.card-body h2{margin-top:8px;font-family:Space Grotesk,Inter,sans-serif;font-size:17px;line-height:1.22;color:rgba(255,255,255,.88)}.card-body p{margin-top:8px;color:var(--muted2);font-size:10px;line-height:1.6}.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px;color:rgba(255,255,255,.29);font-size:7px;letter-spacing:.06em;text-transform:uppercase}
+.network{display:grid;grid-template-columns:1fr 1fr;gap:30px;padding:27px 20px;margin:0 0 85px;border:1px solid var(--greenLine);border-radius:17px;background:radial-gradient(circle at 100% 0,rgba(0,255,170,.075),transparent 42%),#050a08}.network h2{font-family:Audiowide,Inter,sans-serif;font-weight:400;font-size:24px;line-height:1.13}.network p{max-width:550px;margin-top:10px;color:var(--muted);font-size:11px;line-height:1.7}.network-links{display:grid;grid-template-columns:1fr 1fr;gap:7px}.network-links a{display:flex;align-items:center;justify-content:space-between;min-height:40px;padding:0 11px;border:1px solid var(--line);border-radius:9px;color:rgba(255,255,255,.58);font-size:9px}.network-links a:hover{border-color:var(--greenLine);color:var(--green);background:var(--greenSoft)}.network-links span{color:var(--green)}
+.empty-state{padding:45px 25px;border:1px solid var(--greenLine);border-radius:16px;background:rgba(0,255,170,.025);text-align:center}.empty-state h2{font-family:Audiowide,Inter,sans-serif;font-weight:400;font-size:22px}.empty-state p{margin-top:9px;color:var(--muted);font-size:11px}.empty-state.compact{grid-column:1/-1}
+footer{padding:55px 20px 30px;border-top:1px solid var(--line);background:#020403;text-align:center}.footer-core{width:min(100%,1100px);margin:auto}.footer-brand{font-size:17px}.footer-core>p{margin-top:10px;color:var(--muted2);font-size:10px}.footer-core nav{display:flex;justify-content:center;flex-wrap:wrap;gap:18px;margin-top:25px}.footer-core nav a{color:rgba(255,255,255,.45);font-size:9px}.footer-core nav a:hover{color:var(--green)}.footer-bottom{margin-top:28px;padding-top:17px;border-top:1px solid var(--line2);color:rgba(255,255,255,.25);font-size:8px;line-height:1.7}
+@media(max-width:900px){.site-top-in{grid-template-columns:1fr auto}.nav{display:none}.featured{grid-template-columns:1fr}.featured-side{display:grid;grid-template-columns:repeat(3,1fr)}.mini{display:block}.mini img{width:100%;height:110px}.mini-body{padding:9px 2px 2px}.grid{grid-template-columns:repeat(2,1fr)}.network{grid-template-columns:1fr}}
+@media(max-width:640px){.site-top-in{min-height:70px;padding:0 15px}.brand{font-size:14px}.signal-link{min-height:34px}.wrap{padding:0 15px}.hero{padding:50px 0 32px}.hero h1{font-size:clamp(2rem,11vw,3.5rem)}.hero p{font-size:12px}.featured{padding-top:25px}.featured-card,.featured-card img{min-height:350px}.featured-content{left:18px;right:18px;bottom:18px}.featured-side{display:flex}.mini{display:grid;grid-template-columns:92px 1fr}.mini img{width:92px;height:78px}.grid{grid-template-columns:1fr}.network-links{grid-template-columns:1fr}.section-head h2{font-size:17px}}
 `;
 }
-
 function buildStaticHead(title, description, canonical, schema) {
     return `
 <meta charset="UTF-8">
@@ -1486,6 +1496,7 @@ function buildStaticHead(title, description, canonical, schema) {
 <meta property="og:title" content="${escapeAttr(title)}">
 <meta property="og:description" content="${escapeAttr(description)}">
 <meta property="og:url" content="${escapeAttr(canonical)}">
+<meta property="og:site_name" content="Dyve Tech">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${escapeAttr(title)}">
 <meta name="twitter:description" content="${escapeAttr(description)}">
@@ -1496,11 +1507,13 @@ function buildStaticHead(title, description, canonical, schema) {
 }
 
 function buildTechIndexHTML(siteUrl, articles) {
-    const list = validateArticleSet(articles).filter(a => a.page === 'tech');
+    const list = validateArticleSet(articles)
+        .filter(a => a.page === 'tech')
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
     const limited = list.slice(0, STATIC_BUILD_CONFIG.maxArticlesPerIndex);
     const canonical = `${siteUrl}/tech/`;
-    const title = 'Latest Technology News, AI & Developer Intelligence | Dyve Tech';
-    const description = 'Latest technology news, artificial intelligence, developer tools, programming and emerging tech intelligence from Dyve Tech.';
+    const title = 'Technology News & Intelligence | Dyve Tech';
+    const description = 'Technology news and intelligence from Dyve Tech covering artificial intelligence, software, hardware, developer tools, mobile technology, cloud platforms and emerging digital systems.';
 
     const itemList = limited.map((a, i) => ({
         '@type': 'ListItem',
@@ -1512,12 +1525,29 @@ function buildTechIndexHTML(siteUrl, articles) {
     const schema = safeJson({
         '@context': 'https://schema.org',
         '@type': 'CollectionPage',
+        '@id': `${canonical}#webpage`,
         name: title,
+        headline: title,
         description,
         url: canonical,
-        publisher: { '@type': 'Organization', name: STATIC_BUILD_CONFIG.publisherName },
+        isPartOf: { '@type': 'WebSite', '@id': `${canonical}#website`, name: 'Dyve Tech', url: canonical, publisher: { '@type': 'Organization', '@id': `${siteUrl}/#organization`, name: 'Dyve' } },
+        about: {
+            '@type': 'Thing',
+            name: 'Technology Intelligence',
+            description: 'Technology, artificial intelligence, developer and cybersecurity technology coverage.'
+        },
+        publisher: { '@type': 'Organization', '@id': `${siteUrl}/#dyve-tech`, name: STATIC_BUILD_CONFIG.siteName, url: canonical, parentOrganization: { '@type': 'Organization', '@id': `${siteUrl}/#organization`, name: 'Dyve' } },
+        breadcrumb: {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Dyve', item: `${siteUrl}/` },
+                { '@type': 'ListItem', position: 2, name: 'Technology', item: canonical }
+            ]
+        },
         mainEntity: {
             '@type': 'ItemList',
+            name: 'Latest Technology News & Intelligence',
+            numberOfItems: limited.length,
             itemListElement: itemList
         }
     });
@@ -1525,299 +1555,185 @@ function buildTechIndexHTML(siteUrl, articles) {
     const featured = limited[0];
     const side = limited.slice(1, 4);
     const rest = limited.slice(4);
+    const categoryCounts = {};
+    list.forEach(a => { categoryCounts[a.category] = (categoryCounts[a.category] || 0) + 1; });
 
     const featuredHtml = featured ? `
-<section class="featured">
+<section class="featured" aria-label="Featured technology intelligence">
     <a class="featured-card" href="${escapeAttr(relativeFromTechToArticle(featured))}">
-        <img src="${escapeAttr(featured.image)}" alt="${escapeAttr(featured.title)}" width="1200" height="760">
-        <div class="overlay"></div>
+        <img src="${escapeAttr(featured.image || STATIC_BUILD_CONFIG.defaultImage)}" alt="${escapeAttr(featured.title)}" width="1200" height="760" fetchpriority="high">
+        <div class="featured-overlay"></div>
         <div class="featured-content">
-            <span class="tag">${escapeHtml(featured.tag)}</span>
+            <div class="featured-kicker"><span class="live-dot"></span> Featured Intelligence</div>
+            <span class="tag">${escapeHtml(featured.tag || 'Technology')}</span>
             <h2>${escapeHtml(featured.title)}</h2>
-            <p>${escapeHtml(truncate(featured.desc, 220))}</p>
+            <p>${escapeHtml(truncate(featured.desc, 240))}</p>
+            <div class="featured-meta"><span>${escapeHtml(formatDate(featured.date))}</span><span>·</span><span>${Math.max(1, Number(featured.readTime || 4))} min read</span></div>
         </div>
     </a>
     <div class="featured-side">
         ${side.map(a => `
         <a class="mini" href="${escapeAttr(relativeFromTechToArticle(a))}">
-            <img src="${escapeAttr(a.image)}" alt="${escapeAttr(a.title)}" loading="lazy" width="220" height="168">
-            <div>
+            <img src="${escapeAttr(a.image || STATIC_BUILD_CONFIG.defaultImage)}" alt="${escapeAttr(a.title)}" loading="lazy" width="240" height="160">
+            <div class="mini-body">
+                <span class="mini-tag">${escapeHtml(a.tag || 'Technology')}</span>
                 <h3>${escapeHtml(a.title)}</h3>
                 <div class="meta">${escapeHtml(formatDate(a.date))} · ${Math.max(1, Number(a.readTime || 4))} MIN READ</div>
             </div>
         </a>`).join('')}
     </div>
-</section>` : '';
+</section>` : `
+<section class="empty-state">
+    <span class="eyebrow">Technology News & Intelligence</span>
+    <h2>No technology intelligence has been published yet.</h2>
+    <p>New technology, AI and developer coverage will appear here after publication.</p>
+</section>`;
 
-    const categoryCounts = {};
-    list.forEach(a => { categoryCounts[a.category] = (categoryCounts[a.category] || 0) + 1; });
+    const cards = rest.length
+        ? rest.map(a => buildArticleCard(a, 'tech')).join('')
+        : limited.slice(0, 3).map(a => buildArticleCard(a, 'tech')).join('');
 
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
 ${buildStaticHead(title, description, canonical, schema)}
+<meta name="theme-color" content="#020403">
+<meta name="color-scheme" content="dark">
+<meta property="og:image" content="${escapeAttr(featured?.image || STATIC_BUILD_CONFIG.defaultImage)}">
+<meta property="og:image:alt" content="Dyve Tech technology news and intelligence">
+<meta name="twitter:image" content="${escapeAttr(featured?.image || STATIC_BUILD_CONFIG.defaultImage)}">
+<meta name="twitter:image:alt" content="Dyve Tech technology news and intelligence">
 <style>${buildIndexStyles()}</style>
 </head>
 <body>
-<header class="site-top">
+<header class="site-top" id="siteHeader">
     <div class="site-top-in">
-        <a class="brand" href="../">DYVE<span>|</span>TECH</a>
+        <a class="brand" href="./" aria-label="Dyve Tech home">DYVE<span>|</span>TECH</a>
         <nav class="nav" aria-label="Primary">
-            <a href="./">Latest</a>
-            <a href="../">Home</a>
-            <a href="../breaches/">Security</a>
-            <a href="../analysis/">Analysis</a>
+            <a class="active" href="./">Tech</a>
+            <a href="../">HackaX</a>
+            
+            
+            
         </nav>
+        <a class="signal-link" href="../" aria-label="Open Dyve">Dyve</a>
     </div>
 </header>
 
 <main>
 <div class="wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../">DYVE</a><span>/</span><span>TECH</span></nav>
+
     <section class="hero">
-        <div class="eyebrow">Dyve Tech Intelligence</div>
-        <h1>Technology, AI &amp; Developer Intelligence.</h1>
+        <div class="eyebrow"><span class="live-dot"></span> Technology Intelligence</div>
+        <h1>Technology news and intelligence for the systems shaping the digital world.</h1>
         <p>${escapeHtml(description)}</p>
+        <div class="hero-actions">
+            <a class="hero-btn primary" href="./">Explore Dyve Tech <span>→</span></a>
+            <a class="hero-btn" href="../">HackaX Intelligence <span>→</span></a>
+        </div>
         <div class="stats">
-            <span class="stat">${list.length} published articles</span>
-            <span class="stat">${Object.keys(categoryCounts).length} active categories</span>
-            <span class="stat">Static SEO index</span>
+            <span class="stat"><strong>${list.length}</strong> published articles</span>
+            <span class="stat"><strong>${Object.keys(categoryCounts).length}</strong> active categories</span>
+            <span class="stat"><strong>STATIC</strong> SEO index</span>
         </div>
     </section>
 
     ${featuredHtml}
 
     <div class="section-head">
-        <h2>Latest Intelligence</h2>
+        <div>
+            <span class="section-index">01 / LATEST</span>
+            <h2>Latest Technology News & Intelligence</h2>
+        </div>
         <span class="section-line"></span>
     </div>
 
     <section class="grid" aria-label="Latest Dyve Tech articles">
-        ${rest.length ? rest.map(a => buildArticleCard(a, 'tech')).join('') : (limited.slice(0, 3).map(a => buildArticleCard(a, 'tech')).join(''))}
+        ${cards || `<div class="empty-state compact"><h2>Awaiting new intelligence</h2><p>Published technology coverage will be indexed here automatically.</p></div>`}
+    </section>
+
+    <section class="network" aria-labelledby="networkTitle">
+        <div class="network-copy">
+            <span class="section-index">02 / INTELLIGENCE NETWORK</span>
+            <h2 id="networkTitle">Technology does not exist in isolation.</h2>
+            <p>Follow the technology stories shaping AI, software, hardware, mobile, cloud platforms and the wider digital ecosystem.</p>
+        </div>
+        <div class="network-links">
+            <a href="../ai-security/">AI Security <span>→</span></a>
+            <a href="../signals/">HackaX Intelligence <span>→</span></a>
+            <a href="../vulnerabilities/">Vulnerabilities <span>→</span></a>
+            <a href="../malware/">Malware <span>→</span></a>
+            <a href="../analysis/">Threat Analysis <span>→</span></a>
+            <a href="../signals/">Threat Signals <span>→</span></a>
+        </div>
     </section>
 </div>
 </main>
 
 <footer>
-    <div class="brand">DYVE<span>|</span>TECH</div>
-    <p>© ${new Date().getFullYear()} Dyve Tech Intelligence Unit. All rights reserved.</p>
-</footer>
-</body>
-</html>`;
-}
-
-function buildSectionHTML(siteUrl, articles, page) {
-    const config = SECTION_CONFIG[page];
-    if (!config) throw new Error(`Cannot build unknown section "${page}".`);
-
-    const list = validateArticleSet(articles)
-        .filter(a => a.page === page)
-        .sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    const limited = list.slice(0, STATIC_BUILD_CONFIG.maxArticlesPerIndex);
-    const canonical = sectionUrl(siteUrl, page);
-    const itemList = limited.map((a, i) => ({
-        '@type': 'ListItem',
-        position: i + 1,
-        name: a.title,
-        url: articleUrl(siteUrl, a)
-    }));
-
-    const schema = safeJson({
-        '@context': 'https://schema.org',
-        '@type': 'CollectionPage',
-        '@id': `${canonical}#webpage`,
-        name: config.title,
-        description: config.description,
-        url: canonical,
-        isPartOf: { '@type': 'WebSite', name: 'Dyve', url: `${siteUrl}/` },
-        publisher: { '@type': 'Organization', name: STATIC_BUILD_CONFIG.publisherName },
-        breadcrumb: {
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-                { '@type': 'ListItem', position: 1, name: 'Dyve', item: `${siteUrl}/` },
-                { '@type': 'ListItem', position: 2, name: config.label, item: canonical }
-            ]
-        },
-        mainEntity: {
-            '@type': 'ItemList',
-            name: `${config.label} articles`,
-            numberOfItems: limited.length,
-            itemListElement: itemList
-        }
-    });
-
-    const cards = limited.map((a, i) => `
-<article class="card">
-    <a class="card-link" href="${escapeAttr(relativeFromSectionToArticle(a))}">
-        <div class="thumb">
-            <img src="${escapeAttr(a.image)}" alt="${escapeAttr(a.title)}" loading="${i === 0 ? 'eager' : 'lazy'}" width="640" height="400">
-            <span class="tag">${escapeHtml(a.tag)}</span>
-        </div>
-        <div class="card-body">
-            <div class="category">${escapeHtml(config.label)}</div>
-            <h2>${escapeHtml(a.title)}</h2>
-            <p>${escapeHtml(truncate(a.desc, 180))}</p>
-            <div class="meta">
-                <span>${escapeHtml(a.author)}</span>
-                <span>${escapeHtml(formatDate(a.date))}</span>
-                <span>${Math.max(1, Number(a.readTime || 4))} min read</span>
-            </div>
-        </div>
-    </a>
-</article>`).join('');
-
-    return `<!DOCTYPE html>
-<html lang="en">
-<head>
-${buildStaticHead(config.title, config.description, canonical, schema)}
-<style>${buildIndexStyles()}</style>
-</head>
-<body>
-<header class="site-top">
-    <div class="site-top-in">
-        <a class="brand" href="${page === 'tech' ? './' : '../'}">DYVE<span>|</span>TECH</a>
-        <nav class="nav" aria-label="Primary">
-            <a href="${page === 'tech' ? './' : '../tech/'}">Tech</a>
-            <a href="../">Home</a>
-            <a href="../ai/">AI</a>
-            <a href="../developers/">Developers</a>
-            <a href="../coding/">Coding</a>
-            <a href="../cybersecurity/">Cybersecurity</a>
+    <div class="footer-core">
+        <div class="footer-brand">DYVE<span>|</span>TECH</div>
+        <p>Technology news, product intelligence and analysis from Dyve Tech.</p>
+        <nav aria-label="Footer navigation">
+            <a href="../">Dyve Home</a>
+            <a href="./">Technology</a>
+            <a href="../signals/">HackaX</a>
+            <a href="../analysis/">HackaX Analysis</a>
+            <a href="../about-us/">About Dyve</a>
+            <a href="../methodology/">Methodology</a>
         </nav>
+        <div class="footer-bottom">© ${new Date().getFullYear()} Dyve Tech. All rights reserved.<br>Dyve · Dyve Tech · Technology Intelligence</div>
     </div>
-</header>
-
-<main>
-<div class="wrap">
-    <section class="hero">
-        <div class="eyebrow">${escapeHtml(config.label)}</div>
-        <h1>${escapeHtml(config.title)}</h1>
-        <p>${escapeHtml(config.description)}</p>
-        <div class="stats">
-            <span class="stat">${list.length} published articles</span>
-            <span class="stat">Static section index</span>
-        </div>
-    </section>
-
-    <div class="section-head">
-        <h2>Latest ${escapeHtml(config.label)}</h2>
-        <span class="section-line"></span>
-    </div>
-
-    <section class="grid" aria-label="${escapeAttr(config.label)} articles">
-        ${cards || `<div style="grid-column:1/-1;padding:40px;border:1px solid #e5e1d8;background:#fff;border-radius:14px;color:#70747d">No published articles are currently assigned to this section.</div>`}
-    </section>
-</div>
-</main>
-
-<footer>
-    <div class="brand">DYVE<span>|</span>TECH</div>
-    <p>© ${new Date().getFullYear()} Dyve Tech Intelligence Unit. All rights reserved.</p>
 </footer>
+
+<script>
+(function(){
+    var header=document.getElementById('siteHeader');
+    var ticking=false;
+    window.addEventListener('scroll',function(){
+        if(ticking)return;
+        window.requestAnimationFrame(function(){
+            if(header)header.classList.toggle('scrolled',window.scrollY>24);
+            ticking=false;
+        });
+        ticking=true;
+    },{passive:true});
+})();
+<\/script>
 </body>
 </html>`;
 }
-
-function buildCategoryHTML(siteUrl, articles, category) {
-    // Legacy compatibility: category pages are no longer publication sections.
-    // This function remains available for older callers but never controls /tech/ membership.
-    const list = validateArticleSet(articles).filter(a => a.category === category || a.meta === category);
-    const meta = getCategoryMeta(category);
-    const canonical = categoryUrl(siteUrl, category);
-    const schema = safeJson({
-        '@context': 'https://schema.org',
-        '@type': 'CollectionPage',
-        name: `${meta.title} | Dyve`,
-        description: meta.description,
-        url: canonical,
-        mainEntity: {
-            '@type': 'ItemList',
-            numberOfItems: list.length,
-            itemListElement: list.slice(0, STATIC_BUILD_CONFIG.maxArticlesPerIndex).map((a, i) => ({
-                '@type': 'ListItem',
-                position: i + 1,
-                name: a.title,
-                url: articleUrl(siteUrl, a)
-            }))
-        }
-    });
-
-    return `<!DOCTYPE html>
-<html lang="en">
-<head>
-${buildStaticHead(`${meta.title} | Dyve`, meta.description, canonical, schema)}
-<style>${buildIndexStyles()}</style>
-</head>
-<body>
-<main><div class="wrap">
-<section class="hero">
-<div class="eyebrow">${escapeHtml(meta.label)}</div>
-<h1>${escapeHtml(meta.title)}</h1>
-<p>${escapeHtml(meta.description)}</p>
-</section>
-<section class="grid" aria-label="${escapeAttr(meta.label)} articles">
-${list.slice(0, STATIC_BUILD_CONFIG.maxArticlesPerIndex).map(a => buildArticleCard(a, a.page)).join('')}
-</section>
-</div></main>
-</body>
-</html>`;
-}
-
 function buildAllSectionIndexes(siteUrl, articles) {
     const normalized = validateArticleSet(articles);
-    const outputs = {};
-
-    Object.keys(SECTION_CONFIG).forEach(page => {
-        outputs[SECTION_CONFIG[page].indexFile] = buildSectionHTML(siteUrl, normalized, page);
-    });
-
-    return outputs;
+    return {
+        'tech/index.html': buildTechIndexHTML(siteUrl, normalized)
+    };
 }
 
 function buildSitemapXML(siteUrl, articles) {
     const normalized = validateArticleSet(sortArticles(articles));
     const today = new Date().toISOString().slice(0, 10);
     const urls = new Map();
-
-    urls.set(`${siteUrl}/`, today);
-
-    Object.keys(SECTION_CONFIG).forEach(page => {
-        const list = normalized.filter(a => a.page === page);
-        if (list.length || page === 'tech') {
-            urls.set(sectionUrl(siteUrl, page), list[0]?.date || today);
-        }
-    });
-
+    const techUrl = `${siteUrl}/tech/`;
+    urls.set(techUrl, normalized[0]?.date || today);
     normalized.forEach(article => {
         urls.set(articleUrl(siteUrl, article), String(article.modified || article.date).slice(0, 10));
-        (article.legacyUrls || []).forEach(oldUrl => {
-            if (oldUrl) {
-                // Legacy URLs are intentionally not canonical sitemap entries.
-            }
-        });
     });
-
     const body = [...urls.entries()].map(([loc, lastmod]) => `
     <url>
         <loc>${escapeHtml(loc)}</loc>
         <lastmod>${escapeHtml(String(lastmod).slice(0, 10))}</lastmod>
     </url>`).join('');
-
     return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${body}
 </urlset>`;
 }
 
 function buildRobotsTxt(siteUrl) {
-    return `User-agent: *
-Allow: /
-
-Disallow: /admin/
-Disallow: /editor/
-Disallow: /assets/deltas/
-
-Sitemap: ${siteUrl}/sitemap.xml
-`;
+    // The root robots.txt is site-wide and belongs to the main Dyve deployment.
+    // Tech Editor deliberately never overwrites it because HackaX and Tech share the domain.
+    return null;
 }
 
 async function migrateLegacyContent(config, articles) {
@@ -1850,18 +1766,12 @@ async function migrateLegacyContent(config, articles) {
 function updateBuildStats(articles) {
     const normalized = sortArticles(articles);
     const categories = new Set(normalized.map(a => a.category).filter(Boolean));
-    const sitemapUrls = new Set();
-
-    sitemapUrls.add('/');
-    sitemapUrls.add('/tech/');
+    const sitemapUrls = new Set(['/tech/']);
     normalized.forEach(a => sitemapUrls.add('/' + a.url));
-    categories.forEach(c => sitemapUrls.add('/' + categoryPath(c)));
-
     document.getElementById('buildArticleCount').textContent = normalized.length;
     document.getElementById('buildCategoryCount').textContent = categories.size;
     document.getElementById('buildSitemapCount').textContent = sitemapUrls.size;
-    const sectionCount = Object.keys(SECTION_CONFIG).length;
-    document.getElementById('buildPageCount').textContent = 1 + sectionCount + normalized.length;
+    document.getElementById('buildPageCount').textContent = 1 + normalized.length;
 }
 
 async function buildStaticSite(config, articles, options = {}) {
@@ -1890,19 +1800,12 @@ async function buildStaticSite(config, articles, options = {}) {
 
         if (STATIC_BUILD_CONFIG.generateSitemap) {
             files.push({
-                path: 'sitemap.xml',
+                path: STATIC_BUILD_CONFIG.techSitemapPath,
                 content: buildSitemapXML(config.siteUrl, normalized)
             });
-            logBuild('Generated sitemap.xml from canonical article routes.', 'ok');
+            logBuild('Generated tech/sitemap.xml from canonical article routes.', 'ok');
         }
 
-        if (STATIC_BUILD_CONFIG.generateRobots) {
-            files.push({
-                path: 'robots.txt',
-                content: buildRobotsTxt(config.siteUrl)
-            });
-            logBuild('Generated robots.txt with sitemap reference.', 'ok');
-        }
 
         if (migrated.redirects && migrated.redirects.length) {
             const mergedRedirects = await mergeRedirectsWithExistingFile(
@@ -2256,7 +2159,7 @@ async function rebuildStaticIndex() {
         await buildStaticSite(config, migration.articles, {
             migrated: migration,
             extraFiles: [{
-                path: 'assets/articles.json',
+                path: 'assets/tech-articles.json',
                 content: JSON.stringify(migration.articles, null, 2)
             }],
             commitMessage: migration.redirects.length
@@ -2313,7 +2216,7 @@ async function migrateLegacyRoutesAndPublish() {
             `• migrate editor deltas where available\n` +
             `• preserve old URLs with 301 redirects\n` +
             `• regenerate /tech/index.html and every section index\n` +
-            `• regenerate sitemap.xml and robots.txt\n` +
+            `• regenerate tech/sitemap.xml\n` +
             `• publish everything as one atomic commit\n\n` +
             `No changes will be published if validation fails.`
         );
@@ -2339,7 +2242,7 @@ async function migrateLegacyRoutesAndPublish() {
         const files = [
             ...prepared.files,
             {
-                path: 'assets/articles.json',
+                path: 'assets/tech-articles.json',
                 content: JSON.stringify(normalized, null, 2)
             },
             {
@@ -2359,17 +2262,11 @@ async function migrateLegacyRoutesAndPublish() {
 
         if (STATIC_BUILD_CONFIG.generateSitemap) {
             files.push({
-                path: 'sitemap.xml',
+                path: STATIC_BUILD_CONFIG.techSitemapPath,
                 content: buildSitemapXML(config.siteUrl, normalized)
             });
         }
 
-        if (STATIC_BUILD_CONFIG.generateRobots) {
-            files.push({
-                path: 'robots.txt',
-                content: buildRobotsTxt(config.siteUrl)
-            });
-        }
 
         prepared.deletePaths.forEach(path => {
             if (path && !files.some(file => file.path === path)) {
@@ -2397,7 +2294,7 @@ async function migrateLegacyRoutesAndPublish() {
         setBuildStatus('ready', 'Migration complete');
         logBuild(`Migration published atomically: ${commit.sha.slice(0, 7)}.`, 'ok');
         logBuild('Legacy URLs now redirect permanently to their canonical /tech/ URLs.', 'ok');
-        logBuild('Tech index and sitemap were regenerated from the migrated articles.json.', 'ok');
+        logBuild('Tech index and sitemap were regenerated from the migrated tech-articles.json.', 'ok');
 
         showToast(
             `Successfully migrated ${migration.redirects.length} legacy route(s).`
@@ -2437,8 +2334,8 @@ async function previewBuild() {
             logBuild(`Would migrate ${migration.redirects.length} legacy route(s) and generate _redirects.`, 'warn');
         }
 
-        logBuild('Would generate sitemap.xml.', 'info');
-        logBuild('Would generate robots.txt.', 'info');
+        logBuild('Would generate tech/sitemap.xml.', 'info');
+        logBuild('Root robots.txt is owned by the site-level publisher and will not be modified by Tech Editor.', 'info');
         logBuild('No files changed during preview.', 'ok');
         setBuildStatus('ready', 'Build preview ready');
     } catch (error) {
@@ -3011,7 +2908,7 @@ async function publishArticle() {
                 content: JSON.stringify(quillDelta)
             },
             {
-                path: 'assets/articles.json',
+                path: 'assets/tech-articles.json',
                 content: JSON.stringify(normalized, null, 2)
             }
         ];
@@ -3032,13 +2929,8 @@ async function publishArticle() {
         Object.entries(sectionOutputs).forEach(([path, content]) => files.push({ path, content }));
 
         files.push({
-            path: 'sitemap.xml',
+            path: STATIC_BUILD_CONFIG.techSitemapPath,
             content: buildSitemapXML(config.siteUrl, normalized)
-        });
-
-        files.push({
-            path: 'robots.txt',
-            content: buildRobotsTxt(config.siteUrl)
         });
 
         if (isUpdate && editingOriginalSlug && editingOriginalSlug !== slug) {
@@ -3124,10 +3016,13 @@ function generateTechArticleHTML(siteUrl, title, desc, image, tag, category, slu
         headline: title,
         description: desc,
         image: [image],
-        author: { '@type': 'Organization', name: STATIC_BUILD_CONFIG.publisherName },
+        author: { '@type': 'Organization', name: STATIC_BUILD_CONFIG.publisherName, url: `${siteUrl}/tech/`, parentOrganization: { '@type': 'Organization', '@id': `${siteUrl}/#organization`, name: 'Dyve' } },
         publisher: {
             '@type': 'Organization',
+            '@id': `${siteUrl}/#dyve-tech`,
             name: STATIC_BUILD_CONFIG.siteName,
+            url: `${siteUrl}/tech/`,
+            parentOrganization: { '@type': 'Organization', '@id': `${siteUrl}/#organization`, name: 'Dyve' },
             logo: { '@type': 'ImageObject', url: `${siteUrl}/logo.png` }
         },
         datePublished: date,
@@ -3225,7 +3120,7 @@ function generateTechArticleHTML(siteUrl, title, desc, image, tag, category, slu
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#fbfaf8">
+<meta name="theme-color" content="#020403">
 <title>${safeTitle} | Dyve Tech</title>
 <meta name="description" content="${safeDesc}">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
@@ -3341,6 +3236,20 @@ h1{font-family:'Maven Pro',sans-serif;font-weight:900;color:var(--ink);font-size
 .related-mid-card .tag{font-size:.65rem;font-weight:700;color:var(--related-accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
 .related-mid-card time{font-size:.75rem;color:#64748b}
 footer{margin-top:84px;background:#00001a;color:#fff;padding:46px 20px;text-align:center}
+/* TECH TECHNOLOGY ARTICLE THEME */
+:root{--bg:#020403;--ink:#f2f7f5;--body-c:rgba(242,247,245,.76);--muted:rgba(242,247,245,.48);--accent:#00ffaa;--accent-d:#00d995;--line:rgba(255,255,255,.075);--rule:rgba(255,255,255,.09);--related-bg:#050a08;--related-accent:#00ffaa;--related-card:#08110e;--related-hover:#0b1813}
+body{background:radial-gradient(circle at 50% -8%,rgba(0,255,170,.065),transparent 32%),#020403;color:var(--body-c)}
+.top{background:rgba(2,4,3,.9);border-bottom:1px solid var(--line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.top-in{max-width:1180px}.back{border-color:var(--line);background:rgba(255,255,255,.025);color:#eaf3ef}.back:hover{background:var(--accent);color:#00130c;border-color:var(--accent)}
+.brand{font-family:'Audiowide',sans-serif;color:#edf5f2}.brand span{color:rgba(237,245,242,.43)}.top-link{color:var(--accent)}.top-link:hover{color:#fff}
+article{padding:0 18px}.head{max-width:900px;padding-top:72px}.kicker{color:var(--accent);font-family:'Audiowide',sans-serif}.head h1{font-family:'Audiowide',sans-serif;color:#f2f7f5;font-weight:400;letter-spacing:-.025em}.byline{color:var(--muted)}.byline .author{color:rgba(255,255,255,.82)}.share button,.share a{border-color:var(--line);background:rgba(255,255,255,.02);color:rgba(255,255,255,.62)}.share button:hover,.share a:hover{background:var(--accent);border-color:var(--accent);color:#00130c}
+.hero{max-width:1050px}.hero-media{border:1px solid var(--line);border-radius:16px;background:#050a08}.hero-media::after{background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.18))}.sf-box{max-width:780px}.standfirst{color:rgba(242,247,245,.65)}.more-link{color:var(--accent)}.rule{border-color:var(--rule)}
+.body{max-width:730px;color:rgba(242,247,245,.78)}.body h2,.body h3{font-family:'Space Grotesk',sans-serif;color:#f2f7f5}.body a{color:var(--accent)}.body blockquote{border-left-color:var(--accent);background:rgba(0,255,170,.035);color:rgba(242,247,245,.68)}.body pre{background:#07100c}.body code{color:#d9f9ed}
+.tags{max-width:730px}.tags-label{color:rgba(255,255,255,.34)}.chip{color:rgba(255,255,255,.62);background:rgba(255,255,255,.02);border-color:var(--line)}.chip:hover{background:var(--accent);border-color:var(--accent);color:#00130c}
+.related{max-width:900px}.ymal-head{margin-bottom:22px}.ymal-flag{background:var(--accent);color:#00130c;font-family:'Audiowide',sans-serif;font-size:.62rem}.ymal-line{background:linear-gradient(90deg,var(--accent),transparent)}.ymal-item{border-bottom-color:var(--line);grid-template-columns:minmax(220px,330px) 1fr}.ymal-thumb{background:#07100c}.ymal-tag{background:rgba(0,255,170,.07);color:var(--accent)}.ymal-tag.alt{background:rgba(255,255,255,.06);color:rgba(255,255,255,.65)}.ymal-title{font-family:'Space Grotesk',sans-serif;color:#f2f7f5}.ymal-meta{color:rgba(255,255,255,.32)}.ymal-meta .author{color:rgba(255,255,255,.58)}
+.related-mid{background:var(--related-bg);border:1px solid var(--line);border-radius:16px}.related-mid::before{background:linear-gradient(90deg,var(--accent),#00d995,transparent)}.related-mid h2{font-family:'Audiowide',sans-serif;font-weight:400}.related-mid .subtitle{color:var(--muted)}.related-mid-card{background:var(--related-card);border:1px solid var(--line)}.related-mid-card:hover{background:var(--related-hover);border-color:rgba(0,255,170,.2)}.related-mid-card h3{color:#f2f7f5}.related-mid-card .tag{color:var(--accent)}.related-mid-card time{color:rgba(255,255,255,.35)}
+footer{background:#020403;border-top:1px solid var(--line)}.fbrand{font-family:'Audiowide',sans-serif}.fbrand span{color:rgba(237,245,242,.43)}footer nav a{color:rgba(255,255,255,.45)}footer nav a:hover{color:var(--accent)}.copy{color:rgba(255,255,255,.28)}
+
 .fbrand{font-family:'Maven Pro',sans-serif;font-weight:800;letter-spacing:.06em}
 .fbrand span{color:var(--accent)}
 footer nav{display:flex;justify-content:center;gap:26px;margin:18px 0 14px;flex-wrap:wrap}
@@ -3357,8 +3266,8 @@ footer nav a{color:#9aa0b4;text-decoration:none;font-size:.85rem;letter-spacing:
         <a class="back" href="../tech/" aria-label="Back to Dyve Tech">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         </a>
-        <a class="brand" href="../">DYVE<span>|</span>TECH</a>
-        <a class="top-link" href="../tech/">Latest</a>
+        <a class="brand" href="../tech/">DYVE<span>|</span>TECH</a>
+        <a class="top-link" href="../tech/">Latest Tech</a>
     </div>
 </header>
 
@@ -3380,7 +3289,7 @@ footer nav a{color:#9aa0b4;text-decoration:none;font-size:.85rem;letter-spacing:
 
         <div class="byline">
             <span>By</span>
-            <a class="author" href="../tech/">Dyve Tech Intelligence Unit</a>
+            <a class="author" href="../tech/">Dyve Tech Editorial Unit</a>
             <span class="dot">•</span>
             <time datetime="${escapeAttr(date)}">${escapeHtml(formattedDate)}</time>
             <span class="dot">•</span>
@@ -3430,8 +3339,8 @@ ${relatedMidMarkup}
 
 <footer>
     <div class="fbrand">DYVE<span>|</span>TECH</div>
-    <nav><a href="../">Home</a><a href="../tech/">Latest Tech</a><a href="../analysis/">Analysis</a><a href="../breaches/">Security</a></nav>
-    <p class="copy">© ${new Date().getFullYear()} Dyve Tech Intelligence Unit. All rights reserved.</p>
+    <nav><a href="../">Dyve</a><a href="../tech/">Latest Tech</a><a href="../signals/">HackaX Intelligence</a><a href="../about-us/">About Dyve</a></nav>
+    <p class="copy">© ${new Date().getFullYear()} Dyve Tech. All rights reserved.</p>
 </footer>
 
 <div id="toast" class="toast"></div>
@@ -3474,7 +3383,7 @@ ${relatedMidMarkup}
     if(!grid)return;
 
     var STOP={};
-    ('the and for with from have will your about into over under more most other some such than then them they their there these those which while where when what were been could would should because between through during before after each very just also only same not but you are was is it of in on at to by an or as if we us our out off again here how all any both few its own too can cannot without within across against around towards upon whether since until however therefore though although even ever never always often really still yet perhaps indeed almost quite rather simply article tech dyve technology system process using based make made like good best work works time new one two way ways use used data code news').split(' ').forEach(function(w){STOP[w]=1;});
+    ('the and for with from have will your about into over under more most other some such than then them they their there these those which while where when what were been could would should because between through during before each very just also only same not but you are was is it of in on at to by an or as if we us our out off again here how all any both few its own too can cannot without within across against around towards upon whether since until however therefore though although even ever never always often really still yet perhaps indeed almost quite rather simply article tech technology system process using based make made like good best work works time new one two way ways use used data code news').split(' ').forEach(function(w){STOP[w]=1;});
 
     function tokens(s){
         return ((s||'').toLowerCase().match(/\\b[a-z]{4,}\\b/g)||[]).filter(function(w){return !STOP[w];});
@@ -3489,7 +3398,7 @@ ${relatedMidMarkup}
     }
 
     // Related articles, ItemList schema and internal links are generated at build time.
-// This public article page does not fetch articles.json.
+// This public article page does not fetch tech-articles.json.
 })();
 <\/script>
 </body>
@@ -3514,7 +3423,7 @@ function autoGenerateMetaDescription() {
         ? sentences[0].trim()
         : text.substring(0, 120).trim();
 
-    let desc = `Discover insights on ${title.toLowerCase()}. ${firstSentence}. Learn more with Dyve Tech.`;
+    let desc = `Discover insights on ${title.toLowerCase()}. ${firstSentence}. Continue with Dyve Tech.`;
 
     if (desc.length > 160) desc = desc.substring(0, 157).trimEnd() + '...';
 
@@ -3853,7 +3762,7 @@ function checkGroqConnection() {
     let key = '';
 
     try {
-        key = JSON.parse(localStorage.getItem('dyve-settings') || '{}').groqKey || '';
+        key = JSON.parse(localStorage.getItem('dyve-tech-settings') || '{}').groqKey || '';
     } catch (e) {}
 
     if (!key) {
@@ -4012,7 +3921,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(()=>{updateLiveEditorMetrics();runPublicationPreflight();},200);
 
     window.addEventListener('storage', e => {
-        if (e.key === 'dyve-settings') {
+        if (e.key === 'dyve-tech-settings') {
             checkGitHubConnection();
             checkGroqConnection();
         }
