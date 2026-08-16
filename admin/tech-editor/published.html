@@ -1,0 +1,2605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Published - Dyve Tech Dashboard</title>
+
+    <meta name="description" content="Manage published Dyve Tech articles, technology news, analysis and intelligence.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#020403">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Dyve Tech">
+    <link rel="apple-touch-icon" href="logo.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dyve: {
+                            bg: '#020403',
+                            card: '#030605',
+                            accent: '#00ffaa',
+                            accentHover: '#00cc88',
+                            text: '#e8f0ee',
+                            muted: 'rgba(255,255,255,0.6)'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f8fafc;
+        }
+
+        .article-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 10px 25px -5px rgba(0, 0, 0, 0.1),
+                0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            border-color: #00ffaa;
+        }
+
+        .thumbnail-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .thumbnail-container img {
+            transition: transform 0.5s ease;
+        }
+
+        .article-card:hover .thumbnail-container img {
+            transform: scale(1.05);
+        }
+
+        .skeleton {
+            background:
+                linear-gradient(
+                    90deg,
+                    #f0f0f0 25%,
+                    #e0e0e0 50%,
+                    #f0f0f0 75%
+                );
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .article-checkbox:checked {
+            background-color: #00ffaa;
+            border-color: #00ffaa;
+        }
+
+        .tech-glow {
+            box-shadow:
+                0 0 0 1px rgba(0, 255, 170, 0.08),
+                0 8px 30px rgba(0, 255, 170, 0.04);
+        }
+
+        .source-pill {
+            background: rgba(0, 255, 170, 0.07);
+            border: 1px solid rgba(0, 255, 170, 0.18);
+            color: #047857;
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        @media (max-width: 640px) {
+            .article-card:hover {
+                transform: none;
+            }
+
+            .thumbnail-container {
+                height: 210px;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <!-- HEADER -->
+    <header class="bg-dyve-bg border-b border-white/10 sticky top-0 z-40">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+
+            <div class="flex items-center gap-3 min-w-0">
+
+                <a
+                    href="index.html"
+                    class="text-dyve-muted hover:text-dyve-accent transition-colors p-2 hover:bg-white/5 rounded-lg flex-shrink-0"
+                    aria-label="Back to Dyve Tech Editor"
+                >
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                        ></path>
+                    </svg>
+                </a>
+
+                <div class="min-w-0">
+                    <h1 class="text-lg sm:text-xl font-bold text-white tracking-wide truncate">
+                        DYVE<span class="text-dyve-accent">|</span>TECH
+                    </h1>
+
+                    <p class="text-[10px] sm:text-xs text-white/40 uppercase tracking-[0.18em] truncate">
+                        Published Technology
+                    </p>
+                </div>
+
+            </div>
+
+            <button
+                id="refreshBtn"
+                class="text-dyve-muted hover:text-dyve-accent transition-colors p-2 hover:bg-white/5 rounded-lg flex items-center gap-2 flex-shrink-0"
+                title="Refresh Published Tech"
+                aria-label="Refresh published technology articles"
+            >
+                <svg
+                    id="refreshIcon"
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                    ></path>
+                </svg>
+
+                <span class="text-sm hidden sm:inline">Refresh</span>
+            </button>
+
+        </div>
+    </header>
+
+
+    <!-- DATA SOURCE BAR -->
+    <div class="bg-white border-b border-gray-200">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-2 h-2 rounded-full bg-dyve-accent animate-pulse flex-shrink-0"></span>
+
+                    <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Dyve Tech Publication Database
+                    </span>
+                </div>
+
+                <div class="source-pill inline-flex items-center self-start sm:self-auto gap-2 px-3 py-1 rounded-full text-[11px] font-bold font-mono">
+                    <svg
+                        class="w-3.5 h-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 7v10c0 1.1 1.8 2 4 2h8c2.2 0 4-0.9 4-2V7M4 7c0-1.1 1.8-2 4-2h8c2.2 0 4 .9 4 2M4 7c0 1.1 1.8 2 4 2h8c2.2 0 4-.9 4-2"
+                        ></path>
+                    </svg>
+
+                    assets/tech-articles.json
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- BULK ACTION BAR -->
+    <div
+        id="bulkActionBar"
+        class="fixed top-24 left-1/2 -translate-x-1/2 bg-dyve-card border border-dyve-accent/50 text-white px-6 py-3 rounded-full shadow-2xl z-50 flex items-center gap-4 transition-all duration-300 transform -translate-y-10 opacity-0 hidden"
+    >
+
+        <span
+            id="bulkCount"
+            class="text-sm font-semibold whitespace-nowrap"
+        >
+            0 selected
+        </span>
+
+        <div class="w-px h-5 bg-white/20"></div>
+
+        <button
+            onclick="bulkDelete()"
+            class="bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white border border-red-500/50 px-4 py-1.5 rounded-full text-sm font-bold transition-colors whitespace-nowrap"
+        >
+            Delete Selected
+        </button>
+
+        <button
+            onclick="clearSelection()"
+            class="text-gray-400 hover:text-white text-sm p-1"
+            aria-label="Clear selection"
+        >
+            <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                ></path>
+            </svg>
+        </button>
+
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- PAGE INTRO -->
+        <section class="mb-7">
+
+            <div class="flex items-start justify-between gap-4">
+
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-2 h-2 rounded-full bg-dyve-accent"></span>
+
+                        <span class="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">
+                            Dyve Tech
+                        </span>
+                    </div>
+
+                    <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-gray-900">
+                        Published Technology
+                    </h2>
+
+                    <p class="text-sm text-gray-500 mt-2 max-w-2xl">
+                        Manage published Dyve Tech news, analysis, guides, tutorials and technology intelligence.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- STATS / FILTER BAR -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+
+            <div class="flex items-center gap-2 text-sm text-gray-500">
+                <span class="w-2 h-2 bg-dyve-accent rounded-full animate-pulse"></span>
+                <span id="articleCount">Loading Tech articles...</span>
+            </div>
+
+            <div class="relative w-full sm:w-72">
+
+                <svg
+                    class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    ></path>
+                </svg>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search published Tech..."
+                    autocomplete="off"
+                    class="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent focus:border-transparent text-sm text-gray-900"
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- ARTICLES LIST -->
+        <div
+            id="publishedList"
+            class="space-y-4"
+        >
+
+            <div class="skeleton h-32 rounded-lg"></div>
+            <div class="skeleton h-32 rounded-lg"></div>
+            <div class="skeleton h-32 rounded-lg"></div>
+
+        </div>
+
+
+        <!-- EMPTY STATE -->
+        <div
+            id="emptyState"
+            class="hidden text-center py-16 bg-white rounded-lg border border-gray-200 mt-4"
+        >
+
+            <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-emerald-50 flex items-center justify-center">
+
+                <svg
+                    class="w-10 h-10 text-emerald-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    ></path>
+                </svg>
+
+            </div>
+
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                No published Tech articles yet
+            </h3>
+
+            <p class="text-gray-500 mb-6">
+                Publish your first article from the Dyve Tech Editor.
+            </p>
+
+            <a
+                href="index.html"
+                class="inline-flex items-center gap-2 px-6 py-2.5 bg-dyve-accent text-dyve-bg rounded-lg font-bold hover:bg-dyve-accentHover transition-colors"
+            >
+
+                <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 4v16m8-8H4"
+                    ></path>
+                </svg>
+
+                Create Tech Article
+
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <!-- STICKY BOTTOM MENU -->
+    <div
+        id="stickyMenu"
+        class="fixed bottom-6 right-6 z-50"
+    >
+
+        <button
+            id="menuToggle"
+            class="w-14 h-14 bg-dyve-accent text-dyve-bg rounded-full shadow-lg flex items-center justify-center hover:bg-dyve-accentHover transition-all duration-300 active:scale-95"
+            aria-label="Open menu"
+            aria-expanded="false"
+        >
+
+            <svg
+                id="menuIcon"
+                class="w-6 h-6 transition-transform duration-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                ></path>
+            </svg>
+
+        </button>
+
+
+        <div
+            id="slideMenu"
+            class="absolute bottom-20 right-0 bg-white rounded-lg shadow-2xl overflow-hidden transform translate-y-4 opacity-0 pointer-events-none transition-all duration-300 w-56 border border-gray-200"
+        >
+
+            <nav class="py-2">
+
+                <a
+                    href="settings.html"
+                    class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+                >
+                    <svg
+                        class="w-5 h-5 text-gray-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543-.94-3.31.826-2.37-2.37a1.724 1.724 0 001.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                        ></path>
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        ></path>
+                    </svg>
+
+                    <span class="text-sm font-medium text-gray-700">
+                        Settings
+                    </span>
+                </a>
+
+
+                <a
+                    href="drafts.html"
+                    class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+                >
+                    <svg
+                        class="w-5 h-5 text-gray-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707L19 19a2 2 0 01-2 2z"
+                        ></path>
+                    </svg>
+
+                    <span class="text-sm font-medium text-gray-700">
+                        Drafts
+                    </span>
+                </a>
+
+
+                <a
+                    href="published.html"
+                    class="flex items-center gap-3 px-4 py-3 bg-emerald-50"
+                    aria-current="page"
+                >
+                    <svg
+                        class="w-5 h-5 text-dyve-accent"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                    </svg>
+
+                    <span class="text-sm font-medium text-emerald-700">
+                        Published Tech
+                    </span>
+                </a>
+
+            </nav>
+
+        </div>
+
+    </div>
+
+
+    <!-- TOAST -->
+    <div
+        id="toast"
+        class="fixed bottom-24 right-4 bg-dyve-bg text-white border border-dyve-accent/30 px-6 py-3 rounded-lg shadow-2xl hidden z-50 flex items-center gap-2 transition-all duration-300 transform translate-y-4 opacity-0"
+    >
+        <span id="toastMessage"></span>
+    </div>
+
+
+<script>
+
+    /* ============================================================
+       DYVE|TECH PUBLISHED DASHBOARD
+
+       This page is intentionally isolated from HackaX.
+
+       DATA SOURCE:
+       assets/tech-articles.json
+
+       NEVER reads:
+       assets/articles.json
+
+       EDITOR:
+       index.html?mode=edit
+
+       Every article displayed here belongs to Dyve Tech.
+       ============================================================ */
+
+
+    let allArticles = [];
+    let filteredArticles = [];
+    let selectedIndices = [];
+
+
+    /* ============================================================
+       TECH CONFIGURATION
+       ============================================================ */
+
+    const TECH_DATABASE_PATH = 'assets/tech-articles.json';
+
+    const TECH_EDITOR_ROUTE = 'index.html';
+
+    const EDIT_KEY = 'dyve-edit-article';
+
+
+    /*
+     * These are the categories the current Dyve Tech publishing
+     * architecture supports.
+     *
+     * The database is already separated, but this second layer
+     * protects the dashboard if malformed data is ever introduced.
+     */
+    const TECH_CATEGORIES = new Set([
+        'ai',
+        'analysis',
+        'software',
+        'hardware',
+        'mobile',
+        'cloud',
+        'web',
+        'programming',
+        'developer-tools',
+        'tools',
+        'security',
+        'cybersecurity',
+        'technology',
+        'tech',
+        'trends'
+    ]);
+
+
+    function normalizeCategory(article) {
+        return String(
+            article?.category ||
+            article?.meta ||
+            ''
+        )
+            .trim()
+            .toLowerCase();
+    }
+
+
+    function normalizePage(article) {
+        return String(article?.page || '')
+            .trim()
+            .toLowerCase();
+    }
+
+
+    function normalizeUrl(article) {
+        return String(article?.url || '')
+            .replace(/^\/+/, '')
+            .trim()
+            .toLowerCase();
+    }
+
+
+    /*
+     * Final defensive boundary.
+     *
+     * A record is considered Dyve Tech if:
+     *
+     * 1. It explicitly belongs to page "tech", OR
+     * 2. Its canonical URL starts with "tech/"
+     *
+     * AND it is not obviously a HackaX/security-only category.
+     *
+     * This means a contaminated record cannot silently appear
+     * inside the Tech Published dashboard.
+     */
+    function isTechArticle(article) {
+        if (!article || typeof article !== 'object') {
+            return false;
+        }
+
+        const page = normalizePage(article);
+        const url = normalizeUrl(article);
+        const category = normalizeCategory(article);
+
+        const techRoute =
+            page === 'tech' ||
+            url.startsWith('tech/');
+
+        const knownHackaXCategories = new Set([
+            'breach',
+            'dark-web',
+            'ransomware',
+            'threat-actors',
+            'vulnerabilities',
+            'malware',
+            'threat-intelligence',
+            'threat-intelligence',
+            'exploit',
+            'exploits',
+            'incident-response',
+            'security-alerts'
+        ]);
+
+        if (knownHackaXCategories.has(category)) {
+            return false;
+        }
+
+        return techRoute;
+    }
+
+
+    function getGitHubConfig() {
+
+        const settings = JSON.parse(
+            localStorage.getItem('dyve-settings') || '{}'
+        );
+
+        return {
+            token: settings.githubToken || '',
+            repo: settings.githubRepo || '',
+            branch: settings.githubBranch || 'main',
+            siteUrl: settings.siteUrl || 'https://dyve.online'
+        };
+    }
+
+
+    /* ============================================================
+       UI HELPERS
+       ============================================================ */
+
+    function showToast(message, duration = 3000) {
+
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+
+        if (!toast || !toastMessage) {
+            return;
+        }
+
+        toastMessage.textContent = message;
+
+        toast.classList.remove(
+            'hidden',
+            'translate-y-4',
+            'opacity-0'
+        );
+
+        setTimeout(() => {
+
+            toast.classList.add(
+                'translate-y-4',
+                'opacity-0'
+            );
+
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 300);
+
+        }, duration);
+    }
+
+
+    function escapeHtml(str) {
+
+        if (str === null || str === undefined) {
+            return '';
+        }
+
+        const div = document.createElement('div');
+
+        div.textContent = String(str);
+
+        return div.innerHTML;
+    }
+
+
+    function escapeAttribute(str) {
+        return escapeHtml(str);
+    }
+
+
+    function b64ToUtf8(b64) {
+
+        try {
+
+            const clean = String(b64 || '')
+                .replace(/\s/g, '');
+
+            const bin = atob(clean);
+
+            const bytes = Uint8Array.from(
+                bin,
+                c => c.charCodeAt(0)
+            );
+
+            return new TextDecoder().decode(bytes);
+
+        } catch (e) {
+
+            console.error(
+                'Base64 decode error:',
+                e
+            );
+
+            return '';
+        }
+    }
+
+
+    function utf8ToBase64(value) {
+
+        const bytes = new TextEncoder().encode(
+            String(value || '')
+        );
+
+        let binary = '';
+
+        const chunkSize = 0x8000;
+
+        for (
+            let i = 0;
+            i < bytes.length;
+            i += chunkSize
+        ) {
+
+            binary += String.fromCharCode(
+                ...bytes.subarray(
+                    i,
+                    i + chunkSize
+                )
+            );
+        }
+
+        return btoa(binary);
+    }
+
+
+    /* ============================================================
+       GITHUB DATA
+       ============================================================ */
+
+    async function fetchTechArticlesText(config) {
+
+        if (!config.repo || !config.token) {
+            throw new Error(
+                'GitHub configuration incomplete'
+            );
+        }
+
+        const apiUrl =
+            `https://api.github.com/repos/${config.repo}/contents/${TECH_DATABASE_PATH}?ref=${encodeURIComponent(config.branch)}`;
+
+        try {
+
+            const res = await fetch(
+                apiUrl,
+                {
+                    headers: {
+                        'Authorization': `token ${config.token}`,
+                        'Accept': 'application/vnd.github+json'
+                    }
+                }
+            );
+
+            if (res.status === 404) {
+
+                throw new Error(
+                    'tech-articles.json was not found. Run the Dyve Tech migration first.'
+                );
+            }
+
+            if (
+                res.status === 401 ||
+                res.status === 403
+            ) {
+
+                throw new Error(
+                    `GitHub authentication failed (${res.status})`
+                );
+            }
+
+            if (!res.ok) {
+
+                throw new Error(
+                    `GitHub API error: ${res.status} ${res.statusText}`
+                );
+            }
+
+            const data = await res.json();
+
+            let text = '';
+
+            if (
+                data &&
+                typeof data.content === 'string' &&
+                data.content.trim()
+            ) {
+
+                text = b64ToUtf8(
+                    data.content
+                );
+            }
+
+            /*
+             * Raw GitHub fallback.
+             *
+             * This keeps the dashboard resilient when the Contents API
+             * response is unusual but the public repository file exists.
+             */
+            if (!text) {
+
+                const rawRes = await fetch(
+                    `https://raw.githubusercontent.com/${config.repo}/${config.branch}/${TECH_DATABASE_PATH}`
+                );
+
+                if (rawRes.ok) {
+                    text = await rawRes.text();
+                }
+            }
+
+            return String(text || '').trim();
+
+        } catch (error) {
+
+            if (error instanceof TypeError) {
+
+                throw new Error(
+                    'Network error - check your connection'
+                );
+            }
+
+            throw error;
+        }
+    }
+
+
+    async function getTechDatabase(config) {
+
+        const text = await fetchTechArticlesText(
+            config
+        );
+
+        if (!text) {
+
+            return {
+                articles: [],
+                fileSha: null,
+                rawText: '[]'
+            };
+        }
+
+        let articles;
+
+        try {
+
+            articles = JSON.parse(text);
+
+        } catch (error) {
+
+            throw new Error(
+                `Invalid JSON in tech-articles.json: ${error.message}`
+            );
+        }
+
+        if (!Array.isArray(articles)) {
+
+            throw new Error(
+                'tech-articles.json must contain a JSON array.'
+            );
+        }
+
+        return {
+            articles,
+            fileSha: null,
+            rawText: text
+        };
+    }
+
+
+    async function getTechDatabaseWithSha(config) {
+
+        if (!config.repo || !config.token) {
+            throw new Error(
+                'GitHub configuration incomplete'
+            );
+        }
+
+        const apiUrl =
+            `https://api.github.com/repos/${config.repo}/contents/${TECH_DATABASE_PATH}?ref=${encodeURIComponent(config.branch)}`;
+
+        const response = await fetch(
+            apiUrl,
+            {
+                headers: {
+                    'Authorization': `token ${config.token}`,
+                    'Accept': 'application/vnd.github+json'
+                }
+            }
+        );
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Failed to fetch tech-articles.json: ${response.status}`
+            );
+        }
+
+        const data = await response.json();
+
+        if (
+            !data.content ||
+            !data.sha
+        ) {
+
+            throw new Error(
+                'tech-articles.json content or SHA is unavailable.'
+            );
+        }
+
+        const text = b64ToUtf8(
+            data.content
+        );
+
+        let articles;
+
+        try {
+
+            articles = JSON.parse(text);
+
+        } catch (error) {
+
+            throw new Error(
+                `Invalid JSON in tech-articles.json: ${error.message}`
+            );
+        }
+
+        if (!Array.isArray(articles)) {
+
+            throw new Error(
+                'tech-articles.json must contain an array.'
+            );
+        }
+
+        return {
+            articles,
+            sha: data.sha
+        };
+    }
+
+
+    /* ============================================================
+       LOAD PUBLISHED TECH ARTICLES
+       ============================================================ */
+
+    async function loadPublishedArticles() {
+
+        const config = getGitHubConfig();
+
+        const container =
+            document.getElementById('publishedList');
+
+        const emptyState =
+            document.getElementById('emptyState');
+
+        const refreshIcon =
+            document.getElementById('refreshIcon');
+
+        const countEl =
+            document.getElementById('articleCount');
+
+        if (
+            !container ||
+            !emptyState ||
+            !refreshIcon ||
+            !countEl
+        ) {
+            return;
+        }
+
+        allArticles = [];
+        filteredArticles = [];
+
+        clearSelection();
+
+        container.innerHTML =
+            '<div class="skeleton h-32 rounded-lg"></div>'.repeat(3);
+
+        emptyState.classList.add('hidden');
+
+        if (
+            !config.token ||
+            !config.repo
+        ) {
+
+            container.innerHTML = '';
+
+            emptyState.classList.remove(
+                'hidden'
+            );
+
+            emptyState.querySelector('h3').textContent =
+                'GitHub not configured';
+
+            emptyState.querySelector('p').textContent =
+                'Configure your Dyve GitHub settings before loading published Tech articles.';
+
+            const link =
+                emptyState.querySelector('a');
+
+            link.textContent =
+                'Go to Settings';
+
+            link.href =
+                'settings.html';
+
+            countEl.textContent =
+                '0 Tech articles';
+
+            return;
+        }
+
+        refreshIcon.classList.add(
+            'animate-spin'
+        );
+
+        try {
+
+            const text =
+                await fetchTechArticlesText(
+                    config
+                );
+
+            if (!text) {
+
+                container.innerHTML = '';
+
+                emptyState.classList.remove(
+                    'hidden'
+                );
+
+                emptyState.querySelector('h3').textContent =
+                    'Tech database is empty';
+
+                emptyState.querySelector('p').textContent =
+                    'assets/tech-articles.json contains no published Dyve Tech articles yet.';
+
+                const link =
+                    emptyState.querySelector('a');
+
+                link.textContent =
+                    'Create Tech Article';
+
+                link.href =
+                    TECH_EDITOR_ROUTE;
+
+                countEl.textContent =
+                    '0 Tech articles';
+
+                return;
+            }
+
+            try {
+
+                allArticles =
+                    JSON.parse(text);
+
+            } catch (error) {
+
+                throw new Error(
+                    `Invalid JSON in tech-articles.json: ${error.message}`
+                );
+            }
+
+            if (!Array.isArray(allArticles)) {
+
+                throw new Error(
+                    'tech-articles.json must contain an array'
+                );
+            }
+
+
+            /*
+             * DEFENSIVE TECH-ONLY FILTER
+             *
+             * The file itself is already isolated from articles.json.
+             * This second filter prevents accidental contamination from
+             * appearing in the UI if the file is manually modified.
+             */
+
+            const rawCount =
+                allArticles.length;
+
+            allArticles =
+                allArticles.filter(
+                    isTechArticle
+                );
+
+
+            const rejectedCount =
+                rawCount - allArticles.length;
+
+
+            /*
+             * Sort newest first.
+             */
+            allArticles.sort(
+                (a, b) => {
+
+                    const dateA =
+                        new Date(
+                            a?.date || 0
+                        ).getTime();
+
+                    const dateB =
+                        new Date(
+                            b?.date || 0
+                        ).getTime();
+
+                    return dateB - dateA;
+                }
+            );
+
+
+            filteredArticles =
+                [...allArticles];
+
+
+            countEl.textContent =
+                `${allArticles.length} Tech article${allArticles.length !== 1 ? 's' : ''} published`;
+
+
+            if (rejectedCount > 0) {
+
+                console.warn(
+                    `Dyve Tech Published Dashboard rejected ${rejectedCount} non-Tech record(s).`
+                );
+            }
+
+
+            renderArticles(
+                filteredArticles
+            );
+
+        } catch (error) {
+
+            console.error(
+                'Error loading Dyve Tech articles:',
+                error
+            );
+
+            container.innerHTML = `
+
+                <div class="text-center py-12 bg-white rounded-lg border border-gray-200">
+
+                    <svg
+                        class="w-12 h-12 mx-auto text-red-400 mb-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                    </svg>
+
+                    <p class="text-gray-900 font-medium mb-1">
+                        Failed to load Dyve Tech publications
+                    </p>
+
+                    <p class="text-sm text-gray-500 mb-4">
+                        ${escapeHtml(error.message)}
+                    </p>
+
+                    <button
+                        onclick="loadPublishedArticles()"
+                        class="text-emerald-600 hover:text-emerald-700 font-semibold text-sm"
+                    >
+                        Try Again
+                    </button>
+
+                </div>
+
+            `;
+
+            countEl.textContent =
+                'Error loading Tech articles';
+
+        } finally {
+
+            refreshIcon.classList.remove(
+                'animate-spin'
+            );
+        }
+    }
+
+
+    /* ============================================================
+       RENDER ARTICLES
+       ============================================================ */
+
+    function renderArticles(articles) {
+
+        const container =
+            document.getElementById('publishedList');
+
+        const emptyState =
+            document.getElementById('emptyState');
+
+        if (
+            !container ||
+            !emptyState
+        ) {
+            return;
+        }
+
+
+        if (
+            !articles ||
+            articles.length === 0
+        ) {
+
+            container.innerHTML = '';
+
+            emptyState.classList.remove(
+                'hidden'
+            );
+
+            emptyState.querySelector('h3').textContent =
+                'No matching Tech articles';
+
+            emptyState.querySelector('p').textContent =
+                'Try adjusting your search or publish a new Dyve Tech article.';
+
+            const link =
+                emptyState.querySelector('a');
+
+            link.textContent =
+                'Create Tech Article';
+
+            link.href =
+                TECH_EDITOR_ROUTE;
+
+            return;
+        }
+
+
+        emptyState.classList.add(
+            'hidden'
+        );
+
+
+        const siteUrl =
+            getGitHubConfig().siteUrl;
+
+
+        container.innerHTML =
+            articles.map(
+                (article) => {
+
+                    /*
+                     * Because allArticles is sorted after loading,
+                     * locate the actual object rather than relying on
+                     * a display index.
+                     */
+                    const originalIndex =
+                        allArticles.indexOf(
+                            article
+                        );
+
+
+                    const rawUrl =
+                        String(
+                            article.url || ''
+                        )
+                            .replace(/^\/+/, '');
+
+
+                    const viewUrl =
+                        rawUrl
+                            ? `${siteUrl}/${rawUrl}`
+                            : '#';
+
+
+                    const d =
+                        article.date
+                            ? new Date(article.date)
+                            : null;
+
+
+                    const dateStr =
+                        (
+                            d &&
+                            !isNaN(d.getTime())
+                        )
+                            ? d.toLocaleDateString(
+                                'en-US',
+                                {
+                                    month: 'short',
+                                    day: 'numeric',
+                                    year: 'numeric'
+                                }
+                            )
+                            : 'Recent';
+
+
+                    const category =
+                        normalizeCategory(
+                            article
+                        );
+
+
+                    const categoryColors = {
+
+                        'ai':
+                            'bg-violet-50 text-violet-700 border-violet-200',
+
+                        'analysis':
+                            'bg-cyan-50 text-cyan-700 border-cyan-200',
+
+                        'software':
+                            'bg-blue-50 text-blue-700 border-blue-200',
+
+                        'hardware':
+                            'bg-orange-50 text-orange-700 border-orange-200',
+
+                        'mobile':
+                            'bg-indigo-50 text-indigo-700 border-indigo-200',
+
+                        'cloud':
+                            'bg-sky-50 text-sky-700 border-sky-200',
+
+                        'web':
+                            'bg-blue-50 text-blue-700 border-blue-200',
+
+                        'programming':
+                            'bg-purple-50 text-purple-700 border-purple-200',
+
+                        'developer-tools':
+                            'bg-emerald-50 text-emerald-700 border-emerald-200',
+
+                        'tools':
+                            'bg-emerald-50 text-emerald-700 border-emerald-200',
+
+                        'technology':
+                            'bg-emerald-50 text-emerald-700 border-emerald-200',
+
+                        'tech':
+                            'bg-emerald-50 text-emerald-700 border-emerald-200',
+
+                        'trends':
+                            'bg-teal-50 text-teal-700 border-teal-200'
+                    };
+
+
+                    const badgeClass =
+                        categoryColors[category] ||
+                        'bg-emerald-50 text-emerald-700 border-emerald-200';
+
+
+                    const categoryLabel =
+                        category
+                            ? category
+                                .replace(/-/g, ' ')
+                                .replace(
+                                    /\b\w/g,
+                                    letter =>
+                                        letter.toUpperCase()
+                                )
+                            : 'Technology';
+
+
+                    const safeTitle =
+                        escapeHtml(
+                            article.title ||
+                            'Untitled'
+                        );
+
+
+                    const safeDesc =
+                        escapeHtml(
+                            article.desc ||
+                            'No description available.'
+                        );
+
+
+                    const fallbackImg =
+                        'https://placehold.co/800x500/020403/00ffaa?text=DYVE+TECH';
+
+
+                    const safeImage =
+                        escapeAttribute(
+                            article.image ||
+                            fallbackImg
+                        );
+
+
+                    const isChecked =
+                        selectedIndices.includes(
+                            originalIndex
+                        )
+                            ? 'checked'
+                            : '';
+
+
+                    return `
+
+                        <div
+                            class="article-card relative bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden flex flex-col sm:flex-row group tech-glow"
+                        >
+
+                            <!-- Checkbox -->
+                            <div class="absolute top-3 left-3 z-20 bg-white/80 rounded backdrop-blur-sm p-1 leading-none">
+
+                                <input
+                                    type="checkbox"
+                                    class="article-checkbox w-5 h-5 accent-dyve-accent border-gray-300 rounded cursor-pointer"
+                                    onchange="toggleSelect(${originalIndex}, this)"
+                                    id="check-${originalIndex}"
+                                    ${isChecked}
+                                    aria-label="Select ${safeTitle}"
+                                >
+
+                            </div>
+
+
+                            <!-- Thumbnail -->
+                            <div class="thumbnail-container sm:w-48 h-48 sm:h-auto flex-shrink-0 bg-gray-100">
+
+                                <img
+                                    src="${safeImage}"
+                                    alt="${safeTitle}"
+                                    class="w-full h-full object-cover"
+                                    loading="lazy"
+                                    onerror="this.src='${fallbackImg}'"
+                                >
+
+                            </div>
+
+
+                            <!-- Content -->
+                            <div class="flex-1 p-5 flex flex-col justify-between">
+
+                                <div>
+
+                                    <div class="flex items-center gap-2 mb-2 flex-wrap">
+
+                                        <span
+                                            class="inline-block px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider rounded border ${badgeClass}"
+                                        >
+                                            ${escapeHtml(article.tag || 'TECH')}
+                                        </span>
+
+                                        <span class="text-xs text-gray-500 font-medium">
+                                            ${escapeHtml(categoryLabel)}
+                                        </span>
+
+                                        <span class="text-xs text-emerald-600 font-semibold">
+                                            • TECH
+                                        </span>
+
+                                    </div>
+
+
+                                    <h3 class="text-lg font-bold text-gray-900 leading-tight mb-2 line-clamp-2 group-hover:text-emerald-600 transition-colors">
+
+                                        <a
+                                            href="${viewUrl}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="hover:underline decoration-dyve-accent decoration-2 underline-offset-2"
+                                        >
+                                            ${safeTitle}
+                                        </a>
+
+                                    </h3>
+
+
+                                    <p class="text-sm text-gray-600 line-clamp-2 mb-3">
+                                        ${safeDesc}
+                                    </p>
+
+                                </div>
+
+
+                                <div class="flex items-center justify-between pt-3 border-t border-gray-100 gap-3">
+
+                                    <div class="flex items-center gap-3 text-xs text-gray-500 min-w-0">
+
+                                        <span class="flex items-center gap-1 whitespace-nowrap">
+
+                                            <svg
+                                                class="w-3.5 h-3.5"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                                ></path>
+                                            </svg>
+
+                                            ${dateStr}
+
+                                        </span>
+
+                                        <span>•</span>
+
+                                        <span class="truncate max-w-[120px]">
+                                            ${escapeHtml(article.author || 'Dyve Tech')}
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="flex items-center gap-1 flex-shrink-0">
+
+                                        <!-- Edit -->
+                                        <button
+                                            onclick="editArticle(${originalIndex})"
+                                            class="p-2 text-gray-400 hover:text-dyve-accent hover:bg-dyve-accent/10 rounded-lg transition-all"
+                                            title="Edit in Dyve Tech Editor"
+                                            aria-label="Edit ${safeTitle}"
+                                        >
+
+                                            <svg
+                                                class="w-4 h-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                ></path>
+                                            </svg>
+
+                                        </button>
+
+
+                                        <!-- Delete -->
+                                        <button
+                                            onclick="deleteArticle(${originalIndex})"
+                                            class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                                            title="Delete Tech Article"
+                                            aria-label="Delete ${safeTitle}"
+                                        >
+
+                                            <svg
+                                                class="w-4 h-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 011 1v3M4 7h16"
+                                                ></path>
+                                            </svg>
+
+                                        </button>
+
+
+                                        <!-- View Live -->
+                                        <a
+                                            href="${viewUrl}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="p-2 text-gray-400 hover:text-dyve-accent hover:bg-dyve-accent/10 rounded-lg transition-all"
+                                            title="View Live"
+                                            aria-label="View ${safeTitle} live"
+                                        >
+
+                                            <svg
+                                                class="w-4 h-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                                ></path>
+                                            </svg>
+
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            ).join('');
+    }
+
+
+    /* ============================================================
+       BULK ACTIONS
+       ============================================================ */
+
+    function toggleSelect(index, checkbox) {
+
+        if (checkbox.checked) {
+
+            if (selectedIndices.length >= 5) {
+
+                checkbox.checked = false;
+
+                showToast(
+                    'You can only select up to 5 articles at once.'
+                );
+
+                return;
+            }
+
+            if (
+                !selectedIndices.includes(index)
+            ) {
+
+                selectedIndices.push(index);
+            }
+
+        } else {
+
+            selectedIndices =
+                selectedIndices.filter(
+                    i => i !== index
+                );
+        }
+
+        updateBulkActionBar();
+    }
+
+
+    function updateBulkActionBar() {
+
+        const bar =
+            document.getElementById(
+                'bulkActionBar'
+            );
+
+        const count =
+            document.getElementById(
+                'bulkCount'
+            );
+
+        if (!bar || !count) {
+            return;
+        }
+
+
+        if (selectedIndices.length > 0) {
+
+            bar.classList.remove(
+                'hidden'
+            );
+
+            void bar.offsetWidth;
+
+            bar.classList.remove(
+                '-translate-y-10',
+                'opacity-0'
+            );
+
+            count.textContent =
+                `${selectedIndices.length} selected (Max 5)`;
+
+        } else {
+
+            bar.classList.add(
+                '-translate-y-10',
+                'opacity-0'
+            );
+
+            setTimeout(() => {
+
+                if (
+                    selectedIndices.length === 0
+                ) {
+
+                    bar.classList.add(
+                        'hidden'
+                    );
+                }
+
+            }, 300);
+        }
+    }
+
+
+    function clearSelection() {
+
+        selectedIndices = [];
+
+        document
+            .querySelectorAll(
+                '.article-checkbox'
+            )
+            .forEach(
+                checkbox =>
+                    checkbox.checked = false
+            );
+
+        updateBulkActionBar();
+    }
+
+
+    /* ============================================================
+       BULK DELETE
+       ============================================================ */
+
+    async function bulkDelete() {
+
+        if (
+            selectedIndices.length === 0
+        ) {
+            return;
+        }
+
+
+        const confirmed =
+            window.confirm(
+                `Are you sure you want to permanently delete ${selectedIndices.length} Dyve Tech article${selectedIndices.length !== 1 ? 's' : ''}?\n\nThis will remove the records from assets/tech-articles.json.\n\nThis action cannot be undone.`
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        const config =
+            getGitHubConfig();
+
+
+        if (
+            !config.token ||
+            !config.repo
+        ) {
+
+            showToast(
+                'GitHub is not configured.'
+            );
+
+            return;
+        }
+
+
+        showToast(
+            'Deleting selected Tech articles...'
+        );
+
+
+        try {
+
+            const database =
+                await getTechDatabaseWithSha(
+                    config
+                );
+
+
+            /*
+             * Validate selected indices before mutating.
+             */
+            const validIndices =
+                selectedIndices
+                    .filter(
+                        index =>
+                            index >= 0 &&
+                            index < database.articles.length &&
+                            isTechArticle(
+                                database.articles[index]
+                            )
+                    )
+                    .sort(
+                        (a, b) =>
+                            b - a
+                    );
+
+
+            if (
+                validIndices.length === 0
+            ) {
+
+                throw new Error(
+                    'No valid Dyve Tech records were selected.'
+                );
+            }
+
+
+            const deletedArticles =
+                [];
+
+
+            validIndices.forEach(
+                index => {
+
+                    const deleted =
+                        database.articles.splice(
+                            index,
+                            1
+                        )[0];
+
+                    if (deleted) {
+                        deletedArticles.push(
+                            deleted
+                        );
+                    }
+                }
+            );
+
+
+            const nextContent =
+                JSON.stringify(
+                    database.articles,
+                    null,
+                    2
+                );
+
+
+            const jsonBase64 =
+                utf8ToBase64(
+                    nextContent
+                );
+
+
+            const updateRes =
+                await fetch(
+                    `https://api.github.com/repos/${config.repo}/contents/${TECH_DATABASE_PATH}`,
+                    {
+                        method: 'PUT',
+
+                        headers: {
+                            'Authorization': `token ${config.token}`,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/vnd.github+json'
+                        },
+
+                        body: JSON.stringify({
+                            message:
+                                `chore: delete ${deletedArticles.length} Dyve Tech article${deletedArticles.length !== 1 ? 's' : ''}`,
+
+                            content:
+                                jsonBase64,
+
+                            sha:
+                                database.sha,
+
+                            branch:
+                                config.branch
+                        })
+                    }
+                );
+
+
+            if (!updateRes.ok) {
+
+                let errorMessage =
+                    `Failed to save Tech database: ${updateRes.status}`;
+
+                try {
+
+                    const errorData =
+                        await updateRes.json();
+
+                    if (
+                        errorData?.message
+                    ) {
+
+                        errorMessage +=
+                            ` - ${errorData.message}`;
+                    }
+
+                } catch (_) {}
+
+                throw new Error(
+                    errorMessage
+                );
+            }
+
+
+            showToast(
+                `${deletedArticles.length} Tech article${deletedArticles.length !== 1 ? 's' : ''} deleted successfully.`
+            );
+
+
+            clearSelection();
+
+            await loadPublishedArticles();
+
+        } catch (error) {
+
+            console.error(
+                'Bulk Tech delete error:',
+                error
+            );
+
+            showToast(
+                `Error deleting Tech articles: ${error.message}`,
+                6000
+            );
+        }
+    }
+
+
+    /* ============================================================
+       SEARCH
+       ============================================================ */
+
+    document
+        .getElementById('searchInput')
+        ?.addEventListener(
+            'input',
+            (e) => {
+
+                const term =
+                    e.target.value
+                        .toLowerCase()
+                        .trim();
+
+
+                if (!term) {
+
+                    filteredArticles =
+                        [...allArticles];
+
+                } else {
+
+                    filteredArticles =
+                        allArticles.filter(
+                            article => {
+
+                                const haystack =
+                                    [
+                                        article.title,
+                                        article.desc,
+                                        article.category,
+                                        article.tag,
+                                        article.author,
+                                        article.seoTitle,
+                                        article.focusKeyword
+                                    ]
+                                        .filter(Boolean)
+                                        .join(' ')
+                                        .toLowerCase();
+
+                                return haystack.includes(
+                                    term
+                                );
+                            }
+                        );
+                }
+
+
+                renderArticles(
+                    filteredArticles
+                );
+            }
+        );
+
+
+    /* ============================================================
+       EDIT — DYVE TECH ONLY
+       ============================================================ */
+
+    function editArticle(index) {
+
+        if (
+            index < 0 ||
+            index >= allArticles.length
+        ) {
+
+            showToast(
+                'Tech article not found.'
+            );
+
+            return;
+        }
+
+
+        const article =
+            allArticles[index];
+
+
+        /*
+         * Absolute safety boundary.
+         */
+        if (
+            !isTechArticle(article)
+        ) {
+
+            showToast(
+                'This record is not a valid Dyve Tech article.'
+            );
+
+            return;
+        }
+
+
+        const editData = {
+
+            title:
+                article.title || '',
+
+            desc:
+                article.desc || '',
+
+            category:
+                article.category || '',
+
+            tag:
+                article.tag || '',
+
+            meta:
+                article.meta || '',
+
+            image:
+                article.image || '',
+
+            page:
+                'tech',
+
+            index:
+                index,
+
+            slug:
+                article.url
+                    ? article.url
+                        .replace(
+                            /^.*\/(.*)\.html$/,
+                            '$1'
+                        )
+                    : '',
+
+            url:
+                article.url || '',
+
+            delta:
+                article.delta || null,
+
+            content:
+                article.content || null,
+
+            date:
+                article.date || '',
+
+            author:
+                article.author || '',
+
+            readTime:
+                article.readTime || 4,
+
+            seoTitle:
+                article.seoTitle || '',
+
+            focusKeyword:
+                article.focusKeyword || '',
+
+            keywords:
+                Array.isArray(article.keywords)
+                    ? article.keywords
+                    : (article.keywords || ''),
+
+            sourceUrl:
+                article.sourceUrl || '',
+
+            modified:
+                article.modified || ''
+
+        };
+
+
+        try {
+
+            localStorage.setItem(
+                EDIT_KEY,
+                JSON.stringify(editData)
+            );
+
+
+            showToast(
+                'Opening in Dyve Tech Editor...'
+            );
+
+
+            setTimeout(
+                () => {
+
+                    window.location.href =
+                        `${TECH_EDITOR_ROUTE}?mode=edit`;
+
+                },
+                400
+            );
+
+        } catch (error) {
+
+            showToast(
+                `Error preparing Tech article: ${error.message}`
+            );
+        }
+    }
+
+
+    /* ============================================================
+       DELETE SINGLE TECH ARTICLE
+       ============================================================ */
+
+    async function deleteArticle(index) {
+
+        if (
+            index < 0 ||
+            index >= allArticles.length
+        ) {
+
+            showToast(
+                'Tech article not found.'
+            );
+
+            return;
+        }
+
+
+        const article =
+            allArticles[index];
+
+
+        if (
+            !isTechArticle(article)
+        ) {
+
+            showToast(
+                'This record is not a valid Dyve Tech article.'
+            );
+
+            return;
+        }
+
+
+        const confirmed =
+            window.confirm(
+                `Are you sure you want to permanently delete this Dyve Tech article?\n\n"${article.title || 'Untitled'}"\n\nThis will remove the record from assets/tech-articles.json.\n\nThis action cannot be undone.`
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        const config =
+            getGitHubConfig();
+
+
+        if (
+            !config.token ||
+            !config.repo
+        ) {
+
+            showToast(
+                'GitHub is not configured.'
+            );
+
+            return;
+        }
+
+
+        showToast(
+            'Deleting Tech article...'
+        );
+
+
+        try {
+
+            const database =
+                await getTechDatabaseWithSha(
+                    config
+                );
+
+
+            /*
+             * Never trust the stale UI index blindly.
+             *
+             * Match by URL first because URL is the canonical identity
+             * of a published Tech article.
+             */
+            const targetUrl =
+                normalizeUrl(article);
+
+
+            let targetIndex =
+                database.articles.findIndex(
+                    item =>
+                        normalizeUrl(item) ===
+                        targetUrl
+                );
+
+
+            /*
+             * Fallback to title if the URL is unavailable.
+             */
+            if (
+                targetIndex === -1
+            ) {
+
+                targetIndex =
+                    database.articles.findIndex(
+                        item =>
+                            String(
+                                item?.title || ''
+                            ).trim() ===
+                            String(
+                                article?.title || ''
+                            ).trim()
+                    );
+            }
+
+
+            if (
+                targetIndex === -1
+            ) {
+
+                throw new Error(
+                    'The Tech article could not be found in tech-articles.json. It may already have been deleted.'
+                );
+            }
+
+
+            const target =
+                database.articles[
+                    targetIndex
+                ];
+
+
+            if (
+                !isTechArticle(target)
+            ) {
+
+                throw new Error(
+                    'Refusing to delete a non-Tech record.'
+                );
+            }
+
+
+            const deleted =
+                database.articles.splice(
+                    targetIndex,
+                    1
+                )[0];
+
+
+            const nextContent =
+                JSON.stringify(
+                    database.articles,
+                    null,
+                    2
+                );
+
+
+            const jsonBase64 =
+                utf8ToBase64(
+                    nextContent
+                );
+
+
+            const updateRes =
+                await fetch(
+                    `https://api.github.com/repos/${config.repo}/contents/${TECH_DATABASE_PATH}`,
+                    {
+                        method: 'PUT',
+
+                        headers: {
+                            'Authorization': `token ${config.token}`,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/vnd.github+json'
+                        },
+
+                        body: JSON.stringify({
+
+                            message:
+                                `chore: delete Dyve Tech article - ${deleted.title || 'Untitled'}`,
+
+                            content:
+                                jsonBase64,
+
+                            sha:
+                                database.sha,
+
+                            branch:
+                                config.branch
+                        })
+                    }
+                );
+
+
+            if (!updateRes.ok) {
+
+                let errorMessage =
+                    `Failed to save Tech database: ${updateRes.status}`;
+
+                try {
+
+                    const errorData =
+                        await updateRes.json();
+
+                    if (
+                        errorData?.message
+                    ) {
+
+                        errorMessage +=
+                            ` - ${errorData.message}`;
+                    }
+
+                } catch (_) {}
+
+                throw new Error(
+                    errorMessage
+                );
+            }
+
+
+            showToast(
+                'Tech article deleted successfully.'
+            );
+
+
+            await loadPublishedArticles();
+
+        } catch (error) {
+
+            console.error(
+                'Tech delete error:',
+                error
+            );
+
+            showToast(
+                `Error deleting Tech article: ${error.message}`,
+                6000
+            );
+        }
+    }
+
+
+    /* ============================================================
+       STICKY MENU
+       ============================================================ */
+
+    const menuToggle =
+        document.getElementById(
+            'menuToggle'
+        );
+
+    const slideMenu =
+        document.getElementById(
+            'slideMenu'
+        );
+
+    const menuIcon =
+        document.getElementById(
+            'menuIcon'
+        );
+
+    let menuOpen = false;
+
+
+    if (
+        menuToggle &&
+        slideMenu &&
+        menuIcon
+    ) {
+
+        menuToggle.addEventListener(
+            'click',
+            (e) => {
+
+                e.stopPropagation();
+
+                menuOpen =
+                    !menuOpen;
+
+
+                menuToggle.setAttribute(
+                    'aria-expanded',
+                    String(menuOpen)
+                );
+
+
+                if (menuOpen) {
+
+                    slideMenu.classList.remove(
+                        'translate-y-4',
+                        'opacity-0',
+                        'pointer-events-none'
+                    );
+
+                    slideMenu.classList.add(
+                        'translate-y-0',
+                        'opacity-100',
+                        'pointer-events-auto'
+                    );
+
+                    menuIcon.style.transform =
+                        'rotate(90deg)';
+
+                } else {
+
+                    slideMenu.classList.add(
+                        'translate-y-4',
+                        'opacity-0',
+                        'pointer-events-none'
+                    );
+
+                    slideMenu.classList.remove(
+                        'translate-y-0',
+                        'opacity-100',
+                        'pointer-events-auto'
+                    );
+
+                    menuIcon.style.transform =
+                        'rotate(0deg)';
+                }
+            }
+        );
+
+
+        document.addEventListener(
+            'click',
+            (e) => {
+
+                const stickyMenu =
+                    document.getElementById(
+                        'stickyMenu'
+                    );
+
+                if (
+                    stickyMenu &&
+                    !stickyMenu.contains(
+                        e.target
+                    ) &&
+                    menuOpen
+                ) {
+
+                    menuToggle.click();
+                }
+            }
+        );
+
+
+        document.addEventListener(
+            'keydown',
+            (e) => {
+
+                if (
+                    e.key === 'Escape' &&
+                    menuOpen
+                ) {
+
+                    menuToggle.click();
+                }
+            }
+        );
+    }
+
+
+    /* ============================================================
+       REFRESH
+       ============================================================ */
+
+    document
+        .getElementById('refreshBtn')
+        ?.addEventListener(
+            'click',
+            () => {
+
+                loadPublishedArticles();
+
+                showToast(
+                    'Refreshing Dyve Tech publications...'
+                );
+            }
+        );
+
+
+    /* ============================================================
+       INITIALIZE
+       ============================================================ */
+
+    loadPublishedArticles();
+
+</script>
+
+
+<script>
+
+    if (
+        'serviceWorker' in navigator
+    ) {
+
+        window.addEventListener(
+            'load',
+            function () {
+
+                navigator.serviceWorker
+                    .register('sw.js')
+                    .catch(
+                        function () {}
+                    );
+
+            }
+        );
+    }
+
+</script>
+
+</body>
+</html>
