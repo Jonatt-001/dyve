@@ -99,6 +99,55 @@
         .build-log .warn { color: #a16207; }
         .build-log .error { color: #b91c1c; }
         .build-log .info { color: #475569; }
+        .migration-panel {
+            border: 1px solid #dbe2ea;
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            box-shadow: 0 12px 30px rgba(15,23,42,.05);
+        }
+        .migration-stat {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 10px 12px;
+            background: #fff;
+        }
+        .migration-stat strong {
+            display: block;
+            font-size: 18px;
+            line-height: 1.1;
+            color: #111827;
+        }
+        .migration-stat span {
+            display: block;
+            margin-top: 3px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            font-weight: 800;
+            color: #94a3b8;
+        }
+        .migration-state {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            color: #475569;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+        .migration-state .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #94a3b8;
+        }
+        .migration-state.ready .dot { background: #22c55e; }
+        .migration-state.busy .dot { background: #eab308; }
+        .migration-state.error .dot { background: #ef4444; }
         .build-stat {
             background: #fff;
             border: 1px solid #e5e7eb;
@@ -305,6 +354,46 @@
                     <div class="info">[build] Waiting for a build...</div>
                 </div>
             </div>
+
+            <div class="migration-panel rounded-xl p-5">
+                <div class="flex items-start justify-between gap-4 mb-4">
+                    <div>
+                        <div class="text-[10px] uppercase tracking-[.18em] font-extrabold text-[#f15e50]">One-time data migration</div>
+                        <h3 class="text-base font-extrabold text-[#00001a] mt-1">Separate Dyve Tech from HackaX</h3>
+                        <p class="text-xs text-gray-500 mt-1 leading-relaxed">
+                            Reads the legacy <code>assets/articles.json</code>, keeps HackaX/security records there, extracts only valid Dyve Tech records into <code>assets/tech-articles.json</code>, preserves every record and existing URL, and publishes both files together in one atomic commit.
+                        </p>
+                    </div>
+                    <span id="migrationState" class="migration-state">
+                        <span class="dot"></span>
+                        <span id="migrationStateText">Not run</span>
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
+                    <div class="migration-stat"><strong id="migrationSourceCount">0</strong><span>Legacy records</span></div>
+                    <div class="migration-stat"><strong id="migrationTechCount">0</strong><span>Tech records</span></div>
+                    <div class="migration-stat"><strong id="migrationHackaXCount">0</strong><span>HackaX records</span></div>
+                    <div class="migration-stat"><strong id="migrationSkippedCount">0</strong><span>Skipped</span></div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <button id="runDataMigrationBtn" class="flex-1 px-4 py-3 text-sm font-extrabold text-white bg-[#00001a] rounded-lg hover:bg-[#17172e] transition">
+                        Run One-Time Separation
+                    </button>
+                    <button id="migrationPreviewBtn" class="px-4 py-3 text-sm font-bold text-[#f15e50] border border-[#f15e50] bg-[#fef3f2] rounded-lg hover:bg-[#f15e50] hover:text-white transition">
+                        Inspect Data
+                    </button>
+                </div>
+
+                <div id="migrationLog" class="build-log bg-slate-950 text-slate-200 rounded-lg p-3 mt-3">
+                    <div class="info">[migration] Waiting. Run this once before publishing new Tech articles.</div>
+                </div>
+
+                <p class="text-[11px] text-gray-500 mt-3 leading-relaxed">
+                    This migration is idempotent: running it again will not duplicate records. It does not delete article HTML, editor deltas, images, or existing URLs.
+                </p>
+            </div>
         </div>
 
         <div class="space-y-6">
@@ -433,7 +522,7 @@
         <span>Smart Internal Links</span>
     </button>
     <div class="fab-drawer-divider"></div>
-    <button class="fab-drawer-item" onclick="window.location.href='../published.html'">
+    <button class="fab-drawer-item" onclick="window.location.href='published.html'">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
         <span>Published</span>
     </button>
@@ -901,27 +990,65 @@ async function fetchArticlesJson(config) {
     const metaRes = await request(techPath);
 
     if (metaRes.status === 404) {
-        // One-time compatibility path: existing Tech records may still live in
-        // the former shared assets/articles.json. We only import records whose
-        // publication page is explicitly Tech and never write back to the shared file.
+        /*
+         * Compatibility mode is deliberately strict.
+         *
+         * The old shared assets/articles.json may contain both Dyve Tech and
+         * HackaX records. We NEVER use page="tech" by itself as proof of
+         * Tech ownership because the legacy file contains security records
+         * that were incorrectly marked page="tech".
+         *
+         * A record is accepted by the Tech Editor only when its category is
+         * an actual Dyve Tech category.
+         */
         const legacyRes = await request('assets/articles.json');
-        if (legacyRes.status === 404) return { articles: [], sha: '', migratedFromLegacy: false };
+
+        if (legacyRes.status === 404) {
+            return { articles: [], sha: '', migratedFromLegacy: false };
+        }
+
         if (!legacyRes.ok) {
             const err = await legacyRes.json().catch(() => ({}));
             throw new Error(`Legacy articles.json fetch failed: ${err.message || legacyRes.status}`);
         }
+
         const legacyMeta = await legacyRes.json();
         let legacyText = legacyMeta.content ? b64ToUtf8(legacyMeta.content) : '';
+
         if (!legacyText && legacyMeta.download_url) {
-            const rawRes = await fetchWithRetry(legacyMeta.download_url, { headers: authHeaders(config) });
+            const rawRes = await fetchWithRetry(
+                legacyMeta.download_url,
+                { headers: authHeaders(config) }
+            );
+
             if (rawRes.ok) legacyText = await rawRes.text();
         }
+
         let legacyArticles = [];
-        try { legacyArticles = legacyText.trim() ? JSON.parse(legacyText) : []; }
-        catch (e) { throw new Error('Legacy articles.json is corrupt — restore it before migrating Tech content.'); }
+
+        try {
+            legacyArticles = legacyText.trim() ? JSON.parse(legacyText) : [];
+        } catch (e) {
+            throw new Error('Legacy assets/articles.json is corrupt. Run the One-Time Data Migration after restoring the JSON array.');
+        }
+
         if (!Array.isArray(legacyArticles)) legacyArticles = [];
-        const techArticles = legacyArticles.filter(a => a && String(a.page || '').toLowerCase() === 'tech');
-        return { articles: techArticles, sha: '', migratedFromLegacy: techArticles.length > 0 };
+
+        const techArticles = legacyArticles.filter(article => {
+            if (!article || typeof article !== 'object') return false;
+
+            const category = String(
+                article.category || article.meta || ''
+            ).trim().toLowerCase();
+
+            return Boolean(CATEGORY_CONFIG[category]);
+        });
+
+        return {
+            articles: techArticles,
+            sha: '',
+            migratedFromLegacy: techArticles.length > 0
+        };
     }
 
     if (!metaRes.ok) {
@@ -932,39 +1059,63 @@ async function fetchArticlesJson(config) {
     const meta = await metaRes.json();
     const sha = meta.sha || '';
     let text = '';
-    if (meta.content) text = b64ToUtf8(meta.content);
-    else if (meta.download_url) {
-        const rawRes = await fetchWithRetry(meta.download_url, { headers: authHeaders(config) });
+
+    if (meta.content) {
+        text = b64ToUtf8(meta.content);
+    } else if (meta.download_url) {
+        const rawRes = await fetchWithRetry(
+            meta.download_url,
+            { headers: authHeaders(config) }
+        );
+
         if (rawRes.ok) text = await rawRes.text();
     }
 
     text = (text || '').trim();
-    if (!text) return { articles: [], sha, migratedFromLegacy: false };
+
+    if (!text) {
+        return {
+            articles: [],
+            sha,
+            migratedFromLegacy: false
+        };
+    }
 
     let articles;
-    try { articles = JSON.parse(text); }
-    catch (e) { throw new Error('tech-articles.json is corrupt — restore or reset it on GitHub'); }
+
+    try {
+        articles = JSON.parse(text);
+    } catch (e) {
+        throw new Error('tech-articles.json is corrupt. Restore it as a JSON array before publishing.');
+    }
+
     if (!Array.isArray(articles)) articles = [];
 
-    // Strict publishing boundary:
-    // Tech Editor may only operate on records explicitly owned by Dyve Tech.
-    // Older Tech records that predate the `page` field are accepted only when
-    // their category is a known Dyve Tech category. HackaX/security records
-    // without a page marker are intentionally excluded.
+    /*
+     * Hard publishing boundary:
+     * - page="tech" is required for canonical Tech records.
+     * - category must also exist in CATEGORY_CONFIG.
+     *
+     * This prevents HackaX/security records from ever reaching
+     * validateArticleSet(), even if an old record accidentally has
+     * page="tech".
+     */
     const techArticles = articles.filter(article => {
         if (!article || typeof article !== 'object') return false;
 
         const page = String(article.page || '').trim().toLowerCase();
+        const category = String(
+            article.category || article.meta || ''
+        ).trim().toLowerCase();
 
-        if (page === 'tech') return true;
-        if (page) return false;
-
-        const category = String(article.category || article.meta || '').trim().toLowerCase();
-
-        return Boolean(CATEGORY_CONFIG[category]);
+        return page === 'tech' && Boolean(CATEGORY_CONFIG[category]);
     });
 
-    return { articles: techArticles, sha, migratedFromLegacy: false };
+    return {
+        articles: techArticles,
+        sha,
+        migratedFromLegacy: false
+    };
 }
 
 async function githubCommitFiles(config, files, message) {
@@ -1227,7 +1378,7 @@ function validateArticleSet(articles) {
         }
 
         if (!CATEGORY_CONFIG[article.category]) {
-            errors.push(`Record #${number} "${article.title}": category "${article.category}" is not a Dyve Tech category. Tech Editor cannot publish HackaX/security categories.`);
+            errors.push(`Record #${number} "${article.title}": category "${article.category}" is outside the Dyve Tech publishing boundary. Remove it from tech-articles.json or run the One-Time Data Migration.`);
         }
 
         const expectedPrefix = 'tech/';
@@ -2135,6 +2286,389 @@ async function prepareLegacyRouteMigration(config, migration) {
     };
 }
 
+function setMigrationState(state, textValue) {
+    const badge = document.getElementById('migrationState');
+    const label = document.getElementById('migrationStateText');
+
+    if (!badge || !label) return;
+
+    badge.classList.remove('ready', 'busy', 'error');
+
+    if (state) badge.classList.add(state);
+
+    label.textContent = textValue;
+}
+
+function logMigration(message, type = 'info') {
+    const log = document.getElementById('migrationLog');
+
+    if (!log) return;
+
+    const row = document.createElement('div');
+    row.className = type;
+    row.textContent = `[migration] ${message}`;
+
+    log.appendChild(row);
+    log.scrollTop = log.scrollHeight;
+}
+
+function resetMigrationLog() {
+    const log = document.getElementById('migrationLog');
+
+    if (log) {
+        log.innerHTML = '';
+    }
+}
+
+function updateMigrationStats(sourceCount, techCount, hackaXCount, skippedCount) {
+    const values = {
+        migrationSourceCount: sourceCount,
+        migrationTechCount: techCount,
+        migrationHackaXCount: hackaXCount,
+        migrationSkippedCount: skippedCount
+    };
+
+    Object.entries(values).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+
+        if (element) {
+            element.textContent = String(value);
+        }
+    });
+}
+
+function isDyveTechRecord(article) {
+    if (!article || typeof article !== 'object') return false;
+
+    const category = String(
+        article.category || article.meta || ''
+    ).trim().toLowerCase();
+
+    return Boolean(CATEGORY_CONFIG[category]);
+}
+
+function dedupeArticleRecords(records) {
+    const seen = new Set();
+    const result = [];
+
+    for (const raw of Array.isArray(records) ? records : []) {
+        if (!raw || typeof raw !== 'object') continue;
+
+        const url = String(raw.url || '').replace(/^\/+/, '').trim().toLowerCase();
+        const title = String(raw.title || '').trim().toLowerCase();
+
+        const key = url || title;
+
+        if (!key || seen.has(key)) continue;
+
+        seen.add(key);
+        result.push(raw);
+    }
+
+    return result;
+}
+
+async function fetchLegacyArticlesForMigration(config, path = 'assets/articles.json') {
+    const response = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
+        { headers: authHeaders(config) }
+    );
+
+    if (response.status === 404) {
+        return {
+            exists: false,
+            sha: '',
+            articles: []
+        };
+    }
+
+    if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(`Unable to read ${path}: ${error.message || response.status}`);
+    }
+
+    const meta = await response.json();
+
+    let content = meta.content ? b64ToUtf8(meta.content) : '';
+
+    if (!content && meta.download_url) {
+        const rawRes = await fetchWithRetry(
+            meta.download_url,
+            { headers: authHeaders(config) }
+        );
+
+        if (rawRes.ok) {
+            content = await rawRes.text();
+        }
+    }
+
+    let articles;
+
+    try {
+        articles = content.trim() ? JSON.parse(content) : [];
+    } catch (error) {
+        throw new Error(`${path} is not valid JSON. Expected a JSON array.`);
+    }
+
+    if (!Array.isArray(articles)) {
+        throw new Error(`${path} is not a JSON array. Migration stopped before publishing anything.`);
+    }
+
+    return {
+        exists: true,
+        sha: meta.sha || '',
+        articles
+    };
+}
+
+async function inspectDataMigration() {
+    const config = getGitHubConfig();
+
+    if (!config.token || !config.repo) {
+        showToast('GitHub is not configured. Open Settings first.');
+        return;
+    }
+
+    if (!navigator.onLine) {
+        showToast('You appear offline — data inspection cannot run.');
+        return;
+    }
+
+    resetMigrationLog();
+    setMigrationState('busy', 'Inspecting');
+
+    try {
+        const legacy = await fetchLegacyArticlesForMigration(config);
+
+        if (!legacy.exists) {
+            updateMigrationStats(0, 0, 0, 0);
+            logMigration('assets/articles.json does not exist yet.', 'warn');
+            logMigration('Nothing was changed. Create/restore the legacy file before running the migration.', 'warn');
+            setMigrationState('ready', 'Waiting');
+            return;
+        }
+
+        const tech = legacy.articles.filter(isDyveTechRecord);
+        const hackaX = legacy.articles.filter(article => !isDyveTechRecord(article));
+        const skipped = legacy.articles.length - tech.length - hackaX.length;
+
+        updateMigrationStats(
+            legacy.articles.length,
+            tech.length,
+            hackaX.length,
+            skipped
+        );
+
+        logMigration(`Found ${legacy.articles.length} record(s) in assets/articles.json.`, 'ok');
+        logMigration(`Tech boundary: ${tech.length} record(s).`, 'ok');
+        logMigration(`HackaX/security boundary: ${hackaX.length} record(s).`, 'ok');
+        logMigration('Inspection only. No files were changed.', 'info');
+
+        setMigrationState('ready', 'Ready');
+    } catch (error) {
+        setMigrationState('error', 'Inspection failed');
+        logMigration(error.message || 'Unable to inspect the legacy data.', 'error');
+        showToast(`Migration inspection failed: ${error.message}`, 7000);
+    }
+}
+
+async function runOneTimeDataMigration() {
+    const config = getGitHubConfig();
+
+    if (!config.token || !config.repo) {
+        showToast('GitHub is not configured. Open Settings first.');
+        return;
+    }
+
+    if (!navigator.onLine) {
+        showToast('You appear offline — data migration cannot run.');
+        return;
+    }
+
+    if (buildInProgress) {
+        showToast('A static build is already running.');
+        return;
+    }
+
+    const confirmed = window.confirm(
+        'Run the one-time Dyve data separation now?\n\n' +
+        'This will:\n' +
+        '• read assets/articles.json\n' +
+        '• keep HackaX/security records in assets/articles.json\n' +
+        '• extract only valid Dyve Tech records into assets/tech-articles.json\n' +
+        '• preserve all existing records, content references and URLs\n' +
+        '• write both JSON files in one atomic Git commit\n\n' +
+        'No files will be changed if validation fails.'
+    );
+
+    if (!confirmed) {
+        resetMigrationLog();
+        logMigration('Migration cancelled. No files changed.', 'info');
+        setMigrationState('ready', 'Cancelled');
+        return;
+    }
+
+    setBuildStatus('busy', 'Running data migration');
+    setMigrationState('busy', 'Migrating');
+    resetMigrationLog();
+
+    try {
+        const legacy = await fetchLegacyArticlesForMigration(config, 'assets/articles.json');
+
+        if (!legacy.exists) {
+            throw new Error('assets/articles.json was not found. Restore the legacy database before running the one-time separation.');
+        }
+
+        const source = legacy.articles;
+
+        if (!source.length) {
+            throw new Error('assets/articles.json contains an empty array. Nothing can be migrated.');
+        }
+
+        const sourceTech = source.filter(isDyveTechRecord);
+        const sourceHackaX = source.filter(article => !isDyveTechRecord(article));
+
+        /*
+         * If tech-articles.json already exists, merge it with the extracted
+         * Tech records instead of replacing good data. Existing Tech records
+         * win on duplicate URL/title keys.
+         */
+        let existingTech = [];
+
+        try {
+            const techFile = await fetchLegacyArticlesForMigration(
+                config,
+                STATIC_BUILD_CONFIG.articleDataPath
+            );
+
+            if (techFile.exists) {
+                existingTech = techFile.articles;
+                logMigration(
+                    `Existing tech-articles.json found with ${existingTech.length} record(s); merging safely.`,
+                    'info'
+                );
+            }
+        } catch (error) {
+            throw new Error(`Could not inspect existing tech-articles.json: ${error.message}`);
+        }
+
+        const mergedTech = dedupeArticleRecords([
+            ...existingTech,
+            ...sourceTech
+        ]).map(article => ({
+            ...article,
+            page: 'tech',
+            category: String(article.category || article.meta || '').trim().toLowerCase(),
+            meta: String(article.category || article.meta || '').trim().toLowerCase()
+        }));
+
+        const hackaXRecords = dedupeArticleRecords(sourceHackaX);
+
+        const invalidTech = mergedTech.filter(article => !isDyveTechRecord(article));
+
+        if (invalidTech.length) {
+            throw new Error(
+                `Migration safety check failed: ${invalidTech.length} record(s) would enter tech-articles.json without a valid Dyve Tech category. Nothing was published.`
+            );
+        }
+
+        const duplicateTechUrls = new Set();
+        const duplicateTechErrors = [];
+
+        mergedTech.forEach((article, index) => {
+            const url = String(article.url || '').replace(/^\/+/, '').trim();
+
+            if (!url) {
+                duplicateTechErrors.push(`Tech record #${index + 1} has no URL.`);
+                return;
+            }
+
+            if (duplicateTechUrls.has(url)) {
+                duplicateTechErrors.push(`Duplicate Tech URL: ${url}`);
+                return;
+            }
+
+            duplicateTechUrls.add(url);
+        });
+
+        if (duplicateTechErrors.length) {
+            throw new Error(
+                `Migration safety check failed:\n\n${duplicateTechErrors.join('\n')}`
+            );
+        }
+
+        updateMigrationStats(
+            source.length,
+            sourceTech.length,
+            sourceHackaX.length,
+            source.length - sourceTech.length - sourceHackaX.length
+        );
+
+        logMigration(`Read ${source.length} legacy record(s).`, 'ok');
+        logMigration(`Separated ${sourceTech.length} Dyve Tech record(s).`, 'ok');
+        logMigration(`Kept ${sourceHackaX.length} HackaX/security record(s).`, 'ok');
+        logMigration(`Final Tech database: ${mergedTech.length} record(s).`, 'ok');
+        logMigration(`Final HackaX database: ${hackaXRecords.length} record(s).`, 'ok');
+
+        const techJson = JSON.stringify(
+            sortArticles(mergedTech),
+            null,
+            2
+        );
+
+        const hackaXJson = JSON.stringify(
+            hackaXRecords,
+            null,
+            2
+        );
+
+        const files = [
+            {
+                path: 'assets/tech-articles.json',
+                content: techJson
+            },
+            {
+                path: 'assets/articles.json',
+                content: hackaXJson
+            }
+        ];
+
+        /*
+         * Do not touch article HTML, editor deltas, images, redirects or
+         * any other HackaX/Tech asset during this separation. This is a data
+         * ownership migration only. Existing URLs therefore remain live.
+         */
+        logMigration('Safety validation passed.', 'ok');
+        logMigration('Prepared both databases for one atomic commit.', 'info');
+        logMigration('No article HTML, deltas, images or URLs will be deleted.', 'info');
+        logMigration('Publishing migration...', 'info');
+
+        const commit = await githubCommitFiles(
+            config,
+            files,
+            'chore: separate Dyve Tech and HackaX article databases'
+        );
+
+        setBuildStatus('ready', 'Data migration complete');
+        setMigrationState('ready', 'Complete');
+
+        logMigration(`Atomic migration published: ${commit.sha.slice(0, 7)}.`, 'ok');
+        logMigration('assets/tech-articles.json now belongs exclusively to Dyve Tech.', 'ok');
+        logMigration('assets/articles.json now belongs exclusively to HackaX/security.', 'ok');
+        logMigration('Future Tech publications will no longer validate HackaX/security categories.', 'ok');
+
+        showToast(
+            `Migration complete: ${mergedTech.length} Tech + ${hackaXRecords.length} HackaX records separated.`
+        );
+    } catch (error) {
+        setBuildStatus('error', 'Data migration failed');
+        setMigrationState('error', 'Failed');
+        logMigration(error.message || 'Data migration failed.', 'error');
+        logMigration('Nothing was published by the migration after this validation failure.', 'error');
+        showToast(`Data migration failed: ${error.message}`, 9000);
+    }
+}
+
 async function rebuildStaticIndex() {
     const config = getGitHubConfig();
 
@@ -2813,6 +3347,11 @@ async function publishArticle() {
     if (!description) return showToast('Meta Description is required.');
     if (!category) return showToast('Please select a category.');
 
+    if (!CATEGORY_CONFIG[String(category).trim().toLowerCase()]) {
+        showToast('This category is not part of Dyve Tech. Choose a valid Tech category.');
+        return;
+    }
+
     const slug = generateSlug(title);
     if (!slug) return showToast('A valid article slug could not be generated.');
 
@@ -2959,7 +3498,7 @@ async function publishArticle() {
 
         setTimeout(() => {
             clearForm();
-            window.location.href = '../published.html';
+            window.location.href = 'published.html';
         }, 900);
     } catch (error) {
         setBuildStatus('error', 'Publication rejected');
@@ -3524,7 +4063,10 @@ function runPublicationPreflight(){
     if(m.sourceUrl){try{const u=new URL(m.sourceUrl);if(!/^https?:$/i.test(u.protocol))throw new Error('protocol');pass('Source attribution','Primary source URL is valid and will be exposed on the published article.');}catch{fail('Source attribution','Primary source URL is not a valid HTTP(S) URL.');}}
     else warn('Source attribution','No primary source URL supplied. Recommended for news, breach and research reporting.');
     const proposedSlug=generateSlug(m.title);if(!proposedSlug)fail('Canonical route','A valid canonical slug cannot be generated from this headline.');else pass('Canonical route',`Will publish at /tech/${proposedSlug}.html.`);
-    if(!document.getElementById('categorySelect').value)fail('Category','Select a publication category.');else pass('Category','Publication category selected.');
+    const selectedCategory=String(document.getElementById('categorySelect').value||'').trim().toLowerCase();
+    if(!selectedCategory)fail('Category','Select a publication category.');
+    else if(!CATEGORY_CONFIG[selectedCategory])fail('Category','The selected category is not a valid Dyve Tech category.');
+    else pass('Category',`Publication category "${selectedCategory}" is valid for Dyve Tech.`);
     if(!document.getElementById('contentTypeSelect').value)warn('Content type','Select News, Analysis, Guide, Tutorial, Review or Opinion.');
     if(!document.getElementById('imageUrlInput').value.trim())warn('Featured image','No custom featured image; the static builder will use its default image.');
     const score=Math.max(0,Math.min(100,Math.round(checks.reduce((t,i)=>t+(i.type==='pass'?1:i.type==='warn'?.45:0),0)/Math.max(1,checks.length)*100)));
@@ -3888,6 +4430,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('groqRefreshBtn').addEventListener('click', checkGroqConnection);
     document.getElementById('previewBuildBtn').addEventListener('click', previewBuild);
     document.getElementById('migrateRoutesBtn').addEventListener('click', migrateLegacyRoutesAndPublish);
+    document.getElementById('runDataMigrationBtn').addEventListener('click', runOneTimeDataMigration);
+    document.getElementById('migrationPreviewBtn').addEventListener('click', inspectDataMigration);
 
     document.getElementById('fabBuild').addEventListener('click', () => {
         closeFabDrawer();
