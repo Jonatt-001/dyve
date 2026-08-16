@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Settings — Dyve Tech</title>
+    <title>Settings — Tech Editor</title>
 
     <meta name="theme-color" content="#020403">
     <meta name="description" content="Configure Dyve Tech publishing, AI, media and repository settings.">
@@ -412,7 +412,7 @@
                         <a
                             href="../index.html"
                             class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#f15e50] to-orange-600 flex items-center justify-center mr-3 flex-shrink-0"
-                            aria-label="Back to Dyve Tech editor"
+                            aria-label="Back to Tech Editor"
                         >
                             <svg
                                 class="w-5 h-5 text-white"
@@ -431,7 +431,7 @@
 
                         <div class="min-w-0">
                             <div class="text-[10px] uppercase tracking-[0.18em] text-gray-500 font-bold">
-                                DYVE TECH
+                                DYVE|TECH
                             </div>
 
                             <div class="text-sm font-semibold text-white truncate">
@@ -906,7 +906,7 @@
 
                                     <p class="text-[11px] leading-relaxed text-gray-400">
                                         The Groq key is stored in this browser under
-                                        <span class="text-gray-300 font-medium">dyve-settings</span>
+                                        <span class="text-gray-300 font-medium">dyve-tech-settings</span>
                                         and is shared across Dyve pages using the same storage.
                                     </p>
 
@@ -1360,7 +1360,7 @@
                                     </div>
 
                                     <p class="text-xs text-gray-500 mt-1 max-w-xl leading-relaxed">
-                                        This removes the stored dyve-settings object from this browser. It does not delete your GitHub repository, published content, Cloudinary assets or Groq account.
+                                        This removes the stored dyve-tech-settings object from this browser. It does not delete your GitHub repository, published content, Cloudinary assets or Groq account.
                                     </p>
                                 </div>
 
@@ -1485,7 +1485,7 @@
            CONSTANTS
         ======================================================== */
 
-        const STORAGE_KEY = 'dyve-settings';
+        const STORAGE_KEY = 'dyve-tech-settings';
 
         const FIELD_IDS = [
             'githubToken',
@@ -2889,7 +2889,7 @@
                     url;
 
                 link.download =
-                    'dyve-settings.json';
+                    'dyve-tech-settings.json';
 
                 document.body.appendChild(
                     link
