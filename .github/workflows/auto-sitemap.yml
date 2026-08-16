@@ -4,18 +4,41 @@ on:
   push:
     branches: [main]
     paths:
+      # ============================================================
+      # DATABASES
+      # ============================================================
+
+      # Dyve HackaX
       - 'assets/articles.json'
+
+      # Dyve Tech
+      - 'assets/tech-articles.json'
+
+      # ============================================================
+      # DYVE TECH
+      # Technology News & Intelligence
+      # ============================================================
+
       - 'tech/**'
-      - 'ai/**'
-      - 'developers/**'
-      - 'coding/**'
+
+      # ============================================================
+      # DYVE HACKAX
+      # Cybersecurity Intelligence
+      # ============================================================
+
       - 'cybersecurity/**'
+      - 'threat-intelligence/**'
       - 'breaches/**'
       - 'dark-web/**'
       - 'ransomware/**'
       - 'threat-actors/**'
+      - 'vulnerabilities/**'
+      - 'malware/**'
+      - 'ai-security/**'
+      - 'cloud-security/**'
       - 'signals/**'
       - 'analysis/**'
+
   workflow_dispatch:
 
 concurrency:
@@ -32,18 +55,31 @@ jobs:
     timeout-minutes: 10
 
     steps:
+
+      # ============================================================
+      # CHECKOUT
+      # ============================================================
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: main
 
+      # ============================================================
+      # NODE
+      # ============================================================
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: Validate articles and generate sitemap.xml
+      # ============================================================
+      # VALIDATE BOTH EDITOR DATABASES
+      # ============================================================
+
+      - name: Validate Dyve Tech & HackaX databases and generate sitemap
         shell: bash
         run: |
           set -euo pipefail
@@ -54,38 +90,224 @@ jobs:
 
           const SITE_URL = 'https://dyve.online';
           const SITE_HOST = 'dyve.online';
-          const ARTICLES_FILE = 'assets/articles.json';
-          const TODAY = new Date().toISOString().slice(0, 10);
 
-          const SECTION_CONFIG = {
-            tech: { index: '/tech/', priority: '0.9' },
-            ai: { index: '/ai/', priority: '0.8' },
-            developers: { index: '/developers/', priority: '0.8' },
-            coding: { index: '/coding/', priority: '0.8' },
-            cybersecurity: { index: '/cybersecurity/', priority: '0.9' }
+          /*
+           * ============================================================
+           * DATABASES
+           * ============================================================
+           *
+           * Dyve Tech:
+           * assets/tech-articles.json
+           *
+           * Dyve HackaX:
+           * assets/articles.json
+           */
+
+          const DATABASES = {
+            tech: {
+              name: 'Dyve Tech',
+              description: 'Technology News & Intelligence',
+              file: 'assets/tech-articles.json',
+
+              sections: {
+                tech: {
+                  index: '/tech/',
+                  priority: '0.9'
+                }
+              }
+            },
+
+            hackax: {
+              name: 'Dyve HackaX',
+              description: 'Cybersecurity Intelligence',
+              file: 'assets/articles.json',
+
+              sections: {
+                cybersecurity: {
+                  index: '/cybersecurity/',
+                  priority: '0.9'
+                },
+
+                'threat-intelligence': {
+                  index: '/threat-intelligence/',
+                  priority: '0.9'
+                },
+
+                breaches: {
+                  index: '/breaches/',
+                  priority: '0.9'
+                },
+
+                'dark-web': {
+                  index: '/dark-web/',
+                  priority: '0.9'
+                },
+
+                ransomware: {
+                  index: '/ransomware/',
+                  priority: '0.9'
+                },
+
+                'threat-actors': {
+                  index: '/threat-actors/',
+                  priority: '0.8'
+                },
+
+                vulnerabilities: {
+                  index: '/vulnerabilities/',
+                  priority: '0.9'
+                },
+
+                malware: {
+                  index: '/malware/',
+                  priority: '0.9'
+                },
+
+                'ai-security': {
+                  index: '/ai-security/',
+                  priority: '0.8'
+                },
+
+                'cloud-security': {
+                  index: '/cloud-security/',
+                  priority: '0.8'
+                },
+
+                signals: {
+                  index: '/signals/',
+                  priority: '0.8'
+                },
+
+                analysis: {
+                  index: '/analysis/',
+                  priority: '0.8'
+                }
+              }
+            }
           };
 
+          /*
+           * ============================================================
+           * STATIC PUBLIC PAGES
+           * ============================================================
+           */
+
           const STATIC_PAGES = [
-            { url: '/', priority: '1.0' },
-            { url: '/tech/', priority: '0.9' },
-            { url: '/breaches/', priority: '0.9' },
-            { url: '/dark-web/', priority: '0.9' },
-            { url: '/ransomware/', priority: '0.9' },
-            { url: '/threat-actors/', priority: '0.8' },
-            { url: '/signals/', priority: '0.8' },
-            { url: '/analysis/', priority: '0.8' },
-            { url: '/ai/', priority: '0.8' },
-            { url: '/developers/', priority: '0.8' },
-            { url: '/coding/', priority: '0.8' },
-            { url: '/cybersecurity/', priority: '0.9' },
-            { url: '/about-us/', priority: '0.5' },
-            { url: '/faq/', priority: '0.5' },
-            { url: '/privacy-policy/', priority: '0.3' },
-            { url: '/terms-of-service/', priority: '0.3' }
+            {
+              url: '/',
+              priority: '1.0'
+            },
+
+            /*
+             * Dyve Tech
+             */
+            {
+              url: '/tech/',
+              priority: '0.9'
+            },
+
+            /*
+             * Dyve HackaX
+             */
+            {
+              url: '/cybersecurity/',
+              priority: '0.9'
+            },
+            {
+              url: '/threat-intelligence/',
+              priority: '0.9'
+            },
+            {
+              url: '/breaches/',
+              priority: '0.9'
+            },
+            {
+              url: '/dark-web/',
+              priority: '0.9'
+            },
+            {
+              url: '/ransomware/',
+              priority: '0.9'
+            },
+            {
+              url: '/threat-actors/',
+              priority: '0.8'
+            },
+            {
+              url: '/vulnerabilities/',
+              priority: '0.9'
+            },
+            {
+              url: '/malware/',
+              priority: '0.9'
+            },
+            {
+              url: '/ai-security/',
+              priority: '0.8'
+            },
+            {
+              url: '/cloud-security/',
+              priority: '0.8'
+            },
+            {
+              url: '/signals/',
+              priority: '0.8'
+            },
+            {
+              url: '/analysis/',
+              priority: '0.8'
+            },
+
+            /*
+             * Corporate / utility
+             */
+            {
+              url: '/about-us/',
+              priority: '0.5'
+            },
+            {
+              url: '/faq/',
+              priority: '0.5'
+            },
+            {
+              url: '/privacy-policy/',
+              priority: '0.3'
+            },
+            {
+              url: '/terms-of-service/',
+              priority: '0.3'
+            }
           ];
 
+          /*
+           * ============================================================
+           * LEGACY ROUTES
+           * ============================================================
+           *
+           * These are explicitly forbidden from becoming canonical
+           * editorial destinations.
+           */
+
+          const LEGACY_SECTIONS = [
+            'article',
+            'ai',
+            'developers',
+            'coding'
+          ];
+
+          /*
+           * ============================================================
+           * HELPERS
+           * ============================================================
+           */
+
           function fail(message) {
-            console.error(`\nSEO AUTHORITY BUILD FAILED\n${message}\n`);
+            console.error('');
+            console.error('==============================================');
+            console.error('SEO AUTHORITY BUILD FAILED');
+            console.error('==============================================');
+            console.error(message);
+            console.error('');
             process.exit(1);
           }
 
@@ -99,178 +321,485 @@ jobs:
           }
 
           function normalizePath(value) {
-            return String(value || '').replace(/^\/+/, '').trim();
+            return String(value || '')
+              .replace(/^\/+/, '')
+              .trim();
           }
 
           function normalizeUrl(value) {
             const raw = String(value || '').trim();
 
-            if (!raw) throw new Error('Empty article URL.');
+            if (!raw) {
+              throw new Error('Empty article URL.');
+            }
 
+            /*
+             * Absolute URL
+             */
             if (/^https?:\/\//i.test(raw)) {
-              const parsed = new URL(raw);
+              let parsed;
+
+              try {
+                parsed = new URL(raw);
+              } catch {
+                throw new Error(
+                  `Invalid article URL: ${raw}`
+                );
+              }
 
               if (parsed.protocol !== 'https:') {
-                throw new Error(`Non-HTTPS article URL: ${raw}`);
+                throw new Error(
+                  `Non-HTTPS article URL: ${raw}`
+                );
               }
 
               if (parsed.hostname !== SITE_HOST) {
-                throw new Error(`Article URL points outside ${SITE_HOST}: ${raw}`);
+                throw new Error(
+                  `Article URL points outside ${SITE_HOST}: ${raw}`
+                );
               }
 
               if (parsed.search || parsed.hash) {
-                throw new Error(`Article URL contains query/hash: ${raw}`);
+                throw new Error(
+                  `Article URL contains query/hash: ${raw}`
+                );
               }
 
-              return parsed.pathname.replace(/^\/+/, '');
+              return parsed.pathname
+                .replace(/^\/+/, '');
             }
 
             return normalizePath(raw);
           }
 
           function validDate(value) {
-            const date = String(value || '').slice(0, 10);
+            const date = String(value || '')
+              .slice(0, 10);
 
-            if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+              return false;
+            }
 
-            const parsed = new Date(`${date}T00:00:00Z`);
-            return !Number.isNaN(parsed.getTime()) &&
-              parsed.toISOString().slice(0, 10) === date;
+            const parsed = new Date(
+              `${date}T00:00:00Z`
+            );
+
+            return (
+              !Number.isNaN(parsed.getTime()) &&
+              parsed.toISOString().slice(0, 10) === date
+            );
           }
 
           function articleFileExists(articlePath) {
             const absolute = path.resolve(articlePath);
             const root = process.cwd() + path.sep;
 
-            if (!absolute.startsWith(root)) return false;
-            return fs.existsSync(absolute) && fs.statSync(absolute).isFile();
-          }
-
-          if (!fs.existsSync(ARTICLES_FILE)) {
-            fail(`Missing ${ARTICLES_FILE}.`);
-          }
-
-          let articles;
-
-          try {
-            articles = JSON.parse(fs.readFileSync(ARTICLES_FILE, 'utf8'));
-          } catch (error) {
-            fail(`Unable to parse ${ARTICLES_FILE}: ${error.message}`);
-          }
-
-          if (!Array.isArray(articles)) {
-            fail(`${ARTICLES_FILE} must contain a JSON array.`);
-          }
-
-          const errors = [];
-          const canonicalUrls = new Set();
-          const sitemapUrls = new Map();
-
-          for (const page of STATIC_PAGES) {
-            sitemapUrls.set(`${SITE_URL}${page.url}`, {
-              lastmod: TODAY,
-              priority: page.priority
-            });
-          }
-
-          articles.forEach((article, index) => {
-            const number = index + 1;
-
-            if (!article || typeof article !== 'object') {
-              errors.push(`Record #${number}: article must be an object.`);
-              return;
+            /*
+             * Prevent path traversal outside repository.
+             */
+            if (!absolute.startsWith(root)) {
+              return false;
             }
 
-            const title = String(article.title || '').trim();
-            const page = String(article.page || '').trim().toLowerCase();
+            return (
+              fs.existsSync(absolute) &&
+              fs.statSync(absolute).isFile()
+            );
+          }
 
-            let articlePath;
+          function loadDatabase(database) {
+            if (!fs.existsSync(database.file)) {
+              fail(
+                `${database.name}: missing database file ` +
+                `${database.file}`
+              );
+            }
 
             try {
-              articlePath = normalizeUrl(article.url);
+              return JSON.parse(
+                fs.readFileSync(
+                  database.file,
+                  'utf8'
+                )
+              );
             } catch (error) {
-              errors.push(`Record #${number} "${title || 'Untitled'}": ${error.message}`);
-              return;
-            }
-
-            if (!title) {
-              errors.push(`Record #${number}: missing title.`);
-            }
-
-            if (!page) {
-              errors.push(`Record #${number} "${title}": missing page.`);
-              return;
-            }
-
-            if (!SECTION_CONFIG[page]) {
-              errors.push(
-                `Record #${number} "${title}": unsupported page "${page}". ` +
-                `Expected: ${Object.keys(SECTION_CONFIG).join(', ')}.`
+              fail(
+                `${database.name}: unable to parse ` +
+                `${database.file}: ${error.message}`
               );
-              return;
             }
-
-            const expectedPrefix = `${page}/`;
-            const slug = articlePath.slice(expectedPrefix.length);
-            const canonicalSlugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*\.html$/;
-
-            if (!articlePath.startsWith(expectedPrefix)) {
-              errors.push(
-                `Record #${number} "${title}": URL "${articlePath}" does not belong to page="${page}". ` +
-                `Expected "${expectedPrefix}<slug>.html".`
-              );
-              return;
-            }
-
-            if (!canonicalSlugPattern.test(slug)) {
-              errors.push(
-                `Record #${number} "${title}": invalid canonical article route "${articlePath}". ` +
-                `Expected "${page}/<slug>.html".`
-              );
-              return;
-            }
-
-            if (!articleFileExists(articlePath)) {
-              errors.push(
-                `Record #${number} "${title}": canonical file is missing: ${articlePath}`
-              );
-              return;
-            }
-
-            if (canonicalUrls.has(articlePath)) {
-              errors.push(
-                `Record #${number} "${title}": duplicate canonical URL "${articlePath}".`
-              );
-              return;
-            }
-
-            canonicalUrls.add(articlePath);
-
-            const articleDate = validDate(article.date)
-              ? String(article.date).slice(0, 10)
-              : TODAY;
-
-            sitemapUrls.set(`${SITE_URL}/${articlePath}`, {
-              lastmod: articleDate,
-              priority: SECTION_CONFIG[page].priority
-            });
-          });
-
-          if (errors.length) {
-            console.error(`\nFound ${errors.length} SEO integrity error(s):\n`);
-            errors.forEach((error, index) => console.error(`${index + 1}. ${error}`));
-            fail('Repository failed canonical SEO validation. No SEO assets will be committed.');
           }
 
-          const xmlRows = Array.from(sitemapUrls.entries())
-            .sort(([a], [b]) => a.localeCompare(b))
-            .map(([loc, meta]) => [
-              '  <url>',
-              `    <loc>${escapeXml(loc)}</loc>`,
-              `    <lastmod>${escapeXml(meta.lastmod)}</lastmod>`,
-              `    <priority>${escapeXml(meta.priority)}</priority>`,
-              '  </url>'
-            ].join('\n'));
+          /*
+           * ============================================================
+           * INITIAL STATE
+           * ============================================================
+           */
+
+          const errors = [];
+
+          /*
+           * Canonical URLs across BOTH publications.
+           *
+           * This is intentionally global.
+           *
+           * Dyve Tech and HackaX must never publish the same
+           * canonical URL.
+           */
+
+          const globalCanonicalUrls = new Set();
+
+          /*
+           * Sitemap map.
+           *
+           * URL -> metadata
+           */
+
+          const sitemapUrls = new Map();
+
+          /*
+           * ============================================================
+           * STATIC URLS
+           * ============================================================
+           */
+
+          for (const page of STATIC_PAGES) {
+            sitemapUrls.set(
+              `${SITE_URL}${page.url}`,
+              {
+                priority: page.priority
+              }
+            );
+          }
+
+          /*
+           * ============================================================
+           * DATABASE VALIDATION
+           * ============================================================
+           */
+
+          const statistics = {
+            tech: {
+              records: 0,
+              valid: 0,
+              canonical: 0
+            },
+
+            hackax: {
+              records: 0,
+              valid: 0,
+              canonical: 0
+            }
+          };
+
+          for (const [databaseKey, database] of Object.entries(DATABASES)) {
+            const articles = loadDatabase(database);
+
+            if (!Array.isArray(articles)) {
+              errors.push(
+                `${database.name}: ${database.file} ` +
+                `must contain a JSON array.`
+              );
+              continue;
+            }
+
+            statistics[databaseKey].records = articles.length;
+
+            /*
+             * ----------------------------------------------------------
+             * ARTICLE RECORDS
+             * ----------------------------------------------------------
+             */
+
+            articles.forEach((article, index) => {
+              const number = index + 1;
+
+              if (!article || typeof article !== 'object') {
+                errors.push(
+                  `${database.name} record #${number}: ` +
+                  `article must be an object.`
+                );
+                return;
+              }
+
+              const title = String(
+                article.title || ''
+              ).trim();
+
+              const page = String(
+                article.page || ''
+              )
+                .trim()
+                .toLowerCase();
+
+              /*
+               * --------------------------------------------------------
+               * TITLE
+               * --------------------------------------------------------
+               */
+
+              if (!title) {
+                errors.push(
+                  `${database.name} record #${number}: ` +
+                  `missing title.`
+                );
+              }
+
+              /*
+               * --------------------------------------------------------
+               * PAGE
+               * --------------------------------------------------------
+               */
+
+              if (!page) {
+                errors.push(
+                  `${database.name} record #${number} ` +
+                  `"${title || 'Untitled'}": missing page.`
+                );
+                return;
+              }
+
+              /*
+               * --------------------------------------------------------
+               * SECTION VALIDATION
+               * --------------------------------------------------------
+               */
+
+              if (!database.sections[page]) {
+                errors.push(
+                  `${database.name} record #${number} ` +
+                  `"${title || 'Untitled'}": unsupported page ` +
+                  `"${page}". Expected: ` +
+                  `${Object.keys(database.sections).join(', ')}.`
+                );
+                return;
+              }
+
+              /*
+               * --------------------------------------------------------
+               * URL NORMALIZATION
+               * --------------------------------------------------------
+               */
+
+              let articlePath;
+
+              try {
+                articlePath = normalizeUrl(
+                  article.url
+                );
+              } catch (error) {
+                errors.push(
+                  `${database.name} record #${number} ` +
+                  `"${title || 'Untitled'}": ${error.message}`
+                );
+                return;
+              }
+
+              /*
+               * --------------------------------------------------------
+               * LEGACY ROUTE PROTECTION
+               * --------------------------------------------------------
+               */
+
+              const firstSegment = articlePath
+                .split('/')[0]
+                .toLowerCase();
+
+              if (
+                LEGACY_SECTIONS.includes(firstSegment)
+              ) {
+                errors.push(
+                  `${database.name} record #${number} ` +
+                  `"${title || 'Untitled'}": legacy route ` +
+                  `"${articlePath}" detected.`
+                );
+                return;
+              }
+
+              /*
+               * --------------------------------------------------------
+               * EXPECTED CANONICAL PREFIX
+               * --------------------------------------------------------
+               */
+
+              const expectedPrefix = `${page}/`;
+
+              if (!articlePath.startsWith(expectedPrefix)) {
+                errors.push(
+                  `${database.name} record #${number} ` +
+                  `"${title || 'Untitled'}": URL ` +
+                  `"${articlePath}" does not belong to ` +
+                  `page="${page}". Expected ` +
+                  `"${expectedPrefix}<slug>.html".`
+                );
+                return;
+              }
+
+              /*
+               * --------------------------------------------------------
+               * SLUG
+               * --------------------------------------------------------
+               */
+
+              const slug = articlePath.slice(
+                expectedPrefix.length
+              );
+
+              const canonicalSlugPattern =
+                /^[a-z0-9]+(?:-[a-z0-9]+)*\.html$/;
+
+              if (
+                !canonicalSlugPattern.test(slug)
+              ) {
+                errors.push(
+                  `${database.name} record #${number} ` +
+                  `"${title || 'Untitled'}": invalid canonical ` +
+                  `route "${articlePath}". Expected ` +
+                  `"${page}/<slug>.html".`
+                );
+                return;
+              }
+
+              /*
+               * --------------------------------------------------------
+               * PHYSICAL FILE
+               * --------------------------------------------------------
+               */
+
+              if (!articleFileExists(articlePath)) {
+                errors.push(
+                  `${database.name} record #${number} ` +
+                  `"${title || 'Untitled'}": canonical file ` +
+                  `is missing: ${articlePath}`
+                );
+                return;
+              }
+
+              /*
+               * --------------------------------------------------------
+               * GLOBAL DUPLICATE CHECK
+               * --------------------------------------------------------
+               */
+
+              if (
+                globalCanonicalUrls.has(articlePath)
+              ) {
+                errors.push(
+                  `${database.name} record #${number} ` +
+                  `"${title || 'Untitled'}": duplicate canonical ` +
+                  `URL "${articlePath}".`
+                );
+                return;
+              }
+
+              globalCanonicalUrls.add(
+                articlePath
+              );
+
+              /*
+               * --------------------------------------------------------
+               * DATE
+               * --------------------------------------------------------
+               */
+
+              const articleDate = validDate(
+                article.date
+              )
+                ? String(article.date).slice(0, 10)
+                : null;
+
+              /*
+               * --------------------------------------------------------
+               * ADD TO SITEMAP
+               * --------------------------------------------------------
+               */
+
+              const sitemapEntry = {
+                priority:
+                  database.sections[page].priority
+              };
+
+              if (articleDate) {
+                sitemapEntry.lastmod = articleDate;
+              }
+
+              sitemapUrls.set(
+                `${SITE_URL}/${articlePath}`,
+                sitemapEntry
+              );
+
+              /*
+               * --------------------------------------------------------
+               * STATISTICS
+               * --------------------------------------------------------
+               */
+
+              statistics[databaseKey].valid += 1;
+              statistics[databaseKey].canonical += 1;
+            });
+          }
+
+          /*
+           * ============================================================
+           * BUILD FAILURE
+           * ============================================================
+           */
+
+          if (errors.length) {
+            console.error('');
+
+            console.error(
+              `Found ${errors.length} SEO integrity error(s):`
+            );
+
+            console.error('');
+
+            errors.forEach((error, index) => {
+              console.error(
+                `${index + 1}. ${error}`
+              );
+            });
+
+            fail(
+              'Repository failed SEO authority validation. ' +
+              'No SEO assets will be committed.'
+            );
+          }
+
+          /*
+           * ============================================================
+           * GENERATE SITEMAP XML
+           * ============================================================
+           */
+
+          const xmlRows = Array.from(
+            sitemapUrls.entries()
+          )
+            .sort(
+              ([a], [b]) => a.localeCompare(b)
+            )
+            .map(([loc, meta]) => {
+              const rows = [
+                '  <url>',
+                `    <loc>${escapeXml(loc)}</loc>`
+              ];
+
+              if (meta.lastmod) {
+                rows.push(
+                  `    <lastmod>${escapeXml(meta.lastmod)}</lastmod>`
+                );
+              }
+
+              rows.push(
+                `    <priority>${escapeXml(meta.priority)}</priority>`
+              );
+
+              rows.push(
+                '  </url>'
+              );
+
+              return rows.join('\n');
+            });
 
           const sitemap = [
             '<?xml version="1.0" encoding="UTF-8"?>',
@@ -280,15 +809,117 @@ jobs:
             ''
           ].join('\n');
 
-          fs.writeFileSync('sitemap.xml', sitemap, 'utf8');
+          fs.writeFileSync(
+            'sitemap.xml',
+            sitemap,
+            'utf8'
+          );
 
-          console.log(`Validated ${articles.length} article record(s).`);
-          console.log(`Validated ${canonicalUrls.size} canonical article URL(s).`);
-          console.log(`Generated sitemap.xml with ${sitemapUrls.size} URL(s).`);
-          console.log('Canonical route validation: PASS');
-          console.log('Article file existence validation: PASS');
-          console.log('Duplicate URL validation: PASS');
-          NODE
+          /*
+           * ============================================================
+           * BUILD REPORT
+           * ============================================================
+           */
+
+          console.log('');
+          console.log('==============================================');
+          console.log('DYVE SEO AUTHORITY ENGINE');
+          console.log('==============================================');
+          console.log('');
+
+          console.log(
+            'DYVE TECH'
+          );
+
+          console.log(
+            'Technology News & Intelligence'
+          );
+
+          console.log(
+            `Database: ${DATABASES.tech.file}`
+          );
+
+          console.log(
+            `Records: ${statistics.tech.records}`
+          );
+
+          console.log(
+            `Validated: ${statistics.tech.valid}`
+          );
+
+          console.log('');
+
+          console.log(
+            'DYVE HACKAX'
+          );
+
+          console.log(
+            'Cybersecurity Intelligence'
+          );
+
+          console.log(
+            `Database: ${DATABASES.hackax.file}`
+          );
+
+          console.log(
+            `Records: ${statistics.hackax.records}`
+          );
+
+          console.log(
+            `Validated: ${statistics.hackax.valid}`
+          );
+
+          console.log('');
+
+          console.log(
+            `Global canonical URLs: ${globalCanonicalUrls.size}`
+          );
+
+          console.log(
+            `Total sitemap URLs: ${sitemapUrls.size}`
+          );
+
+          console.log('');
+
+          console.log(
+            'Dyve Tech database validation: PASS'
+          );
+
+          console.log(
+            'Dyve HackaX database validation: PASS'
+          );
+
+          console.log(
+            'Canonical route validation: PASS'
+          );
+
+          console.log(
+            'Article file existence validation: PASS'
+          );
+
+          console.log(
+            'Duplicate canonical validation: PASS'
+          );
+
+          console.log(
+            'Legacy route protection: PASS'
+          );
+
+          console.log(
+            'Editorial taxonomy validation: PASS'
+          );
+
+          console.log(
+            'Sitemap generation: PASS'
+          );
+
+          console.log('');
+          console.log('==============================================');
+        NODE
+
+      # ============================================================
+      # ROBOTS
+      # ============================================================
 
       - name: Generate production robots.txt
         shell: bash
@@ -303,32 +934,59 @@ jobs:
           User-agent: *
           Allow: /
 
-          # Canonical editorial sections
+          # ==========================================================
+          # DYVE TECH
+          # Technology News & Intelligence
+          # ==========================================================
+
           Allow: /tech/
-          Allow: /ai/
-          Allow: /developers/
-          Allow: /coding/
+
+          # ==========================================================
+          # DYVE HACKAX
+          # Cybersecurity Intelligence
+          # ==========================================================
+
           Allow: /cybersecurity/
+          Allow: /threat-intelligence/
           Allow: /breaches/
           Allow: /dark-web/
           Allow: /ransomware/
           Allow: /threat-actors/
+          Allow: /vulnerabilities/
+          Allow: /malware/
+          Allow: /ai-security/
+          Allow: /cloud-security/
           Allow: /signals/
           Allow: /analysis/
 
-          # Private/application surfaces
+          # ==========================================================
+          # PRIVATE / APPLICATION SURFACES
+          # ==========================================================
+
           Disallow: /admin/
           Disallow: /editor/
           Disallow: /tech-editor/
+          Disallow: /hackax-editor/
+
+          # Internal application data
           Disallow: /assets/deltas/
 
-          # Internal article database is not a public search destination.
+          # Internal article databases
           Disallow: /assets/articles.json
+          Disallow: /assets/tech-articles.json
+
+          # ==========================================================
+          # SITEMAP
+          # ==========================================================
 
           Sitemap: https://dyve.online/sitemap.xml
           EOF
 
-          echo 'robots.txt generated.'
+          echo 'Production robots.txt generated.'
+
+      # ============================================================
+      # SITEMAP VALIDATION
+      # ============================================================
 
       - name: Validate sitemap.xml
         shell: bash
@@ -336,61 +994,355 @@ jobs:
           set -euo pipefail
 
           test -s sitemap.xml
-          grep -q '<urlset' sitemap.xml
-          grep -q '<loc>https://dyve.online/tech/</loc>' sitemap.xml
 
-          if grep -Eq '<loc>https://dyve.online/article(/|[^<]*)</loc>' sitemap.xml; then
-            echo 'ERROR: legacy /article/ URL detected in sitemap.xml.'
+          grep -q '<urlset' sitemap.xml
+
+          # ========================================================
+          # DYVE TECH
+          # ========================================================
+
+          grep -q \
+            '<loc>https://dyve.online/tech/</loc>' \
+            sitemap.xml
+
+          # ========================================================
+          # HACKAX CORE
+          # ========================================================
+
+          grep -q \
+            '<loc>https://dyve.online/cybersecurity/</loc>' \
+            sitemap.xml
+
+          grep -q \
+            '<loc>https://dyve.online/threat-intelligence/</loc>' \
+            sitemap.xml
+
+          grep -q \
+            '<loc>https://dyve.online/breaches/</loc>' \
+            sitemap.xml
+
+          grep -q \
+            '<loc>https://dyve.online/dark-web/</loc>' \
+            sitemap.xml
+
+          grep -q \
+            '<loc>https://dyve.online/ransomware/</loc>' \
+            sitemap.xml
+
+          grep -q \
+            '<loc>https://dyve.online/threat-actors/</loc>' \
+            sitemap.xml
+
+          grep -q \
+            '<loc>https://dyve.online/vulnerabilities/</loc>' \
+            sitemap.xml
+
+          grep -q \
+            '<loc>https://dyve.online/malware/</loc>' \
+            sitemap.xml
+
+          grep -q \
+            '<loc>https://dyve.online/ai-security/</loc>' \
+            sitemap.xml
+
+          grep -q \
+            '<loc>https://dyve.online/cloud-security/</loc>' \
+            sitemap.xml
+
+          grep -q \
+            '<loc>https://dyve.online/signals/</loc>' \
+            sitemap.xml
+
+          grep -q \
+            '<loc>https://dyve.online/analysis/</loc>' \
+            sitemap.xml
+
+          # ========================================================
+          # LEGACY ROUTE PROTECTION
+          # ========================================================
+
+          if grep -Eq \
+            '<loc>https://dyve.online/article(/|[^<]*)</loc>' \
+            sitemap.xml; then
+
+            echo \
+              'ERROR: legacy /article/ URL detected in sitemap.xml.'
+
             exit 1
           fi
 
-          if grep -Eq '<loc>https://dyve.online/tech/[^<]*(\?|#)[^<]*</loc>' sitemap.xml; then
-            echo 'ERROR: query/hash URL detected in sitemap.xml.'
+          if grep -Eq \
+            '<loc>https://dyve.online/(ai|developers|coding)/' \
+            sitemap.xml; then
+
+            echo \
+              'ERROR: legacy standalone editorial section detected.'
+
             exit 1
+          fi
+
+          # ========================================================
+          # QUERY / HASH PROTECTION
+          # ========================================================
+
+          if grep -Eq \
+            '<loc>https://dyve.online/[^<]*(\?|#)[^<]*</loc>' \
+            sitemap.xml; then
+
+            echo \
+              'ERROR: query/hash URL detected in sitemap.xml.'
+
+            exit 1
+          fi
+
+          # ========================================================
+          # HTTP PROTECTION
+          # ========================================================
+
+          if grep -Eq \
+            '<loc>http://dyve.online/' \
+            sitemap.xml; then
+
+            echo \
+              'ERROR: HTTP URL detected in sitemap.xml.'
+
+            exit 1
+          fi
+
+          # ========================================================
+          # EXTERNAL HOST PROTECTION
+          # ========================================================
+
+          if grep -Eq \
+            '<loc>https?://(www\.)?[^<]*' \
+            sitemap.xml; then
+
+            if grep -Evq \
+              '<loc>https://dyve.online/' \
+              sitemap.xml; then
+
+              echo \
+                'ERROR: external hostname detected in sitemap.xml.'
+
+              exit 1
+            fi
           fi
 
           echo 'Sitemap structural validation: PASS.'
+
+      # ============================================================
+      # ROBOTS VALIDATION
+      # ============================================================
 
       - name: Validate robots.txt
         shell: bash
         run: |
           set -euo pipefail
 
-          grep -q '^User-agent: \*$' robots.txt
-          grep -q '^Allow: /tech/$' robots.txt
-          grep -q '^Disallow: /admin/$' robots.txt
-          grep -q '^Disallow: /editor/$' robots.txt
-          grep -q '^Sitemap: https://dyve.online/sitemap.xml$' robots.txt
+          # ========================================================
+          # CORE
+          # ========================================================
 
-          if grep -q '^Allow: /article/$' robots.txt; then
-            echo 'ERROR: legacy /article/ allowance detected.'
+          grep -q \
+            '^User-agent: \*$' \
+            robots.txt
+
+          grep -q \
+            '^Allow: /$' \
+            robots.txt
+
+          # ========================================================
+          # DYVE TECH
+          # ========================================================
+
+          grep -q \
+            '^Allow: /tech/$' \
+            robots.txt
+
+          # ========================================================
+          # HACKAX
+          # ========================================================
+
+          grep -q \
+            '^Allow: /cybersecurity/$' \
+            robots.txt
+
+          grep -q \
+            '^Allow: /threat-intelligence/$' \
+            robots.txt
+
+          grep -q \
+            '^Allow: /breaches/$' \
+            robots.txt
+
+          grep -q \
+            '^Allow: /dark-web/$' \
+            robots.txt
+
+          grep -q \
+            '^Allow: /ransomware/$' \
+            robots.txt
+
+          grep -q \
+            '^Allow: /threat-actors/$' \
+            robots.txt
+
+          grep -q \
+            '^Allow: /vulnerabilities/$' \
+            robots.txt
+
+          grep -q \
+            '^Allow: /malware/$' \
+            robots.txt
+
+          grep -q \
+            '^Allow: /ai-security/$' \
+            robots.txt
+
+          grep -q \
+            '^Allow: /cloud-security/$' \
+            robots.txt
+
+          grep -q \
+            '^Allow: /signals/$' \
+            robots.txt
+
+          grep -q \
+            '^Allow: /analysis/$' \
+            robots.txt
+
+          # ========================================================
+          # PRIVATE SURFACES
+          # ========================================================
+
+          grep -q \
+            '^Disallow: /admin/$' \
+            robots.txt
+
+          grep -q \
+            '^Disallow: /editor/$' \
+            robots.txt
+
+          grep -q \
+            '^Disallow: /tech-editor/$' \
+            robots.txt
+
+          grep -q \
+            '^Disallow: /hackax-editor/$' \
+            robots.txt
+
+          # ========================================================
+          # INTERNAL DATA
+          # ========================================================
+
+          grep -q \
+            '^Disallow: /assets/articles.json$' \
+            robots.txt
+
+          grep -q \
+            '^Disallow: /assets/tech-articles.json$' \
+            robots.txt
+
+          grep -q \
+            '^Disallow: /assets/deltas/$' \
+            robots.txt
+
+          # ========================================================
+          # SITEMAP
+          # ========================================================
+
+          grep -q \
+            '^Sitemap: https://dyve.online/sitemap.xml$' \
+            robots.txt
+
+          # ========================================================
+          # LEGACY PROTECTION
+          # ========================================================
+
+          if grep -q \
+            '^Allow: /article/$' \
+            robots.txt; then
+
+            echo \
+              'ERROR: legacy /article/ allowance detected.'
+
+            exit 1
+          fi
+
+          if grep -q \
+            '^Allow: /ai/$' \
+            robots.txt; then
+
+            echo \
+              'ERROR: legacy /ai/ allowance detected.'
+
+            exit 1
+          fi
+
+          if grep -q \
+            '^Allow: /developers/$' \
+            robots.txt; then
+
+            echo \
+              'ERROR: legacy /developers/ allowance detected.'
+
+            exit 1
+          fi
+
+          if grep -q \
+            '^Allow: /coding/$' \
+            robots.txt; then
+
+            echo \
+              'ERROR: legacy /coding/ allowance detected.'
+
             exit 1
           fi
 
           echo 'Robots policy validation: PASS.'
+
+      # ============================================================
+      # COMMIT GENERATED SEO ASSETS
+      # ============================================================
 
       - name: Commit generated SEO assets
         shell: bash
         run: |
           set -euo pipefail
 
-          git config user.name 'Dyve SEO Bot'
-          git config user.email 'bot@dyve.online'
+          git config \
+            user.name \
+            'Dyve SEO Bot'
 
-          git add sitemap.xml robots.txt
+          git config \
+            user.email \
+            'bot@dyve.online'
+
+          git add \
+            sitemap.xml \
+            robots.txt
 
           if git diff --cached --quiet; then
-            echo 'No SEO asset changes detected.'
+            echo \
+              'No SEO asset changes detected.'
+
             exit 0
           fi
 
-          git commit -m 'chore: rebuild Dyve SEO authority assets [bot]'
+          git commit \
+            -m 'chore: rebuild Dyve SEO authority assets [bot]'
 
-          # Protect against a concurrent external push between checkout and commit.
+          # Protect against a concurrent external push.
           git pull --rebase origin main
+
           git push origin HEAD:main
 
-          echo 'SEO assets committed and pushed successfully.'
+          echo \
+            'SEO assets committed and pushed successfully.'
+
+      # ============================================================
+      # GITHUB SUMMARY
+      # ============================================================
 
       - name: Publish SEO build summary
         if: always()
@@ -399,10 +1351,58 @@ jobs:
           {
             echo '## Dyve SEO Authority Engine'
             echo
-            echo '- Canonical article architecture: `/tech/<slug>.html`'
+
+            echo '### Editorial Properties'
+            echo
+            echo '- **Dyve Tech** — Technology News & Intelligence'
+            echo '- **Dyve HackaX** — Cybersecurity Intelligence'
+            echo
+
+            echo '### Databases'
+            echo
+            echo '- Dyve Tech: `assets/tech-articles.json`'
+            echo '- Dyve HackaX: `assets/articles.json`'
+            echo
+
+            echo '### Canonical Architecture'
+            echo
+            echo '- Dyve Tech: `/tech/<slug>.html`'
+            echo '- HackaX: `/cybersecurity/<slug>.html`'
+            echo '- HackaX: `/threat-intelligence/<slug>.html`'
+            echo '- HackaX: `/breaches/<slug>.html`'
+            echo '- HackaX: `/dark-web/<slug>.html`'
+            echo '- HackaX: `/ransomware/<slug>.html`'
+            echo '- HackaX: `/threat-actors/<slug>.html`'
+            echo '- HackaX: `/vulnerabilities/<slug>.html`'
+            echo '- HackaX: `/malware/<slug>.html`'
+            echo '- HackaX: `/ai-security/<slug>.html`'
+            echo '- HackaX: `/cloud-security/<slug>.html`'
+            echo '- HackaX: `/signals/<slug>.html`'
+            echo '- HackaX: `/analysis/<slug>.html`'
+            echo
+
+            echo '### SEO Assets'
+            echo
             echo '- Sitemap: `/sitemap.xml`'
             echo '- Robots: `/robots.txt`'
-            echo '- Legacy `/article/` sitemap URLs: blocked'
-            echo '- Missing canonical article files: blocked'
-            echo '- Duplicate canonical URLs: blocked'
+            echo
+
+            echo '### Integrity Controls'
+            echo
+            echo '- Both editorial databases validated'
+            echo '- Canonical files must exist'
+            echo '- Duplicate canonical URLs blocked'
+            echo '- Cross-publication URL collisions blocked'
+            echo '- Invalid canonical slugs blocked'
+            echo '- Unsupported taxonomy blocked'
+            echo '- Legacy `/article/` routes blocked'
+            echo '- Legacy `/ai/`, `/developers/`, `/coding/` routes blocked'
+            echo '- External canonical hosts blocked'
+            echo '- Non-HTTPS URLs blocked'
+            echo '- Query/hash URLs blocked'
+            echo '- Internal databases excluded from crawling'
+            echo
+            echo '### Status'
+            echo
+            echo 'SEO Authority Engine completed.'
           } >> "$GITHUB_STEP_SUMMARY"
