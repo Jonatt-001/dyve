@@ -4,12 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- ============================================================
+     DYVE HACKAX — ABOUT / ENTITY AUTHORITY PAGE
+     Existing ranking URL intentionally preserved:
+     https://dyve.online/about-us/
+============================================================ -->
+
 <!-- =========================
      PRIMARY SEO
 ========================= -->
 <title>About Dyve HackaX — Cyber Intelligence & Threat Analysis Platform</title>
-<meta name="description" content="Learn about Dyve HackaX, a cyber intelligence platform focused on real-time threat detection, dark web monitoring, breach analysis, and emerging tech vulnerabilities.">
+
+<meta name="description" content="Learn about Dyve HackaX, the cybersecurity intelligence platform covering cyber threats, data breaches, ransomware, dark web activity, threat actors, vulnerabilities, technology and security analysis.">
 <meta name="author" content="Dyve HackaX Intelligence Unit">
+<meta name="keywords" content="about Dyve HackaX, Dyve, HackaX, Dyve cybersecurity, Dyve cyber intelligence, cyber intelligence platform, threat intelligence, cybersecurity analysis, dark web intelligence, breach intelligence, ransomware intelligence, threat actor research">
 
 <!-- =========================
      CANONICAL & ROBOTS
@@ -17,24 +25,28 @@
 <link rel="canonical" href="https://dyve.online/about-us/">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 <meta name="theme-color" content="#020403">
+<meta name="color-scheme" content="dark">
 
 <!-- =========================
      OPEN GRAPH
 ========================= -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="About Dyve HackaX Intelligence Platform">
-<meta property="og:description" content="Discover the mission behind Dyve HackaX and how we track cyber threats, breaches, dark web intelligence, and emerging tech vulnerabilities.">
+<meta property="og:title" content="About Dyve HackaX — Cyber Intelligence & Threat Analysis">
+<meta property="og:description" content="Discover what Dyve HackaX is, what it covers, how its intelligence model works, and how Dyve connects cybersecurity reporting with threat analysis.">
 <meta property="og:url" content="https://dyve.online/about-us/">
 <meta property="og:site_name" content="Dyve HackaX">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://dyve.online/logo.png">
+<meta property="og:image:alt" content="Dyve HackaX cyber intelligence platform">
 
 <!-- =========================
-     TWITTER
+     TWITTER / X
 ========================= -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="About Dyve HackaX">
-<meta name="twitter:description" content="Cyber intelligence, threat analysis, and dark web monitoring platform.">
+<meta name="twitter:title" content="About Dyve HackaX — Cyber Intelligence Platform">
+<meta name="twitter:description" content="Learn about Dyve HackaX, its cybersecurity coverage, intelligence approach, editorial standards and relationship to Dyve.">
 <meta name="twitter:image" content="https://dyve.online/logo.png">
+<meta name="twitter:image:alt" content="Dyve HackaX cyber intelligence platform">
 
 <!-- =========================
      FAVICON
@@ -47,116 +59,454 @@
 ========================= -->
 <link rel="stylesheet" href="../style.css">
 <link rel="stylesheet" href="../divider.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Michroma&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-<!-- =========================
-     SCHEMA STACK (ENHANCED)
-========================= -->
+<!-- ============================================================
+     ENTITY / ABOUT PAGE SCHEMA
+============================================================ -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "AboutPage",
-  "name": "About Dyve HackaX",
+  "@id": "https://dyve.online/about-us/#about-page",
   "url": "https://dyve.online/about-us/",
-  "description": "Information about Dyve HackaX cyber intelligence platform, methodologies, and services.",
+  "name": "About Dyve HackaX",
+  "headline": "About Dyve HackaX — Cyber Intelligence & Threat Analysis Platform",
+  "description": "Information about Dyve HackaX, its cybersecurity intelligence coverage, editorial approach, threat analysis and relationship to the broader Dyve entity.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@id": "https://dyve.online/#website"
+  },
+  "about": {
+    "@id": "https://dyve.online/#organization"
+  },
   "mainEntity": {
-    "@type": "Organization",
-    "name": "Dyve HackaX",
-    "alternateName": ["Dyve", "HackaX"],
-    "url": "https://dyve.online",
-    "logo": "https://dyve.online/logo.png",
-    "foundingDate": "2026",
-    "industry": "Cybersecurity",
-    "description": "Cyber intelligence platform providing real-time threat analysis, dark web monitoring, breach detection, and emerging tech vulnerability tracking.",
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Intelligence Services",
-      "itemListElement": [
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Breach Surveillance", "url": "https://dyve.online/breaches/" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Dark Web Intelligence", "url": "https://dyve.online/dark-web/" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Latest on Tech Intelligence", "url": "https://dyve.online/tech/" } }
-      ]
-    },
-    "sameAs": [
-      "https://twitter.com/",
-      "https://linkedin.com/",
-      "https://instagram.com/"
-    ]
+    "@id": "https://dyve.online/#organization"
+  },
+  "breadcrumb": {
+    "@id": "https://dyve.online/about-us/#breadcrumb"
+  },
+  "publisher": {
+    "@id": "https://dyve.online/#organization"
   }
 }
 </script>
 
+<!-- ============================================================
+     ORGANIZATION / ENTITY SCHEMA
+     Keep facts limited to claims represented on-site.
+============================================================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://dyve.online/#organization",
+  "name": "Dyve HackaX",
+  "alternateName": [
+    "Dyve",
+    "HackaX",
+    "Dyve Intelligence"
+  ],
+  "url": "https://dyve.online/",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://dyve.online/logo.png"
+  },
+  "description": "Dyve HackaX is a cybersecurity intelligence and reporting platform covering cyber threats, breaches, ransomware, dark web activity, threat actors, vulnerabilities, security technology and threat analysis.",
+  "foundingDate": "2026",
+  "industry": "Cybersecurity",
+  "knowsAbout": [
+    "Cybersecurity",
+    "Cyber threat intelligence",
+    "Data breaches",
+    "Ransomware",
+    "Dark web intelligence",
+    "Threat actors",
+    "Vulnerabilities",
+    "Malware",
+    "Phishing",
+    "AI security",
+    "Cloud security",
+    "Cybersecurity technology",
+    "Threat analysis"
+  ],
+  "brand": {
+    "@type": "Brand",
+    "name": "Dyve HackaX"
+  },
+  "subjectOf": {
+    "@id": "https://dyve.online/about-dyve/#about-page"
+  }
+}
+</script>
+
+<!-- ============================================================
+     WEBSITE SCHEMA
+============================================================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://dyve.online/#website",
+  "name": "Dyve HackaX",
+  "alternateName": "Dyve",
+  "url": "https://dyve.online/",
+  "description": "Cyber intelligence, cybersecurity reporting and threat analysis from Dyve HackaX.",
+  "publisher": {
+    "@id": "https://dyve.online/#organization"
+  },
+  "inLanguage": "en"
+}
+</script>
+
+<!-- ============================================================
+     BREADCRUMB SCHEMA
+============================================================ -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
+  "@id": "https://dyve.online/about-us/#breadcrumb",
   "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dyve.online/" },
-    { "@type": "ListItem", "position": 2, "name": "About", "item": "https://dyve.online/about-us/" }
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://dyve.online/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "About Dyve HackaX",
+      "item": "https://dyve.online/about-us/"
+    }
   ]
 }
 </script>
 
+<!-- ============================================================
+     ADSENSE
+============================================================ -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5402726383990229" crossorigin="anonymous"></script>
 
 <style>
-/* =========================
-   ABOUT SECTION WRAPPER
-========================= */
-.about-section {
-  max-width: 760px;
-  margin: 40px auto 80px;
-  color: #cfd8d6;
+/* ============================================================
+   DYVE ABOUT-US AUTHORITY LAYER
+   Existing ranking URL preserved.
+============================================================ */
+
+:root {
+  --about-bg: #020403;
+  --about-panel: #07100d;
+  --about-panel-2: #09130f;
+  --about-text: #e8f0ee;
+  --about-muted: rgba(232,240,238,.70);
+  --about-subtle: rgba(232,240,238,.46);
+  --about-line: rgba(255,255,255,.075);
+  --about-green: #00ffaa;
+  --about-green-soft: rgba(0,255,170,.075);
+  --about-green-line: rgba(0,255,170,.18);
+  --about-max: 860px;
+}
+
+/* ============================================================
+   BASE
+============================================================ */
+
+html {
+  background: var(--about-bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at 50% -12%, rgba(0,255,170,.055), transparent 34%),
+    var(--about-bg);
+  color: var(--about-text);
+  overflow-x: hidden;
+}
+
+body::selection {
+  background: rgba(0,255,170,.25);
+  color: #fff;
+}
+
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--about-green);
+  outline-offset: 4px;
+}
+
+/* ============================================================
+   PAGE CONTAINER
+============================================================ */
+
+.about-page-shell {
+  width: min(100%, 1120px);
+  margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   ENTITY HERO
+============================================================ */
+
+.entity-hero {
+  position: relative;
+  padding: 44px 0 24px;
+}
+
+.entity-hero::before {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  top: -160px;
+  right: -220px;
+  border-radius: 50%;
+  background: rgba(0,255,170,.045);
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.entity-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--about-green);
+  font-family: "Michroma", sans-serif;
+  font-size: 9px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+}
+
+.entity-kicker::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--about-green);
+  box-shadow: 0 0 16px rgba(0,255,170,.8);
+}
+
+.entity-hero h1 {
+  max-width: 900px;
+  margin: 15px 0 0;
+  color: #f5f9f7;
+  font-family: "Audiowide", sans-serif;
+  font-size: clamp(31px, 8vw, 68px);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -.035em;
+}
+
+.entity-hero h1 span {
+  display: block;
+  margin-top: 8px;
+  color: var(--about-green);
+}
+
+.entity-lead {
+  max-width: 780px;
+  margin: 20px 0 0;
+  color: var(--about-muted);
   font-size: 15px;
   line-height: 1.8;
+}
+
+.entity-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 22px;
+}
+
+.entity-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 43px;
+  padding: 0 16px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: .25s ease;
+}
+
+.entity-action.primary {
+  background: var(--about-green);
+  color: #00150e;
+}
+
+.entity-action.secondary {
+  border: 1px solid var(--about-line);
+  background: rgba(255,255,255,.025);
+  color: rgba(255,255,255,.72);
+}
+
+.entity-action:hover {
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   ENTITY RECORD
+============================================================ */
+
+.entity-record {
   position: relative;
+  overflow: hidden;
+  margin: 18px 0 42px;
+  border: 1px solid var(--about-green-line);
+  border-radius: 17px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(0,255,170,.075), transparent 34%),
+    linear-gradient(145deg, rgba(255,255,255,.025), rgba(255,255,255,.008));
+}
+
+.entity-record::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent 49.8%, rgba(0,255,170,.025) 50%, transparent 50.2%);
+}
+
+.entity-record-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 15px 17px;
+  border-bottom: 1px solid var(--about-line);
+}
+
+.entity-record-label {
+  color: rgba(255,255,255,.38);
+  font-family: "Michroma", sans-serif;
+  font-size: 8px;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+
+.entity-record-status {
+  color: var(--about-green);
+  font-family: "Michroma", sans-serif;
+  font-size: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.entity-record-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.entity-record-item {
+  min-width: 0;
+  padding: 15px 17px;
+  border-bottom: 1px solid var(--about-line);
+}
+
+.entity-record-item:nth-child(odd) {
+  border-right: 1px solid var(--about-line);
+}
+
+.entity-record-item:nth-last-child(-n+2) {
+  border-bottom: 0;
+}
+
+.entity-record-label-small {
+  display: block;
+  margin-bottom: 5px;
+  color: rgba(255,255,255,.32);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.entity-record-value {
+  display: block;
+  color: rgba(255,255,255,.82);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.entity-record-value.green {
+  color: var(--about-green);
+}
+
+/* ============================================================
+   ABOUT CONTENT
+============================================================ */
+
+.about-section {
+  position: relative;
+  max-width: var(--about-max);
+  margin: 46px auto 80px;
+  color: #cfd8d6;
+  font-size: 15px;
+  line-height: 1.82;
 }
 
 .about-section::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at top right, rgba(0,255,170,0.04), transparent 40%);
+  inset: -30px -40px;
+  background: radial-gradient(circle at top right, rgba(0,255,170,.035), transparent 38%);
   pointer-events: none;
 }
 
-/* =========================
-   HEADINGS
-========================= */
 .about-section h2 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #e8f0ee;
-  margin-top: 42px;
-  margin-bottom: 14px;
-  letter-spacing: 0.3px;
   position: relative;
+  margin: 48px 0 14px;
+  padding-left: 15px;
+  color: #e8f0ee;
+  font-family: "Inter", sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -.02em;
+}
+
+.about-section h2:first-child {
+  margin-top: 0;
 }
 
 .about-section h2::before {
   content: "";
   position: absolute;
-  left: -14px;
-  top: 6px;
+  left: 0;
+  top: 3px;
   width: 3px;
-  height: 18px;
-  background: linear-gradient(#00ffaa, transparent);
+  height: calc(100% - 5px);
+  min-height: 18px;
+  background: linear-gradient(var(--about-green), transparent);
   border-radius: 2px;
 }
 
-/* =========================
-   PARAGRAPHS & LINKS
-========================= */
 .about-section p {
-  margin-bottom: 18px;
-  color: rgba(232,240,238,0.75);
+  position: relative;
+  margin: 0 0 18px;
+  color: var(--about-muted);
 }
 
 .text-link {
-  color: #00ffaa;
+  color: var(--about-green);
   text-decoration: none;
-  border-bottom: 1px solid rgba(0, 255, 170, 0.3);
-  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(0,255,170,.28);
+  transition: .2s ease;
 }
 
 .text-link:hover {
@@ -164,371 +514,2044 @@
   border-bottom-color: #fff;
 }
 
-/* =========================
-   LISTS
-========================= */
 .about-section ul {
-  margin-top: 12px;
-  margin-bottom: 28px;
-  padding-left: 20px;
+  position: relative;
+  margin: 15px 0 28px;
+  padding-left: 21px;
 }
 
 .about-section li {
-  margin-bottom: 10px;
-  color: rgba(232,240,238,0.75);
+  margin-bottom: 11px;
+  color: var(--about-muted);
 }
 
 .about-section li::marker {
-  color: #00ffaa;
+  color: var(--about-green);
 }
 
-/* =========================
-   HERO SPACING FIX
-========================= */
-.container .cyber-title {
-  margin-top: 30px;
+/* ============================================================
+   HIGHLIGHT / ENTITY NOTE
+============================================================ */
+
+.about-highlight {
+  position: relative;
+  overflow: hidden;
+  margin: 24px 0;
+  padding: 18px 18px 18px 20px;
+  border: 1px solid var(--about-green-line);
+  border-radius: 13px;
+  background:
+    radial-gradient(circle at 0 0, rgba(0,255,170,.08), transparent 38%),
+    rgba(0,255,170,.025);
+  color: rgba(232,240,238,.88);
+  font-size: 13px;
+  line-height: 1.7;
 }
 
-.container .cyber-desc {
-  max-width: 680px;
+.about-highlight::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px;
+  bottom: 14px;
+  width: 2px;
+  background: var(--about-green);
+  box-shadow: 0 0 14px rgba(0,255,170,.45);
+}
+
+.badge-new {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0,255,170,.12);
+  color: var(--about-green);
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* ============================================================
+   ENTITY RELATIONSHIP
+============================================================ */
+
+.entity-relationship {
+  margin: 58px auto;
+  max-width: 1040px;
+}
+
+.entity-section-heading {
+  margin-bottom: 18px;
+}
+
+.entity-eyebrow {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--about-green);
+  font-family: "Michroma", sans-serif;
+  font-size: 8px;
+  letter-spacing: 1.7px;
+  text-transform: uppercase;
+}
+
+.entity-section-heading h2 {
+  margin: 0;
+  color: #f2f7f5;
+  font-family: "Audiowide", sans-serif;
+  font-size: clamp(21px, 5vw, 34px);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.entity-section-heading p {
+  max-width: 720px;
+  margin: 10px 0 0;
+  color: var(--about-subtle);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.relationship-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.relationship-card {
+  position: relative;
+  padding: 19px;
+  border: 1px solid var(--about-line);
+  border-radius: 15px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.026), rgba(255,255,255,.008));
+  transition: .25s ease;
+}
+
+.relationship-card:hover {
+  border-color: var(--about-green-line);
+  transform: translateY(-2px);
+}
+
+.relationship-card.featured {
+  border-color: var(--about-green-line);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(0,255,170,.07), transparent 42%),
+    rgba(0,255,170,.018);
+}
+
+.relationship-index {
+  color: rgba(255,255,255,.25);
+  font-family: "Michroma", sans-serif;
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+
+.relationship-name {
+  margin-top: 9px;
+  color: #fff;
+  font-family: "Audiowide", sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: .02em;
+}
+
+.relationship-description {
+  margin-top: 8px;
+  color: var(--about-muted);
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.relationship-link {
+  display: inline-flex;
+  margin-top: 13px;
+  color: var(--about-green);
+  font-size: 10px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+/* ============================================================
+   COVERAGE MATRIX
+============================================================ */
+
+.coverage-section {
+  margin: 72px auto;
+  max-width: 1040px;
+}
+
+.coverage-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border: 1px solid var(--about-line);
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255,255,255,.012);
+}
+
+.coverage-item {
+  min-width: 0;
+  padding: 17px;
+  border-right: 1px solid var(--about-line);
+  border-bottom: 1px solid var(--about-line);
+}
+
+.coverage-item:nth-child(2n) {
+  border-right: 0;
+}
+
+.coverage-item:nth-last-child(-n+2) {
+  border-bottom: 0;
+}
+
+.coverage-icon {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 10px;
+  border: 1px solid rgba(0,255,170,.14);
+  border-radius: 8px;
+  color: var(--about-green);
+  background: rgba(0,255,170,.045);
 }
 
-/* =========================
-   INTEL CARD TWEAK
-========================= */
+.coverage-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.coverage-item h3 {
+  margin: 0;
+  color: rgba(255,255,255,.88);
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.coverage-item p {
+  margin: 7px 0 0;
+  color: rgba(255,255,255,.47);
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.coverage-item a {
+  display: inline-flex;
+  margin-top: 9px;
+  color: var(--about-green);
+  font-size: 9px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+/* ============================================================
+   METHODOLOGY PANEL
+============================================================ */
+
+.methodology-panel {
+  margin: 72px auto;
+  max-width: 1040px;
+  padding: 24px 19px;
+  border: 1px solid var(--about-green-line);
+  border-radius: 17px;
+  background:
+    radial-gradient(circle at 100% 0, rgba(0,255,170,.075), transparent 35%),
+    #050806;
+}
+
+.methodology-panel h2 {
+  margin: 0;
+  color: #fff;
+  font-family: "Audiowide", sans-serif;
+  font-size: clamp(20px, 5vw, 32px);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.methodology-panel > p {
+  max-width: 740px;
+  margin: 12px 0 0;
+  color: var(--about-muted);
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+.methodology-steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 9px;
+  margin-top: 22px;
+}
+
+.methodology-step {
+  display: grid;
+  grid-template-columns: 32px minmax(0,1fr);
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,.055);
+  border-radius: 11px;
+  background: rgba(255,255,255,.018);
+}
+
+.methodology-number {
+  color: var(--about-green);
+  font-family: "Michroma", sans-serif;
+  font-size: 9px;
+  padding-top: 2px;
+}
+
+.methodology-step h3 {
+  margin: 0;
+  color: rgba(255,255,255,.85);
+  font-size: 12px;
+}
+
+.methodology-step p {
+  margin: 5px 0 0;
+  color: rgba(255,255,255,.45);
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+/* ============================================================
+   INTELLIGENCE CARD
+============================================================ */
+
 .intel-light {
-  margin-top: 60px;
+  margin: 70px auto;
+  max-width: 1040px;
 }
 
 .intel-light-card {
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 16px;
-  background: linear-gradient(145deg, #050807, #020403);
-  padding: 32px;
   position: relative;
   overflow: hidden;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(0,255,170,.18);
+  border-radius: 17px;
+  background:
+    radial-gradient(circle at 100% 0, rgba(0,255,170,.08), transparent 34%),
+    linear-gradient(145deg, #0a0f0d, #050807);
+  padding: 27px 20px;
+  box-shadow: 0 4px 30px rgba(0,0,0,.28);
+  transition: border-color .3s ease, box-shadow .3s ease;
 }
 
 .intel-light-card:hover {
-  border-color: rgba(0, 255, 170, 0.2);
-  box-shadow: 0 0 30px rgba(0, 255, 170, 0.05);
+  border-color: rgba(0,255,170,.28);
+  box-shadow: 0 0 35px rgba(0,255,170,.045);
 }
 
 .intel-light-card::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top left, rgba(0,255,170,0.08), transparent 40%);
   pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 32px,
+      rgba(255,255,255,.018) 33px,
+      transparent 34px
+    );
 }
 
-/* =========================
-   BUTTONS
-========================= */
-.btn-primary {
-  background: #00ffaa;
-  color: #020403;
-  padding: 10px 20px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 600;
+.intel-light-content {
+  position: relative;
+  z-index: 1;
+}
+
+.intel-light-title {
+  margin: 0;
+  color: #e8f0ee;
+  font-family: "Audiowide", sans-serif;
+  font-size: clamp(23px, 6vw, 36px);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -.02em;
+}
+
+.intel-light-desc {
+  max-width: 740px;
+  margin: 12px 0 0;
+  color: #cfd8d6;
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+.intel-divider {
+  width: 55px;
+  height: 1px;
+  margin: 15px 0;
+  background: var(--about-green);
+  box-shadow: 0 0 10px rgba(0,255,170,.25);
+}
+
+.intel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 20px;
+}
+
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 9px;
+  font-size: 10px;
+  font-weight: 800;
   text-decoration: none;
-  transition: all 0.25s ease;
-  display: inline-block;
+  transition: .25s ease;
+}
+
+.btn-primary {
+  background: var(--about-green);
+  color: #020403;
 }
 
 .btn-primary:hover {
-  box-shadow: 0 4px 14px rgba(0,255,170,0.3);
+  box-shadow: 0 5px 18px rgba(0,255,170,.24);
   transform: translateY(-1px);
 }
 
 .btn-secondary {
-  color: #e8f0ee;
-  opacity: 0.7;
-  font-size: 13px;
-  text-decoration: none;
-  margin-left: 16px;
-  transition: opacity 0.25s ease;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.025);
+  color: rgba(255,255,255,.72);
 }
 
 .btn-secondary:hover {
-  opacity: 1;
+  border-color: rgba(0,255,170,.25);
+  color: var(--about-green);
 }
 
-/* =========================
-   DIVIDER BALANCE
-========================= */
-.divider, .divider-intel {
-  margin: 30px 0;
-  opacity: 0.6;
+/* ============================================================
+   FAQ
+============================================================ */
+
+.faq-section {
+  max-width: 860px;
+  margin: 76px auto;
 }
 
-/* =========================
-   TRUST BLOCK & BADGE
-========================= */
-.about-highlight {
-  background: rgba(0,255,170,0.04);
-  border: 1px solid rgba(0,255,170,0.12);
-  padding: 20px;
+.faq-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.faq-item {
+  overflow: hidden;
+  border: 1px solid var(--about-line);
   border-radius: 12px;
-  margin: 24px 0;
-  font-size: 14px;
-  line-height: 1.7;
-  color: rgba(232,240,238,0.85);
+  background: rgba(255,255,255,.015);
 }
 
-.badge-new {
-  display: inline-block;
-  background: rgba(0, 255, 170, 0.15);
-  color: #00ffaa;
-  font-size: 10px;
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  cursor: pointer;
+  padding: 16px;
+  color: rgba(255,255,255,.84);
+  font-size: 12px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  padding: 3px 8px;
-  border-radius: 4px;
-  margin-right: 8px;
-  vertical-align: middle;
+  list-style: none;
 }
 
-/* =========================
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  flex-shrink: 0;
+  color: var(--about-green);
+  font-family: "Michroma", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.faq-item[open] summary::after {
+  content: "−";
+}
+
+.faq-answer {
+  padding: 0 16px 17px;
+  color: rgba(255,255,255,.50);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.faq-answer a {
+  color: var(--about-green);
+  text-decoration: none;
+}
+
+/* ============================================================
+   INTERNAL LINK HUB
+============================================================ */
+
+.internal-hub {
+  margin: 76px auto 50px;
+  padding: 22px 17px;
+  border-top: 1px solid var(--about-line);
+  border-bottom: 1px solid var(--about-line);
+}
+
+.internal-hub h2 {
+  margin: 0;
+  color: #fff;
+  font-family: "Audiowide", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.internal-hub p {
+  max-width: 700px;
+  margin: 9px 0 18px;
+  color: rgba(255,255,255,.45);
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.internal-links {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.internal-links a {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 11px;
+  border: 1px solid var(--about-line);
+  border-radius: 9px;
+  background: rgba(255,255,255,.018);
+  color: rgba(255,255,255,.62);
+  font-size: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: .2s ease;
+}
+
+.internal-links a:hover {
+  border-color: rgba(0,255,170,.25);
+  color: var(--about-green);
+  background: rgba(0,255,170,.035);
+}
+
+/* ============================================================
+   EXISTING DIVIDER COMPATIBILITY
+============================================================ */
+
+.divider,
+.divider-intel {
+  margin: 30px 0;
+  opacity: .75;
+}
+
+.divider-intel span {
+  color: var(--about-green);
+  opacity: .9;
+  font-family: "Michroma", sans-serif;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+/* ============================================================
    MOBILE
-========================= */
-@media (max-width: 768px) {
+============================================================ */
+
+@media (max-width: 639px) {
+  .about-page-shell {
+    padding: 0 14px;
+  }
+
+  .entity-hero {
+    padding-top: 34px;
+  }
+
+  .entity-hero h1 {
+    font-size: 31px;
+  }
+
+  .entity-lead {
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  .entity-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .entity-action {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .entity-record-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .entity-record-item,
+  .entity-record-item:nth-child(odd),
+  .entity-record-item:nth-last-child(-n+2) {
+    border-right: 0;
+    border-bottom: 1px solid var(--about-line);
+  }
+
+  .entity-record-item:last-child {
+    border-bottom: 0;
+  }
+
   .about-section {
-    margin: 30px 0 60px;
+    margin-top: 40px;
     font-size: 14.5px;
   }
+
   .about-section h2 {
-    font-size: 16px;
+    font-size: 18px;
   }
-  .about-section h2::before {
-    left: -10px;
+
+  .coverage-grid {
+    grid-template-columns: 1fr;
   }
-  .intel-light-card {
-    padding: 24px;
+
+  .coverage-item,
+  .coverage-item:nth-child(2n),
+  .coverage-item:nth-last-child(-n+2) {
+    border-right: 0;
+    border-bottom: 1px solid var(--about-line);
   }
+
+  .coverage-item:last-child {
+    border-bottom: 0;
+  }
+
+  .internal-links {
+    grid-template-columns: 1fr;
+  }
+
+  .intel-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .btn-primary,
   .btn-secondary {
-    display: block;
-    margin-left: 0;
-    margin-top: 12px;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
+/* ============================================================
+   TABLET
+============================================================ */
 
-/* =========================
-   MOBILE VISIBILITY FIXES
-========================= */
+@media (min-width: 640px) {
+  .about-page-shell {
+    padding: 0 22px;
+  }
+
+  .relationship-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .methodology-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .internal-links {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ============================================================
+   DESKTOP
+============================================================ */
+
+@media (min-width: 1024px) {
+  .about-page-shell {
+    padding: 0 28px;
+  }
+
+  .entity-hero {
+    padding-top: 64px;
+  }
+
+  .entity-lead {
+    font-size: 16px;
+  }
+
+  .entity-record {
+    margin-top: 24px;
+  }
+
+  .relationship-grid {
+    gap: 12px;
+  }
+
+  .coverage-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .coverage-item,
+  .coverage-item:nth-child(2n) {
+    border-right: 1px solid var(--about-line);
+  }
+
+  .coverage-item:nth-child(3n) {
+    border-right: 0;
+  }
+
+  .coverage-item:nth-last-child(-n+2) {
+    border-bottom: 1px solid var(--about-line);
+  }
+
+  .coverage-item:nth-last-child(-n+3) {
+    border-bottom: 0;
+  }
+
+  .methodology-panel {
+    padding: 32px;
+  }
+
+  .methodology-steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .intel-light-card {
+    padding: 34px;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* ============================================================
+   MOBILE WIDTH / HORIZONTAL OVERFLOW FIX
+   Append AFTER all existing styles
+============================================================ */
+
+/* Prevent any element from creating a wider document */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden !important;
+}
+
+/* Force the main page wrappers to respect the viewport */
+main,
+.container,
+.about-page-shell,
+.entity-hero,
+.entity-record,
+.about-section,
+.entity-relationship,
+.coverage-section,
+.methodology-panel,
+.intel-light,
+.faq-section,
+.internal-hub,
+.dyve-footer {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* The original site container is likely carrying a
+   desktop width/min-width into mobile */
+.container {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+}
+
+/* Never allow text/content components to establish
+   a wider intrinsic width */
+.container *,
+.about-page-shell *,
+.entity-hero *,
+.entity-record *,
+.about-section *,
+.entity-relationship *,
+.coverage-section *,
+.methodology-panel *,
+.intel-light *,
+.faq-section *,
+.internal-hub *,
+.dyve-footer * {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Long text, URLs and labels must wrap */
+h1,
+h2,
+h3,
+p,
+a,
+span,
+li,
+div {
+  overflow-wrap: anywhere;
+  word-wrap: break-word;
+}
+
+/* ============================================================
+   MOBILE NAVIGATION
+============================================================ */
 
 @media (max-width: 768px) {
 
-  /* Make divider text more visible */
-  .divider-intel {
-    opacity: 0.9 !important;
+  /* Prevent the global header from creating a desktop-width page */
+  #global-header,
+  #global-header > *,
+  header,
+  .header,
+  .site-header {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
   }
 
-  .divider-intel span {
-    color: #00ffaa !important;
-    opacity: 0.9 !important;
-    font-weight: 600;
-    letter-spacing: 2px;
+  /* Navigation should scroll internally, NOT expand the page */
+  .nav {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    flex-wrap: nowrap !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
-  /* Improve card visibility */
-  .intel-light-card {
-    background: linear-gradient(145deg, #0a0f0d, #050807) !important;
-    border: 1px solid rgba(0, 255, 170, 0.2) !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+  .nav::-webkit-scrollbar {
+    display: none;
   }
 
-  /* Increase text contrast in card */
-  .intel-light-title {
-    color: #e8f0ee !important;
-    opacity: 0.95 !important;
-    font-weight: 600;
+  .nav span,
+  .nav a {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
   }
 
-  .intel-light-desc {
-    color: #cfd8d6 !important;
-    opacity: 0.9 !important;
-    line-height: 1.7;
+  /* Keep the logo/header from forcing a minimum desktop width */
+  .logo,
+  .brand,
+  .site-logo {
+    max-width: 60vw !important;
+    min-width: 0 !important;
   }
 
-  /* Ensure paragraphs are readable */
-  .intel-light-content p {
-    color: rgba(207, 216, 214, 0.9) !important;
+  /* ==========================================================
+     HERO
+  ========================================================== */
+
+  .entity-hero {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
   }
 
-  /* Improve divider visibility inside card */
-  .intel-divider {
-    background: rgba(0, 255, 170, 0.3) !important;
-    opacity: 0.8 !important;
+  .entity-hero h1 {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    font-size: clamp(30px, 9vw, 42px) !important;
+    line-height: 1.04 !important;
+
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  .entity-hero h1 span {
+    width: auto !important;
+    max-width: 100% !important;
+  }
+
+  .entity-lead {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    font-size: 14px !important;
+    line-height: 1.75 !important;
+  }
+
+  /* ==========================================================
+     BUTTONS
+  ========================================================== */
+
+  .entity-actions,
+  .intel-actions {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .entity-action,
+  .btn-primary,
+  .btn-secondary {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    white-space: normal !important;
+  }
+
+  /* ==========================================================
+     ENTITY RECORD
+  ========================================================== */
+
+  .entity-record {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .entity-record-grid {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .entity-record-item {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  .entity-record-value {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  /* ==========================================================
+     CONTENT
+  ========================================================== */
+
+  .about-section,
+  .about-section p,
+  .about-section ul,
+  .about-section li {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* ==========================================================
+     CARDS / GRIDS
+  ========================================================== */
+
+  .relationship-grid,
+  .coverage-grid,
+  .methodology-steps,
+  .internal-links {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .relationship-card,
+  .coverage-item,
+  .methodology-step {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* ==========================================================
+     FOOTER
+  ========================================================== */
+
+  .dyve-footer,
+  .dyve-core,
+  .footer-nav,
+  .footer-column {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ==========================================================
+     IMAGES / SVG / MEDIA
+  ========================================================== */
+
+  img,
+  video,
+  iframe,
+  svg,
+  canvas {
+    max-width: 100% !important;
+  }
+
+  /* SVGs should never establish a giant intrinsic width */
+  svg {
+    width: auto;
+  }
+
+  /* ==========================================================
+     PREVENT FIXED-WIDTH ELEMENTS
+  ========================================================== */
+
+  [style*="width: 760px"],
+  [style*="width:760px"],
+  [style*="width: 860px"],
+  [style*="width:860px"],
+  [style*="width: 1040px"],
+  [style*="width:1040px"],
+  [style*="min-width"] {
+    max-width: 100% !important;
+  }
+}
+
+/* ============================================================
+   EXTRA SMALL PHONES
+============================================================ */
+
+@media (max-width: 390px) {
+
+  .container {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .about-page-shell {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .entity-hero h1 {
+    font-size: 29px !important;
+  }
+
+  .entity-lead {
+    font-size: 13.5px !important;
   }
 
 }
-
-/* =========================
-   GLOBAL CONTRAST FIXES
-========================= */
-
-/* Ensure intel section is always visible */
-.intel-light-card {
-  background: linear-gradient(145deg, #0a0f0d, #050807);
-}
-
-.intel-light-title {
-  color: #e8f0ee;
-  opacity: 0.9;
-}
-
-.intel-light-desc {
-  color: #cfd8d6;
-  opacity: 0.85;
-}
-
-/* Divider text should be more prominent */
-.divider-intel span {
-  color: #00ffaa;
-  opacity: 0.8;
-  font-weight: 600;
-}
-
 </style>
 </head>
 
 <body>
 
-  <!-- Reusable UI Components -->
-  <div id="global-drawer"></div>
-  <div id="global-header"></div>
+<!-- ============================================================
+     GLOBAL UI
+============================================================ -->
 
-  <div class="container">
+<div id="global-drawer"></div>
+<div id="global-header"></div>
 
-    <!-- =========================
-         HERO
-    ========================= -->
-    <h1 class="cyber-title">
-      About Dyve HackaX
-      <span>Cyber Intelligence Platform</span>
-    </h1>
+<main>
 
-    <p class="cyber-desc">
-      Dyve HackaX is a cyber intelligence platform focused on real-time threat detection, breach monitoring, dark web analysis, and emerging technology vulnerabilities. Built to surface early signals, track adversarial behavior, and provide actionable intelligence.
-    </p>
+  <div class="about-page-shell">
 
-    <div class="about-highlight">
-      Dyve HackaX operates at the intersection of cybersecurity intelligence, threat detection, and dark web monitoring — focusing on early signal discovery rather than reactive reporting.
-    </div>
+    <!-- ========================================================
+         ENTITY HERO
+    ========================================================= -->
 
-    <div class="divider"></div>
+    <section class="entity-hero" aria-labelledby="aboutPageTitle">
 
-    <!-- =========================
-         CORE MISSION
-    ========================= -->
-    <section class="about-section">
+      <div class="entity-kicker">
+        About Dyve HackaX
+      </div>
 
-      <h2>Our Mission</h2>
-      <p>
-        Our mission is to detect and surface cyber threats before they become public incidents. We analyze intelligence signals across underground networks, breach datasets, and emerging threat vectors to provide early visibility into high-risk activity.
+      <h1 id="aboutPageTitle">
+        About Dyve HackaX
+        <span>Cyber Intelligence.</span>
+      </h1>
+
+      <p class="entity-lead">
+        Dyve HackaX is a cybersecurity intelligence and reporting platform
+        focused on understanding the threats, incidents, vulnerabilities,
+        adversaries and technologies shaping the modern digital environment.
+        Its coverage spans cyber threats, data breaches, ransomware, dark web
+        activity, threat actors, vulnerabilities, malware, security technology
+        and threat analysis.
       </p>
 
-      <h2>What We Do</h2>
+      <div class="entity-actions">
+
+        <a
+          href="../about-dyve/"
+          class="entity-action primary"
+          aria-label="Explore the Dyve entity profile">
+          Explore the Dyve Entity →
+        </a>
+
+        <a
+          href="../"
+          class="entity-action secondary"
+          aria-label="Explore Dyve HackaX intelligence">
+          Enter Intelligence →
+        </a>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================================
+         ENTITY RECORD
+    ========================================================= -->
+
+    <section
+      class="entity-record"
+      aria-label="Dyve HackaX entity record">
+
+      <div class="entity-record-header">
+        <span class="entity-record-label">
+          Entity Record
+        </span>
+
+        <span class="entity-record-status">
+          Active Intelligence
+        </span>
+      </div>
+
+      <div class="entity-record-grid">
+
+        <div class="entity-record-item">
+          <span class="entity-record-label-small">Entity</span>
+          <span class="entity-record-value">Dyve HackaX</span>
+        </div>
+
+        <div class="entity-record-item">
+          <span class="entity-record-label-small">Parent Identity</span>
+          <span class="entity-record-value green">Dyve</span>
+        </div>
+
+        <div class="entity-record-item">
+          <span class="entity-record-label-small">Domain</span>
+          <span class="entity-record-value">dyve.online</span>
+        </div>
+
+        <div class="entity-record-item">
+          <span class="entity-record-label-small">Primary Focus</span>
+          <span class="entity-record-value">Cyber Intelligence</span>
+        </div>
+
+        <div class="entity-record-item">
+          <span class="entity-record-label-small">Coverage</span>
+          <span class="entity-record-value">Global Threat Landscape</span>
+        </div>
+
+        <div class="entity-record-item">
+          <span class="entity-record-label-small">Established</span>
+          <span class="entity-record-value">2026</span>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================================
+         CORE ABOUT CONTENT
+    ======================================================== -->
+
+    <section class="about-section" aria-labelledby="missionHeading">
+
+      <h2 id="missionHeading">What Is Dyve HackaX?</h2>
+
       <p>
-        Dyve HackaX monitors global cyber ecosystems to identify breaches, leaked credentials, and threat actor activity. The platform aggregates intelligence from multiple sources and transforms it into structured, actionable insights.
+        Dyve HackaX is the cybersecurity intelligence platform published at
+        <a href="../" class="text-link">dyve.online</a>. It organizes
+        cybersecurity developments into structured coverage designed to help
+        readers understand what happened, what is known, why an event matters,
+        and how it relates to the wider threat landscape.
+      </p>
+
+      <p>
+        The platform brings together reporting and analysis across
+        <a href="../breaches/" class="text-link">data breaches</a>,
+        <a href="../ransomware/" class="text-link">ransomware</a>,
+        <a href="../dark-web/" class="text-link">dark web activity</a>,
+        <a href="../threat-actors/" class="text-link">threat actors</a>,
+        vulnerabilities, malware, phishing, artificial intelligence security,
+        cloud security and emerging cybersecurity technology.
+      </p>
+
+      <div class="about-highlight">
+        <strong>Dyve HackaX in one line:</strong>
+        cyber intelligence, security reporting and threat analysis focused on
+        signals, incidents, adversaries, vulnerabilities and the technologies
+        changing the threat environment.
+      </div>
+
+      <h2 id="missionHeadingTwo">Our Mission</h2>
+
+      <p>
+        The mission of Dyve HackaX is to make cybersecurity developments easier
+        to understand by connecting individual incidents with the broader
+        patterns around them. Instead of treating every breach, campaign or
+        vulnerability as an isolated headline, the platform emphasizes context,
+        relationships, evidence and the evolution of cyber threats.
+      </p>
+
+      <p>
+        This approach supports readers who need more than a headline: security
+        researchers, technology professionals, organizations, journalists,
+        students and anyone seeking a clearer understanding of the cybersecurity
+        landscape.
+      </p>
+
+      <h2 id="whatWeDoHeading">What Dyve HackaX Covers</h2>
+
+      <p>
+        Coverage is organized around the areas most relevant to contemporary
+        cyber risk and threat research. These areas can overlap because modern
+        attacks rarely fit into a single category.
       </p>
 
       <ul>
-        <li>Real-time <a href="/breaches/" class="text-link">breach detection</a> and continuous monitoring</li>
-        <li><a href="/dark-web/" class="text-link">Dark web intelligence</a> and surveillance</li>
-        <li><a href="/threat-actors/" class="text-link">Threat actor</a> tracking and behavior analysis</li>
-        <li>Credential exposure detection and <a href="/tech/" class="text-link">emerging tech threat analysis</a></li>
+        <li>
+          <a href="../breaches/" class="text-link">Data breaches and incidents</a>
+          involving exposed information, compromised systems and security events.
+        </li>
+
+        <li>
+          <a href="../dark-web/" class="text-link">Dark web intelligence</a>
+          covering underground activity, exposed data and relevant cyber signals.
+        </li>
+
+        <li>
+          <a href="../ransomware/" class="text-link">Ransomware intelligence</a>
+          covering campaigns, extortion activity, victims and operational trends.
+        </li>
+
+        <li>
+          <a href="../threat-actors/" class="text-link">Threat actor intelligence</a>
+          covering adversaries, campaigns, tactics and observable activity.
+        </li>
+
+        <li>
+          <a href="../signals/" class="text-link">Threat signals</a>
+          covering notable developments and indicators that deserve attention.
+        </li>
+
+        <li>
+          <a href="../analysis/" class="text-link">Threat analysis</a>
+          providing contextual interpretation of important cybersecurity events.
+        </li>
+
+        <li>
+          <a href="../tech/" class="text-link">Cybersecurity technology</a>
+          covering technology developments and emerging security implications.
+        </li>
+
+        <li>
+          <a href="../vulnerabilities/" class="text-link">Vulnerability intelligence</a>
+          covering security weaknesses, exploitation context and related risks.
+        </li>
       </ul>
 
-      <h2>Intelligence Approach</h2>
+      <h2 id="approachHeading">The Dyve HackaX Intelligence Approach</h2>
+
       <p>
-        We operate with a signal-first methodology. Instead of reacting to public reports, Dyve HackaX focuses on identifying patterns, anomalies, and early indicators across distributed sources.
+        Dyve HackaX uses a signal-first editorial model. Cybersecurity
+        information is evaluated in context rather than presented as a
+        collection of disconnected headlines. The objective is to identify
+        meaningful developments, establish the available facts, distinguish
+        reporting from interpretation, and direct readers toward deeper
+        intelligence where appropriate.
       </p>
 
-      <h2>Data Integrity & Standards</h2>
       <p>
-        In cyber intelligence, accuracy is paramount. We employ strict validation protocols to filter noise, reduce false positives, and ensure that every alert or report is backed by verifiable data points.
+        The platform's coverage may draw relationships between incidents,
+        vulnerabilities, threat actors, attack techniques, affected sectors
+        and technology trends. These relationships help explain why a
+        cybersecurity event matters beyond the immediate headline.
       </p>
 
-      <h2>Why Dyve HackaX</h2>
+      <h2 id="integrityHeading">Data Integrity & Editorial Standards</h2>
+
       <p>
-        Modern cyber threats evolve rapidly. Traditional systems rely on delayed reporting, while Dyve HackaX prioritizes speed, accuracy, and early detection to drastically reduce exposure windows.
+        Accuracy is fundamental to cybersecurity reporting. Dyve HackaX
+        prioritizes verifiable information, clear attribution and appropriate
+        qualification of uncertain claims. Where information is developing,
+        incomplete or disputed, coverage should make that context clear rather
+        than presenting inference as established fact.
       </p>
 
-      <h2>Platform Scope</h2>
       <p>
-        The platform is designed for security analysts, researchers, and organizations seeking proactive visibility into cyber risk landscapes and underground intelligence activity.
+        For a fuller explanation of how the platform approaches sourcing,
+        verification, corrections and editorial judgment, see the
+        <a href="../editorial-policy/" class="text-link">Editorial Policy</a>
+        and
+        <a href="../methodology/" class="text-link">Methodology</a>.
+      </p>
+
+      <h2 id="whyHeading">Why Dyve HackaX Exists</h2>
+
+      <p>
+        Cybersecurity changes continuously. New vulnerabilities, attack
+        campaigns, ransomware operations, data exposures and technology risks
+        can emerge faster than organizations and readers can evaluate them.
+        Dyve HackaX exists to provide a structured intelligence layer around
+        these developments.
+      </p>
+
+      <p>
+        The goal is not simply to publish more cybersecurity information. The
+        goal is to make important information easier to locate, connect and
+        understand.
+      </p>
+
+      <h2 id="audienceHeading">Who Is Dyve HackaX For?</h2>
+
+      <p>
+        Dyve HackaX is designed for a broad audience interested in cybersecurity
+        and digital risk, including security practitioners, researchers,
+        technology professionals, organizations, students, journalists and
+        informed readers.
+      </p>
+
+      <p>
+        Technical depth varies by article and subject. Readers looking for
+        current developments can follow the
+        <a href="../signals/" class="text-link">Threat Signals</a> and
+        <a href="../" class="text-link">Intel Feed</a>, while readers seeking
+        deeper context can explore
+        <a href="../analysis/" class="text-link">Threat Analysis</a> and
+        the individual intelligence sections.
       </p>
 
     </section>
 
-    <div class="divider-intel">
+    <!-- ========================================================
+         INTELLIGENCE CORE DIVIDER
+    ======================================================== -->
+
+    <div class="divider-intel" aria-hidden="true">
       <span>INTELLIGENCE CORE</span>
     </div>
 
-    <!-- =========================
-         TRUST / POSITIONING
-    ========================= -->
-    <section class="intel-light">
-      <div class="intel-light-card">
-        <div class="intel-light-content">
-          <h2 class="intel-light-title">Intelligence Built for Precision</h2>
-          <div class="intel-divider"></div>
-          <p class="intel-light-desc">
-            Dyve HackaX is engineered to process high-volume intelligence streams and extract meaningful threat signals. The system prioritizes relevance, speed, and clarity in cyber threat analysis.
+    <!-- ========================================================
+         DYVE / HACKAX ENTITY RELATIONSHIP
+    ======================================================== -->
+
+    <section
+      class="entity-relationship"
+      aria-labelledby="identityHeading">
+
+      <div class="entity-section-heading">
+
+        <span class="entity-eyebrow">
+          Entity Architecture
+        </span>
+
+        <h2 id="identityHeading">
+          Dyve and Dyve HackaX
+        </h2>
+
+        <p>
+          Dyve is the broader identity. Dyve HackaX is the cybersecurity
+          intelligence platform operating within that identity and is the
+          primary intelligence destination at dyve.online.
+        </p>
+
+      </div>
+
+      <div class="relationship-grid">
+
+        <article class="relationship-card featured">
+
+          <div class="relationship-index">01 / ENTITY</div>
+
+          <div class="relationship-name">DYVE</div>
+
+          <p class="relationship-description">
+            The broader entity and identity represented by the Dyve brand.
+            This page provides a dedicated reference point for understanding
+            Dyve itself.
           </p>
-          
-          <!-- New Tech Callout -->
-          <div class="about-highlight" style="margin-top: 24px; margin-bottom: 24px;">
-            <span class="badge-new">New</span>
-            <strong>Expanded Coverage:</strong> We now actively track <a href="/tech/" class="text-link">Emerging Technology Threats</a>, including adversarial tactics in AI, IoT, and next-gen infrastructure.
+
+          <a
+            href="../about-dyve/"
+            class="relationship-link">
+            Open Dyve Entity Profile →
+          </a>
+
+        </article>
+
+        <article class="relationship-card">
+
+          <div class="relationship-index">02 / INTELLIGENCE</div>
+
+          <div class="relationship-name">HACKAX</div>
+
+          <p class="relationship-description">
+            The cybersecurity intelligence and reporting layer focused on
+            threats, incidents, adversaries, vulnerabilities and security
+            analysis.
+          </p>
+
+          <a
+            href="../"
+            class="relationship-link">
+            Enter HackaX Intelligence →
+          </a>
+
+        </article>
+
+        <article class="relationship-card">
+
+          <div class="relationship-index">03 / EDITORIAL</div>
+
+          <div class="relationship-name">RESEARCH</div>
+
+          <p class="relationship-description">
+            The analytical layer connects reporting, methodology, editorial
+            standards and topic-specific intelligence into a coherent
+            cybersecurity knowledge system.
+          </p>
+
+          <a
+            href="../methodology/"
+            class="relationship-link">
+            View Methodology →
+          </a>
+
+        </article>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================================
+         COVERAGE MATRIX
+    ======================================================== -->
+
+    <section
+      class="coverage-section"
+      aria-labelledby="coverageHeading">
+
+      <div class="entity-section-heading">
+
+        <span class="entity-eyebrow">
+          Coverage Network
+        </span>
+
+        <h2 id="coverageHeading">
+          Explore the Intelligence Areas
+        </h2>
+
+        <p>
+          Move directly from this entity page into the specialist sections
+          that form the Dyve HackaX coverage network.
+        </p>
+
+      </div>
+
+      <div class="coverage-grid">
+
+        <article class="coverage-item">
+
+          <div class="coverage-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+              <path d="M7 11V7a5 5 0 0110 0v4"></path>
+            </svg>
+          </div>
+
+          <h3>Data Breaches</h3>
+
+          <p>
+            Coverage of compromised systems, exposed information and reported
+            cybersecurity incidents.
+          </p>
+
+          <a href="../breaches/">Explore Breaches →</a>
+
+        </article>
+
+        <article class="coverage-item">
+
+          <div class="coverage-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"></path>
+            </svg>
+          </div>
+
+          <h3>Dark Web</h3>
+
+          <p>
+            Underground activity, exposed data, illicit ecosystems and
+            relevant cyber intelligence.
+          </p>
+
+          <a href="../dark-web/">Explore Dark Web →</a>
+
+        </article>
+
+        <article class="coverage-item">
+
+          <div class="coverage-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M10 13a5 5 0 007.07.07l2-2a5 5 0 00-7.07-7.07l-1.15 1.15"></path>
+              <path d="M14 11a5 5 0 00-7.07-.07l-2 2A5 5 0 0012 20l1.15-1.15"></path>
+            </svg>
+          </div>
+
+          <h3>Ransomware</h3>
+
+          <p>
+            Ransomware campaigns, extortion activity, victims and evolving
+            operational patterns.
+          </p>
+
+          <a href="../ransomware/">Explore Ransomware →</a>
+
+        </article>
+
+        <article class="coverage-item">
+
+          <div class="coverage-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M2 21a7 7 0 0114 0M17 11a4 4 0 010 8M19 21h3"></path>
+            </svg>
+          </div>
+
+          <h3>Threat Actors</h3>
+
+          <p>
+            Adversary profiles, campaigns, tactics and observable threat
+            actor activity.
+          </p>
+
+          <a href="../threat-actors/">Explore Threat Actors →</a>
+
+        </article>
+
+        <article class="coverage-item">
+
+          <div class="coverage-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+            </svg>
+          </div>
+
+          <h3>Threat Signals</h3>
+
+          <p>
+            Notable cybersecurity developments and signals requiring closer
+            attention.
+          </p>
+
+          <a href="../signals/">Explore Signals →</a>
+
+        </article>
+
+        <article class="coverage-item">
+
+          <div class="coverage-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M4 19V5M4 19h16"></path>
+              <path d="M7 16l4-5 3 3 5-7"></path>
+            </svg>
+          </div>
+
+          <h3>Threat Analysis</h3>
+
+          <p>
+            Contextual analysis connecting incidents, patterns, technologies
+            and wider cyber risk.
+          </p>
+
+          <a href="../analysis/">Read Analysis →</a>
+
+        </article>
+
+        <article class="coverage-item">
+
+          <div class="coverage-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+              <rect x="9" y="9" width="6" height="6"></rect>
+              <path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"></path>
+            </svg>
+          </div>
+
+          <h3>Cyber Technology</h3>
+
+          <p>
+            Security technology, emerging systems and technology-related
+            cybersecurity developments.
+          </p>
+
+          <a href="../tech/">Explore Technology →</a>
+
+        </article>
+
+        <article class="coverage-item">
+
+          <div class="coverage-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M12 3l8 4v5c0 4.5-3.1 7.6-8 9-4.9-1.4-8-4.5-8-9V7l8-4z"></path>
+              <path d="M12 8v5M12 16h.01"></path>
+            </svg>
+          </div>
+
+          <h3>Vulnerabilities</h3>
+
+          <p>
+            Security weaknesses, exploitation context and vulnerability-related
+            intelligence.
+          </p>
+
+          <a href="../vulnerabilities/">Explore Vulnerabilities →</a>
+
+        </article>
+
+        <article class="coverage-item">
+
+          <div class="coverage-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M12 3l8 4v5c0 4.5-3.1 7.6-8 9-4.9-1.4-8-4.5-8-9V7l8-4z"></path>
+              <path d="M9 12l2 2 4-4"></path>
+            </svg>
+          </div>
+
+          <h3>Malware & AI Security</h3>
+
+          <p>
+            Malware, phishing, artificial intelligence security and emerging
+            attack surfaces across modern technology.
+          </p>
+
+          <a href="../malware/">Explore Malware →</a>
+
+        </article>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================================
+         METHODOLOGY
+    ======================================================== -->
+
+    <section
+      class="methodology-panel"
+      aria-labelledby="methodologyHeading">
+
+      <div class="entity-eyebrow">
+        How Coverage Is Built
+      </div>
+
+      <h2 id="methodologyHeading">
+        Signal. Verify. Contextualize. Explain.
+      </h2>
+
+      <p>
+        Dyve HackaX is structured around a practical intelligence workflow.
+        The exact process varies by story and source availability, but the
+        editorial objective remains consistent: distinguish meaningful
+        information from noise and make the available evidence understandable.
+      </p>
+
+      <div class="methodology-steps">
+
+        <article class="methodology-step">
+          <div class="methodology-number">01</div>
+          <div>
+            <h3>Identify</h3>
+            <p>Locate relevant developments, signals, incidents and research.</p>
+          </div>
+        </article>
+
+        <article class="methodology-step">
+          <div class="methodology-number">02</div>
+          <div>
+            <h3>Verify</h3>
+            <p>Evaluate available evidence, sources and claims before publication.</p>
+          </div>
+        </article>
+
+        <article class="methodology-step">
+          <div class="methodology-number">03</div>
+          <div>
+            <h3>Connect</h3>
+            <p>Relate incidents to actors, vulnerabilities, campaigns and trends.</p>
+          </div>
+        </article>
+
+        <article class="methodology-step">
+          <div class="methodology-number">04</div>
+          <div>
+            <h3>Explain</h3>
+            <p>Present the context and implications in language readers can use.</p>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="entity-actions">
+        <a
+          href="../methodology/"
+          class="entity-action primary">
+          Read Full Methodology →
+        </a>
+
+        <a
+          href="../editorial-policy/"
+          class="entity-action secondary">
+          Editorial Policy →
+        </a>
+      </div>
+
+    </section>
+
+    <!-- ========================================================
+         INTELLIGENCE CORE
+    ======================================================== -->
+
+    <section
+      class="intel-light"
+      aria-labelledby="precisionHeading">
+
+      <div class="intel-light-card">
+
+        <div class="intel-light-content">
+
+          <div class="entity-eyebrow">
+            Intelligence Core
+          </div>
+
+          <h2
+            class="intel-light-title"
+            id="precisionHeading">
+            Intelligence Built for Precision
+          </h2>
+
+          <div class="intel-divider"></div>
+
+          <p class="intel-light-desc">
+            Dyve HackaX is designed to organize high-volume cybersecurity
+            developments into meaningful coverage. The platform prioritizes
+            relevance, context and clarity across threat signals, incidents,
+            adversaries, vulnerabilities and emerging technology risks.
+          </p>
+
+          <div class="about-highlight">
+            <span class="badge-new">Coverage</span>
+            <strong>Emerging Technology Threats:</strong>
+            follow developments involving AI security, IoT, cloud systems,
+            software infrastructure and other technologies where new attack
+            surfaces can create new security questions.
           </div>
 
           <div class="intel-actions">
-            <a href="/" class="btn-primary">Explore Intelligence →</a>
-            <a href="/contact/" class="btn-secondary">Contact Unit →</a>
+
+            <a
+              href="../signals/"
+              class="btn-primary">
+              Explore Threat Signals →
+            </a>
+
+            <a
+              href="../contact/"
+              class="btn-secondary">
+              Contact Unit →
+            </a>
+
           </div>
+
         </div>
+
       </div>
+
+    </section>
+
+    <!-- ========================================================
+         FAQ
+    ======================================================== -->
+
+    <section
+      class="faq-section"
+      aria-labelledby="faqHeading">
+
+      <div class="entity-section-heading">
+
+        <span class="entity-eyebrow">
+          Common Questions
+        </span>
+
+        <h2 id="faqHeading">
+          About Dyve HackaX
+        </h2>
+
+        <p>
+          Direct answers to common questions about the Dyve HackaX identity,
+          platform, coverage and purpose.
+        </p>
+
+      </div>
+
+      <div class="faq-list">
+
+        <details class="faq-item">
+          <summary>What is Dyve HackaX?</summary>
+          <div class="faq-answer">
+            Dyve HackaX is a cybersecurity intelligence and reporting platform
+            at <a href="../">dyve.online</a>. It covers cyber threats, breaches,
+            ransomware, dark web activity, threat actors, vulnerabilities,
+            technology and threat analysis.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>What is Dyve?</summary>
+          <div class="faq-answer">
+            Dyve is the broader identity associated with the platform. The
+            dedicated <a href="../about-dyve/">Dyve entity profile</a> explains
+            the relationship between Dyve and Dyve HackaX in greater detail.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>What does Dyve HackaX cover?</summary>
+          <div class="faq-answer">
+            Coverage includes data breaches, dark web intelligence, ransomware,
+            threat actors, threat signals, vulnerabilities, malware,
+            cybersecurity technology, AI security and threat analysis.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>How does Dyve HackaX approach cybersecurity reporting?</summary>
+          <div class="faq-answer">
+            Dyve HackaX uses a signal-first editorial approach that emphasizes
+            verification, context and clear distinction between established
+            information and interpretation. See the
+            <a href="../methodology/">methodology</a> and
+            <a href="../editorial-policy/">editorial policy</a> for more.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Where can I read the latest Dyve HackaX intelligence?</summary>
+          <div class="faq-answer">
+            The latest coverage is published through the
+            <a href="../">Dyve HackaX intelligence feed</a>, with specialist
+            sections for breaches, dark web intelligence, ransomware, threat
+            actors, technology and analysis.
+          </div>
+        </details>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================================
+         INTERNAL LINK HUB
+    ======================================================== -->
+
+    <section
+      class="internal-hub"
+      aria-labelledby="exploreHeading">
+
+      <h2 id="exploreHeading">
+        Explore Dyve HackaX
+      </h2>
+
+      <p>
+        Continue from this About page into the primary intelligence, research,
+        methodology and entity resources across dyve.online.
+      </p>
+
+      <nav
+        class="internal-links"
+        aria-label="Dyve HackaX internal resources">
+
+        <a href="../about-dyve/">About Dyve Entity →</a>
+        <a href="../">Intelligence Feed →</a>
+        <a href="../signals/">Threat Signals →</a>
+        <a href="../breaches/">Data Breaches →</a>
+        <a href="../dark-web/">Dark Web Intelligence →</a>
+        <a href="../ransomware/">Ransomware Intelligence →</a>
+        <a href="../threat-actors/">Threat Actors →</a>
+        <a href="../analysis/">Threat Analysis →</a>
+        <a href="../tech/">Cyber Technology →</a>
+        <a href="../vulnerabilities/">Vulnerabilities →</a>
+        <a href="../methodology/">Methodology →</a>
+        <a href="../editorial-policy/">Editorial Policy →</a>
+        <a href="../contact/">Contact Dyve →</a>
+        <a href="../faq/">Cybersecurity FAQ →</a>
+
+      </nav>
+
     </section>
 
   </div>
 
-  <!-- =========================
-       FOOTER
-  ========================= -->
-  <footer class="dyve-footer">
-    <div class="dyve-core">
-      <div class="dyve-title">DYVE HACKAX</div>
-      <p class="dyve-desc">Threat intelligence. Breach detection. Cyber awareness.</p>
-      <div class="dyve-actions">
-        <a href="/" class="dyve-btn primary">Return to Intel →</a>
-      </div>
+</main>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+
+<footer class="dyve-footer">
+
+  <div class="dyve-core">
+
+    <div class="dyve-title">
+      DYVE HACKAX
     </div>
-  </footer>
 
-  <!-- Fixed typo: /script> changed to </script> -->
-  <script src="../ui.js"></script>
+    <p class="dyve-desc">
+      Cyber intelligence, security reporting and threat analysis.
+      <br>
+      Monitor. Decode. Understand.
+    </p>
 
-  <!-- =========================
-       NAV SCRIPT
-  ========================= -->
-  <script>
-    document.querySelectorAll(".nav span").forEach(item => {
-      item.addEventListener("click", () => {
-        const link = item.getAttribute("data-link");
-        if (!link) return;
-        document.body.classList.add("exit");
-        setTimeout(() => { window.location.href = link; }, 200);
-      });
-    });
-  </script>
+    <div class="dyve-actions">
+
+      <a
+        href="../"
+        class="dyve-btn primary">
+        Return to Intelligence →
+      </a>
+
+      <a
+        href="../about-dyve/"
+        class="dyve-btn secondary">
+        About Dyve →
+      </a>
+
+    </div>
+
+    <div class="footer-nav">
+
+      <div class="footer-column">
+
+        <h3>Intelligence</h3>
+
+        <a href="../signals/">Threat Signals</a>
+        <a href="../dark-web/">Dark Web</a>
+        <a href="../breaches/">Breaches</a>
+        <a href="../ransomware/">Ransomware</a>
+        <a href="../threat-actors/">Threat Actors</a>
+
+      </div>
+
+      <div class="footer-column">
+
+        <h3>Research</h3>
+
+        <a href="../analysis/">Threat Analysis</a>
+        <a href="../tech/">Technology</a>
+        <a href="../vulnerabilities/">Vulnerabilities</a>
+        <a href="../malware/">Malware</a>
+        <a href="../ai-security/">AI Security</a>
+
+      </div>
+
+      <div class="footer-column">
+
+        <h3>About</h3>
+
+        <a href="../about-dyve/">About Dyve</a>
+        <a href="./">About Dyve HackaX</a>
+        <a href="../editorial-policy/">Editorial Policy</a>
+        <a href="../methodology/">Methodology</a>
+        <a href="../contact/">Contact</a>
+
+      </div>
+
+      <div class="footer-column">
+
+        <h3>Legal</h3>
+
+        <a href="../privacy-policy/">Privacy</a>
+        <a href="../terms-of-service/">Terms</a>
+        <a href="../corrections/">Corrections</a>
+        <a href="../feed.xml">RSS Feed</a>
+        <a href="../sitemap.xml">Sitemap</a>
+
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      © 2026 Dyve HackaX. All rights reserved.
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- ============================================================
+     GLOBAL UI SCRIPT
+============================================================ -->
+
+<script src="../ui.js"></script>
+
+<!-- ============================================================
+     NAV SCRIPT
+============================================================ -->
+
+<script>
+"use strict";
+
+document.querySelectorAll(".nav span").forEach(item => {
+  item.addEventListener("click", () => {
+    const link = item.getAttribute("data-link");
+
+    if (!link) {
+      return;
+    }
+
+    document.body.classList.add("exit");
+
+    window.setTimeout(() => {
+      window.location.href = link;
+    }, 200);
+  });
+});
+</script>
 
 </body>
 </html>
