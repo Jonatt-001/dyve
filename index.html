@@ -2,28 +2,26 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <!-- ============================================================
-     DYVE HACKAX 2.0
-     CYBER INTELLIGENCE HOMEPAGE
+     DYVE HACKAX 2.1
+     PRODUCTION CYBER INTELLIGENCE HOMEPAGE
 ============================================================ -->
 
 <!-- =========================
      PRIMARY SEO
 ========================= -->
-<title>Dyve HackaX — Cyber Intelligence, Threat Analysis & Security News</title>
+<title>Dyve HackaX - Cyber Intelligence, Threat Analysis & Security News</title>
 
-<meta name="description" content="Dyve HackaX covers cybersecurity threats, data breaches, ransomware, threat actors, dark web intelligence, vulnerabilities and security analysis. Explore the latest cyber intelligence and threat research.">
+<meta name="description" content="Dyve HackaX covers cybersecurity threats, data breaches, ransomware, threat actors, dark web intelligence, vulnerabilities and security analysis. Explore current cyber intelligence and threat research.">
 
 <meta name="author" content="Dyve HackaX Intelligence Unit">
-
-<meta name="keywords" content="cyber intelligence, cybersecurity news, threat intelligence, cyber threats, data breaches, ransomware, threat actors, dark web intelligence, zero-day vulnerabilities, cybersecurity analysis">
 
 <!-- =========================
      CANONICAL
 ========================= -->
-<link rel="canonical" href="https://dyve.online/">
+<link rel="canonical" href="https://www.dyve.online/">
 
 <!-- =========================
      ROBOTS
@@ -39,16 +37,16 @@
 <!-- =========================
      LANGUAGE / DISCOVERY
 ========================= -->
-<link rel="alternate" type="application/rss+xml" title="Dyve HackaX RSS Feed" href="https://dyve.online/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="Dyve HackaX RSS Feed" href="https://www.dyve.online/feed.xml">
 
 <!-- =========================
      OPEN GRAPH
 ========================= -->
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
-<meta property="og:title" content="Dyve HackaX — Cyber Intelligence & Threat Analysis">
+<meta property="og:title" content="Dyve HackaX - Cyber Intelligence & Threat Analysis">
 <meta property="og:description" content="Cybersecurity intelligence covering breaches, ransomware, threat actors, dark web activity, vulnerabilities and emerging threats.">
-<meta property="og:url" content="https://dyve.online/">
+<meta property="og:url" content="https://www.dyve.online/">
 <meta property="og:site_name" content="Dyve HackaX">
 <meta property="og:image" content="https://i.postimg.cc/4yJJ1CYm/IMG-0476.jpg">
 <meta property="og:image:alt" content="Dyve HackaX cyber intelligence">
@@ -58,7 +56,7 @@
      TWITTER / X
 ========================= -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Dyve HackaX — Cyber Intelligence & Threat Analysis">
+<meta name="twitter:title" content="Dyve HackaX - Cyber Intelligence & Threat Analysis">
 <meta name="twitter:description" content="Cybersecurity intelligence covering breaches, ransomware, threat actors, dark web activity and emerging threats.">
 <meta name="twitter:image" content="https://i.postimg.cc/4yJJ1CYm/IMG-0476.jpg">
 <meta name="twitter:image:alt" content="Dyve HackaX cyber intelligence">
@@ -67,7 +65,6 @@
      FAVICON
 ========================= -->
 <link rel="icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
 <link rel="apple-touch-icon" href="/logo.png">
 
 <!-- =========================
@@ -75,15 +72,16 @@
 ========================= -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://images.unsplash.com">
 
 <!-- =========================
      STYLES
 ========================= -->
-<link rel="stylesheet" href="/style.css">
-<link rel="stylesheet" href="/divider.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="divider.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Michroma&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link
+  href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+  rel="stylesheet">
 
 <!-- ============================================================
      ORGANIZATION SCHEMA
@@ -92,18 +90,15 @@
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "@id": "https://dyve.online/#organization",
+  "@id": "https://www.dyve.online/#organization",
   "name": "Dyve HackaX",
-  "alternateName": [
-    "Dyve",
-    "Dyve Intelligence",
-    "HackaX"
-  ],
-  "description": "Dyve HackaX is a cyber intelligence and security publication covering cybersecurity threats, data breaches, ransomware, threat actors, vulnerabilities and dark web intelligence.",
-  "url": "https://dyve.online/",
+  "description": "Dyve HackaX is a cyber intelligence and security publication covering cybersecurity threats, data breaches, ransomware, threat actors, vulnerabilities, dark web intelligence and security research.",
+  "url": "https://www.dyve.online/",
   "logo": {
     "@type": "ImageObject",
-    "url": "https://dyve.online/logo.png"
+    "@id": "https://www.dyve.online/#logo",
+    "url": "https://www.dyve.online/logo.png",
+    "contentUrl": "https://www.dyve.online/logo.png"
   },
   "foundingDate": "2026",
   "industry": "Cybersecurity"
@@ -113,16 +108,28 @@
 <!-- ============================================================
      WEBSITE SCHEMA
 ============================================================ -->
-<script type="application/ld+json">
+<script type="application/ld+json" id="websiteSchema">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "@id": "https://dyve.online/#website",
+  "@id": "https://www.dyve.online/#website",
   "name": "Dyve HackaX",
-  "url": "https://dyve.online/",
+  "url": "https://www.dyve.online/",
   "description": "Cyber intelligence, cybersecurity news and threat analysis.",
   "publisher": {
-    "@id": "https://dyve.online/#organization"
+    "@id": "https://www.dyve.online/#organization"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://www.dyve.online/search/?q={search_term_string}"
+    },
+    "query-input": {
+      "@type": "PropertyValueSpecification",
+      "valueRequired": true,
+      "valueName": "search_term_string"
+    }
   }
 }
 </script>
@@ -130,16 +137,17 @@
 <!-- ============================================================
      WEBPAGE SCHEMA
 ============================================================ -->
-<script type="application/ld+json">
+<script type="application/ld+json" id="webpageSchema">
 {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "@id": "https://dyve.online/#webpage",
-  "name": "Dyve HackaX — Cyber Intelligence",
-  "url": "https://dyve.online/",
-  "description": "Latest cybersecurity intelligence covering breaches, ransomware, threat actors, dark web activity and emerging threats.",
+  "@id": "https://www.dyve.online/#webpage",
+  "url": "https://www.dyve.online/",
+  "name": "Dyve HackaX - Cyber Intelligence",
+  "headline": "Intelligence for the threats moving now.",
+  "description": "Latest cybersecurity intelligence covering breaches, ransomware, threat actors, dark web activity, vulnerabilities and emerging threats.",
   "isPartOf": {
-    "@id": "https://dyve.online/#website"
+    "@id": "https://www.dyve.online/#website"
   },
   "about": {
     "@type": "Thing",
@@ -147,20 +155,24 @@
     "sameAs": "https://en.wikipedia.org/wiki/Threat_intelligence"
   },
   "publisher": {
-    "@id": "https://dyve.online/#organization"
-  }
+    "@id": "https://www.dyve.online/#organization"
+  },
+  "inLanguage": "en"
 }
 </script>
 
 <!-- ============================================================
-     INLINE ITEM LIST SCHEMA
-     Dynamically populated from articles.json.
+     ITEM LIST SCHEMA
+     Populated from static build data or article feed.
 ============================================================ -->
 <script type="application/ld+json" id="articleListSchema">
 {
   "@context": "https://schema.org",
   "@type": "ItemList",
+  "@id": "https://www.dyve.online/#latest-intelligence",
   "name": "Latest Cyber Intelligence",
+  "itemListOrder": "https://schema.org/ItemListOrderDescending",
+  "numberOfItems": 0,
   "itemListElement": []
 }
 </script>
@@ -173,8 +185,8 @@
 
 <style>
 /* ============================================================
-   DYVE HACKAX 2.0
-   HOMEPAGE SYSTEM OVERRIDES
+   DYVE HACKAX 2.1
+   HOMEPAGE SYSTEM
 ============================================================ */
 
 :root {
@@ -231,6 +243,11 @@ a {
 button,
 a {
   touch-action: manipulation;
+}
+
+::selection {
+  background: rgba(0,255,170,.22);
+  color: #fff;
 }
 
 /* ============================================================
@@ -1145,6 +1162,10 @@ a {
   font-size: 9px;
 }
 
+.signal-meta a:hover {
+  color: var(--dx-green) !important;
+}
+
 /* ============================================================
    INTEL BRAND SECTION
 ============================================================ */
@@ -1233,6 +1254,13 @@ a {
   border: 1px solid var(--dx-line);
   color: rgba(255,255,255,.72);
   background: rgba(255,255,255,.025);
+}
+
+.intel-btn:hover,
+.btn-primary:hover,
+.cyber-btn:hover,
+.dyve-btn:hover {
+  transform: translateY(-2px);
 }
 
 .intel-eyebrow {
@@ -1786,239 +1814,8 @@ button:focus-visible {
      MOBILE / TABLET DRAWER
 ============================================================ -->
 
-<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<div id="global-drawer"></div> <div id="global-header"></div>
 
-<aside
-  class="drawer"
-  id="drawer"
-  aria-label="Dyve HackaX navigation"
-  aria-hidden="true">
-
-  <div class="drawer-header">
-
-    <div class="drawer-logo">
-      DYVE<span style="opacity:.5">|</span>HACKAX
-    </div>
-
-    <button
-      type="button"
-      class="drawer-close"
-      id="drawerClose"
-      aria-label="Close navigation"
-      aria-controls="drawer">
-
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        aria-hidden="true">
-
-        <line x1="18" y1="6" x2="6" y2="18"></line>
-        <line x1="6" y1="6" x2="18" y2="18"></line>
-
-      </svg>
-    </button>
-
-  </div>
-
-  <nav class="drawer-nav" aria-label="Primary navigation">
-
-    <a class="active" href="/index.html">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-      </svg>
-      <span>Intel Feed</span>
-    </a>
-
-    <a href="/breaches/index.html">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-        <rect x="3" y="11" width="18" height="11" rx="2"></rect>
-        <path d="M7 11V7a5 5 0 0110 0v4"></path>
-      </svg>
-      <span>Breach Surveillance</span>
-    </a>
-
-    <a href="/dark-web/index.html">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-        <circle cx="12" cy="12" r="10"></circle>
-        <path d="M12 2a14.5 14.5 0 000 20 14.5 14.5 0 000-20"></path>
-        <path d="M2 12h20"></path>
-      </svg>
-      <span>Dark Web Intelligence</span>
-    </a>
-
-    <a href="/ransomware/index.html">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path>
-        <line x1="12" y1="9" x2="12" y2="13"></line>
-        <line x1="12" y1="17" x2="12.01" y2="17"></line>
-      </svg>
-      <span>Ransomware Intelligence</span>
-    </a>
-
-    <a href="/tech/index.html">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-        <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-        <rect x="9" y="9" width="6" height="6"></rect>
-        <line x1="9" y1="1" x2="9" y2="4"></line>
-        <line x1="15" y1="1" x2="15" y2="4"></line>
-        <line x1="9" y1="20" x2="9" y2="23"></line>
-        <line x1="15" y1="20" x2="15" y2="23"></line>
-        <line x1="20" y1="9" x2="23" y2="9"></line>
-        <line x1="20" y1="14" x2="23" y2="14"></line>
-        <line x1="1" y1="9" x2="4" y2="9"></line>
-        <line x1="1" y1="14" x2="4" y2="14"></line>
-      </svg>
-      <span>Latest on Tech</span>
-    </a>
-
-  </nav>
-
-  <div class="drawer-divider"></div>
-
-  <div class="drawer-submenu">
-
-    <div class="submenu-header">
-
-      <svg class="submenu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-        <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.77z"></path>
-      </svg>
-
-      <span class="submenu-label">Advanced Intelligence</span>
-
-    </div>
-
-    <div class="submenu-items">
-
-      <a href="/signals/index.html">
-        <svg class="submenu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
-        </svg>
-        <span>Threat Signals</span>
-      </a>
-
-      <a href="/threat-actors/index.html">
-        <svg class="submenu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
-          <circle cx="9" cy="7" r="4"></circle>
-          <path d="M23 21v-2a4 4 0 00-3-3.87"></path>
-          <path d="M16 3.13a4 4 0 010 7.75"></path>
-        </svg>
-        <span>Threat Actors</span>
-      </a>
-
-      <a href="/analysis/index.html">
-        <svg class="submenu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-          <line x1="18" y1="20" x2="18" y2="10"></line>
-          <line x1="12" y1="20" x2="12" y2="4"></line>
-          <line x1="6" y1="20" x2="6" y2="14"></line>
-        </svg>
-        <span>Threat Analysis</span>
-      </a>
-
-    </div>
-
-  </div>
-
-  <div class="drawer-divider"></div>
-
-  <div class="drawer-extra">
-
-    <a href="/search/index.html">
-      <span>Search Intelligence</span>
-    </a>
-
-    <a href="/faq/index.html">
-      <span>FAQ</span>
-    </a>
-
-    <a href="/about-us/index.html">
-      <span>About Us</span>
-    </a>
-
-    <a href="/editorial-policy/index.html">
-      <span>Editorial Policy</span>
-    </a>
-
-    <a href="/privacy-policy/index.html">
-      <span>Privacy Policy</span>
-    </a>
-
-    <a href="/terms-of-service/index.html">
-      <span>Terms of Service</span>
-    </a>
-
-  </div>
-
-</aside>
-
-<!-- ============================================================
-     HEADER
-============================================================ -->
-
-<header class="header">
-
-  <div class="topbar">
-
-    <button
-      type="button"
-      class="menu-icon"
-      id="menuToggle"
-      aria-label="Open navigation"
-      aria-controls="drawer"
-      aria-expanded="false">
-    </button>
-
-    <a href="/index.html" class="logo" aria-label="Dyve HackaX home">
-      DYVE<span style="opacity:.5">|</span>HACKAX
-    </a>
-
-    <div class="icons">
-
-      <a
-        class="icon search-trigger"
-        href="/search/index.html"
-        aria-label="Search Dyve HackaX">
-      </a>
-
-      <a
-        class="icon"
-        href="/signals/index.html"
-        aria-label="Threat signals">
-      </a>
-
-    </div>
-
-  </div>
-
-  <nav class="nav" aria-label="Primary navigation">
-
-    <a class="active" href="/index.html">
-      Feed
-    </a>
-
-    <a href="/breaches/index.html">
-      Breaches
-    </a>
-
-    <a href="/dark-web/index.html">
-      Dark Web
-    </a>
-
-    <a href="/ransomware/index.html">
-      Ransomware
-    </a>
-
-    <a href="/threat-actors/index.html">
-      Threat Actors
-    </a>
-
-  </nav>
-
-</header>
 
 <!-- ============================================================
      MAIN
@@ -2052,13 +1849,13 @@ button:focus-visible {
       <div class="page-intro-actions">
 
         <a
-          href="/signals/index.html"
+          href="/signals/"
           class="intro-action primary">
           Explore Intelligence
         </a>
 
         <a
-          href="/analysis/index.html"
+          href="/analysis/"
           class="intro-action secondary">
           Read Analysis
         </a>
@@ -2069,7 +1866,7 @@ button:focus-visible {
 
     <!-- ========================================================
          EDITORIAL STATUS
-    ========================================================= -->
+    ======================================================== -->
 
     <section class="editorial-status" aria-label="Dyve HackaX coverage">
 
@@ -2122,7 +1919,7 @@ button:focus-visible {
         </div>
 
         <a
-          href="/index.html"
+          href="/"
           class="section-link">
           Full Feed →
         </a>
@@ -2169,7 +1966,7 @@ button:focus-visible {
         </div>
 
         <a
-          href="/index.html"
+          href="/"
           class="section-link">
           View All →
         </a>
@@ -2212,8 +2009,9 @@ button:focus-visible {
 
           <p class="landscape-copy">
             Explore the major areas tracked across Dyve HackaX.
-            Individual threat levels should be treated as editorial
-            context unless explicitly backed by a published intelligence source.
+            These labels describe current editorial coverage and monitoring
+            priorities unless a published intelligence source provides
+            a specific assessment.
           </p>
 
         </div>
@@ -2222,12 +2020,12 @@ button:focus-visible {
 
           <div class="landscape-item">
             <span class="landscape-name">Ransomware</span>
-            <span class="landscape-value">Active</span>
+            <span class="landscape-value">Monitoring</span>
           </div>
 
           <div class="landscape-item">
             <span class="landscape-name">Data Breaches</span>
-            <span class="landscape-value">Active</span>
+            <span class="landscape-value">Monitoring</span>
           </div>
 
           <div class="landscape-item">
@@ -2242,7 +2040,7 @@ button:focus-visible {
 
           <div class="landscape-item">
             <span class="landscape-name">Vulnerabilities</span>
-            <span class="landscape-value">Tracked</span>
+            <span class="landscape-value">Monitored</span>
           </div>
 
           <div class="landscape-item">
@@ -2286,7 +2084,7 @@ button:focus-visible {
         </div>
 
         <a
-          href="/dark-web/index.html"
+          href="/dark-web/"
           class="section-link">
           View All →
         </a>
@@ -2335,7 +2133,7 @@ button:focus-visible {
         </div>
 
         <a
-          href="/breaches/index.html"
+          href="/breaches/"
           class="section-link">
           View All →
         </a>
@@ -2384,7 +2182,7 @@ button:focus-visible {
         </div>
 
         <a
-          href="/ransomware/index.html"
+          href="/ransomware/"
           class="section-link">
           View All →
         </a>
@@ -2433,7 +2231,7 @@ button:focus-visible {
         </div>
 
         <a
-          href="/threat-actors/index.html"
+          href="/threat-actors/"
           class="section-link">
           View All →
         </a>
@@ -2524,7 +2322,7 @@ button:focus-visible {
           </p>
 
           <a
-            href="/signals/index.html"
+            href="/signals/"
             class="intel-btn">
             Explore Threat Signals →
           </a>
@@ -2574,13 +2372,13 @@ button:focus-visible {
           <div class="intel-actions">
 
             <a
-              href="/analysis/index.html"
+              href="/analysis/"
               class="btn-primary">
               Read Analysis →
             </a>
 
             <a
-              href="/about-us/index.html"
+              href="/about-us/"
               class="btn-secondary">
               How Dyve Works →
             </a>
@@ -2629,7 +2427,7 @@ button:focus-visible {
         </p>
 
         <a
-          href="/analysis/index.html"
+          href="/analysis/"
           class="cyber-btn">
           Enter HackaX Intelligence →
         </a>
@@ -2665,51 +2463,51 @@ button:focus-visible {
 
         <div class="topic-grid">
 
-          <a href="/ransomware/index.html" class="topic-link">
+          <a href="/ransomware/" class="topic-link">
             Ransomware
           </a>
 
-          <a href="/breaches/index.html" class="topic-link">
+          <a href="/breaches/" class="topic-link">
             Data Breaches
           </a>
 
-          <a href="/dark-web/index.html" class="topic-link">
+          <a href="/dark-web/" class="topic-link">
             Dark Web
           </a>
 
-          <a href="/threat-actors/index.html" class="topic-link">
+          <a href="/threat-actors/" class="topic-link">
             Threat Actors
           </a>
 
-          <a href="/signals/index.html" class="topic-link">
+          <a href="/signals/" class="topic-link">
             Threat Signals
           </a>
 
-          <a href="/analysis/index.html" class="topic-link">
+          <a href="/analysis/" class="topic-link">
             Threat Analysis
           </a>
 
-          <a href="/tech/index.html" class="topic-link">
+          <a href="/tech/" class="topic-link">
             Cyber Technology
           </a>
 
-          <a href="/vulnerabilities/index.html" class="topic-link">
+          <a href="/vulnerabilities/" class="topic-link">
             Vulnerabilities
           </a>
 
-          <a href="/malware/index.html" class="topic-link">
+          <a href="/malware/" class="topic-link">
             Malware
           </a>
 
-          <a href="/phishing/index.html" class="topic-link">
+          <a href="/phishing/" class="topic-link">
             Phishing
           </a>
 
-          <a href="/ai-security/index.html" class="topic-link">
+          <a href="/ai-security/" class="topic-link">
             AI Security
           </a>
 
-          <a href="/cloud-security/index.html" class="topic-link">
+          <a href="/cloud-security/" class="topic-link">
             Cloud Security
           </a>
 
@@ -2748,19 +2546,19 @@ button:focus-visible {
 
         <div class="about-links">
 
-          <a href="/about-us/index.html">
+          <a href="/about-us/">
             About Dyve →
           </a>
 
-          <a href="/editorial-policy/index.html">
+          <a href="/editorial-policy/">
             Editorial Policy →
           </a>
 
-          <a href="/methodology/index.html">
+          <a href="/methodology/">
             Methodology →
           </a>
 
-          <a href="/contact/index.html">
+          <a href="/contact/">
             Contact →
           </a>
 
@@ -2790,51 +2588,51 @@ button:focus-visible {
 
       <div class="seo-grid">
 
-        <a href="/breaches/index.html">
+        <a href="/breaches/">
           Live Data Breaches
         </a>
 
-        <a href="/dark-web/index.html">
+        <a href="/dark-web/">
           Dark Web Intelligence
         </a>
 
-        <a href="/threat-actors/index.html">
+        <a href="/threat-actors/">
           Threat Actor Profiles
         </a>
 
-        <a href="/signals/index.html">
+        <a href="/signals/">
           Threat Signals
         </a>
 
-        <a href="/ransomware/index.html">
+        <a href="/ransomware/">
           Ransomware Intelligence
         </a>
 
-        <a href="/analysis/index.html">
+        <a href="/analysis/">
           Threat Analysis
         </a>
 
-        <a href="/tech/index.html">
+        <a href="/tech/">
           Latest Cyber Technology
         </a>
 
-        <a href="/vulnerabilities/index.html">
+        <a href="/vulnerabilities/">
           Vulnerability Intelligence
         </a>
 
-        <a href="/malware/index.html">
+        <a href="/malware/">
           Malware Intelligence
         </a>
 
-        <a href="/faq/index.html">
+        <a href="/faq/">
           Cybersecurity FAQ
         </a>
 
-        <a href="/about-us/index.html">
+        <a href="/about-us/">
           About Dyve HackaX
         </a>
 
-        <a href="/editorial-policy/index.html">
+        <a href="/editorial-policy/">
           Editorial Policy
         </a>
 
@@ -2905,13 +2703,13 @@ button:focus-visible {
     <div class="dyve-actions">
 
       <a
-        href="/signals/index.html"
+        href="/signals/"
         class="dyve-btn primary">
         Enter Intelligence →
       </a>
 
       <a
-        href="/contact/index.html"
+        href="/contact/"
         class="dyve-btn secondary">
         Contact Unit
       </a>
@@ -2924,23 +2722,23 @@ button:focus-visible {
 
         <h3>Intelligence</h3>
 
-        <a href="/signals/index.html">
+        <a href="/signals/">
           Threat Signals
         </a>
 
-        <a href="/dark-web/index.html">
+        <a href="/dark-web/">
           Dark Web
         </a>
 
-        <a href="/breaches/index.html">
+        <a href="/breaches/">
           Breaches
         </a>
 
-        <a href="/ransomware/index.html">
+        <a href="/ransomware/">
           Ransomware
         </a>
 
-        <a href="/threat-actors/index.html">
+        <a href="/threat-actors/">
           Threat Actors
         </a>
 
@@ -2950,23 +2748,23 @@ button:focus-visible {
 
         <h3>Research</h3>
 
-        <a href="/analysis/index.html">
+        <a href="/analysis/">
           Threat Analysis
         </a>
 
-        <a href="/tech/index.html">
+        <a href="/tech/">
           Technology
         </a>
 
-        <a href="/vulnerabilities/index.html">
+        <a href="/vulnerabilities/">
           Vulnerabilities
         </a>
 
-        <a href="/malware/index.html">
+        <a href="/malware/">
           Malware
         </a>
 
-        <a href="/ai-security/index.html">
+        <a href="/ai-security/">
           AI Security
         </a>
 
@@ -2976,23 +2774,23 @@ button:focus-visible {
 
         <h3>About</h3>
 
-        <a href="/about-us/index.html">
+        <a href="/about-us/">
           About Dyve
         </a>
 
-        <a href="/editorial-policy/index.html">
+        <a href="/editorial-policy/">
           Editorial Policy
         </a>
 
-        <a href="/methodology/index.html">
+        <a href="/methodology/">
           Methodology
         </a>
 
-        <a href="/contact/index.html">
+        <a href="/contact/">
           Contact
         </a>
 
-        <a href="/faq/index.html">
+        <a href="/faq/">
           FAQ
         </a>
 
@@ -3002,15 +2800,15 @@ button:focus-visible {
 
         <h3>Legal</h3>
 
-        <a href="/privacy-policy/index.html">
+        <a href="/privacy-policy/">
           Privacy
         </a>
 
-        <a href="/terms-of-service/index.html">
+        <a href="/terms-of-service/">
           Terms
         </a>
 
-        <a href="/corrections/index.html">
+        <a href="/corrections/">
           Corrections
         </a>
 
@@ -3033,6 +2831,28 @@ button:focus-visible {
   </div>
 
 </footer>
+<script src="ui.js"></script>
+<!-- ============================================================
+     STATIC BUILD DATA
+     
+     Your publishing/build engine can inject:
+     
+     window.DYVE_BUILD_ARTICLES = [...]
+     
+     before this application script.
+     
+     If no build data is injected, the application falls back
+     to /assets/articles.json.
+============================================================ -->
+
+<script>
+"use strict";
+
+window.DYVE_BUILD_ARTICLES =
+  Array.isArray(window.DYVE_BUILD_ARTICLES)
+    ? window.DYVE_BUILD_ARTICLES
+    : [];
+</script>
 
 <!-- ============================================================
      JAVASCRIPT
@@ -3076,12 +2896,14 @@ const feedStatus = document.getElementById("feedStatus");
 
 let allArticles = [];
 let refreshTimer = null;
+let feedFingerprint = "";
 
 /* ============================================================
    ACCESSIBILITY HELPERS
 ============================================================ */
 
 function setDrawerState(open) {
+
   if (!drawer || !backdrop || !toggle) {
     return;
   }
@@ -3110,19 +2932,37 @@ function closeDrawer() {
 ============================================================ */
 
 toggle?.addEventListener("click", () => {
-  const isOpen = drawer.classList.contains("active");
+
+  const isOpen =
+    drawer?.classList.contains("active");
+
   setDrawerState(!isOpen);
+
 });
 
-closeBtn?.addEventListener("click", closeDrawer);
+closeBtn?.addEventListener(
+  "click",
+  closeDrawer
+);
 
-backdrop?.addEventListener("click", closeDrawer);
+backdrop?.addEventListener(
+  "click",
+  closeDrawer
+);
 
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape" && drawer?.classList.contains("active")) {
-    closeDrawer();
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Escape" &&
+      drawer?.classList.contains("active")
+    ) {
+      closeDrawer();
+    }
+
   }
-});
+);
 
 /* ============================================================
    SWIPE TO CLOSE
@@ -3130,56 +2970,98 @@ document.addEventListener("keydown", event => {
 
 let drawerStartX = 0;
 
-drawer?.addEventListener("touchstart", event => {
-  drawerStartX = event.touches[0].clientX;
-}, { passive: true });
+drawer?.addEventListener(
+  "touchstart",
+  event => {
+    drawerStartX = event.touches[0].clientX;
+  },
+  { passive: true }
+);
 
-drawer?.addEventListener("touchmove", event => {
-  const currentX = event.touches[0].clientX;
-  const difference = currentX - drawerStartX;
+drawer?.addEventListener(
+  "touchmove",
+  event => {
 
-  if (difference < -70) {
-    closeDrawer();
-  }
-}, { passive: true });
+    const currentX =
+      event.touches[0].clientX;
+
+    const difference =
+      currentX - drawerStartX;
+
+    if (difference < -70) {
+      closeDrawer();
+    }
+
+  },
+  { passive: true }
+);
 
 /* ============================================================
    NAVIGATION
-   Keep normal browser navigation intact.
 ============================================================ */
 
-document.querySelectorAll(".drawer a").forEach(link => {
-  link.addEventListener("click", closeDrawer);
-});
+document
+  .querySelectorAll(".drawer a")
+  .forEach(link => {
+
+    link.addEventListener(
+      "click",
+      closeDrawer
+    );
+
+  });
 
 /* ============================================================
    SAFE TEXT
 ============================================================ */
 
-function cleanText(value, fallback = "") {
-  if (value === null || value === undefined) {
+function cleanText(
+  value,
+  fallback = ""
+) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
     return fallback;
   }
 
-  const temporary = document.createElement("div");
+  const temporary =
+    document.createElement("div");
+
   temporary.innerHTML = String(value);
 
-  return (temporary.textContent || temporary.innerText || "")
+  return (
+    temporary.textContent ||
+    temporary.innerText ||
+    ""
+  )
     .replace(/\s+/g, " ")
     .trim();
+
 }
 
 /* ============================================================
-   SAFE URL
+   SAFE INTERNAL URL
 ============================================================ */
 
-function safeInternalUrl(value, fallback = "/index.html") {
+function safeInternalUrl(
+  value,
+  fallback = "/"
+) {
+
   if (!value) {
     return fallback;
   }
 
   try {
-    const url = new URL(value, window.location.origin);
+
+    const url =
+      new URL(
+        value,
+        window.location.origin
+      );
 
     if (
       url.protocol !== "http:" &&
@@ -3188,14 +3070,45 @@ function safeInternalUrl(value, fallback = "/index.html") {
       return fallback;
     }
 
-    if (url.origin !== window.location.origin) {
+    if (
+      url.origin !==
+      window.location.origin
+    ) {
       return fallback;
     }
 
-    return `${url.pathname}${url.search}${url.hash}`;
+    let pathname =
+      url.pathname;
+
+    if (
+      pathname.endsWith("/index.html")
+    ) {
+      pathname =
+        pathname.slice(
+          0,
+          -"index.html".length
+        );
+    }
+
+    if (
+      pathname === "" ||
+      pathname === "/"
+    ) {
+      pathname = "/";
+    }
+
+    return (
+      pathname +
+      url.search +
+      url.hash
+    );
+
   } catch {
+
     return fallback;
+
   }
+
 }
 
 /* ============================================================
@@ -3203,12 +3116,18 @@ function safeInternalUrl(value, fallback = "/index.html") {
 ============================================================ */
 
 function safeImageUrl(value) {
+
   if (!value) {
     return "";
   }
 
   try {
-    const url = new URL(value, window.location.origin);
+
+    const url =
+      new URL(
+        value,
+        window.location.origin
+      );
 
     if (
       url.protocol !== "http:" &&
@@ -3218,9 +3137,13 @@ function safeImageUrl(value) {
     }
 
     return url.href;
+
   } catch {
+
     return "";
+
   }
+
 }
 
 /* ============================================================
@@ -3228,21 +3151,28 @@ function safeImageUrl(value) {
 ============================================================ */
 
 function getArticleDate(article) {
+
   return (
     article.datePublished ||
     article.date ||
     article.publishDate ||
     ""
   );
+
 }
 
 function getTimestamp(article) {
-  const date = getArticleDate(article);
-  const timestamp = Date.parse(date);
+
+  const date =
+    getArticleDate(article);
+
+  const timestamp =
+    Date.parse(date);
 
   return Number.isFinite(timestamp)
     ? timestamp
     : 0;
+
 }
 
 /* ============================================================
@@ -3250,22 +3180,70 @@ function getTimestamp(article) {
 ============================================================ */
 
 function categoryLabel(article) {
-  const category = cleanText(article.category || "intel");
+
+  const category =
+    cleanText(
+      article.category ||
+      "intel"
+    ).toLowerCase();
 
   const labels = {
-    "dark-web": "Dark Web",
-    "breach": "Breach",
-    "ransomware": "Ransomware",
-    "threat-actors": "Threat Actors",
-    "analysis": "Analysis",
-    "technology": "Technology",
-    "tech": "Technology",
-    "vulnerability": "Vulnerability",
-    "malware": "Malware",
-    "signals": "Threat Signal"
+
+    "dark-web":
+      "Dark Web",
+
+    "breach":
+      "Breach",
+
+    "breaches":
+      "Breach",
+
+    "ransomware":
+      "Ransomware",
+
+    "threat-actors":
+      "Threat Actors",
+
+    "analysis":
+      "Analysis",
+
+    "technology":
+      "Technology",
+
+    "tech":
+      "Technology",
+
+    "vulnerability":
+      "Vulnerability",
+
+    "vulnerabilities":
+      "Vulnerability",
+
+    "malware":
+      "Malware",
+
+    "phishing":
+      "Phishing",
+
+    "ai-security":
+      "AI Security",
+
+    "cloud-security":
+      "Cloud Security",
+
+    "signals":
+      "Threat Signal"
+
   };
 
-  return labels[category] || category;
+  return (
+    labels[category] ||
+    cleanText(
+      article.category ||
+      "Intelligence"
+    )
+  );
+
 }
 
 /* ============================================================
@@ -3273,27 +3251,40 @@ function categoryLabel(article) {
 ============================================================ */
 
 function formatDate(article) {
-  const rawDate = getArticleDate(article);
+
+  const rawDate =
+    getArticleDate(article);
 
   if (!rawDate) {
     return "Recent";
   }
 
-  const timestamp = Date.parse(rawDate);
+  const timestamp =
+    Date.parse(rawDate);
 
   if (!Number.isFinite(timestamp)) {
     return cleanText(rawDate);
   }
 
   try {
-    return new Intl.DateTimeFormat("en", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric"
-    }).format(new Date(timestamp));
+
+    return new Intl.DateTimeFormat(
+      "en",
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      }
+    ).format(
+      new Date(timestamp)
+    );
+
   } catch {
+
     return cleanText(rawDate);
+
   }
+
 }
 
 /* ============================================================
@@ -3301,148 +3292,270 @@ function formatDate(article) {
 ============================================================ */
 
 function sortArticles(articles) {
-  return [...articles].sort((a, b) => {
-    return getTimestamp(b) - getTimestamp(a);
-  });
+
+  return [...articles].sort(
+    (a, b) => {
+      return (
+        getTimestamp(b) -
+        getTimestamp(a)
+      );
+    }
+  );
+
 }
 
 /* ============================================================
    ARTICLE FILTER
 ============================================================ */
 
-function articlesByCategory(category, limit) {
+function articlesByCategory(
+  category,
+  limit
+) {
+
+  const normalized =
+    category.toLowerCase();
+
   return allArticles
     .filter(article => {
-      return cleanText(article.category).toLowerCase() === category;
+
+      const current =
+        cleanText(
+          article.category
+        ).toLowerCase();
+
+      return (
+        current === normalized
+      );
+
     })
     .slice(0, limit);
+
 }
 
 /* ============================================================
    CREATE IMAGE
 ============================================================ */
 
-function createArticleImage(article, className, loading = "lazy") {
-  const wrapper = document.createElement("div");
-  wrapper.className = className;
+function createArticleImage(
+  article,
+  className,
+  loading = "lazy"
+) {
 
-  const imageUrl = safeImageUrl(article.image);
+  const wrapper =
+    document.createElement("div");
+
+  wrapper.className =
+    className;
+
+  const imageUrl =
+    safeImageUrl(article.image);
 
   if (!imageUrl) {
     return wrapper;
   }
 
-  const image = document.createElement("img");
+  const image =
+    document.createElement("img");
 
-  image.src = imageUrl;
-  image.alt = cleanText(
-    article.imageAlt ||
-    article.title ||
-    "Dyve HackaX cybersecurity intelligence"
-  );
+  image.src =
+    imageUrl;
 
-  image.loading = loading;
-  image.decoding = "async";
+  image.alt =
+    cleanText(
+      article.imageAlt ||
+      article.title ||
+      "Dyve HackaX cybersecurity intelligence"
+    );
 
-  if (loading === "eager") {
-    image.fetchPriority = "high";
+  image.loading =
+    loading;
+
+  image.decoding =
+    "async";
+
+  if (
+    loading === "eager"
+  ) {
+
+    image.fetchPriority =
+      "high";
+
   }
 
-  image.addEventListener("error", () => {
-    wrapper.remove();
-  }, { once: true });
+  image.addEventListener(
+    "error",
+    () => {
+      wrapper.remove();
+    },
+    { once: true }
+  );
 
   wrapper.appendChild(image);
 
   return wrapper;
+
 }
 
 /* ============================================================
    CREATE LINK
 ============================================================ */
 
-function createArticleLink(article, className) {
-  const link = document.createElement("a");
+function createArticleLink(
+  article,
+  className
+) {
 
-  link.className = className;
-  link.href = safeInternalUrl(article.url);
+  const link =
+    document.createElement("a");
+
+  link.className =
+    className;
+
+  link.href =
+    safeInternalUrl(
+      article.url
+    );
 
   return link;
+
 }
 
 /* ============================================================
    FEATURED HERO
 ============================================================ */
 
-function renderDynamicHero(articles) {
+function renderDynamicHero(
+  articles
+) {
+
   heroContainer.innerHTML = "";
 
   if (!articles.length) {
-    const empty = document.createElement("div");
-    empty.className = "empty-state";
-    empty.textContent = "No published intelligence available.";
-    heroContainer.appendChild(empty);
+
+    const empty =
+      document.createElement("div");
+
+    empty.className =
+      "empty-state";
+
+    empty.textContent =
+      "No published intelligence available.";
+
+    heroContainer.appendChild(
+      empty
+    );
+
     return;
+
   }
 
-  const hero = articles[0];
+  const hero =
+    articles[0];
 
-  const link = createArticleLink(hero, "dynamic-hero");
+  const link =
+    createArticleLink(
+      hero,
+      "dynamic-hero"
+    );
 
-  const image = createArticleImage(
-    hero,
-    "dynamic-hero-img",
-    "eager"
-  );
+  const image =
+    createArticleImage(
+      hero,
+      "dynamic-hero-img",
+      "eager"
+    );
 
-  if (image.querySelector("img")) {
-    link.appendChild(image);
+  if (
+    image.querySelector("img")
+  ) {
+
+    link.appendChild(
+      image
+    );
+
   }
 
-  const tag = document.createElement("div");
-  tag.className = "tag";
-  tag.textContent = cleanText(
-    hero.tag || categoryLabel(hero)
-  );
+  const tag =
+    document.createElement("div");
+
+  tag.className =
+    "tag";
+
+  tag.textContent =
+    cleanText(
+      hero.tag ||
+      categoryLabel(hero)
+    );
 
   link.appendChild(tag);
 
-  const content = document.createElement("div");
-  content.className = "hero-content";
+  const content =
+    document.createElement("div");
 
-  const label = document.createElement("span");
-  label.className = "hero-label";
-  label.textContent = "Featured Intelligence";
+  content.className =
+    "hero-content";
 
-  const title = document.createElement("h3");
-  title.className = "title";
-  title.textContent = cleanText(
-    hero.title,
-    "Latest Cyber Intelligence"
-  );
+  const label =
+    document.createElement("span");
 
-  const desc = document.createElement("p");
-  desc.className = "desc";
-  desc.textContent = cleanText(
-    hero.excerpt ||
-    hero.desc ||
-    "Explore the latest cybersecurity intelligence from Dyve HackaX."
-  );
+  label.className =
+    "hero-label";
 
-  const meta = document.createElement("div");
-  meta.className = "meta";
+  label.textContent =
+    "Featured Intelligence";
 
-  meta.textContent = [
-    categoryLabel(hero),
-    formatDate(hero),
-    hero.readingTime
-      ? `${cleanText(hero.readingTime)} min read`
-      : ""
-  ].filter(Boolean).join(" • ");
+  const title =
+    document.createElement("h3");
 
-  const read = document.createElement("span");
-  read.className = "hero-read";
-  read.textContent = "Read full intelligence →";
+  title.className =
+    "title";
+
+  title.textContent =
+    cleanText(
+      hero.title,
+      "Latest Cyber Intelligence"
+    );
+
+  const desc =
+    document.createElement("p");
+
+  desc.className =
+    "desc";
+
+  desc.textContent =
+    cleanText(
+      hero.excerpt ||
+      hero.desc ||
+      "Explore the latest cybersecurity intelligence from Dyve HackaX."
+    );
+
+  const meta =
+    document.createElement("div");
+
+  meta.className =
+    "meta";
+
+  meta.textContent =
+    [
+      categoryLabel(hero),
+      formatDate(hero),
+      hero.readingTime
+        ? `${cleanText(hero.readingTime)} min read`
+        : ""
+    ]
+      .filter(Boolean)
+      .join(" • ");
+
+  const read =
+    document.createElement("span");
+
+  read.className =
+    "hero-read";
+
+  read.textContent =
+    "Read full intelligence →";
 
   content.appendChild(label);
   content.appendChild(title);
@@ -3450,67 +3563,138 @@ function renderDynamicHero(articles) {
   content.appendChild(meta);
   content.appendChild(read);
 
-  link.appendChild(content);
+  link.appendChild(
+    content
+  );
 
-  heroContainer.appendChild(link);
+  heroContainer.appendChild(
+    link
+  );
+
 }
 
 /* ============================================================
    LATEST INTELLIGENCE
 ============================================================ */
 
-function renderLatest(articles) {
+function renderLatest(
+  articles
+) {
+
   latestGrid.innerHTML = "";
 
-  const latest = articles.slice(0, DYVE_CONFIG.maxLatest);
+  const latest =
+    articles.slice(
+      0,
+      DYVE_CONFIG.maxLatest
+    );
 
   if (!latest.length) {
-    latestGrid.innerHTML =
-      '<div class="empty-state">No recent intelligence available.</div>';
+
+    latestGrid.innerHTML = "";
+
+    const empty =
+      document.createElement("div");
+
+    empty.className =
+      "empty-state";
+
+    empty.textContent =
+      "No recent intelligence available.";
+
+    latestGrid.appendChild(
+      empty
+    );
+
     return;
+
   }
 
-  latest.forEach(article => {
-    const link = createArticleLink(article, "latest-card");
+  latest.forEach(
+    article => {
 
-    const image = createArticleImage(
-      article,
-      "latest-image"
-    );
+      const link =
+        createArticleLink(
+          article,
+          "latest-card"
+        );
 
-    link.appendChild(image);
+      const image =
+        createArticleImage(
+          article,
+          "latest-image"
+        );
 
-    const content = document.createElement("div");
-    content.className = "latest-content";
+      link.appendChild(
+        image
+      );
 
-    const category = document.createElement("div");
-    category.className = "latest-category";
-    category.textContent = categoryLabel(article);
+      const content =
+        document.createElement("div");
 
-    const title = document.createElement("div");
-    title.className = "latest-title";
-    title.textContent = cleanText(
-      article.title,
-      "Untitled intelligence"
-    );
+      content.className =
+        "latest-content";
 
-    const meta = document.createElement("div");
-    meta.className = "latest-meta";
-    meta.textContent = [
-      formatDate(article),
-      article.readingTime
-        ? `${cleanText(article.readingTime)} min read`
-        : ""
-    ].filter(Boolean).join(" • ");
+      const category =
+        document.createElement("div");
 
-    content.appendChild(category);
-    content.appendChild(title);
-    content.appendChild(meta);
+      category.className =
+        "latest-category";
 
-    link.appendChild(content);
+      category.textContent =
+        categoryLabel(article);
 
-    latestGrid.appendChild(link);
-  });
+      const title =
+        document.createElement("div");
+
+      title.className =
+        "latest-title";
+
+      title.textContent =
+        cleanText(
+          article.title,
+          "Untitled intelligence"
+        );
+
+      const meta =
+        document.createElement("div");
+
+      meta.className =
+        "latest-meta";
+
+      meta.textContent =
+        [
+          formatDate(article),
+          article.readingTime
+            ? `${cleanText(article.readingTime)} min read`
+            : ""
+        ]
+          .filter(Boolean)
+          .join(" • ");
+
+      content.appendChild(
+        category
+      );
+
+      content.appendChild(
+        title
+      );
+
+      content.appendChild(
+        meta
+      );
+
+      link.appendChild(
+        content
+      );
+
+      latestGrid.appendChild(
+        link
+      );
+
+    }
+  );
+
 }
 
 /* ============================================================
@@ -3518,54 +3702,102 @@ function renderLatest(articles) {
 ============================================================ */
 
 function renderDarkWeb() {
-  darkwebGrid.innerHTML = "";
 
-  const articles = articlesByCategory(
-    "dark-web",
-    DYVE_CONFIG.maxDarkWeb
-  );
+  darkwebGrid.innerHTML =
+    "";
+
+  const articles =
+    articlesByCategory(
+      "dark-web",
+      DYVE_CONFIG.maxDarkWeb
+    );
 
   if (!articles.length) {
-    darkwebGrid.innerHTML =
-      '<div class="empty-state">No dark web intelligence published yet.</div>';
+
+    const empty =
+      document.createElement("div");
+
+    empty.className =
+      "empty-state";
+
+    empty.textContent =
+      "No dark web intelligence published yet.";
+
+    darkwebGrid.appendChild(
+      empty
+    );
+
     return;
+
   }
 
-  articles.forEach(article => {
+  articles.forEach(
+    article => {
 
-    const link = createArticleLink(
-      article,
-      "darkweb-card"
-    );
+      const link =
+        createArticleLink(
+          article,
+          "darkweb-card"
+        );
 
-    link.appendChild(
-      createArticleImage(
-        article,
-        "darkweb-img"
-      )
-    );
+      link.appendChild(
+        createArticleImage(
+          article,
+          "darkweb-img"
+        )
+      );
 
-    const content = document.createElement("div");
-    content.className = "darkweb-content";
+      const content =
+        document.createElement("div");
 
-    const title = document.createElement("div");
-    title.className = "darkweb-card-title";
-    title.textContent = cleanText(article.title);
+      content.className =
+        "darkweb-content";
 
-    const meta = document.createElement("div");
-    meta.className = "darkweb-meta";
-    meta.textContent = [
-      cleanText(article.tag || "Core Intelligence"),
-      formatDate(article)
-    ].join(" • ");
+      const title =
+        document.createElement("div");
 
-    content.appendChild(title);
-    content.appendChild(meta);
+      title.className =
+        "darkweb-card-title";
 
-    link.appendChild(content);
+      title.textContent =
+        cleanText(
+          article.title
+        );
 
-    darkwebGrid.appendChild(link);
-  });
+      const meta =
+        document.createElement("div");
+
+      meta.className =
+        "darkweb-meta";
+
+      meta.textContent =
+        [
+          cleanText(
+            article.tag ||
+            "Core Intelligence"
+          ),
+          formatDate(article)
+        ].join(" • ");
+
+      content.appendChild(
+        title
+      );
+
+      content.appendChild(
+        meta
+      );
+
+      link.appendChild(
+        content
+      );
+
+      darkwebGrid.appendChild(
+        link
+      );
+
+    }
+  );
+
 }
 
 /* ============================================================
@@ -3573,70 +3805,138 @@ function renderDarkWeb() {
 ============================================================ */
 
 function renderBreaches() {
-  breachGrid.innerHTML = "";
 
-  const articles = articlesByCategory(
-    "breach",
-    DYVE_CONFIG.maxBreaches
-  );
+  breachGrid.innerHTML =
+    "";
+
+  const articles =
+    articlesByCategory(
+      "breach",
+      DYVE_CONFIG.maxBreaches
+    );
 
   if (!articles.length) {
-    breachGrid.innerHTML =
-      '<div class="empty-state">No breach intelligence published yet.</div>';
+
+    const empty =
+      document.createElement("div");
+
+    empty.className =
+      "empty-state";
+
+    empty.textContent =
+      "No breach intelligence published yet.";
+
+    breachGrid.appendChild(
+      empty
+    );
+
     return;
+
   }
 
-  articles.forEach(article => {
+  articles.forEach(
+    article => {
 
-    const link = createArticleLink(
-      article,
-      "breach-card"
-    );
+      const link =
+        createArticleLink(
+          article,
+          "breach-card"
+        );
 
-    const imageWrapper = createArticleImage(
-      article,
-      "breach-img"
-    );
+      const imageWrapper =
+        createArticleImage(
+          article,
+          "breach-img"
+        );
 
-    const badge = document.createElement("div");
-    badge.className = "breach-badge";
-    badge.textContent = cleanText(
-      article.tag || "Incident"
-    );
+      const badge =
+        document.createElement("div");
 
-    imageWrapper.appendChild(badge);
-    link.appendChild(imageWrapper);
+      badge.className =
+        "breach-badge";
 
-    const content = document.createElement("div");
-    content.className = "breach-content";
+      badge.textContent =
+        cleanText(
+          article.tag ||
+          "Incident"
+        );
 
-    const title = document.createElement("div");
-    title.className = "breach-title";
-    title.textContent = cleanText(article.title);
+      imageWrapper.appendChild(
+        badge
+      );
 
-    const description = document.createElement("p");
-    description.className = "breach-desc";
-    description.textContent = cleanText(
-      article.excerpt ||
-      article.desc ||
-      "Cybersecurity incident and breach intelligence."
-    );
+      link.appendChild(
+        imageWrapper
+      );
 
-    const meta = document.createElement("div");
-    meta.className = "breach-meta";
-    meta.textContent = [
-      cleanText(article.meta || "Incident"),
-      formatDate(article)
-    ].join(" • ");
+      const content =
+        document.createElement("div");
 
-    content.appendChild(title);
-    content.appendChild(description);
-    content.appendChild(meta);
+      content.className =
+        "breach-content";
 
-    link.appendChild(content);
+      const title =
+        document.createElement("div");
 
-    breachGrid.appendChild(link);
-  });
+      title.className =
+        "breach-title";
+
+      title.textContent =
+        cleanText(
+          article.title
+        );
+
+      const description =
+        document.createElement("p");
+
+      description.className =
+        "breach-desc";
+
+      description.textContent =
+        cleanText(
+          article.excerpt ||
+          article.desc ||
+          "Cybersecurity incident and breach intelligence."
+        );
+
+      const meta =
+        document.createElement("div");
+
+      meta.className =
+        "breach-meta";
+
+      meta.textContent =
+        [
+          cleanText(
+            article.meta ||
+            "Incident"
+          ),
+          formatDate(article)
+        ].join(" • ");
+
+      content.appendChild(
+        title
+      );
+
+      content.appendChild(
+        description
+      );
+
+      content.appendChild(
+        meta
+      );
+
+      link.appendChild(
+        content
+      );
+
+      breachGrid.appendChild(
+        link
+      );
+
+    }
+  );
+
 }
 
 /* ============================================================
@@ -3644,56 +3944,123 @@ function renderBreaches() {
 ============================================================ */
 
 function renderRansomware() {
-  ransomwareList.innerHTML = "";
 
-  const articles = articlesByCategory(
-    "ransomware",
-    DYVE_CONFIG.maxRansomware
-  );
+  ransomwareList.innerHTML =
+    "";
 
-  if (!articles.length) {
-    ransomwareList.innerHTML =
-      '<div class="empty-state">No ransomware intelligence published yet.</div>';
-    return;
-  }
-
-  articles.forEach(article => {
-
-    const link = createArticleLink(
-      article,
-      "ransomware-item"
+  const articles =
+    articlesByCategory(
+      "ransomware",
+      DYVE_CONFIG.maxRansomware
     );
 
-    const dot = document.createElement("div");
-    dot.className = "ransomware-dot";
+  if (!articles.length) {
 
-    const content = document.createElement("div");
-    content.className = "ransomware-content";
+    const empty =
+      document.createElement("div");
 
-    const title = document.createElement("div");
-    title.className = "ransomware-title";
-    title.textContent = cleanText(article.title);
+    empty.className =
+      "empty-state";
 
-    const meta = document.createElement("div");
-    meta.className = "ransomware-meta";
-    meta.textContent = [
-      cleanText(article.tag || "Ransomware"),
-      cleanText(article.meta || "Threat activity")
-    ].filter(Boolean).join(" • ");
+    empty.textContent =
+      "No ransomware intelligence published yet.";
 
-    const time = document.createElement("div");
-    time.className = "ransomware-time";
-    time.textContent = formatDate(article);
+    ransomwareList.appendChild(
+      empty
+    );
 
-    content.appendChild(title);
-    content.appendChild(meta);
-    content.appendChild(time);
+    return;
 
-    link.appendChild(dot);
-    link.appendChild(content);
+  }
 
-    ransomwareList.appendChild(link);
-  });
+  articles.forEach(
+    article => {
+
+      const link =
+        createArticleLink(
+          article,
+          "ransomware-item"
+        );
+
+      const dot =
+        document.createElement("div");
+
+      dot.className =
+        "ransomware-dot";
+
+      const content =
+        document.createElement("div");
+
+      content.className =
+        "ransomware-content";
+
+      const title =
+        document.createElement("div");
+
+      title.className =
+        "ransomware-title";
+
+      title.textContent =
+        cleanText(
+          article.title
+        );
+
+      const meta =
+        document.createElement("div");
+
+      meta.className =
+        "ransomware-meta";
+
+      meta.textContent =
+        [
+          cleanText(
+            article.tag ||
+            "Ransomware"
+          ),
+          cleanText(
+            article.meta ||
+            "Threat activity"
+          )
+        ]
+          .filter(Boolean)
+          .join(" • ");
+
+      const time =
+        document.createElement("div");
+
+      time.className =
+        "ransomware-time";
+
+      time.textContent =
+        formatDate(article);
+
+      content.appendChild(
+        title
+      );
+
+      content.appendChild(
+        meta
+      );
+
+      content.appendChild(
+        time
+      );
+
+      link.appendChild(
+        dot
+      );
+
+      link.appendChild(
+        content
+      );
+
+      ransomwareList.appendChild(
+        link
+      );
+
+    }
+  );
+
 }
 
 /* ============================================================
@@ -3701,20 +4068,37 @@ function renderRansomware() {
 ============================================================ */
 
 function renderThreatActors() {
-  threatGrid.innerHTML = "";
 
-  const articles = articlesByCategory(
-    "threat-actors",
-    DYVE_CONFIG.maxThreatActors
-  );
+  threatGrid.innerHTML =
+    "";
+
+  const articles =
+    articlesByCategory(
+      "threat-actors",
+      DYVE_CONFIG.maxThreatActors
+    );
 
   if (!articles.length) {
-    threatGrid.innerHTML =
-      '<div class="empty-state">No threat actor intelligence published yet.</div>';
+
+    const empty =
+      document.createElement("div");
+
+    empty.className =
+      "empty-state";
+
+    empty.textContent =
+      "No threat actor intelligence published yet.";
+
+    threatGrid.appendChild(
+      empty
+    );
+
     return;
+
   }
 
   const icons = [
+
     '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>',
 
     '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>',
@@ -3722,170 +4106,446 @@ function renderThreatActors() {
     '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>',
 
     '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>'
+
   ];
 
-  articles.forEach((article, index) => {
+  articles.forEach(
+    (article, index) => {
 
-    const link = createArticleLink(
-      article,
-      "threat-card"
-    );
+      const link =
+        createArticleLink(
+          article,
+          "threat-card"
+        );
 
-    const icon = document.createElement("div");
-    icon.className = "threat-icon";
-    icon.innerHTML = icons[index % icons.length];
+      const icon =
+        document.createElement("div");
 
-    const content = document.createElement("div");
-    content.className = "threat-content";
+      icon.className =
+        "threat-icon";
 
-    const title = document.createElement("div");
-    title.className = "threat-title";
-    title.textContent = cleanText(article.title);
+      icon.innerHTML =
+        icons[
+          index %
+          icons.length
+        ];
 
-    const type = document.createElement("div");
-    type.className = "threat-type";
-    type.textContent = cleanText(
-      article.tag || "Threat Actor"
-    );
+      const content =
+        document.createElement("div");
 
-    const description = document.createElement("div");
-    description.className = "threat-desc";
-    description.textContent = cleanText(
-      article.excerpt ||
-      article.desc ||
-      "Threat actor intelligence and campaign reporting."
-    );
+      content.className =
+        "threat-content";
 
-    content.appendChild(title);
-    content.appendChild(type);
-    content.appendChild(description);
+      const title =
+        document.createElement("div");
 
-    link.appendChild(icon);
-    link.appendChild(content);
+      title.className =
+        "threat-title";
 
-    threatGrid.appendChild(link);
-  });
+      title.textContent =
+        cleanText(
+          article.title
+        );
+
+      const type =
+        document.createElement("div");
+
+      type.className =
+        "threat-type";
+
+      type.textContent =
+        cleanText(
+          article.tag ||
+          "Threat Actor"
+        );
+
+      const description =
+        document.createElement("div");
+
+      description.className =
+        "threat-desc";
+
+      description.textContent =
+        cleanText(
+          article.excerpt ||
+          article.desc ||
+          "Threat actor intelligence and campaign reporting."
+        );
+
+      content.appendChild(
+        title
+      );
+
+      content.appendChild(
+        type
+      );
+
+      content.appendChild(
+        description
+      );
+
+      link.appendChild(
+        icon
+      );
+
+      link.appendChild(
+        content
+      );
+
+      threatGrid.appendChild(
+        link
+      );
+
+    }
+  );
+
 }
 
 /* ============================================================
    SIGNAL FEED
-   Uses actual published articles instead of fabricated threat data.
 ============================================================ */
 
-function renderSignals(articles) {
-  signalList.innerHTML = "";
+function renderSignals(
+  articles
+) {
 
-  const signals = articles.slice(
-    0,
-    DYVE_CONFIG.maxSignals
-  );
+  signalList.innerHTML =
+    "";
+
+  const signals =
+    articles.slice(
+      0,
+      DYVE_CONFIG.maxSignals
+    );
 
   if (!signals.length) {
-    signalList.innerHTML =
-      '<div class="empty-state">No intelligence signals available.</div>';
+
+    const empty =
+      document.createElement("div");
+
+    empty.className =
+      "empty-state";
+
+    empty.textContent =
+      "No intelligence signals available.";
+
+    signalList.appendChild(
+      empty
+    );
+
     return;
+
   }
 
-  signals.forEach(article => {
+  signals.forEach(
+    article => {
 
-    const item = document.createElement("article");
-    item.className = "signal-item";
+      const item =
+        document.createElement("article");
 
-    const dot = document.createElement("div");
-    dot.className = "signal-dot";
+      item.className =
+        "signal-item";
 
-    const content = document.createElement("div");
+      const dot =
+        document.createElement("div");
 
-    const category = document.createElement("div");
-    category.className = "signal-category";
-    category.textContent = categoryLabel(article);
+      dot.className =
+        "signal-dot";
 
-    const title = document.createElement("div");
-    title.className = "signal-title";
-    title.textContent = cleanText(article.title);
+      const content =
+        document.createElement("div");
 
-    const meta = document.createElement("div");
-    meta.className = "signal-meta";
+      const category =
+        document.createElement("div");
 
-    const link = document.createElement("a");
-    link.href = safeInternalUrl(article.url);
-    link.textContent = "Open intelligence →";
-    link.style.color = "inherit";
-    link.style.textDecoration = "none";
+      category.className =
+        "signal-category";
 
-    meta.appendChild(document.createTextNode(formatDate(article)));
-    meta.appendChild(document.createTextNode(" • "));
-    meta.appendChild(link);
+      category.textContent =
+        categoryLabel(article);
 
-    content.appendChild(category);
-    content.appendChild(title);
-    content.appendChild(meta);
+      const title =
+        document.createElement("div");
 
-    item.appendChild(dot);
-    item.appendChild(content);
+      title.className =
+        "signal-title";
 
-    signalList.appendChild(item);
-  });
+      title.textContent =
+        cleanText(
+          article.title
+        );
+
+      const meta =
+        document.createElement("div");
+
+      meta.className =
+        "signal-meta";
+
+      const link =
+        document.createElement("a");
+
+      link.href =
+        safeInternalUrl(
+          article.url
+        );
+
+      link.textContent =
+        "Open intelligence →";
+
+      link.style.color =
+        "inherit";
+
+      link.style.textDecoration =
+        "none";
+
+      meta.appendChild(
+        document.createTextNode(
+          formatDate(article)
+        )
+      );
+
+      meta.appendChild(
+        document.createTextNode(
+          " • "
+        )
+      );
+
+      meta.appendChild(
+        link
+      );
+
+      content.appendChild(
+        category
+      );
+
+      content.appendChild(
+        title
+      );
+
+      content.appendChild(
+        meta
+      );
+
+      item.appendChild(
+        dot
+      );
+
+      item.appendChild(
+        content
+      );
+
+      signalList.appendChild(
+        item
+      );
+
+    }
+  );
+
 }
 
 /* ============================================================
    ITEM LIST SCHEMA
 ============================================================ */
 
-function updateItemListSchema(articles) {
-  const schemaElement = document.getElementById(
-    "articleListSchema"
-  );
+function updateItemListSchema(
+  articles
+) {
+
+  const schemaElement =
+    document.getElementById(
+      "articleListSchema"
+    );
 
   if (!schemaElement) {
     return;
   }
 
-  const items = articles
-    .slice(0, 10)
-    .map((article, index) => {
+  const items =
+    articles
+      .slice(0, 10)
+      .map(
+        (article, index) => {
 
-      const url = safeInternalUrl(
-        article.url,
-        "/index.html"
+          const url =
+            safeInternalUrl(
+              article.url,
+              "/"
+            );
+
+          return {
+
+            "@type":
+              "ListItem",
+
+            "position":
+              index + 1,
+
+            "name":
+              cleanText(
+                article.title
+              ),
+
+            "url":
+              new URL(
+                url,
+                window.location.origin
+              ).href
+
+          };
+
+        }
       );
 
-      return {
-        "@type": "ListItem",
-        "position": index + 1,
-        "name": cleanText(article.title),
-        "url": new URL(
-          url,
-          window.location.origin
-        ).href
-      };
+  schemaElement.textContent =
+    JSON.stringify({
+
+      "@context":
+        "https://schema.org",
+
+      "@type":
+        "ItemList",
+
+      "@id":
+        "https://www.dyve.online/#latest-intelligence",
+
+      "name":
+        "Latest Cyber Intelligence",
+
+      "itemListOrder":
+        "https://schema.org/ItemListOrderDescending",
+
+      "numberOfItems":
+        items.length,
+
+      "itemListElement":
+        items
+
     });
 
-  schemaElement.textContent = JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": "Latest Cyber Intelligence",
-    "itemListElement": items
-  });
+}
+
+/* ============================================================
+   FEED FINGERPRINT
+   Prevent unnecessary DOM rebuilding.
+============================================================ */
+
+function createFeedFingerprint(
+  articles
+) {
+
+  return JSON.stringify(
+    articles.map(
+      article => [
+        article.id ||
+        article.slug ||
+        article.url ||
+        "",
+        article.title ||
+        "",
+        getArticleDate(article),
+        article.image ||
+        "",
+        article.category ||
+        ""
+      ]
+    )
+  );
+
 }
 
 /* ============================================================
    UPDATE PAGE STATUS
 ============================================================ */
 
-function updateFeedStatus(success) {
+function updateFeedStatus(
+  success
+) {
+
   if (!feedStatus) {
     return;
   }
 
-  feedStatus.textContent = success
-    ? "Updated"
-    : "Unavailable";
+  feedStatus.textContent =
+    success
+      ? "Updated"
+      : "Unavailable";
 
   feedStatus.classList.toggle(
     "live",
     success
   );
+
+}
+
+/* ============================================================
+   RENDER COMPLETE FEED
+============================================================ */
+
+function renderFeed(
+  articles
+) {
+
+  const fingerprint =
+    createFeedFingerprint(
+      articles
+    );
+
+  if (
+    fingerprint ===
+    feedFingerprint
+  ) {
+    updateFeedStatus(true);
+    return;
+  }
+
+  feedFingerprint =
+    fingerprint;
+
+  allArticles =
+    sortArticles(
+      articles
+        .filter(
+          article => {
+
+            return (
+              article &&
+              typeof article ===
+                "object" &&
+              cleanText(
+                article.title
+              )
+            );
+
+          }
+        )
+    );
+
+  renderDynamicHero(
+    allArticles
+  );
+
+  renderLatest(
+    allArticles
+  );
+
+  renderDarkWeb();
+
+  renderBreaches();
+
+  renderRansomware();
+
+  renderThreatActors();
+
+  renderSignals(
+    allArticles
+  );
+
+  updateItemListSchema(
+    allArticles
+  );
+
+  updateFeedStatus(true);
+
 }
 
 /* ============================================================
@@ -3896,48 +4556,61 @@ async function loadArticles() {
 
   try {
 
-    const response = await fetch(
-      `${DYVE_CONFIG.articlesUrl}?v=${Date.now()}`,
-      {
-        method: "GET",
-        cache: "no-store",
-        headers: {
-          "Accept": "application/json"
+    /*
+      Static build data takes priority.
+
+      Your publishing engine can inject the complete article
+      dataset into window.DYVE_BUILD_ARTICLES during generation.
+    */
+
+    if (
+      Array.isArray(
+        window.DYVE_BUILD_ARTICLES
+      ) &&
+      window.DYVE_BUILD_ARTICLES.length
+    ) {
+
+      renderFeed(
+        window.DYVE_BUILD_ARTICLES
+      );
+
+      return;
+
+    }
+
+    const response =
+      await fetch(
+        `${DYVE_CONFIG.articlesUrl}?v=${Date.now()}`,
+        {
+          method: "GET",
+          cache: "no-store",
+          headers: {
+            "Accept":
+              "application/json"
+          }
         }
-      }
-    );
+      );
 
     if (!response.ok) {
+
       throw new Error(
         `Article feed returned HTTP ${response.status}`
       );
+
     }
 
-    const data = await response.json();
+    const data =
+      await response.json();
 
     if (!Array.isArray(data)) {
+
       throw new Error(
         "Article feed must contain an array."
       );
+
     }
 
-    allArticles = sortArticles(
-      data.filter(article => {
-        return article &&
-          typeof article === "object" &&
-          cleanText(article.title);
-      })
-    );
-
-    renderDynamicHero(allArticles);
-    renderLatest(allArticles);
-    renderDarkWeb();
-    renderBreaches();
-    renderRansomware();
-    renderThreatActors();
-    renderSignals(allArticles);
-    updateItemListSchema(allArticles);
-    updateFeedStatus(true);
+    renderFeed(data);
 
   } catch (error) {
 
@@ -3946,36 +4619,53 @@ async function loadArticles() {
       error
     );
 
-    updateFeedStatus(false);
+    updateFeedStatus(
+      false
+    );
 
     const message =
       "Intelligence feed is temporarily unavailable.";
 
-    if (
-      heroContainer.querySelector(".loading-text")
-    ) {
-      heroContainer.innerHTML =
-        `<div class="error-state">${message}</div>`;
-    }
-
     [
+      heroContainer,
       latestGrid,
       darkwebGrid,
       breachGrid,
       ransomwareList,
       threatGrid,
       signalList
-    ].forEach(container => {
+    ].forEach(
+      container => {
 
-      if (
-        container &&
-        container.querySelector(".loading-text")
-      ) {
-        container.innerHTML =
-          `<div class="error-state">${message}</div>`;
+        if (
+          container &&
+          container.querySelector(
+            ".loading-text"
+          )
+        ) {
+
+          container.innerHTML =
+            "";
+
+          const errorState =
+            document.createElement(
+              "div"
+            );
+
+          errorState.className =
+            "error-state";
+
+          errorState.textContent =
+            message;
+
+          container.appendChild(
+            errorState
+          );
+
+        }
+
       }
-
-    });
+    );
 
   }
 
@@ -3985,46 +4675,76 @@ async function loadArticles() {
    INITIAL LOAD
 ============================================================ */
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
+function initializeDyve() {
 
-    loadArticles();
+  loadArticles();
 
-    refreshTimer = window.setInterval(
+  refreshTimer =
+    window.setInterval(
       loadArticles,
       DYVE_CONFIG.refreshInterval
     );
 
-  }
-);
+}
+
+/* ============================================================
+   DOM READY
+============================================================ */
+
+if (
+  document.readyState ===
+  "loading"
+) {
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializeDyve,
+    { once: true }
+  );
+
+} else {
+
+  initializeDyve();
+
+}
 
 /* ============================================================
    PAGE VISIBILITY
-   Stop unnecessary refresh work in background tabs.
 ============================================================ */
 
 document.addEventListener(
   "visibilitychange",
   () => {
 
-    if (document.hidden) {
+    if (
+      document.hidden
+    ) {
 
       if (refreshTimer) {
-        window.clearInterval(refreshTimer);
-        refreshTimer = null;
+
+        window.clearInterval(
+          refreshTimer
+        );
+
+        refreshTimer =
+          null;
+
       }
 
       return;
+
     }
 
     loadArticles();
 
     if (!refreshTimer) {
-      refreshTimer = window.setInterval(
-        loadArticles,
-        DYVE_CONFIG.refreshInterval
-      );
+
+      refreshTimer =
+        window.setInterval(
+          loadArticles,
+          DYVE_CONFIG.refreshInterval
+        );
+
     }
 
   }
@@ -4034,9 +4754,13 @@ document.addEventListener(
    SMART HEADER
 ============================================================ */
 
-const headerEl = document.querySelector(".header");
+const headerEl =
+  document.querySelector(
+    ".header"
+  );
 
-let ticking = false;
+let ticking =
+  false;
 
 window.addEventListener(
   "scroll",
@@ -4046,20 +4770,26 @@ window.addEventListener(
       return;
     }
 
-    window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(
+      () => {
 
-      if (headerEl) {
-        headerEl.classList.toggle(
-          "scrolled",
-          window.scrollY > 40
-        );
+        if (headerEl) {
+
+          headerEl.classList.toggle(
+            "scrolled",
+            window.scrollY > 40
+          );
+
+        }
+
+        ticking =
+          false;
+
       }
+    );
 
-      ticking = false;
-
-    });
-
-    ticking = true;
+    ticking =
+      true;
 
   },
   { passive: true }
@@ -4072,7 +4802,11 @@ window.addEventListener(
 window.addEventListener(
   "load",
   () => {
-    document.body.classList.add("loaded");
+
+    document.body.classList.add(
+      "loaded"
+    );
+
   }
 );
 </script>
