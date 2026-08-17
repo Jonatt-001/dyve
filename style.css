@@ -3971,3 +3971,747 @@ button:focus-visible {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ============================================================
+   DYVE HACKAX DRAWER - FINAL BALANCED NAVIGATION OVERRIDE
+============================================================ */
+
+/* ------------------------------------------------------------
+   DRAWER
+------------------------------------------------------------ */
+
+.drawer {
+  width: 84%;
+  max-width: 340px;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  padding-top: env(safe-area-inset-top);
+
+  background:
+    radial-gradient(
+      circle at 20% 0%,
+      rgba(198,168,90,.055),
+      transparent 42%
+    ),
+    linear-gradient(
+      180deg,
+      #03110d 0%,
+      #020706 100%
+    );
+
+  border-right: 1px solid rgba(198,168,90,.18);
+
+  box-shadow:
+    12px 0 40px rgba(0,0,0,.75);
+}
+
+
+/* ------------------------------------------------------------
+   DRAWER HEADER
+------------------------------------------------------------ */
+
+.drawer-header {
+  min-height: 88px;
+
+  padding:
+    0
+    36px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid rgba(255,255,255,.055);
+}
+
+
+/* ------------------------------------------------------------
+   DRAWER LOGO
+------------------------------------------------------------ */
+
+.drawer-logo {
+  font-family: "Audiowide", sans-serif;
+
+  font-size: 15px;
+
+  line-height: 1;
+
+  letter-spacing: 2.2px;
+
+  white-space: nowrap;
+
+  color: #e8f0ee;
+}
+
+
+/* ------------------------------------------------------------
+   CLOSE BUTTON
+------------------------------------------------------------ */
+
+.drawer-close {
+  width: 38px;
+  height: 38px;
+
+  margin-right: -5px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: rgba(255,255,255,.65);
+}
+
+
+/* ============================================================
+   SECTION SYSTEM
+============================================================ */
+
+.drawer-section {
+  position: relative;
+
+  border-bottom: 1px solid rgba(255,255,255,.055);
+}
+
+
+/* ------------------------------------------------------------
+   SECTION HEADER
+------------------------------------------------------------ */
+
+.drawer-section > .submenu-header {
+  position: relative;
+
+  min-height: 76px;
+
+  margin: 0;
+
+  padding:
+    0
+    48px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  cursor: pointer;
+
+  border: 0;
+
+  color: rgba(255,255,255,.42);
+
+  transition:
+    color .25s ease,
+    background .25s ease;
+}
+
+
+/*
+   Inset separator under section heading.
+*/
+
+.drawer-section > .submenu-header::after {
+  content: "";
+
+  position: absolute;
+
+  left: 48px;
+  right: 48px;
+  bottom: 0;
+
+  height: 1px;
+
+  background: rgba(255,255,255,.055);
+}
+
+
+/* ------------------------------------------------------------
+   SECTION ICON
+------------------------------------------------------------ */
+
+.drawer-section > .submenu-header .submenu-icon {
+  width: 22px;
+  height: 22px;
+
+  flex: 0 0 22px;
+
+  margin: 0;
+
+  color: var(--dx-green);
+
+  opacity: .72;
+
+  transition:
+    opacity .25s ease,
+    transform .25s ease,
+    color .25s ease;
+}
+
+
+/* ------------------------------------------------------------
+   SECTION LABEL
+------------------------------------------------------------ */
+
+.drawer-section > .submenu-header .submenu-label {
+  min-width: 0;
+
+  color: rgba(255,255,255,.43);
+
+  font-family: "Michroma", sans-serif;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  white-space: nowrap;
+
+  transition:
+    color .25s ease;
+}
+
+
+/* ------------------------------------------------------------
+   OPEN SECTION
+------------------------------------------------------------ */
+
+.drawer-section.open > .submenu-header {
+  color: rgba(255,255,255,.9);
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,255,170,.025),
+      transparent 70%
+    );
+}
+
+
+.drawer-section.open > .submenu-header .submenu-icon {
+  opacity: 1;
+
+  color: var(--dx-green);
+}
+
+
+.drawer-section.open > .submenu-header .submenu-label {
+  color: rgba(255,255,255,.88);
+}
+
+
+/* ============================================================
+   ACCORDION CONTENT
+============================================================ */
+
+.drawer-section-content {
+  display: grid;
+
+  grid-template-rows: 0fr;
+
+  overflow: hidden;
+
+  transition:
+    grid-template-rows .35s cubic-bezier(.22,.9,.35,1),
+    opacity .25s ease;
+  
+  opacity: 0;
+}
+
+
+.drawer-section.open > .drawer-section-content {
+  grid-template-rows: 1fr;
+
+  opacity: 1;
+}
+
+
+/*
+   Critical:
+   This creates the contained navigation area visible
+   in the second screenshot.
+*/
+
+.drawer-section-content-inner {
+  min-height: 0;
+
+  overflow: hidden;
+
+  padding:
+    0
+    48px;
+}
+
+
+/* ------------------------------------------------------------
+   OPEN CONTENT SPACING
+------------------------------------------------------------ */
+
+.drawer-section.open
+.drawer-section-content-inner {
+  padding-top: 16px;
+  padding-bottom: 18px;
+}
+
+
+/* ============================================================
+   PRIMARY DRAWER NAV
+============================================================ */
+
+.drawer-nav {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+
+  padding: 0;
+}
+
+
+/* ------------------------------------------------------------
+   PRIMARY NAV LINKS
+------------------------------------------------------------ */
+
+.drawer-nav a {
+  min-height: 58px;
+
+  width: 100%;
+
+  padding:
+    0
+    14px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+  position: relative;
+
+  border: 0;
+  border-left: 2px solid transparent;
+
+  border-radius: 2px;
+
+  color: rgba(232,240,238,.62);
+
+  font-family: "Space Grotesk", sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  line-height: 1.25;
+
+  letter-spacing: .2px;
+
+  text-decoration: none;
+
+  transform: none;
+
+  opacity: 1;
+
+  transition:
+    color .2s ease,
+    background .2s ease,
+    border-color .2s ease;
+}
+
+
+/* Remove old animation behavior */
+
+.drawer.active .drawer-nav a {
+  transform: none;
+
+  opacity: 1;
+}
+
+
+/* ------------------------------------------------------------
+   NAV ICON
+------------------------------------------------------------ */
+
+.drawer-nav a .nav-icon {
+  width: 24px;
+  height: 24px;
+
+  flex: 0 0 24px;
+
+  opacity: .58;
+
+  color: currentColor;
+
+  transition:
+    color .2s ease,
+    opacity .2s ease,
+    transform .2s ease;
+}
+
+
+/* ------------------------------------------------------------
+   NAV HOVER
+------------------------------------------------------------ */
+
+.drawer-nav a:hover {
+  color: rgba(255,255,255,.9);
+
+  background:
+    rgba(0,255,170,.035);
+
+  border-left-color: rgba(0,255,170,.35);
+}
+
+
+.drawer-nav a:hover .nav-icon {
+  color: var(--dx-green);
+
+  opacity: .9;
+}
+
+
+/* ------------------------------------------------------------
+   ACTIVE NAV
+------------------------------------------------------------ */
+
+.drawer-nav a.active {
+  color: #f0f8f5;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,255,170,.10),
+      rgba(0,255,170,.025),
+      transparent
+    );
+
+  border-left-color: var(--dx-green);
+
+  opacity: 1;
+}
+
+
+.drawer-nav a.active .nav-icon {
+  color: var(--dx-green);
+
+  stroke: var(--dx-green);
+
+  opacity: 1;
+}
+
+
+/* ============================================================
+   SECONDARY SUBMENU
+============================================================ */
+
+.submenu-items {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+
+  padding: 0;
+}
+
+
+/* ------------------------------------------------------------
+   SUBMENU LINKS
+------------------------------------------------------------ */
+
+.submenu-items a {
+  min-height: 58px;
+
+  width: 100%;
+
+  padding:
+    0
+    14px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+  border-radius: 2px;
+
+  color: rgba(232,240,238,.58);
+
+  font-family: "Space Grotesk", sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  line-height: 1.25;
+
+  text-decoration: none;
+
+  transition:
+    color .2s ease,
+    background .2s ease;
+}
+
+
+.submenu-items a:hover {
+  color: #e8f0ee;
+
+  background:
+    rgba(0,255,170,.035);
+}
+
+
+/* ------------------------------------------------------------
+   SUBMENU ICON
+------------------------------------------------------------ */
+
+.submenu-items a .submenu-item-icon {
+  width: 24px;
+  height: 24px;
+
+  flex: 0 0 24px;
+
+  opacity: .55;
+
+  color: currentColor;
+
+  transition:
+    opacity .2s ease,
+    color .2s ease;
+}
+
+
+.submenu-items a:hover .submenu-item-icon {
+  opacity: .95;
+
+  color: var(--dx-green);
+}
+
+
+/* ============================================================
+   EXTRA LINKS
+============================================================ */
+
+.drawer-extra {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+
+  padding: 0;
+}
+
+
+/* ------------------------------------------------------------
+   EXTRA LINK
+------------------------------------------------------------ */
+
+.drawer-extra a {
+  min-height: 58px;
+
+  width: 100%;
+
+  padding:
+    0
+    14px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+  border: 0;
+  border-left: 2px solid transparent;
+
+  border-radius: 2px;
+
+  color: rgba(232,240,238,.56);
+
+  font-family: "Space Grotesk", sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  line-height: 1.25;
+
+  text-decoration: none;
+
+  transform: none;
+
+  opacity: 1;
+
+  transition:
+    color .2s ease,
+    background .2s ease,
+    border-color .2s ease;
+}
+
+
+/* Remove old stagger animation */
+
+.drawer.active .drawer-extra a {
+  transform: none;
+
+  opacity: 1;
+}
+
+
+/* ------------------------------------------------------------
+   EXTRA ICON
+------------------------------------------------------------ */
+
+.drawer-extra a .extra-icon {
+  width: 24px;
+  height: 24px;
+
+  flex: 0 0 24px;
+
+  opacity: .55;
+
+  color: currentColor;
+
+  transition:
+    opacity .2s ease,
+    color .2s ease;
+}
+
+
+.drawer-extra a:hover {
+  color: #e8f0ee;
+
+  background:
+    rgba(0,255,170,.035);
+
+  border-left-color: rgba(0,255,170,.35);
+}
+
+
+.drawer-extra a:hover .extra-icon {
+  color: var(--dx-green);
+
+  opacity: .95;
+}
+
+
+/* ============================================================
+   ACCORDION ARROW
+============================================================ */
+
+.drawer-section > .submenu-header::before {
+  content: "";
+
+  position: absolute;
+
+  right: 49px;
+
+  top: 50%;
+
+  width: 8px;
+  height: 8px;
+
+  border-right: 2px solid rgba(255,255,255,.38);
+  border-bottom: 2px solid rgba(255,255,255,.38);
+
+  transform:
+    translateY(-65%)
+    rotate(45deg);
+
+  transition:
+    transform .25s ease,
+    border-color .25s ease;
+}
+
+
+.drawer-section.open > .submenu-header::before {
+  border-color: var(--dx-green);
+
+  transform:
+    translateY(-25%)
+    rotate(225deg);
+}
+
+
+/* ============================================================
+   DRAWER SCROLLBAR
+============================================================ */
+
+.drawer::-webkit-scrollbar {
+  width: 3px;
+}
+
+
+.drawer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
+.drawer::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.16);
+
+  border-radius: 999px;
+}
+
+
+.drawer {
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    rgba(255,255,255,.16)
+    transparent;
+}
+
+
+/* ============================================================
+   MOBILE REFINEMENT
+============================================================ */
+
+@media (max-width: 380px) {
+
+  .drawer-header {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+
+  .drawer-section > .submenu-header {
+    padding-left: 38px;
+    padding-right: 38px;
+  }
+
+
+  .drawer-section > .submenu-header::after {
+    left: 38px;
+    right: 38px;
+  }
+
+
+  .drawer-section > .submenu-header::before {
+    right: 39px;
+  }
+
+
+  .drawer-section-content-inner {
+    padding-left: 38px;
+    padding-right: 38px;
+  }
+
+}
