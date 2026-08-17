@@ -88,8 +88,30 @@ jobs:
           const fs = require('fs');
           const path = require('path');
 
-          const SITE_URL = 'https://dyve.online';
-          const SITE_HOST = 'dyve.online';
+          /*
+           * ============================================================
+           * CANONICAL HOST
+           * ============================================================
+           *
+           * Vercel production configuration:
+           *
+           * https://dyve.online
+           *        ↓ 308
+           * https://www.dyve.online
+           *
+           * Therefore www.dyve.online is the single authoritative
+           * canonical host for all public SEO URLs.
+           */
+
+          const SITE_URL = 'https://www.dyve.online';
+          const SITE_HOST = 'www.dyve.online';
+
+          /*
+           * The non-www hostname is intentionally treated as a
+           * redirect-only hostname.
+           */
+
+          const REDIRECT_HOST = 'dyve.online';
 
           /*
            * ============================================================
@@ -353,7 +375,17 @@ jobs:
                 );
               }
 
+              /*
+               * The canonical production host must be www.
+               */
               if (parsed.hostname !== SITE_HOST) {
+                if (parsed.hostname === REDIRECT_HOST) {
+                  throw new Error(
+                    `Article URL uses redirect-only host "${REDIRECT_HOST}". ` +
+                    `Use "${SITE_HOST}" instead: ${raw}`
+                  );
+                }
+
                 throw new Error(
                   `Article URL points outside ${SITE_HOST}: ${raw}`
                 );
@@ -432,6 +464,215 @@ jobs:
 
           /*
            * ============================================================
+           * ARTICLE HTML CANONICAL VALIDATION
+           * ============================================================
+           *
+           * This validates the actual canonical tag inside each
+           * generated article.
+           *
+           * Sitemap correctness alone is not enough.
+           */
+
+          function validateArticleCanonical(
+            articlePath,
+            expectedCanonical
+          ) {
+            const absolute = path.resolve(articlePath);
+
+            if (!fs.existsSync(absolute)) {
+              return {
+                valid: false,
+                error: `Canonical file does not exist: ${articlePath}`
+              };
+            }
+
+            let html;
+
+            try {
+              html = fs.readFileSync(
+                absolute,
+                'utf8'
+              );
+            } catch (error) {
+              return {
+                valid: false,
+                error:
+                  `Unable to read article HTML: ${articlePath}: ` +
+                  `${error.message}`
+              };
+            }
+
+            /*
+             * Match the canonical link regardless of attribute order.
+             */
+            const canonicalMatches = [
+              ...html.matchAll(
+                /<link\b[^>]*\brel\s*=\s*["']canonical["'][^>]*>/gi
+              )
+            ];
+
+            /*
+             * Also support href appearing before rel.
+             */
+            const reverseCanonicalMatches = [
+              ...html.matchAll(
+                /<link\b[^>]*\bhref\s*=\s*["'][^"']+["'][^>]*\brel\s*=\s*["']canonical["'][^>]*>/gi
+              )
+            ];
+
+            const matches = [
+              ...canonicalMatches,
+              ...reverseCanonicalMatches
+            ];
+
+            if (!matches.length) {
+              return {
+                valid: false,
+                error:
+                  `Missing <link rel="canonical"> in ${articlePath}`
+              };
+            }
+
+            /*
+             * Extract every canonical href.
+             */
+            const canonicalUrls = [];
+
+            for (const match of matches) {
+              const tag = match[0];
+
+              const hrefMatch = tag.match(
+                /\bhref\s*=\s*["']([^"']+)["']/i
+              );
+
+              if (hrefMatch) {
+                canonicalUrls.push(
+                  hrefMatch[1].trim()
+                );
+              }
+            }
+
+            if (!canonicalUrls.length) {
+              return {
+                valid: false,
+                error:
+                  `Canonical link has no readable href in ${articlePath}`
+              };
+            }
+
+            /*
+             * There must be exactly one canonical URL.
+             */
+            const uniqueCanonicals = [
+              ...new Set(canonicalUrls)
+            ];
+
+            if (uniqueCanonicals.length !== 1) {
+              return {
+                valid: false,
+                error:
+                  `Multiple canonical URLs detected in ${articlePath}: ` +
+                  `${uniqueCanonicals.join(', ')}`
+              };
+            }
+
+            const actualCanonical =
+              uniqueCanonicals[0];
+
+            /*
+             * Canonical must be absolute.
+             */
+            if (
+              !/^https:\/\//i.test(actualCanonical)
+            ) {
+              return {
+                valid: false,
+                error:
+                  `Canonical URL must be absolute HTTPS URL in ` +
+                  `${articlePath}: ${actualCanonical}`
+              };
+            }
+
+            let parsedCanonical;
+
+            try {
+              parsedCanonical =
+                new URL(actualCanonical);
+            } catch {
+              return {
+                valid: false,
+                error:
+                  `Invalid canonical URL in ${articlePath}: ` +
+                  `${actualCanonical}`
+              };
+            }
+
+            /*
+             * Canonical must use www.
+             */
+            if (
+              parsedCanonical.hostname !== SITE_HOST
+            ) {
+              return {
+                valid: false,
+                error:
+                  `Wrong canonical host in ${articlePath}: ` +
+                  `"${parsedCanonical.hostname}". Expected ` +
+                  `"${SITE_HOST}".`
+              };
+            }
+
+            /*
+             * Canonical must be HTTPS.
+             */
+            if (
+              parsedCanonical.protocol !== 'https:'
+            ) {
+              return {
+                valid: false,
+                error:
+                  `Non-HTTPS canonical in ${articlePath}: ` +
+                  `${actualCanonical}`
+              };
+            }
+
+            /*
+             * Canonical must not contain query/hash.
+             */
+            if (
+              parsedCanonical.search ||
+              parsedCanonical.hash
+            ) {
+              return {
+                valid: false,
+                error:
+                  `Canonical contains query/hash in ${articlePath}: ` +
+                  `${actualCanonical}`
+              };
+            }
+
+            /*
+             * Canonical must match the exact expected URL.
+             */
+            if (
+              actualCanonical !== expectedCanonical
+            ) {
+              return {
+                valid: false,
+                error:
+                  `Canonical mismatch in ${articlePath}. ` +
+                  `Expected "${expectedCanonical}" but found ` +
+                  `"${actualCanonical}".`
+              };
+            }
+
+            return {
+              valid: true
+            };
+          }
+
+          /*
+           * ============================================================
            * INITIAL STATE
            * ============================================================
            */
@@ -482,18 +723,24 @@ jobs:
             tech: {
               records: 0,
               valid: 0,
-              canonical: 0
+              canonical: 0,
+              htmlCanonical: 0
             },
 
             hackax: {
               records: 0,
               valid: 0,
-              canonical: 0
+              canonical: 0,
+              htmlCanonical: 0
             }
           };
 
-          for (const [databaseKey, database] of Object.entries(DATABASES)) {
-            const articles = loadDatabase(database);
+          for (
+            const [databaseKey, database]
+            of Object.entries(DATABASES)
+          ) {
+            const articles =
+              loadDatabase(database);
 
             if (!Array.isArray(articles)) {
               errors.push(
@@ -503,7 +750,8 @@ jobs:
               continue;
             }
 
-            statistics[databaseKey].records = articles.length;
+            statistics[databaseKey].records =
+              articles.length;
 
             /*
              * ----------------------------------------------------------
@@ -514,7 +762,10 @@ jobs:
             articles.forEach((article, index) => {
               const number = index + 1;
 
-              if (!article || typeof article !== 'object') {
+              if (
+                !article ||
+                typeof article !== 'object'
+              ) {
                 errors.push(
                   `${database.name} record #${number}: ` +
                   `article must be an object.`
@@ -584,9 +835,8 @@ jobs:
               let articlePath;
 
               try {
-                articlePath = normalizeUrl(
-                  article.url
-                );
+                articlePath =
+                  normalizeUrl(article.url);
               } catch (error) {
                 errors.push(
                   `${database.name} record #${number} ` +
@@ -601,12 +851,15 @@ jobs:
                * --------------------------------------------------------
                */
 
-              const firstSegment = articlePath
-                .split('/')[0]
-                .toLowerCase();
+              const firstSegment =
+                articlePath
+                  .split('/')[0]
+                  .toLowerCase();
 
               if (
-                LEGACY_SECTIONS.includes(firstSegment)
+                LEGACY_SECTIONS.includes(
+                  firstSegment
+                )
               ) {
                 errors.push(
                   `${database.name} record #${number} ` +
@@ -622,9 +875,14 @@ jobs:
                * --------------------------------------------------------
                */
 
-              const expectedPrefix = `${page}/`;
+              const expectedPrefix =
+                `${page}/`;
 
-              if (!articlePath.startsWith(expectedPrefix)) {
+              if (
+                !articlePath.startsWith(
+                  expectedPrefix
+                )
+              ) {
                 errors.push(
                   `${database.name} record #${number} ` +
                   `"${title || 'Untitled'}": URL ` +
@@ -641,15 +899,18 @@ jobs:
                * --------------------------------------------------------
                */
 
-              const slug = articlePath.slice(
-                expectedPrefix.length
-              );
+              const slug =
+                articlePath.slice(
+                  expectedPrefix.length
+                );
 
               const canonicalSlugPattern =
                 /^[a-z0-9]+(?:-[a-z0-9]+)*\.html$/;
 
               if (
-                !canonicalSlugPattern.test(slug)
+                !canonicalSlugPattern.test(
+                  slug
+                )
               ) {
                 errors.push(
                   `${database.name} record #${number} ` +
@@ -666,11 +927,43 @@ jobs:
                * --------------------------------------------------------
                */
 
-              if (!articleFileExists(articlePath)) {
+              if (
+                !articleFileExists(articlePath)
+              ) {
                 errors.push(
                   `${database.name} record #${number} ` +
                   `"${title || 'Untitled'}": canonical file ` +
                   `is missing: ${articlePath}`
+                );
+                return;
+              }
+
+              /*
+               * --------------------------------------------------------
+               * EXPECTED CANONICAL URL
+               * --------------------------------------------------------
+               */
+
+              const expectedCanonical =
+                `${SITE_URL}/${articlePath}`;
+
+              /*
+               * --------------------------------------------------------
+               * ACTUAL HTML CANONICAL
+               * --------------------------------------------------------
+               */
+
+              const htmlCanonical =
+                validateArticleCanonical(
+                  articlePath,
+                  expectedCanonical
+                );
+
+              if (!htmlCanonical.valid) {
+                errors.push(
+                  `${database.name} record #${number} ` +
+                  `"${title || 'Untitled'}": ` +
+                  `${htmlCanonical.error}`
                 );
                 return;
               }
@@ -682,7 +975,9 @@ jobs:
                */
 
               if (
-                globalCanonicalUrls.has(articlePath)
+                globalCanonicalUrls.has(
+                  articlePath
+                )
               ) {
                 errors.push(
                   `${database.name} record #${number} ` +
@@ -702,11 +997,10 @@ jobs:
                * --------------------------------------------------------
                */
 
-              const articleDate = validDate(
-                article.date
-              )
-                ? String(article.date).slice(0, 10)
-                : null;
+              const articleDate =
+                validDate(article.date)
+                  ? String(article.date).slice(0, 10)
+                  : null;
 
               /*
                * --------------------------------------------------------
@@ -716,11 +1010,13 @@ jobs:
 
               const sitemapEntry = {
                 priority:
-                  database.sections[page].priority
+                  database.sections[page]
+                    .priority
               };
 
               if (articleDate) {
-                sitemapEntry.lastmod = articleDate;
+                sitemapEntry.lastmod =
+                  articleDate;
               }
 
               sitemapUrls.set(
@@ -736,6 +1032,7 @@ jobs:
 
               statistics[databaseKey].valid += 1;
               statistics[databaseKey].canonical += 1;
+              statistics[databaseKey].htmlCanonical += 1;
             });
           }
 
@@ -754,11 +1051,13 @@ jobs:
 
             console.error('');
 
-            errors.forEach((error, index) => {
-              console.error(
-                `${index + 1}. ${error}`
-              );
-            });
+            errors.forEach(
+              (error, index) => {
+                console.error(
+                  `${index + 1}. ${error}`
+                );
+              }
+            );
 
             fail(
               'Repository failed SEO authority validation. ' +
@@ -772,34 +1071,38 @@ jobs:
            * ============================================================
            */
 
-          const xmlRows = Array.from(
-            sitemapUrls.entries()
-          )
-            .sort(
-              ([a], [b]) => a.localeCompare(b)
+          const xmlRows =
+            Array.from(
+              sitemapUrls.entries()
             )
-            .map(([loc, meta]) => {
-              const rows = [
-                '  <url>',
-                `    <loc>${escapeXml(loc)}</loc>`
-              ];
+              .sort(
+                ([a], [b]) =>
+                  a.localeCompare(b)
+              )
+              .map(
+                ([loc, meta]) => {
+                  const rows = [
+                    '  <url>',
+                    `    <loc>${escapeXml(loc)}</loc>`
+                  ];
 
-              if (meta.lastmod) {
-                rows.push(
-                  `    <lastmod>${escapeXml(meta.lastmod)}</lastmod>`
-                );
-              }
+                  if (meta.lastmod) {
+                    rows.push(
+                      `    <lastmod>${escapeXml(meta.lastmod)}</lastmod>`
+                    );
+                  }
 
-              rows.push(
-                `    <priority>${escapeXml(meta.priority)}</priority>`
+                  rows.push(
+                    `    <priority>${escapeXml(meta.priority)}</priority>`
+                  );
+
+                  rows.push(
+                    '  </url>'
+                  );
+
+                  return rows.join('\n');
+                }
               );
-
-              rows.push(
-                '  </url>'
-              );
-
-              return rows.join('\n');
-            });
 
           const sitemap = [
             '<?xml version="1.0" encoding="UTF-8"?>',
@@ -817,6 +1120,29 @@ jobs:
 
           /*
            * ============================================================
+           * FINAL CANONICAL HOST ASSERTION
+           * ============================================================
+           */
+
+          for (
+            const url
+            of sitemapUrls.keys()
+          ) {
+            const parsed =
+              new URL(url);
+
+            if (
+              parsed.protocol !== 'https:' ||
+              parsed.hostname !== SITE_HOST
+            ) {
+              fail(
+                `Invalid sitemap canonical host: ${url}`
+              );
+            }
+          }
+
+          /*
+           * ============================================================
            * BUILD REPORT
            * ============================================================
            */
@@ -825,6 +1151,26 @@ jobs:
           console.log('==============================================');
           console.log('DYVE SEO AUTHORITY ENGINE');
           console.log('==============================================');
+          console.log('');
+
+          console.log(
+            'CANONICAL HOST'
+          );
+
+          console.log(
+            SITE_HOST
+          );
+
+          console.log('');
+
+          console.log(
+            'REDIRECT HOST'
+          );
+
+          console.log(
+            `${REDIRECT_HOST} -> ${SITE_HOST}`
+          );
+
           console.log('');
 
           console.log(
@@ -845,6 +1191,10 @@ jobs:
 
           console.log(
             `Validated: ${statistics.tech.valid}`
+          );
+
+          console.log(
+            `HTML canonicals: ${statistics.tech.htmlCanonical}`
           );
 
           console.log('');
@@ -869,6 +1219,10 @@ jobs:
             `Validated: ${statistics.hackax.valid}`
           );
 
+          console.log(
+            `HTML canonicals: ${statistics.hackax.htmlCanonical}`
+          );
+
           console.log('');
 
           console.log(
@@ -887,6 +1241,14 @@ jobs:
 
           console.log(
             'Dyve HackaX database validation: PASS'
+          );
+
+          console.log(
+            'Canonical host validation: PASS'
+          );
+
+          console.log(
+            'HTML canonical validation: PASS'
           );
 
           console.log(
@@ -968,10 +1330,8 @@ jobs:
           Disallow: /tech-editor/
           Disallow: /hackax-editor/
 
-          # Internal application data
-          Disallow: /assets/deltas/
-
           # Internal article databases
+          Disallow: /assets/deltas/
           Disallow: /assets/articles.json
           Disallow: /assets/tech-articles.json
 
@@ -979,7 +1339,7 @@ jobs:
           # SITEMAP
           # ==========================================================
 
-          Sitemap: https://dyve.online/sitemap.xml
+          Sitemap: https://www.dyve.online/sitemap.xml
           EOF
 
           echo 'Production robots.txt generated.'
@@ -998,11 +1358,45 @@ jobs:
           grep -q '<urlset' sitemap.xml
 
           # ========================================================
+          # CANONICAL HOST PROTECTION
+          # ========================================================
+
+          if grep -Eq \
+            '<loc>https://dyve\.online/' \
+            sitemap.xml; then
+
+            echo \
+              'ERROR: non-www apex URL detected in sitemap.xml.'
+
+            exit 1
+          fi
+
+          if grep -Eq \
+            '<loc>http://www\.dyve\.online/' \
+            sitemap.xml; then
+
+            echo \
+              'ERROR: HTTP URL detected in sitemap.xml.'
+
+            exit 1
+          fi
+
+          if grep -Eq \
+            '<loc>https?://dyve-beta\.vercel\.app/' \
+            sitemap.xml; then
+
+            echo \
+              'ERROR: Vercel deployment hostname detected in sitemap.xml.'
+
+            exit 1
+          fi
+
+          # ========================================================
           # DYVE TECH
           # ========================================================
 
           grep -q \
-            '<loc>https://dyve.online/tech/</loc>' \
+            '<loc>https://www.dyve.online/tech/</loc>' \
             sitemap.xml
 
           # ========================================================
@@ -1010,51 +1404,51 @@ jobs:
           # ========================================================
 
           grep -q \
-            '<loc>https://dyve.online/cybersecurity/</loc>' \
+            '<loc>https://www.dyve.online/cybersecurity/</loc>' \
             sitemap.xml
 
           grep -q \
-            '<loc>https://dyve.online/threat-intelligence/</loc>' \
+            '<loc>https://www.dyve.online/threat-intelligence/</loc>' \
             sitemap.xml
 
           grep -q \
-            '<loc>https://dyve.online/breaches/</loc>' \
+            '<loc>https://www.dyve.online/breaches/</loc>' \
             sitemap.xml
 
           grep -q \
-            '<loc>https://dyve.online/dark-web/</loc>' \
+            '<loc>https://www.dyve.online/dark-web/</loc>' \
             sitemap.xml
 
           grep -q \
-            '<loc>https://dyve.online/ransomware/</loc>' \
+            '<loc>https://www.dyve.online/ransomware/</loc>' \
             sitemap.xml
 
           grep -q \
-            '<loc>https://dyve.online/threat-actors/</loc>' \
+            '<loc>https://www.dyve.online/threat-actors/</loc>' \
             sitemap.xml
 
           grep -q \
-            '<loc>https://dyve.online/vulnerabilities/</loc>' \
+            '<loc>https://www.dyve.online/vulnerabilities/</loc>' \
             sitemap.xml
 
           grep -q \
-            '<loc>https://dyve.online/malware/</loc>' \
+            '<loc>https://www.dyve.online/malware/</loc>' \
             sitemap.xml
 
           grep -q \
-            '<loc>https://dyve.online/ai-security/</loc>' \
+            '<loc>https://www.dyve.online/ai-security/</loc>' \
             sitemap.xml
 
           grep -q \
-            '<loc>https://dyve.online/cloud-security/</loc>' \
+            '<loc>https://www.dyve.online/cloud-security/</loc>' \
             sitemap.xml
 
           grep -q \
-            '<loc>https://dyve.online/signals/</loc>' \
+            '<loc>https://www.dyve.online/signals/</loc>' \
             sitemap.xml
 
           grep -q \
-            '<loc>https://dyve.online/analysis/</loc>' \
+            '<loc>https://www.dyve.online/analysis/</loc>' \
             sitemap.xml
 
           # ========================================================
@@ -1062,7 +1456,7 @@ jobs:
           # ========================================================
 
           if grep -Eq \
-            '<loc>https://dyve.online/article(/|[^<]*)</loc>' \
+            '<loc>https://www\.dyve\.online/article(/|[^<]*)</loc>' \
             sitemap.xml; then
 
             echo \
@@ -1072,7 +1466,7 @@ jobs:
           fi
 
           if grep -Eq \
-            '<loc>https://dyve.online/(ai|developers|coding)/' \
+            '<loc>https://www\.dyve\.online/(ai|developers|coding)/' \
             sitemap.xml; then
 
             echo \
@@ -1086,7 +1480,7 @@ jobs:
           # ========================================================
 
           if grep -Eq \
-            '<loc>https://dyve.online/[^<]*(\?|#)[^<]*</loc>' \
+            '<loc>https://www\.dyve\.online/[^<]*(\?|#)[^<]*</loc>' \
             sitemap.xml; then
 
             echo \
@@ -1096,37 +1490,25 @@ jobs:
           fi
 
           # ========================================================
-          # HTTP PROTECTION
-          # ========================================================
-
-          if grep -Eq \
-            '<loc>http://dyve.online/' \
-            sitemap.xml; then
-
-            echo \
-              'ERROR: HTTP URL detected in sitemap.xml.'
-
-            exit 1
-          fi
-
-          # ========================================================
           # EXTERNAL HOST PROTECTION
           # ========================================================
 
-          if grep -Eq \
-            '<loc>https?://(www\.)?[^<]*' \
-            sitemap.xml; then
+          while IFS= read -r loc; do
 
-            if grep -Evq \
-              '<loc>https://dyve.online/' \
-              sitemap.xml; then
+            url="${loc#<loc>}"
+            url="${url%</loc>}"
 
+            if [[ "$url" != https://www.dyve.online/* ]]; then
               echo \
-                'ERROR: external hostname detected in sitemap.xml.'
-
+                "ERROR: non-canonical hostname detected: $url"
               exit 1
             fi
-          fi
+
+          done < <(
+            grep -o \
+              '<loc>[^<]*</loc>' \
+              sitemap.xml
+          )
 
           echo 'Sitemap structural validation: PASS.'
 
@@ -1252,8 +1634,22 @@ jobs:
           # ========================================================
 
           grep -q \
-            '^Sitemap: https://dyve.online/sitemap.xml$' \
+            '^Sitemap: https://www.dyve.online/sitemap.xml$' \
             robots.txt
+
+          # ========================================================
+          # CANONICAL HOST PROTECTION
+          # ========================================================
+
+          if grep -q \
+            '^Sitemap: https://dyve.online/' \
+            robots.txt; then
+
+            echo \
+              'ERROR: apex sitemap hostname detected in robots.txt.'
+
+            exit 1
+          fi
 
           # ========================================================
           # LEGACY PROTECTION
@@ -1352,6 +1748,13 @@ jobs:
             echo '## Dyve SEO Authority Engine'
             echo
 
+            echo '### Canonical Host'
+            echo
+            echo '- **Primary:** `https://www.dyve.online`'
+            echo '- **Redirect:** `https://dyve.online` → `https://www.dyve.online`'
+            echo '- **Deployment host:** `dyve-beta.vercel.app` — not canonical'
+            echo
+
             echo '### Editorial Properties'
             echo
             echo '- **Dyve Tech** — Technology News & Intelligence'
@@ -1383,13 +1786,15 @@ jobs:
 
             echo '### SEO Assets'
             echo
-            echo '- Sitemap: `/sitemap.xml`'
-            echo '- Robots: `/robots.txt`'
+            echo '- Sitemap: `https://www.dyve.online/sitemap.xml`'
+            echo '- Robots: `https://www.dyve.online/robots.txt`'
             echo
 
             echo '### Integrity Controls'
             echo
             echo '- Both editorial databases validated'
+            echo '- Canonical host locked to `www.dyve.online`'
+            echo '- Article HTML canonical tags validated'
             echo '- Canonical files must exist'
             echo '- Duplicate canonical URLs blocked'
             echo '- Cross-publication URL collisions blocked'
