@@ -4,328 +4,1187 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cyber Signals — Early Threat Detection & Intelligence Signals | Dyve HackaX</title>
+<title>Cyber Threat Signals — Live Early Threat Detection & Intelligence | Dyve HackaX</title>
 
-<meta name="description" content="Monitor early cyber threat signals, anomaly detection, and emerging attack indicators. Dyve HackaX tracks weak signals before breaches occur.">
-
+<meta name="description" content="Live cyber threat signals from CISA KEV, ThreatFox, MalwareBazaar and URLhaus. Explore emerging vulnerabilities, malware, IOCs and malicious infrastructure tracked by Dyve HackaX.">
+<meta name="keywords" content="cyber threat signals, live threat intelligence, early threat detection, CISA KEV, ThreatFox, MalwareBazaar, URLhaus, cyber IOCs, malware intelligence, vulnerability intelligence, Dyve HackaX">
+<meta name="author" content="Dyve HackaX">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <link rel="canonical" href="https://dyve.online/signals/">
-<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#020403">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cyber Threat Signals — Live Intelligence | Dyve HackaX">
+<meta property="og:description" content="Live early threat indicators, exploited vulnerabilities, malware detections and malicious infrastructure tracked by Dyve HackaX.">
+<meta property="og:url" content="https://dyve.online/signals/">
+<meta property="og:site_name" content="Dyve HackaX">
+<meta property="og:locale" content="en_US">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cyber Threat Signals — Dyve HackaX">
+<meta name="twitter:description" content="Explore live cyber threat indicators, exploited vulnerabilities, malware activity and malicious infrastructure.">
 
 <link rel="stylesheet" href="../style.css">
 <link rel="stylesheet" href="../divider.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Michroma&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- SCHEMA -->
 <script type="application/ld+json">
 {
- "@context": "https://schema.org",
- "@type": "CollectionPage",
- "name": "Cyber Signals",
- "description": "Early threat indicators and anomaly detection signals.",
- "url": "https://dyve.online/signals/"
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": "https://dyve.online/signals/#collection",
+  "name": "Cyber Threat Signals",
+  "headline": "Cyber Threat Signals — Live Early Threat Detection & Intelligence",
+  "description": "Live cyber threat indicators, exploited vulnerabilities, malware detections and malicious infrastructure tracked by Dyve HackaX.",
+  "url": "https://dyve.online/signals/",
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "https://dyve.online/#website",
+    "name": "Dyve HackaX",
+    "url": "https://dyve.online/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Dyve HackaX",
+    "url": "https://dyve.online/"
+  },
+  "inLanguage": "en"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Dyve HackaX", "item": "https://dyve.online/" },
+    { "@type": "ListItem", "position": 2, "name": "Threat Signals", "item": "https://dyve.online/signals/" }
+  ]
 }
 </script>
 
 <style>
+/* ============================================================
+   LIVE SIGNALS UI
+============================================================ */
 
-/* =========================
-   SIGNALS — TELEMETRY UI
-========================= */
+.signals-page {
+  padding-bottom: 30px;
+}
 
-/* hero */
+.signals-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 22px 0 0;
+  color: rgba(255,255,255,.32);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+}
+
+.signals-breadcrumb a { color: rgba(255,255,255,.42); }
+.signals-breadcrumb a:hover { color: var(--dx-green); }
+.signals-breadcrumb span { color: rgba(255,255,255,.18); }
+
+.signals-hero {
+  position: relative;
+  overflow: hidden;
+  margin-top: 18px;
+  padding: 30px 20px 24px;
+  border: 1px solid rgba(0,255,170,.12);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(0,255,170,.10), transparent 38%),
+    radial-gradient(circle at 0% 100%, rgba(198,168,90,.045), transparent 40%),
+    linear-gradient(145deg, rgba(255,255,255,.025), rgba(255,255,255,.008));
+  isolation: isolate;
+}
+
+.signals-hero::before {
+  content: "";
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  right: -80px;
+  top: -90px;
+  border: 1px solid rgba(0,255,170,.10);
+  border-radius: 50%;
+  box-shadow: 0 0 0 35px rgba(0,255,170,.018), 0 0 0 70px rgba(0,255,170,.012);
+  pointer-events: none;
+}
+
+.signals-hero-content { position: relative; z-index: 2; max-width: 900px; }
+
+.signals-kicker,
+.signals-section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--dx-green);
+  font-family: "Michroma", sans-serif;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.signals-kicker { margin-bottom: 13px; }
+.signals-kicker::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 12px rgba(0,255,170,.7);
+}
+
 .signals-title {
-  text-align: center;
-  font-size: 26px;
-  margin-top: 40px;
+  margin: 0;
+  color: #f5faf8;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(31px, 8vw, 56px);
+  font-weight: 700;
+  line-height: .98;
+  letter-spacing: -.045em;
 }
 
 .signals-title span {
   display: block;
+  margin-top: 12px;
+  color: rgba(255,255,255,.40);
+  font-family: "Inter", sans-serif;
   font-size: 12px;
-  opacity: 0.6;
-  margin-top: 6px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: .15px;
 }
 
 .signals-desc {
-  text-align: center;
-  max-width: 600px;
-  margin: 12px auto;
-  font-size: 14px;
-  opacity: 0.7;
+  max-width: 720px;
+  margin: 17px 0 0;
+  color: rgba(255,255,255,.57);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.signals-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.signals-status-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 999px;
+  background: rgba(255,255,255,.018);
+  color: rgba(255,255,255,.42);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+.signals-status-item::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.28);
+}
+
+.signals-status-item.active {
+  border-color: rgba(0,255,170,.14);
+  color: rgba(0,255,170,.80);
+}
+
+.signals-status-item.active::before {
+  background: var(--dx-green);
+  box-shadow: 0 0 9px rgba(0,255,170,.7);
 }
 
 /* =========================
-   METRICS (KEY DIFFERENCE)
+   SOURCE HEALTH
+========================= */
+
+.source-health {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.source-health-card {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,.055);
+  border-radius: 11px;
+  background: rgba(255,255,255,.014);
+}
+
+.source-health-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.source-health-name {
+  overflow: hidden;
+  color: rgba(255,255,255,.72);
+  font-family: "Michroma", sans-serif;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .7px;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.source-health-dot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #666;
+}
+
+.source-health-card.online .source-health-dot {
+  background: var(--dx-green);
+  box-shadow: 0 0 10px rgba(0,255,170,.65);
+}
+
+.source-health-card.offline .source-health-dot { background: #ef4444; }
+
+.source-health-status {
+  margin-top: 6px;
+  color: rgba(255,255,255,.30);
+  font-size: 8px;
+}
+
+.source-health-card.online .source-health-status { color: rgba(0,255,170,.58); }
+
+/* =========================
+   SECTION SYSTEM
+========================= */
+
+.signals-section { margin-top: 42px; }
+
+.signals-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 14px;
+}
+
+.signals-section-kicker { color: rgba(255,255,255,.32); margin-bottom: 5px; }
+
+.signals-section-title {
+  margin: 0;
+  color: #fff;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 21px;
+  line-height: 1.15;
+  letter-spacing: -.025em;
+}
+
+.signals-section-copy {
+  max-width: 680px;
+  margin: 7px 0 0;
+  color: rgba(255,255,255,.42);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* =========================
+   METRICS
 ========================= */
 
 .signals-metrics {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin: 30px 0;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 18px;
 }
 
 .metric {
-  background: #030605;
-  border: 1px solid rgba(255,255,255,0.05);
-  border-radius: 10px;
-  padding: 16px;
-  text-align: center;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  padding: 16px 14px;
+  border: 1px solid rgba(255,255,255,.065);
+  border-radius: 13px;
+  background: linear-gradient(145deg, rgba(255,255,255,.025), rgba(255,255,255,.008));
+}
+
+.metric::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 45px;
+  height: 45px;
+  background: radial-gradient(circle at top right, rgba(0,255,170,.10), transparent 70%);
+  pointer-events: none;
 }
 
 .metric span {
-  font-size: 11px;
-  opacity: 0.5;
   display: block;
+  color: rgba(255,255,255,.35);
+  font-family: "Michroma", sans-serif;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .8px;
+  text-transform: uppercase;
 }
 
 .metric strong {
-  font-size: 20px;
-  margin-top: 6px;
   display: block;
+  margin-top: 7px;
+  color: #f3f8f6;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 1;
 }
 
+.metric small { display: block; margin-top: 7px; color: rgba(255,255,255,.28); font-size: 8px; }
+
+.metric.critical strong { color: #ff7070; }
+.metric.high strong { color: #f6b24b; }
+
 /* =========================
-   SIGNAL CARDS
+   LIVE CONTROLS
+========================= */
+
+.signal-controls {
+  display: grid;
+  gap: 9px;
+  margin-top: 18px;
+}
+
+.signal-search {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 13px;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 10px;
+  outline: 0;
+  background: rgba(255,255,255,.018);
+  color: #fff;
+  font: inherit;
+  font-size: 11px;
+}
+
+.signal-search::placeholder { color: rgba(255,255,255,.25); }
+.signal-search:focus { border-color: rgba(0,255,170,.28); box-shadow: 0 0 0 3px rgba(0,255,170,.045); }
+
+.signal-filters {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+
+.signal-filters::-webkit-scrollbar { display: none; }
+
+.signal-filter {
+  flex: 0 0 auto;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 999px;
+  background: rgba(255,255,255,.015);
+  color: rgba(255,255,255,.42);
+  cursor: pointer;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+}
+
+.signal-filter.active,
+.signal-filter:hover {
+  border-color: rgba(0,255,170,.20);
+  background: rgba(0,255,170,.045);
+  color: var(--dx-green);
+}
+
+.feed-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  color: rgba(255,255,255,.28);
+  font-size: 8px;
+}
+
+.feed-status strong { color: rgba(0,255,170,.62); font-weight: 700; }
+
+/* =========================
+   SIGNAL GRID
 ========================= */
 
 .signals-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 80px;
+  grid-template-columns: 1fr;
+  gap: 11px;
+  margin-top: 18px;
 }
 
 .signal-card {
-  background: #030605;
-  border: 1px solid rgba(255,255,255,0.05);
-  border-radius: 10px;
+  position: relative;
+  min-width: 0;
   padding: 16px;
-  transition: 0.25s;
+  border: 1px solid rgba(255,255,255,.065);
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(255,255,255,.025), rgba(255,255,255,.008));
+  transition: transform .25s ease, border-color .25s ease, background .25s ease, box-shadow .25s ease;
 }
 
 .signal-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(0,255,170,0.3);
+  transform: translateY(-3px);
+  border-color: rgba(0,255,170,.24);
+  background: linear-gradient(145deg, rgba(0,255,170,.045), rgba(255,255,255,.008));
+  box-shadow: 0 14px 35px rgba(0,0,0,.20);
 }
 
-/* top */
+.signal-card.critical { border-color: rgba(239,68,68,.11); }
+.signal-card.critical:hover { border-color: rgba(239,68,68,.30); }
+
 .signal-top {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .signal-source {
-  font-size: 11px;
-  opacity: 0.5;
+  overflow: hidden;
+  color: rgba(255,255,255,.34);
+  font-family: "Michroma", sans-serif;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .7px;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .signal-level {
-  font-size: 11px;
-  padding: 3px 6px;
-  border-radius: 4px;
+  flex-shrink: 0;
+  padding: 5px 8px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-family: "Michroma", sans-serif;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .6px;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
-/* levels */
-.signal-level.high {
-  background: #ff914d;
+.signal-level.critical { border-color: rgba(239,68,68,.22); background: rgba(239,68,68,.09); color: #ff7070; }
+.signal-level.high { border-color: rgba(245,158,11,.18); background: rgba(245,158,11,.08); color: #f6b24b; }
+.signal-level.medium { border-color: rgba(34,211,238,.18); background: rgba(34,211,238,.07); color: #55d9ec; }
+.signal-level.low { border-color: rgba(255,255,255,.10); background: rgba(255,255,255,.04); color: rgba(255,255,255,.50); }
+
+.signal-marker {
+  width: 100%;
+  height: 2px;
+  margin-bottom: 14px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255,255,255,.045);
 }
 
-.signal-level.medium {
-  background: #ffaa00;
+.signal-marker span { display: block; height: 100%; width: var(--signal-strength, 50%); border-radius: inherit; background: var(--dx-green); box-shadow: 0 0 12px rgba(0,255,170,.35); }
+.signal-card.critical .signal-marker span { background: var(--dx-red); box-shadow: 0 0 12px rgba(239,68,68,.35); }
+.signal-card.high .signal-marker span { background: #f59e0b; box-shadow: 0 0 12px rgba(245,158,11,.35); }
+
+.signal-type {
+  margin-bottom: 7px;
+  color: rgba(0,255,170,.58);
+  font-family: "Michroma", sans-serif;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .7px;
+  text-transform: uppercase;
 }
 
-.signal-level.critical {
-  background: #ff3b3b;
-  color: #fff;
+.signal-observation {
+  margin: 0;
+  color: rgba(255,255,255,.86);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
-/* text */
 .signal-card p {
-  font-size: 13px;
-  opacity: 0.7;
+  margin: 9px 0 0;
+  color: rgba(255,255,255,.48);
+  font-size: 11px;
+  line-height: 1.6;
 }
 
-/* responsive */
-@media (max-width: 900px) {
-  .signals-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .signals-metrics {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.signal-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin-top: 13px;
+  padding: 9px;
+  border: 1px solid rgba(255,255,255,.045);
+  border-radius: 8px;
+  background: rgba(0,0,0,.16);
 }
 
-@media (max-width: 600px) {
-  .signals-grid {
-    grid-template-columns: 1fr;
-  }
+.signal-indicator code {
+  min-width: 0;
+  overflow: hidden;
+  color: rgba(255,255,255,.48);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
+.copy-ioc {
+  flex-shrink: 0;
+  min-height: 26px;
+  padding: 0 8px;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 6px;
+  background: rgba(255,255,255,.02);
+  color: rgba(255,255,255,.45);
+  cursor: pointer;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+}
 
+.copy-ioc:hover { color: var(--dx-green); border-color: rgba(0,255,170,.18); }
 
+.signal-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 15px;
+  padding-top: 13px;
+  border-top: 1px solid rgba(255,255,255,.055);
+}
+
+.signal-meta-item span {
+  display: block;
+  margin-bottom: 4px;
+  color: rgba(255,255,255,.25);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+}
+
+.signal-meta-item strong {
+  display: block;
+  overflow: hidden;
+  color: rgba(255,255,255,.62);
+  font-size: 9px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.intel-chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  margin-top: 14px;
+  color: rgba(0,255,170,.62);
+  font-family: "Michroma", sans-serif;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+}
+
+.intel-chain span { display: inline-flex; align-items: center; min-height: 22px; padding: 0 7px; border: 1px solid rgba(0,255,170,.10); border-radius: 4px; background: rgba(0,255,170,.025); }
+.intel-chain b { color: rgba(255,255,255,.22); font-weight: 400; }
+
+.signal-links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 13px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,.04);
+  color: rgba(255,255,255,.28);
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.signal-links a { color: rgba(0,255,170,.70); font-weight: 600; }
+.signal-links a:hover { color: var(--dx-green); }
+
+.signal-empty {
+  padding: 28px 15px;
+  border: 1px dashed rgba(255,255,255,.09);
+  border-radius: 12px;
+  color: rgba(255,255,255,.32);
+  font-size: 10px;
+  text-align: center;
+}
+
+/* =========================
+   METHODOLOGY
+========================= */
+
+.signals-methodology {
+  position: relative;
+  overflow: hidden;
+  margin-top: 48px;
+  padding: 22px 18px;
+  border: 1px solid rgba(0,255,170,.10);
+  border-radius: 15px;
+  background: radial-gradient(circle at 100% 0%, rgba(0,255,170,.065), transparent 40%), rgba(255,255,255,.012);
+}
+
+.signals-methodology::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--dx-green), rgba(0,255,170,.08)); }
+.signals-methodology h2 { margin: 0; color: #fff; font-family: "Space Grotesk", sans-serif; font-size: 20px; letter-spacing: -.02em; }
+.signals-methodology p { max-width: 760px; margin: 10px 0 0; color: rgba(255,255,255,.48); font-size: 11px; line-height: 1.75; }
+
+.methodology-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 18px; }
+.methodology-item { padding: 13px; border: 1px solid rgba(255,255,255,.05); border-radius: 9px; background: rgba(255,255,255,.012); }
+.methodology-item strong { display: block; color: rgba(255,255,255,.78); font-family: "Space Grotesk", sans-serif; font-size: 11px; }
+.methodology-item span { display: block; margin-top: 5px; color: rgba(255,255,255,.37); font-size: 9px; line-height: 1.5; }
+
+/* =========================
+   EXPLORE
+========================= */
+
+.signals-explore { margin-top: 42px; }
+.signals-explore-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 15px; }
+.signals-explore-card { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 58px; padding: 0 14px; border: 1px solid rgba(255,255,255,.055); border-radius: 10px; background: rgba(255,255,255,.012); color: inherit; transition: border-color .2s ease, background .2s ease, transform .2s ease; }
+.signals-explore-card:hover { transform: translateX(3px); border-color: rgba(0,255,170,.18); background: rgba(0,255,170,.025); }
+.signals-explore-card strong { display: block; color: rgba(255,255,255,.72); font-family: "Space Grotesk", sans-serif; font-size: 11px; }
+.signals-explore-card span { display: block; margin-top: 3px; color: rgba(255,255,255,.30); font-size: 8px; }
+.signals-explore-arrow { color: var(--dx-green); font-size: 16px; }
+
+/* =========================
+   TOAST
+========================= */
+
+.signal-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  z-index: 2000;
+  max-width: calc(100% - 30px);
+  padding: 10px 13px;
+  border: 1px solid rgba(0,255,170,.18);
+  border-radius: 9px;
+  background: rgba(3,8,6,.94);
+  color: rgba(255,255,255,.78);
+  box-shadow: 0 14px 40px rgba(0,0,0,.45);
+  font-size: 10px;
+  transform: translate(-50%, 16px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.signal-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (min-width: 640px) {
+  .signals-hero { padding: 40px 30px 34px; }
+  .signals-metrics { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .source-health { grid-template-columns: repeat(4, 1fr); }
+  .signals-grid { grid-template-columns: repeat(2, 1fr); }
+  .methodology-grid { grid-template-columns: repeat(2, 1fr); }
+  .signals-explore-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 900px) {
+  .signals-hero { padding: 48px 42px 40px; }
+  .signals-grid { grid-template-columns: repeat(3, 1fr); }
+  .methodology-grid { grid-template-columns: repeat(3, 1fr); }
+  .signals-section { margin-top: 52px; }
+  .signal-controls { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+  .signal-filters { justify-content: flex-end; }
+}
+
+@media (max-width: 380px) {
+  .signals-hero { padding: 26px 16px 24px; }
+  .signals-title { font-size: 29px; }
+  .signals-title span { font-size: 11px; }
+  .signals-desc { font-size: 12px; }
+  .signals-section-title { font-size: 19px; }
+  .signal-observation { font-size: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signal-card,
+  .signals-explore-card,
+  .signal-toast { transition: none; }
+  .signal-card:hover,
+  .signals-explore-card:hover { transform: none; }
+}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <div class="topbar">
-    <div class="menu-icon"></div>
-    <div class="logo">DYVE<span style="opacity:.5">|</span>HACKAX</div>
-  </div>
+<div id="global-drawer"></div>
+<div id="global-header"></div>
 
-  <div class="nav">
-    <span data-link="../index.html">Intel</span>
-    <span data-link="../breaches/index.html">Breaches</span>
-    <span data-link="../dark-web/index.html">Dark Web</span>
-    <span data-link="../threat-actors/index.html">Threat Actors</span>
-    <span class="active">Signals</span>
-  </div>
-</div>
+<main class="container signals-page">
 
-<div class="container">
+  <nav class="signals-breadcrumb" aria-label="Breadcrumb">
+    <a href="../index.html">Dyve HackaX</a>
+    <span>/</span>
+    <span aria-current="page">Threat Signals</span>
+  </nav>
 
-<!-- HERO -->
-<h1 class="signals-title">
-  Threat Signals
-  <span>Early Indicators, Anomalies & Emerging Activity</span>
-</h1>
+  <section class="signals-hero" aria-labelledby="signals-page-title">
+    <div class="signals-hero-content">
+      <div class="signals-kicker">Live Early Threat Detection</div>
 
-<p class="signals-desc">
-Detect weak cyber signals before they escalate into breaches. Monitor anomalies, unusual patterns, and emerging threat behavior.
-</p>
+      <h1 class="signals-title" id="signals-page-title">
+        Threat Signals
+        <span>Early indicators, anomalies &amp; emerging cyber activity</span>
+      </h1>
 
-<!-- LIVE METRICS -->
-<div class="signals-metrics">
+      <p class="signals-desc">
+        HackaX aggregates recent observations from public cybersecurity intelligence sources and normalizes them into a single signal feed. The feed covers exploited vulnerabilities, indicators of compromise, malware detections and malicious infrastructure. A signal is an observation, not automatically a confirmed breach or attribution.
+      </p>
 
-  <div class="metric">
-    <span>Active Signals</span>
-    <strong>128</strong>
-  </div>
+      <div class="signals-status" aria-label="Signal system status">
+        <div class="signals-status-item active" id="monitor-status">Near-real-time monitoring</div>
+        <div class="signals-status-item">Cross-source correlation</div>
+        <div class="signals-status-item">Evidence-aware assessment</div>
+      </div>
 
-  <div class="metric">
-    <span>Anomalies</span>
-    <strong>34</strong>
-  </div>
+      <div class="source-health" id="source-health" aria-label="Intelligence source health">
+        <div class="source-health-card"><div class="source-health-top"><span class="source-health-name">CISA KEV</span><i class="source-health-dot"></i></div><div class="source-health-status">Checking source...</div></div>
+        <div class="source-health-card"><div class="source-health-top"><span class="source-health-name">ThreatFox</span><i class="source-health-dot"></i></div><div class="source-health-status">Checking source...</div></div>
+        <div class="source-health-card"><div class="source-health-top"><span class="source-health-name">MalwareBazaar</span><i class="source-health-dot"></i></div><div class="source-health-status">Checking source...</div></div>
+        <div class="source-health-card"><div class="source-health-top"><span class="source-health-name">URLhaus</span><i class="source-health-dot"></i></div><div class="source-health-status">Checking source...</div></div>
+      </div>
+    </div>
+  </section>
 
-  <div class="metric">
-    <span>High Risk</span>
-    <strong>9</strong>
-  </div>
-
-  <div class="metric">
-    <span>Sources</span>
-    <strong>18</strong>
-  </div>
-
-</div>
-
-<div class="divider"></div>
-
-<!-- SIGNAL GRID -->
-<div class="signals-grid">
-
-  <!-- SIGNAL 1 -->
-  <div class="signal-card" id="signal-1">
-
-    <div class="signal-top">
-      <span class="signal-source">forum_monitor</span>
-      <span class="signal-level high">High</span>
+  <section class="signals-section" aria-labelledby="posture-title">
+    <div class="signals-section-header">
+      <div>
+        <span class="signals-section-kicker">Intelligence Snapshot</span>
+        <h2 class="signals-section-title" id="posture-title">Current Signal Posture</h2>
+        <p class="signals-section-copy">Calculated from the latest normalized observations returned by the HackaX signal API.</p>
+      </div>
     </div>
 
-    <p>Spike in credential listings linked to fintech services.</p>
+    <div class="signals-metrics" id="signals-metrics">
+      <div class="metric"><span>Active Signals</span><strong>—</strong><small>Loading feed</small></div>
+      <div class="metric"><span>New Today</span><strong>—</strong><small>UTC observation window</small></div>
+      <div class="metric high"><span>High Risk</span><strong>—</strong><small>Priority observations</small></div>
+      <div class="metric critical"><span>Critical</span><strong>—</strong><small>Highest priority observations</small></div>
+    </div>
+  </section>
 
-    <!-- INTEL CHAIN -->
-    <div class="intel-chain">
-      Signal → Breach → Actor
+  <div class="divider"></div>
+
+  <section class="signals-section" aria-labelledby="feed-title">
+    <div class="signals-section-header">
+      <div>
+        <span class="signals-section-kicker">Live Signal Feed</span>
+        <h2 class="signals-section-title" id="feed-title">Emerging Indicators</h2>
+        <p class="signals-section-copy">Use filters or search to isolate vulnerabilities, IOCs, malware and malicious infrastructure.</p>
+      </div>
     </div>
 
-    <!-- CONNECTION -->
-    <div class="signal-links">
-      Related breach:
-      <a href="../breaches/index.html#breach-1">Financial credential leak →</a>
+    <div class="signal-controls">
+      <input id="signal-search" class="signal-search" type="search" autocomplete="off" spellcheck="false" placeholder="Search CVEs, malware, IOCs, vendors or signal types..." aria-label="Search threat signals">
+      <div class="signal-filters" id="signal-filters" aria-label="Signal filters">
+        <button class="signal-filter active" data-filter="all" type="button">All</button>
+        <button class="signal-filter" data-filter="critical" type="button">Critical</button>
+        <button class="signal-filter" data-filter="high" type="button">High</button>
+        <button class="signal-filter" data-filter="medium" type="button">Medium</button>
+        <button class="signal-filter" data-filter="vulnerability" type="button">Vulnerabilities</button>
+        <button class="signal-filter" data-filter="ioc" type="button">IOCs</button>
+        <button class="signal-filter" data-filter="malware" type="button">Malware</button>
+        <button class="signal-filter" data-filter="malware-url" type="button">Infrastructure</button>
+      </div>
     </div>
 
-  </div>
-
-  <!-- SIGNAL 2 -->
-  <div class="signal-card" id="signal-2">
-
-    <div class="signal-top">
-      <span class="signal-source">domain_watch</span>
-      <span class="signal-level medium">Medium</span>
+    <div class="feed-status">
+      <span id="feed-count">Loading signals...</span>
+      <span>Updated <strong id="last-updated">—</strong></span>
     </div>
 
-    <p>New lookalike domains registered targeting banking platforms.</p>
+    <div class="signals-grid" id="signals-grid" aria-live="polite">
+      <div class="signal-empty">Connecting to the HackaX intelligence layer...</div>
+    </div>
+  </section>
 
-    <div class="intel-chain">
-      Signal → Potential Breach
+  <section class="signals-methodology" aria-labelledby="methodology-title">
+    <span class="signals-section-kicker">Intelligence Methodology</span>
+    <h2 id="methodology-title">How HackaX interprets a signal</h2>
+    <p>
+      A signal is an observable intelligence event. HackaX preserves the originating source, normalizes its data and applies a simple presentation-level priority model. Priority is not a substitute for vendor severity, incident response, attribution or independent validation.
+    </p>
+
+    <div class="methodology-grid">
+      <div class="methodology-item"><strong>Observation</strong><span>A source reports a vulnerability, IOC, malware detection or malicious infrastructure event.</span></div>
+      <div class="methodology-item"><strong>Normalization</strong><span>Source-specific fields are converted into a consistent HackaX signal schema.</span></div>
+      <div class="methodology-item"><strong>Assessment</strong><span>Recency, source context and available confidence data are used to present a priority level.</span></div>
+    </div>
+  </section>
+
+  <section class="signals-explore">
+    <div class="signals-section-header">
+      <div>
+        <span class="signals-section-kicker">Continue Investigation</span>
+        <h2 class="signals-section-title">Explore Related Intelligence</h2>
+      </div>
     </div>
 
-    <div class="signal-links">
-      Monitoring:
-      <a href="../breaches/index.html">View emerging breaches →</a>
+    <div class="signals-explore-grid">
+      <a href="../breaches/index.html" class="signals-explore-card"><div><strong>Breach Surveillance</strong><span>Confirmed and emerging breach intelligence</span></div><span class="signals-explore-arrow">→</span></a>
+      <a href="../threat-actors/index.html" class="signals-explore-card"><div><strong>Threat Actors</strong><span>Groups and actors connected to observed activity</span></div><span class="signals-explore-arrow">→</span></a>
+      <a href="../analysis/index.html" class="signals-explore-card"><div><strong>Threat Analysis</strong><span>Deeper analysis of emerging cyber activity</span></div><span class="signals-explore-arrow">→</span></a>
     </div>
+  </section>
 
-  </div>
-
-  <!-- SIGNAL 3 -->
-  <div class="signal-card" id="signal-3">
-
-    <div class="signal-top">
-      <span class="signal-source">malware_scan</span>
-      <span class="signal-level critical">Critical</span>
-    </div>
-
-    <p>Emerging stealer variant detected across multiple regions.</p>
-
-    <div class="intel-chain">
-      Signal → Malware → Actor
-    </div>
-
-    <div class="signal-links">
-      Possible actor:
-      <a href="../threat-actors/index.html#actor-1">GhostRoot →</a>
-    </div>
-
-  </div>
-
-</div>
-
-</div>
+</main>
 
 <footer class="dyve-footer">
   <div class="dyve-core">
     <div class="dyve-title">DYVE HACKAX</div>
-    <p class="dyve-desc">Early detection & cyber signal intelligence</p>
+    <p class="dyve-desc">Live threat signals, early detection and evidence-aware cyber intelligence.</p>
   </div>
 </footer>
 
-<!-- OPTIONAL: DATA HOOK FOR FUTURE SYSTEM -->
-<script>
-fetch('../assets/intel.json')
-  .then(res => res.json())
-  .then(data => {
-    console.log("Intel system connected", data);
-  });
-</script>
+<div class="signal-toast" id="signal-toast" role="status" aria-live="polite"></div>
+
+<script src="../ui.js"></script>
 
 <script>
-document.querySelectorAll(".nav span").forEach(item => {
-  item.addEventListener("click", () => {
-    const link = item.getAttribute("data-link");
-    if (!link) return;
-    window.location.href = link;
+(function () {
+  'use strict';
+
+  const API_URL = '../api/signals';
+  const REFRESH_MS = 60000;
+  const state = {
+    signals: [],
+    filter: 'all',
+    search: '',
+    timer: null,
+    previousIds: new Set()
+  };
+
+  const els = {
+    metrics: document.getElementById('signals-metrics'),
+    grid: document.getElementById('signals-grid'),
+    search: document.getElementById('signal-search'),
+    filters: document.getElementById('signal-filters'),
+    feedCount: document.getElementById('feed-count'),
+    lastUpdated: document.getElementById('last-updated'),
+    sourceHealth: document.getElementById('source-health'),
+    monitorStatus: document.getElementById('monitor-status'),
+    toast: document.getElementById('signal-toast')
+  };
+
+  function escapeHtml(value) {
+    return String(value ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function formatNumber(value) {
+    return new Intl.NumberFormat('en-US').format(Number(value || 0));
+  }
+
+  function formatTime(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '—';
+    return new Intl.DateTimeFormat('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+      timeZone: 'UTC'
+    }).format(date) + ' UTC';
+  }
+
+  function formatRelative(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return 'Unknown';
+    const seconds = Math.max(0, Math.floor((Date.now() - date.getTime()) / 1000));
+    if (seconds < 60) return `${seconds}s ago`;
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    return `${Math.floor(hours / 24)}d ago`;
+  }
+
+  function formatIndicator(signal) {
+    const raw = String(signal.indicator || signal.cve || '');
+    if (!raw) return 'No indicator exposed';
+    if (/^https?:\/\//i.test(raw)) {
+      try {
+        const url = new URL(raw);
+        const compact = `${url.hostname}${url.pathname}`;
+        return compact.length > 62 ? compact.slice(0, 59) + '...' : compact;
+      } catch (_) {
+        return raw.length > 62 ? raw.slice(0, 59) + '...' : raw;
+      }
+    }
+    return raw.length > 62 ? raw.slice(0, 59) + '...' : raw;
+  }
+
+  function signalStrength(signal) {
+    const base = { critical: 90, high: 68, medium: 45, low: 24 }[signal.severity] || 35;
+    const confidence = Number(signal.confidence);
+    if (Number.isFinite(confidence)) return Math.max(base, Math.min(100, confidence));
+    return base;
+  }
+
+  function getSearchText(signal) {
+    return [
+      signal.title,
+      signal.description,
+      signal.sourceName,
+      signal.type,
+      signal.indicatorType,
+      signal.indicator,
+      signal.malware,
+      signal.cve,
+      signal.vendor,
+      signal.product,
+      ...(signal.tags || [])
+    ].filter(Boolean).join(' ').toLowerCase();
+  }
+
+  function matches(signal) {
+    const filterMatch = state.filter === 'all' || signal.severity === state.filter || signal.type === state.filter;
+    const searchMatch = !state.search || getSearchText(signal).includes(state.search);
+    return filterMatch && searchMatch;
+  }
+
+  function renderMetrics(metrics) {
+    els.metrics.innerHTML = `
+      <div class="metric"><span>Active Signals</span><strong>${formatNumber(metrics.activeSignals)}</strong><small>Normalized observations</small></div>
+      <div class="metric"><span>New Today</span><strong>${formatNumber(metrics.newToday)}</strong><small>UTC observation window</small></div>
+      <div class="metric high"><span>High Risk</span><strong>${formatNumber(metrics.highRisk)}</strong><small>Priority observations</small></div>
+      <div class="metric critical"><span>Critical</span><strong>${formatNumber(metrics.critical)}</strong><small>Highest priority observations</small></div>
+    `;
+  }
+
+  function renderSources(sources) {
+    const order = ['cisa', 'threatfox', 'malwarebazaar', 'urlhaus'];
+    const byKey = Object.fromEntries(sources.map((source) => [source.key, source]));
+
+    els.sourceHealth.innerHTML = order.map((key) => {
+      const source = byKey[key] || { status: 'offline', name: key, error: 'No response' };
+      const status = source.status === 'online' ? 'ONLINE' : 'OFFLINE';
+      const detail = source.status === 'online'
+        ? `${formatNumber(source.count)} observations`
+        : (source.error || 'Source unavailable').replace(/not configured/i, 'API key required');
+      return `
+        <div class="source-health-card ${source.status}">
+          <div class="source-health-top">
+            <span class="source-health-name">${escapeHtml(source.name)}</span>
+            <i class="source-health-dot"></i>
+          </div>
+          <div class="source-health-status">${escapeHtml(status)} · ${escapeHtml(detail)}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function chainFor(signal) {
+    if (signal.type === 'vulnerability') return ['Vulnerability', 'Exploitation', signal.ransomware === 'Known' ? 'Ransomware' : 'Threat Activity'];
+    if (signal.type === 'malware') return ['Detection', 'Malware', signal.malware || 'Family'];
+    if (signal.type === 'malware-url') return ['Infrastructure', 'Malware URL', 'Distribution'];
+    return ['IOC', signal.indicatorType || 'Indicator', signal.malware || 'Threat Activity'];
+  }
+
+  function renderSignals() {
+    const visible = state.signals.filter(matches);
+    els.feedCount.textContent = `${formatNumber(visible.length)} of ${formatNumber(state.signals.length)} signals shown`;
+
+    if (!visible.length) {
+      els.grid.innerHTML = '<div class="signal-empty">No signals match the current filter or search query.</div>';
+      return;
+    }
+
+    els.grid.innerHTML = visible.map((signal) => {
+      const chain = chainFor(signal);
+      const strength = signalStrength(signal);
+      const confidence = Number.isFinite(Number(signal.confidence)) ? `${Math.round(Number(signal.confidence))}%` : '—';
+      const sourceLink = signal.reference || signal.sourceUrl;
+      const title = escapeHtml(signal.title);
+      const description = escapeHtml(signal.description);
+      const indicator = escapeHtml(formatIndicator(signal));
+      const rawIndicator = escapeHtml(signal.indicator || signal.cve || '');
+      const sourceName = escapeHtml(signal.sourceName);
+      const type = escapeHtml(signal.type || 'signal');
+      const severity = escapeHtml(signal.severity || 'medium');
+      const malware = escapeHtml(signal.malware || '—');
+      const country = escapeHtml(signal.country || '—');
+      const observed = escapeHtml(formatRelative(signal.observedAt));
+      const observedAbsolute = escapeHtml(formatTime(signal.observedAt));
+      const cve = escapeHtml(signal.cve || '—');
+      const sourceAnchor = sourceLink
+        ? `<a href="${escapeHtml(sourceLink)}" target="_blank" rel="noopener noreferrer">Source →</a>`
+        : '<span>Source unavailable</span>';
+
+      return `
+        <article class="signal-card ${severity}" data-signal-id="${escapeHtml(signal.id)}">
+          <div class="signal-top">
+            <span class="signal-source">${sourceName}</span>
+            <span class="signal-level ${severity}">${severity}</span>
+          </div>
+
+          <div class="signal-marker" aria-hidden="true"><span style="--signal-strength:${strength}%"></span></div>
+
+          <div class="signal-type">${type}</div>
+          <h3 class="signal-observation">${title}</h3>
+          <p>${description}</p>
+
+          ${rawIndicator ? `
+            <div class="signal-indicator">
+              <code title="${rawIndicator}">${indicator}</code>
+              <button class="copy-ioc" type="button" data-copy="${rawIndicator}">Copy</button>
+            </div>
+          ` : ''}
+
+          <div class="signal-meta-grid">
+            <div class="signal-meta-item"><span>Confidence</span><strong>${confidence}</strong></div>
+            <div class="signal-meta-item"><span>Observed</span><strong title="${observedAbsolute}">${observed}</strong></div>
+            <div class="signal-meta-item"><span>Malware</span><strong>${malware}</strong></div>
+            <div class="signal-meta-item"><span>CVE</span><strong>${cve}</strong></div>
+            <div class="signal-meta-item"><span>Country</span><strong>${country}</strong></div>
+            <div class="signal-meta-item"><span>Assessment</span><strong>${escapeHtml(signal.assessment || 'Observed')}</strong></div>
+          </div>
+
+          <div class="intel-chain">
+            <span>${escapeHtml(chain[0])}</span><b>→</b><span>${escapeHtml(chain[1])}</span><b>→</b><span>${escapeHtml(chain[2])}</span>
+          </div>
+
+          <div class="signal-links">
+            <span>${sourceName}</span>
+            ${sourceAnchor}
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
+
+  function showToast(message) {
+    els.toast.textContent = message;
+    els.toast.classList.add('show');
+    clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(() => els.toast.classList.remove('show'), 1800);
+  }
+
+  async function copyIndicator(value) {
+    if (!value) return;
+    try {
+      await navigator.clipboard.writeText(value);
+      showToast('Indicator copied to clipboard');
+    } catch (_) {
+      showToast('Clipboard access unavailable');
+    }
+  }
+
+  async function loadSignals(isRefresh) {
+    if (!isRefresh) {
+      els.feedCount.textContent = 'Connecting to intelligence sources...';
+    }
+
+    try {
+      const response = await fetch(`${API_URL}?t=${Date.now()}`, {
+        method: 'GET',
+        cache: 'no-store',
+        headers: { Accept: 'application/json' }
+      });
+
+      if (!response.ok) throw new Error(`API returned ${response.status}`);
+      const data = await response.json();
+      if (!data.ok) throw new Error('Signal API returned an invalid response');
+
+      const currentIds = new Set((data.signals || []).map((signal) => signal.id));
+      if (isRefresh) {
+        const newCount = [...currentIds].filter((id) => !state.previousIds.has(id)).length;
+        if (newCount > 0) showToast(`${newCount} new signal${newCount === 1 ? '' : 's'} detected`);
+      }
+
+      state.previousIds = currentIds;
+      state.signals = Array.isArray(data.signals) ? data.signals : [];
+
+      renderMetrics(data.metrics || {});
+      renderSources(data.sources || []);
+      renderSignals();
+      els.lastUpdated.textContent = formatTime(data.generatedAt);
+      els.monitorStatus.textContent = `Live monitoring · ${data.onlineSources || 0}/${data.sourceCount || 0} sources online`;
+      els.monitorStatus.classList.toggle('active', Number(data.onlineSources || 0) > 0);
+    } catch (error) {
+      els.monitorStatus.textContent = 'Signal API unavailable';
+      els.monitorStatus.classList.remove('active');
+      if (!state.signals.length) {
+        els.grid.innerHTML = `<div class="signal-empty">The live intelligence endpoint could not be reached. ${escapeHtml(error.message || 'Unknown error')}</div>`;
+      }
+    }
+  }
+
+  els.search.addEventListener('input', function () {
+    state.search = this.value.trim().toLowerCase();
+    renderSignals();
   });
-});
+
+  els.filters.addEventListener('click', function (event) {
+    const button = event.target.closest('.signal-filter');
+    if (!button) return;
+    state.filter = button.dataset.filter || 'all';
+    els.filters.querySelectorAll('.signal-filter').forEach((item) => item.classList.toggle('active', item === button));
+    renderSignals();
+  });
+
+  els.grid.addEventListener('click', function (event) {
+    const button = event.target.closest('.copy-ioc');
+    if (!button) return;
+    copyIndicator(button.dataset.copy || '');
+  });
+
+  loadSignals(false);
+  state.timer = setInterval(() => loadSignals(true), REFRESH_MS);
+})();
 </script>
-
-
-
 
 </body>
 </html>
