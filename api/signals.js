@@ -1,354 +1,1484 @@
-const CISA_URL = 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json';
-const THREATFOX_URL = 'https://threatfox-api.abuse.ch/api/v1/';
-const MALWAREBAZAAR_URL = 'https://mb-api.abuse.ch/api/v1/';
-const URLHAUS_RECENT_URL = (key) => `https://urlhaus-api.abuse.ch/v2/files/exports/${encodeURIComponent(key)}/recent.csv`;
+/**
+ * Dyve HackaX - Live Threat Signal Aggregator
+ * Vercel Serverless Function
+ *
+ * Expected environment variables:
+ *   THREATFOX_AUTH_KEY
+ *   MALWAREBAZAAR_AUTH_KEY
+ *   URLHAUS_AUTH_KEY
+ *
+ * CISA KEV does not require an API key.
+ */
 
-const SOURCE_META = {
-  cisa: { name: 'CISA KEV', short: 'CISA', url: 'https://www.cisa.gov/known-exploited-vulnerabilities-catalog' },
-  threatfox: { name: 'ThreatFox', short: 'THREATFOX', url: 'https://threatfox.abuse.ch/' },
-  malwarebazaar: { name: 'MalwareBazaar', short: 'MALWAREBAZAAR', url: 'https://bazaar.abuse.ch/' },
-  urlhaus: { name: 'URLhaus', short: 'URLHAUS', url: 'https://urlhaus.abuse.ch/' }
-};
+const CISA_URL =
+  'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json';
 
-const FETCH_TIMEOUT = 12000;
-const MAX_PER_SOURCE = 45;
-const MAX_OUTPUT = 100;
+const THREATFOX_URL =
+  'https://threatfox-api.abuse.ch/api/v1/';
 
-function timeoutSignal(ms) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), ms);
-  return { controller, timer };
-}
+const MALWAREBAZAAR_URL =
+  'https://mb-api.abuse.ch/api/v1/';
 
-async function fetchJson(url, options = {}) {
-  const { controller, timer } = timeoutSignal(FETCH_TIMEOUT);
-  try {
-    const response = await fetch(url, { ...options, signal: controller.signal });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return await response.json();
-  } finally {
-    clearTimeout(timer);
+const URLHAUS_URL =
+  'https://urlhaus-api.abuse.ch/v1/urls/recent/limit/100/';
+
+const SOURCE_LIMIT = 45;
+
+const CISA_LOOKBACK_DAYS = 90;
+
+const THREATFOX_DAYS = 3;
+
+const MALWAREBAZAAR_HOURS = 2;
+
+const REQUEST_TIMEOUT_MS = 9000;
+
+const MEMORY_CACHE_MS = 60000;
+
+let memoryCache = null;
+
+const sourceDefinitions = [
+  {
+    key: 'cisa',
+    name: 'CISA KEV'
+  },
+  {
+    key: 'threatfox',
+    name: 'ThreatFox'
+  },
+  {
+    key: 'malwarebazaar',
+    name: 'MalwareBazaar'
+  },
+  {
+    key: 'urlhaus',
+    name: 'URLhaus'
   }
-}
+];
 
-async function fetchText(url, options = {}) {
-  const { controller, timer } = timeoutSignal(FETCH_TIMEOUT);
-  try {
-    const response = await fetch(url, { ...options, signal: controller.signal });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return await response.text();
-  } finally {
-    clearTimeout(timer);
-  }
-}
 
-async function postJson(url, body, authKey) {
-  const headers = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-  };
-  if (authKey) headers['Auth-Key'] = authKey;
-  return fetchJson(url, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(body)
+/* ============================================================
+   RESPONSE HELPERS
+============================================================ */
+
+function json(res, status, body, headers = {}) {
+  res.status(status);
+
+  Object.entries(headers).forEach(([key, value]) => {
+    res.setHeader(key, value);
   });
+
+  res.setHeader(
+    'Content-Type',
+    'application/json; charset=utf-8'
+  );
+
+  res.send(JSON.stringify(body));
 }
 
-function safeDate(value) {
+
+/* ============================================================
+   GENERAL HELPERS
+============================================================ */
+
+function nowIso() {
+  return new Date().toISOString();
+}
+
+
+function safeString(value) {
+  return value == null ? '' : String(value).trim();
+}
+
+
+function parseDate(value) {
   if (!value) return null;
-  const date = new Date(String(value).replace(' UTC', 'Z'));
-  return Number.isNaN(date.getTime()) ? null : date.toISOString();
-}
 
-function severityFromConfidence(confidence, threatType = '') {
-  const n = Number(confidence);
-  const type = String(threatType).toLowerCase();
-  if (type.includes('botnet') || type.includes('cc_') || type.includes('payload')) {
-    if (n >= 80) return 'critical';
-    if (n >= 55) return 'high';
+  const raw = safeString(value);
+
+  const normalized = raw
+    .replace(/ UTC$/i, 'Z')
+    .replace(' ', 'T');
+
+  const time = Date.parse(normalized);
+
+  if (Number.isNaN(time)) {
+    return null;
   }
-  if (n >= 90) return 'critical';
-  if (n >= 65) return 'high';
-  if (n >= 35) return 'medium';
-  return 'low';
+
+  return new Date(time).toISOString();
 }
 
-function severityFromKev(item) {
-  return item.knownRansomwareCampaignUse === 'Known' ? 'critical' : 'high';
+
+function daysAgoIso(days) {
+  return new Date(
+    Date.now() - days * 86400000
+  ).toISOString();
 }
 
-function severityFromUrlhaus(item) {
-  const threat = String(item.threat || '').toLowerCase();
-  if (threat.includes('ransom') || threat.includes('stealer')) return 'critical';
-  if (item.url_status === 'online') return 'high';
-  return 'medium';
+
+function uniqueStrings(values) {
+  return [
+    ...new Set(
+      (values || [])
+        .map(safeString)
+        .filter(Boolean)
+    )
+  ];
 }
 
-function makeSignal(partial) {
-  const observedAt = safeDate(partial.observedAt) || new Date().toISOString();
-  return {
-    id: String(partial.id),
-    source: partial.source,
-    sourceName: SOURCE_META[partial.source]?.name || partial.source,
-    sourceUrl: partial.sourceUrl || SOURCE_META[partial.source]?.url || null,
-    type: partial.type || 'signal',
-    indicatorType: partial.indicatorType || null,
-    indicator: partial.indicator || null,
-    title: partial.title || 'Threat intelligence observation',
-    description: partial.description || '',
-    severity: partial.severity || 'medium',
-    confidence: Number.isFinite(Number(partial.confidence)) ? Math.max(0, Math.min(100, Number(partial.confidence))) : null,
-    malware: partial.malware || null,
-    cve: partial.cve || null,
-    vendor: partial.vendor || null,
-    product: partial.product || null,
-    country: partial.country || null,
-    tags: Array.isArray(partial.tags) ? partial.tags.slice(0, 12) : [],
-    observedAt,
-    firstSeen: safeDate(partial.firstSeen),
-    lastSeen: safeDate(partial.lastSeen),
-    ransomware: partial.ransomware || null,
-    assessment: partial.assessment || 'Observed',
-    reference: partial.reference || null
-  };
+
+function sha256(value) {
+  const crypto = require('crypto');
+
+  return crypto
+    .createHash('sha256')
+    .update(String(value))
+    .digest('hex');
 }
 
-function parseCsvLine(line) {
-  const values = [];
-  let value = '';
-  let quoted = false;
-  for (let i = 0; i < line.length; i += 1) {
-    const ch = line[i];
-    if (ch === '"') {
-      if (quoted && line[i + 1] === '"') {
-        value += '"';
-        i += 1;
-      } else {
-        quoted = !quoted;
-      }
-    } else if (ch === ',' && !quoted) {
-      values.push(value);
-      value = '';
-    } else {
-      value += ch;
-    }
+
+function makeId(source, key) {
+  return `${source}:${sha256(key).slice(0, 24)}`;
+}
+
+
+function cleanUrl(value) {
+  const raw = safeString(value);
+
+  if (!raw) {
+    return '';
   }
-  values.push(value);
-  return values;
-}
 
-function parseCsv(text) {
-  const lines = text.split(/\r?\n/).filter(Boolean);
-  if (!lines.length) return [];
-  const headers = parseCsvLine(lines[0]).map((x) => x.trim());
-  return lines.slice(1).map((line) => {
-    const values = parseCsvLine(line);
-    const row = {};
-    headers.forEach((header, index) => {
-      row[header] = values[index] ?? '';
-    });
-    return row;
-  });
-}
-
-async function getCisaSignals() {
-  const json = await fetchJson(CISA_URL, { headers: { Accept: 'application/json' } });
-  const vulnerabilities = Array.isArray(json.vulnerabilities) ? json.vulnerabilities : [];
-  return vulnerabilities
-    .sort((a, b) => String(b.dateAdded || '').localeCompare(String(a.dateAdded || '')))
-    .slice(0, MAX_PER_SOURCE)
-    .map((item) => makeSignal({
-      id: `cisa:${item.cveID}`,
-      source: 'cisa',
-      type: 'vulnerability',
-      indicatorType: 'CVE',
-      indicator: item.cveID,
-      cve: item.cveID,
-      title: `${item.vendorProject || 'Vendor'} — ${item.product || 'Product'}`,
-      description: item.vulnerabilityName || item.shortDescription || 'Known exploited vulnerability listed by CISA.',
-      severity: severityFromKev(item),
-      confidence: 100,
-      vendor: item.vendorProject || null,
-      product: item.product || null,
-      observedAt: item.dateAdded,
-      firstSeen: item.dateAdded,
-      ransomware: item.knownRansomwareCampaignUse || null,
-      assessment: 'Known exploited',
-      reference: item.notes || null,
-      sourceUrl: `https://nvd.nist.gov/vuln/detail/${encodeURIComponent(item.cveID)}`,
-      tags: ['kev', item.knownRansomwareCampaignUse === 'Known' ? 'ransomware' : 'exploited']
-    }));
-}
-
-async function getThreatFoxSignals(authKey) {
-  if (!authKey) throw new Error('THREATFOX_AUTH_KEY not configured');
-  const json = await postJson(THREATFOX_URL, { query: 'get_iocs', days: 1 }, authKey);
-  const data = Array.isArray(json.data) ? json.data : [];
-  return data.slice(0, MAX_PER_SOURCE).map((item) => makeSignal({
-    id: `threatfox:${item.id}`,
-    source: 'threatfox',
-    type: 'ioc',
-    indicatorType: item.ioc_type,
-    indicator: item.ioc,
-    title: item.malware_printable ? `${item.malware_printable} infrastructure observed` : `${item.ioc_type_desc || 'IOC'} observed`,
-    description: item.threat_type_desc || 'Indicator of compromise reported through ThreatFox.',
-    severity: severityFromConfidence(item.confidence_level, item.threat_type),
-    confidence: item.confidence_level,
-    malware: item.malware_printable || item.malware || null,
-    observedAt: item.first_seen,
-    firstSeen: item.first_seen,
-    lastSeen: item.last_seen,
-    tags: Array.isArray(item.tags) ? item.tags : [],
-    assessment: 'IOC observed',
-    reference: item.reference || null,
-    sourceUrl: `https://threatfox.abuse.ch/ioc/${encodeURIComponent(item.id)}/`
-  }));
-}
-
-async function getMalwareBazaarSignals(authKey) {
-  if (!authKey) throw new Error('MALWAREBAZAAR_AUTH_KEY not configured');
-  const json = await postJson(MALWAREBAZAAR_URL, { query: 'recent_detections', hours: 24 }, authKey);
-  const data = Array.isArray(json.data) ? json.data : [];
-  return data.slice(0, MAX_PER_SOURCE).map((item) => {
-    const signature = item.signature || 'Unclassified malware';
-    return makeSignal({
-      id: `malwarebazaar:${item.sha256_hash || item.md5_hash || item.first_seen}`,
-      source: 'malwarebazaar',
-      type: 'malware',
-      indicatorType: 'SHA-256',
-      indicator: item.sha256_hash || item.md5_hash || null,
-      title: `${signature} detection`,
-      description: `${item.file_type || 'File'} malware sample recently labeled by MalwareBazaar.`,
-      severity: /stealer|ransom|rat|loader|bot/i.test(signature) ? 'critical' : 'high',
-      confidence: 100,
-      malware: signature,
-      country: item.origin_country || null,
-      observedAt: item.first_seen,
-      firstSeen: item.first_seen,
-      tags: [item.file_type, signature].filter(Boolean),
-      assessment: 'Malware detected',
-      sourceUrl: `https://bazaar.abuse.ch/sample/${encodeURIComponent(item.sha256_hash || '')}/`
-    });
-  });
-}
-
-async function getUrlhausSignals(authKey) {
-  if (!authKey) throw new Error('URLHAUS_AUTH_KEY not configured');
-  const text = await fetchText(URLHAUS_RECENT_URL(authKey), { headers: { Accept: 'text/csv' } });
-  const rows = parseCsv(text);
-  return rows
-    .sort((a, b) => String(b.dateadded || '').localeCompare(String(a.dateadded || '')))
-    .slice(0, MAX_PER_SOURCE)
-    .map((item) => makeSignal({
-      id: `urlhaus:${item.id || item.urlid || item.url || item.dateadded}`,
-      source: 'urlhaus',
-      type: 'malware-url',
-      indicatorType: 'URL',
-      indicator: item.url || item.host || null,
-      title: item.threat ? `${item.threat} malware URL observed` : 'Malware distribution URL observed',
-      description: item.url_status ? `URL status: ${item.url_status}.` : 'Malware distribution URL reported by URLhaus.',
-      severity: severityFromUrlhaus(item),
-      confidence: 100,
-      malware: item.threat || null,
-      observedAt: item.dateadded || item.last_online,
-      firstSeen: item.dateadded,
-      lastSeen: item.last_online,
-      tags: String(item.tags || '').split(',').map((x) => x.trim()).filter(Boolean).slice(0, 10),
-      assessment: item.url_status === 'online' ? 'Active malware URL' : 'Observed malware URL',
-      sourceUrl: item.url || 'https://urlhaus.abuse.ch/'
-    }));
-}
-
-function sortSignals(signals) {
-  const severityWeight = { critical: 4, high: 3, medium: 2, low: 1 };
-  return signals.sort((a, b) => {
-    const sev = (severityWeight[b.severity] || 0) - (severityWeight[a.severity] || 0);
-    if (sev) return sev;
-    return new Date(b.observedAt).getTime() - new Date(a.observedAt).getTime();
-  });
-}
-
-function dedupeSignals(signals) {
-  const seen = new Set();
-  return signals.filter((signal) => {
-    const key = `${signal.type}|${String(signal.indicator || signal.cve || signal.title).toLowerCase()}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-}
-
-async function runSource(name, fn) {
   try {
-    const data = await fn();
-    return {
-      key: name,
-      status: 'online',
-      count: data.length,
-      signals: data,
-      error: null
-    };
-  } catch (error) {
-    return {
-      key: name,
-      status: 'offline',
-      count: 0,
-      signals: [],
-      error: error?.message || 'Source unavailable'
-    };
+    const url = new URL(raw);
+
+    if (
+      ![
+        'http:',
+        'https:'
+      ].includes(url.protocol)
+    ) {
+      return '';
+    }
+
+    return url.toString();
+  } catch (_) {
+    return '';
   }
 }
 
-module.exports = async function handler(req, res) {
-  if (req.method !== 'GET') {
-    res.setHeader('Allow', 'GET');
-    return res.status(405).json({ error: 'Method not allowed' });
+
+/* ============================================================
+   NETWORK
+============================================================ */
+
+async function fetchWithTimeout(url, options = {}) {
+  const controller = new AbortController();
+
+  const timer = setTimeout(
+    () => controller.abort(),
+    REQUEST_TIMEOUT_MS
+  );
+
+  try {
+    return await fetch(url, {
+      ...options,
+
+      signal: controller.signal,
+
+      headers: {
+        Accept: 'application/json',
+
+        'User-Agent':
+          'Dyve-HackaX-Threat-Intelligence/1.0',
+
+        ...(options.headers || {})
+      }
+    });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+
+async function readJson(response) {
+  const text = await response.text();
+
+  let data;
+
+  try {
+    data = JSON.parse(text);
+  } catch (_) {
+    throw new Error(
+      `Invalid JSON response (${response.status})`
+    );
   }
 
-  const results = await Promise.all([
-    runSource('cisa', getCisaSignals),
-    runSource('threatfox', () => getThreatFoxSignals(process.env.THREATFOX_AUTH_KEY)),
-    runSource('malwarebazaar', () => getMalwareBazaarSignals(process.env.MALWAREBAZAAR_AUTH_KEY)),
-    runSource('urlhaus', () => getUrlhausSignals(process.env.URLHAUS_AUTH_KEY))
-  ]);
+  if (!response.ok) {
+    throw new Error(
+      `Upstream HTTP ${response.status}`
+    );
+  }
 
-  const allSignals = dedupeSignals(sortSignals(results.flatMap((result) => result.signals))).slice(0, MAX_OUTPUT);
-  const severity = (name) => allSignals.filter((item) => item.severity === name).length;
-  const todayStart = new Date();
-  todayStart.setUTCHours(0, 0, 0, 0);
-  const newToday = allSignals.filter((item) => new Date(item.observedAt).getTime() >= todayStart.getTime()).length;
+  return data;
+}
 
-  const online = results.filter((result) => result.status === 'online').length;
-  const configured = ['THREATFOX_AUTH_KEY', 'MALWAREBAZAAR_AUTH_KEY', 'URLHAUS_AUTH_KEY'].filter((key) => Boolean(process.env[key])).length + 1;
 
-  const payload = {
-    ok: true,
-    generatedAt: new Date().toISOString(),
-    refreshSeconds: 60,
-    mode: 'near-real-time',
-    sourceCount: results.length,
-    onlineSources: online,
-    configuredSources: configured,
-    metrics: {
-      activeSignals: allSignals.length,
-      newToday,
-      highRisk: severity('high'),
-      critical: severity('critical'),
-      medium: severity('medium'),
-      low: severity('low')
-    },
-    sources: results.map(({ signals, ...source }) => ({
-      ...source,
-      name: SOURCE_META[source.key]?.name || source.key,
-      url: SOURCE_META[source.key]?.url || null,
-      error: source.error
-    })),
-    signals: allSignals
+/* ============================================================
+   SOURCE STATUS
+============================================================ */
+
+function emptySource(
+  key,
+  error,
+  configured = true
+) {
+  const definition =
+    sourceDefinitions.find(
+      item => item.key === key
+    );
+
+  return {
+    key,
+
+    name:
+      definition
+        ? definition.name
+        : key,
+
+    status: 'offline',
+
+    count: 0,
+
+    error:
+      error ||
+      'Source unavailable',
+
+    configured
   };
+}
 
-  res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
-  res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  return res.status(200).json(payload);
-};
+
+function onlineSource(
+  key,
+  count
+) {
+  const definition =
+    sourceDefinitions.find(
+      item => item.key === key
+    );
+
+  return {
+    key,
+
+    name:
+      definition
+        ? definition.name
+        : key,
+
+    status: 'online',
+
+    count: Number(count || 0),
+
+    error: null,
+
+    configured: true
+  };
+}
+
+
+/* ============================================================
+   CISA KEV
+============================================================ */
+
+function normalizeCisa(item) {
+  const cve =
+    safeString(
+      item.vulnerabilityName
+    );
+
+  const vendor =
+    safeString(
+      item.vendorProject
+    );
+
+  const product =
+    safeString(
+      item.product
+    );
+
+  const title =
+    [
+      vendor,
+      product
+    ]
+      .filter(Boolean)
+      .join(' - ') ||
+    cve ||
+    'Known exploited vulnerability';
+
+  const observedAt =
+    parseDate(item.dateAdded) ||
+    nowIso();
+
+  const ransomware =
+    safeString(
+      item.knownRansomwareCampaignUse
+    ).toLowerCase() === 'known';
+
+  /*
+   * CISA KEV itself does not assign a universal
+   * "critical/high" severity field.
+   *
+   * This is HackaX presentation-level priority:
+   * known ransomware use -> critical
+   * otherwise -> high.
+   */
+
+  const severity =
+    ransomware
+      ? 'critical'
+      : 'high';
+
+  return {
+    id: makeId(
+      'cisa',
+      cve ||
+        `${vendor}:${product}:${item.dateAdded}`
+    ),
+
+    source: 'cisa',
+
+    sourceName: 'CISA KEV',
+
+    type: 'vulnerability',
+
+    severity,
+
+    title,
+
+    description:
+      safeString(
+        item.shortDescription
+      ) ||
+      'Known exploited vulnerability listed in the CISA Known Exploited Vulnerabilities catalog.',
+
+    indicator: cve,
+
+    indicatorType: 'CVE',
+
+    cve,
+
+    vendor,
+
+    product,
+
+    malware: '',
+
+    country: '',
+
+    confidence: 100,
+
+    observedAt,
+
+    assessment:
+      ransomware
+        ? 'Known exploited · ransomware use reported'
+        : 'Known exploited',
+
+    ransomware:
+      ransomware
+        ? 'Known'
+        : '',
+
+    reference:
+      cve
+        ? `https://nvd.nist.gov/vuln/detail/${encodeURIComponent(cve)}`
+        : 'https://www.cisa.gov/known-exploited-vulnerabilities-catalog',
+
+    sourceUrl:
+      'https://www.cisa.gov/known-exploited-vulnerabilities-catalog',
+
+    tags: uniqueStrings([
+      vendor,
+      product,
+      'known exploited',
+      ransomware
+        ? 'ransomware'
+        : ''
+    ]),
+
+    correlationKey:
+      cve
+        ? `cve:${cve.toLowerCase()}`
+        : ''
+  };
+}
+
+
+async function fetchCisa() {
+  const response =
+    await fetchWithTimeout(
+      CISA_URL,
+      {
+        method: 'GET',
+
+        headers: {
+          Accept:
+            'application/json'
+        }
+      }
+    );
+
+  const data =
+    await readJson(response);
+
+  const vulnerabilities =
+    Array.isArray(
+      data.vulnerabilities
+    )
+      ? data.vulnerabilities
+      : [];
+
+  const cutoff =
+    daysAgoIso(
+      CISA_LOOKBACK_DAYS
+    );
+
+  const signals =
+    vulnerabilities
+      .map(normalizeCisa)
+
+      .filter(
+        signal =>
+          signal.observedAt >= cutoff
+      )
+
+      .sort(
+        (a, b) =>
+          Date.parse(b.observedAt) -
+          Date.parse(a.observedAt)
+      )
+
+      .slice(
+        0,
+        SOURCE_LIMIT
+      );
+
+  return {
+    signals,
+
+    source:
+      onlineSource(
+        'cisa',
+        signals.length
+      )
+  };
+}
+
+
+/* ============================================================
+   THREATFOX
+============================================================ */
+
+async function fetchThreatFox() {
+  const key =
+    process.env.THREATFOX_AUTH_KEY;
+
+  if (!key) {
+    return {
+      signals: [],
+
+      source:
+        emptySource(
+          'threatfox',
+          'API key not configured',
+          false
+        )
+    };
+  }
+
+  const response =
+    await fetchWithTimeout(
+      THREATFOX_URL,
+      {
+        method: 'POST',
+
+        headers: {
+          'Auth-Key': key,
+
+          'Content-Type':
+            'application/json'
+        },
+
+        body: JSON.stringify({
+          query: 'get_iocs',
+
+          days: THREATFOX_DAYS
+        })
+      }
+    );
+
+  const data =
+    await readJson(response);
+
+  if (
+    data.query_status !== 'ok'
+  ) {
+    throw new Error(
+      `ThreatFox query status: ${
+        safeString(
+          data.query_status
+        ) || 'unknown'
+      }`
+    );
+  }
+
+  const rows =
+    Array.isArray(data.data)
+      ? data.data
+      : [];
+
+  const signals =
+    rows
+
+      .map(item => {
+        const ioc =
+          safeString(item.ioc);
+
+        const malware =
+          safeString(
+            item.malware_printable ||
+            item.malware
+          );
+
+        const confidence =
+          Number(
+            item.confidence_level
+          );
+
+        let severity = 'medium';
+
+        if (
+          Number.isFinite(confidence) &&
+          confidence >= 85
+        ) {
+          severity = 'high';
+        } else if (
+          Number.isFinite(confidence) &&
+          confidence < 50
+        ) {
+          severity = 'low';
+        }
+
+        return {
+          id: makeId(
+            'threatfox',
+
+            safeString(item.id) ||
+              `${ioc}:${item.first_seen}`
+          ),
+
+          source: 'threatfox',
+
+          sourceName: 'ThreatFox',
+
+          type: 'ioc',
+
+          severity,
+
+          title:
+            malware
+              ? `${malware} — ${
+                  safeString(
+                    item.ioc_type_desc ||
+                    item.ioc_type ||
+                    'IOC'
+                  )
+                }`
+              : `ThreatFox ${
+                  safeString(
+                    item.ioc_type ||
+                    'IOC'
+                  )
+                }`,
+
+          description:
+            safeString(
+              item.threat_type_desc
+            ) ||
+            'Indicator of compromise reported through ThreatFox.',
+
+          indicator: ioc,
+
+          indicatorType:
+            safeString(
+              item.ioc_type ||
+              'IOC'
+            ),
+
+          cve: '',
+
+          vendor: '',
+
+          product: '',
+
+          malware,
+
+          country: '',
+
+          confidence:
+            Number.isFinite(confidence)
+              ? confidence
+              : null,
+
+          observedAt:
+            parseDate(
+              item.first_seen
+            ) ||
+            nowIso(),
+
+          assessment:
+            safeString(
+              item.threat_type_desc
+            ) ||
+            'Observed IOC',
+
+          ransomware: '',
+
+          reference:
+            cleanUrl(
+              item.reference
+            ) ||
+            `https://threatfox.abuse.ch/ioc/${encodeURIComponent(
+              safeString(item.id)
+            )}/`,
+
+          sourceUrl:
+            'https://threatfox.abuse.ch/',
+
+          tags: uniqueStrings([
+            ...(Array.isArray(item.tags)
+              ? item.tags
+              : []),
+
+            item.threat_type,
+
+            item.ioc_type,
+
+            malware
+          ]),
+
+          correlationKey:
+            ioc
+              ? `ioc:${ioc.toLowerCase()}`
+              : ''
+        };
+      })
+
+      .filter(
+        signal =>
+          signal.indicator
+      );
+
+  signals.sort(
+    (a, b) =>
+      Date.parse(b.observedAt) -
+      Date.parse(a.observedAt)
+  );
+
+  return {
+    signals:
+      signals.slice(
+        0,
+        SOURCE_LIMIT
+      ),
+
+    source:
+      onlineSource(
+        'threatfox',
+        Math.min(
+          signals.length,
+          SOURCE_LIMIT
+        )
+      )
+  };
+}
+
+
+/* ============================================================
+   MALWAREBAZAAR
+============================================================ */
+
+async function fetchMalwareBazaar() {
+  const key =
+    process.env.MALWAREBAZAAR_AUTH_KEY;
+
+  if (!key) {
+    return {
+      signals: [],
+
+      source:
+        emptySource(
+          'malwarebazaar',
+          'API key not configured',
+          false
+        )
+    };
+  }
+
+  const body =
+    new URLSearchParams({
+      query:
+        'recent_detections',
+
+      hours:
+        String(
+          MALWAREBAZAAR_HOURS
+        )
+    });
+
+  const response =
+    await fetchWithTimeout(
+      MALWAREBAZAAR_URL,
+      {
+        method: 'POST',
+
+        headers: {
+          'Auth-Key': key,
+
+          'Content-Type':
+            'application/x-www-form-urlencoded'
+        },
+
+        body:
+          body.toString()
+      }
+    );
+
+  const data =
+    await readJson(response);
+
+  if (
+    data.query_status !== 'ok'
+  ) {
+    throw new Error(
+      `MalwareBazaar query status: ${
+        safeString(
+          data.query_status
+        ) || 'unknown'
+      }`
+    );
+  }
+
+  const rows =
+    Array.isArray(data.data)
+      ? data.data
+      : [];
+
+  const signals =
+    rows
+
+      .map(item => {
+        const hash =
+          safeString(
+            item.sha256_hash ||
+            item.sha1_hash ||
+            item.md5_hash
+          );
+
+        const malware =
+          safeString(
+            item.signature
+          );
+
+        const title =
+          malware ||
+          safeString(
+            item.file_name
+          ) ||
+          'Malware sample detected';
+
+        return {
+          id: makeId(
+            'malwarebazaar',
+
+            hash ||
+              `${item.file_name}:${item.first_seen}`
+          ),
+
+          source:
+            'malwarebazaar',
+
+          sourceName:
+            'MalwareBazaar',
+
+          type:
+            'malware',
+
+          severity:
+            malware
+              ? 'high'
+              : 'medium',
+
+          title,
+
+          description:
+            malware
+              ? `MalwareBazaar recently labeled a sample as ${malware}.`
+              : 'A recent malware sample was added to MalwareBazaar without a family label.',
+
+          indicator: hash,
+
+          indicatorType:
+            hash.length === 64
+              ? 'SHA256'
+              : hash.length === 40
+                ? 'SHA1'
+                : 'MD5',
+
+          cve: '',
+
+          vendor: '',
+
+          product: '',
+
+          malware,
+
+          country:
+            safeString(
+              item.origin_country
+            ),
+
+          confidence:
+            malware
+              ? 100
+              : null,
+
+          observedAt:
+            parseDate(
+              item.first_seen
+            ) ||
+            nowIso(),
+
+          assessment:
+            malware
+              ? 'Malware family labeled'
+              : 'Malware sample observed',
+
+          ransomware: '',
+
+          reference:
+            hash
+              ? `https://bazaar.abuse.ch/sample/${encodeURIComponent(
+                  hash
+                )}/`
+              : 'https://bazaar.abuse.ch/',
+
+          sourceUrl:
+            'https://bazaar.abuse.ch/',
+
+          tags: uniqueStrings([
+            ...(Array.isArray(item.tags)
+              ? item.tags
+              : []),
+
+            item.file_type,
+
+            malware
+          ]),
+
+          correlationKey:
+            hash
+              ? `hash:${hash.toLowerCase()}`
+              : ''
+        };
+      })
+
+      .filter(
+        signal =>
+          signal.indicator
+      );
+
+  signals.sort(
+    (a, b) =>
+      Date.parse(b.observedAt) -
+      Date.parse(a.observedAt)
+  );
+
+  return {
+    signals:
+      signals.slice(
+        0,
+        SOURCE_LIMIT
+      ),
+
+    source:
+      onlineSource(
+        'malwarebazaar',
+        Math.min(
+          signals.length,
+          SOURCE_LIMIT
+        )
+      )
+  };
+}
+
+
+/* ============================================================
+   URLHAUS
+============================================================ */
+
+async function fetchUrlhaus() {
+  const key =
+    process.env.URLHAUS_AUTH_KEY;
+
+  if (!key) {
+    return {
+      signals: [],
+
+      source:
+        emptySource(
+          'urlhaus',
+          'API key not configured',
+          false
+        )
+    };
+  }
+
+  const response =
+    await fetchWithTimeout(
+      URLHAUS_URL,
+      {
+        method: 'GET',
+
+        headers: {
+          'Auth-Key': key
+        }
+      }
+    );
+
+  const data =
+    await readJson(response);
+
+  if (
+    data.query_status !== 'ok'
+  ) {
+    throw new Error(
+      `URLhaus query status: ${
+        safeString(
+          data.query_status
+        ) || 'unknown'
+      }`
+    );
+  }
+
+  const rows =
+    Array.isArray(data.urls)
+      ? data.urls
+      : [];
+
+  const signals =
+    rows
+
+      .map(item => {
+        const url =
+          safeString(
+            item.url
+          );
+
+        const status =
+          safeString(
+            item.url_status
+          ).toLowerCase();
+
+        const tags =
+          Array.isArray(item.tags)
+            ? item.tags
+            : [];
+
+        const malware =
+          tags.find(
+            tag =>
+              /^(win|elf|android|linux|mirai|emotet|heodo|agent|ransom)/i.test(
+                String(tag)
+              )
+          ) || '';
+
+        return {
+          id: makeId(
+            'urlhaus',
+
+            safeString(item.id) ||
+              url
+          ),
+
+          source:
+            'urlhaus',
+
+          sourceName:
+            'URLhaus',
+
+          type:
+            'malware-url',
+
+          severity:
+            status === 'online'
+              ? 'high'
+              : 'medium',
+
+          title:
+            safeString(
+              item.host
+            )
+              ? `${safeString(
+                  item.host
+                )} — Malicious URL`
+              : 'Malicious URL observed',
+
+          description:
+            `URLhaus tracks this URL as malware distribution infrastructure${
+              status
+                ? ` (${status})`
+                : ''
+            }. `,
+
+          indicator:
+            url,
+
+          indicatorType:
+            'URL',
+
+          cve: '',
+
+          vendor: '',
+
+          product: '',
+
+          malware,
+
+          country: '',
+
+          confidence:
+            status === 'online'
+              ? 100
+              : 90,
+
+          observedAt:
+            parseDate(
+              item.date_added
+            ) ||
+            nowIso(),
+
+          assessment:
+            status === 'online'
+              ? 'Active malware infrastructure'
+              : 'Known malware infrastructure',
+
+          ransomware: '',
+
+          reference:
+            cleanUrl(
+              item.urlhaus_reference
+            ) ||
+            'https://urlhaus.abuse.ch/',
+
+          sourceUrl:
+            'https://urlhaus.abuse.ch/',
+
+          tags: uniqueStrings([
+            ...tags,
+
+            item.threat,
+
+            status
+          ]),
+
+          correlationKey:
+            url
+              ? `url:${url.toLowerCase()}`
+              : ''
+        };
+      })
+
+      .filter(
+        signal =>
+          signal.indicator
+      );
+
+  signals.sort(
+    (a, b) =>
+      Date.parse(b.observedAt) -
+      Date.parse(a.observedAt)
+  );
+
+  return {
+    signals:
+      signals.slice(
+        0,
+        SOURCE_LIMIT
+      ),
+
+    source:
+      onlineSource(
+        'urlhaus',
+        Math.min(
+          signals.length,
+          SOURCE_LIMIT
+        )
+      )
+  };
+}
+
+
+/* ============================================================
+   CROSS-SOURCE CORRELATION
+============================================================ */
+
+function correlate(signals) {
+  const groups =
+    new Map();
+
+  for (const signal of signals) {
+    if (!signal.correlationKey) {
+      continue;
+    }
+
+    if (
+      !groups.has(
+        signal.correlationKey
+      )
+    ) {
+      groups.set(
+        signal.correlationKey,
+        []
+      );
+    }
+
+    groups
+      .get(
+        signal.correlationKey
+      )
+      .push(signal);
+  }
+
+  for (const signal of signals) {
+    const matches =
+      signal.correlationKey
+        ? groups.get(
+            signal.correlationKey
+          ) || []
+        : [];
+
+    const sourceNames =
+      uniqueStrings(
+        matches.map(
+          item =>
+            item.sourceName
+        )
+      );
+
+    signal.correlatedSources =
+      sourceNames;
+
+    signal.correlationCount =
+      sourceNames.length;
+  }
+
+  return signals;
+}
+
+
+/* ============================================================
+   METRICS
+============================================================ */
+
+function buildMetrics(signals) {
+  const todayStart =
+    new Date();
+
+  todayStart.setUTCHours(
+    0,
+    0,
+    0,
+    0
+  );
+
+  const todayTime =
+    todayStart.getTime();
+
+  return {
+    activeSignals:
+      signals.length,
+
+    newToday:
+      signals.filter(
+        signal => {
+          const time =
+            Date.parse(
+              signal.observedAt
+            );
+
+          return (
+            !Number.isNaN(time) &&
+            time >= todayTime
+          );
+        }
+      ).length,
+
+    highRisk:
+      signals.filter(
+        signal =>
+          signal.severity === 'high'
+      ).length,
+
+    critical:
+      signals.filter(
+        signal =>
+          signal.severity === 'critical'
+      ).length,
+
+    medium:
+      signals.filter(
+        signal =>
+          signal.severity === 'medium'
+      ).length,
+
+    low:
+      signals.filter(
+        signal =>
+          signal.severity === 'low'
+      ).length
+  };
+}
+
+
+/* ============================================================
+   AGGREGATION
+============================================================ */
+
+async function aggregate() {
+  const jobs = [
+    [
+      'cisa',
+      fetchCisa
+    ],
+
+    [
+      'threatfox',
+      fetchThreatFox
+    ],
+
+    [
+      'malwarebazaar',
+      fetchMalwareBazaar
+    ],
+
+    [
+      'urlhaus',
+      fetchUrlhaus
+    ]
+  ];
+
+  const results =
+    await Promise.all(
+      jobs.map(
+        async ([key, fn]) => {
+          try {
+            return await fn();
+          } catch (error) {
+            return {
+              signals: [],
+
+              source:
+                emptySource(
+                  key,
+                  'Upstream source unavailable'
+                )
+            };
+          }
+        }
+      )
+    );
+
+  const signals =
+    correlate(
+      results
+        .flatMap(
+          result =>
+            result.signals || []
+        )
+        .sort(
+          (a, b) =>
+            Date.parse(
+              b.observedAt
+            ) -
+            Date.parse(
+              a.observedAt
+            )
+        )
+    );
+
+  const sources =
+    results.map(
+      result =>
+        result.source
+    );
+
+  const onlineSources =
+    sources.filter(
+      source =>
+        source.status ===
+        'online'
+    ).length;
+
+  return {
+    ok: true,
+
+    generatedAt:
+      nowIso(),
+
+    sourceCount:
+      sources.length,
+
+    onlineSources,
+
+    sources,
+
+    metrics:
+      buildMetrics(
+        signals
+      ),
+
+    signals
+  };
+}
+
+
+/* ============================================================
+   VERCEL HANDLER
+============================================================ */
+
+module.exports =
+  async function handler(
+    req,
+    res
+  ) {
+    const commonHeaders = {
+      'Access-Control-Allow-Origin':
+        '*',
+
+      'Access-Control-Allow-Methods':
+        'GET, OPTIONS',
+
+      'Access-Control-Allow-Headers':
+        'Content-Type, Accept',
+
+      'Cache-Control':
+        'public, s-maxage=60, stale-while-revalidate=300'
+    };
+
+
+    /* --------------------------------------------------------
+       PREFLIGHT
+    -------------------------------------------------------- */
+
+    if (
+      req.method ===
+      'OPTIONS'
+    ) {
+      res.status(204);
+
+      Object.entries(
+        commonHeaders
+      ).forEach(
+        ([key, value]) => {
+          res.setHeader(
+            key,
+            value
+          );
+        }
+      );
+
+      return res.end();
+    }
+
+
+    /* --------------------------------------------------------
+       METHOD
+    -------------------------------------------------------- */
+
+    if (
+      req.method !==
+      'GET'
+    ) {
+      return json(
+        res,
+        405,
+        {
+          ok: false,
+
+          error:
+            'Method not allowed'
+        },
+        commonHeaders
+      );
+    }
+
+
+    /* --------------------------------------------------------
+       WARM INSTANCE CACHE
+    -------------------------------------------------------- */
+
+    const now =
+      Date.now();
+
+    if (
+      memoryCache &&
+      now -
+        memoryCache.timestamp <
+        MEMORY_CACHE_MS
+    ) {
+      return json(
+        res,
+        200,
+        memoryCache.data,
+        commonHeaders
+      );
+    }
+
+
+    /* --------------------------------------------------------
+       AGGREGATE
+    -------------------------------------------------------- */
+
+    try {
+      const data =
+        await aggregate();
+
+      memoryCache = {
+        timestamp: now,
+
+        data
+      };
+
+      return json(
+        res,
+        200,
+        data,
+        commonHeaders
+      );
+    } catch (_) {
+      return json(
+        res,
+        502,
+        {
+          ok: false,
+
+          error:
+            'The HackaX intelligence aggregation layer is temporarily unavailable.'
+        },
+        commonHeaders
+      );
+    }
+  };
