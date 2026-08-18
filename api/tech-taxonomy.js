@@ -553,6 +553,10 @@ function slugify(value) {
         "$1$2"
     )
     .replace(
+        /['\u2019\u2018]/g,
+        ""
+    )
+    .replace(
         /&/g,
         " and "
     )
