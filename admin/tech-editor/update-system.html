@@ -1552,10 +1552,6 @@ button.run:hover:not(:disabled) {
     </p>
 
 
-    <!-- =====================================================
-         OVERVIEW
-    ====================================================== -->
-
     <section class="overview">
 
         <div class="overview-card">
@@ -1624,14 +1620,8 @@ button.run:hover:not(:disabled) {
     </section>
 
 
-    <!-- =====================================================
-         MAIN CONTROL CARD
-    ====================================================== -->
-
     <section class="card">
 
-
-        <!-- CONNECTION -->
 
         <div class="section">
 
@@ -1759,8 +1749,6 @@ button.run:hover:not(:disabled) {
 
         </div>
 
-
-        <!-- RELEASE -->
 
         <div class="section">
 
@@ -1944,10 +1932,6 @@ button.run:hover:not(:disabled) {
         </div>
 
 
-        <!-- =================================================
-             RELEASE HISTORY
-        ================================================== -->
-
         <div class="timeline-section">
 
             <div class="timeline-head">
@@ -1982,10 +1966,6 @@ button.run:hover:not(:disabled) {
 
         </div>
 
-
-        <!-- =================================================
-             DEPLOYMENT
-        ================================================== -->
 
         <div class="section">
 
@@ -2105,6 +2085,12 @@ button.run:hover:not(:disabled) {
     var SETTINGS_KEY =
         "dyve-tech-settings";
 
+
+    /*
+     * IMPORTANT:
+     * Dyve Tech admin/editor files live under /admin/tech-editor/.
+     */
+
     var TEMPLATE_PATH =
         "admin/tech-editor/tech-homepage-template.html";
 
@@ -2115,7 +2101,7 @@ button.run:hover:not(:disabled) {
         "admin/tech-editor/update-history.json";
 
     var UPDATER_VERSION =
-        "4.0.0";
+        "5.0.0";
 
     var API_VERSION =
         "2022-11-28";
@@ -2153,7 +2139,9 @@ button.run:hover:not(:disabled) {
 
         running: false,
 
-        checked: false
+        checked: false,
+
+        installationCompleted: false
 
     };
 
@@ -2163,7 +2151,9 @@ button.run:hover:not(:disabled) {
     ========================================================= */
 
     function $(id) {
+
         return document.getElementById(id);
+
     }
 
 
@@ -2181,19 +2171,26 @@ button.run:hover:not(:disabled) {
                 );
 
             if (!raw) {
+
                 return {};
+
             }
+
 
             var parsed =
                 JSON.parse(raw);
+
 
             if (
                 !parsed ||
                 typeof parsed !== "object" ||
                 Array.isArray(parsed)
             ) {
+
                 return {};
+
             }
+
 
             return parsed;
 
@@ -2206,31 +2203,137 @@ button.run:hover:not(:disabled) {
     }
 
 
+    /*
+     * Accept all common repository formats:
+     *
+     * owner/repository
+     * owner/repository.git
+     * https://github.com/owner/repository
+     * https://github.com/owner/repository.git
+     */
+
+    function normalizeRepository(
+        value
+    ) {
+
+        var repo =
+            String(
+                value || ""
+            )
+            .trim();
+
+
+        if (!repo) {
+
+            return "";
+
+        }
+
+
+        repo =
+            repo
+                .replace(
+                    /^https?:\/\/github\.com\//i,
+                    ""
+                )
+                .replace(
+                    /^git@github\.com:/i,
+                    ""
+                )
+                .replace(
+                    /^github\.com\//i,
+                    ""
+                )
+                .replace(
+                    /\.git$/i,
+                    ""
+                )
+                .replace(
+                    /^\/+/,
+                    ""
+                )
+                .replace(
+                    /\/+$/,
+                    ""
+                );
+
+
+        var parts =
+            repo
+                .split("/")
+                .filter(Boolean);
+
+
+        if (
+            parts.length !== 2
+        ) {
+
+            return "";
+
+        }
+
+
+        return (
+            parts[0] +
+            "/" +
+            parts[1]
+        );
+
+    }
+
+
     function loadConfig() {
 
         var settings =
             readSettings();
 
+
+        var repositorySetting =
+            settings.githubRepo ||
+            settings.repository ||
+            settings.repo ||
+            "";
+
+
+        if (
+            !repositorySetting &&
+            settings.githubOwner &&
+            settings.githubRepository
+        ) {
+
+            repositorySetting =
+                settings.githubOwner +
+                "/" +
+                settings.githubRepository;
+
+        }
+
+
         var repo =
-            String(
-                settings.githubRepo ||
-                settings.repository ||
-                ""
-            ).trim();
+            normalizeRepository(
+                repositorySetting
+            );
+
 
         var token =
             String(
                 settings.githubToken ||
                 settings.token ||
+                settings.githubPAT ||
+                settings.pat ||
                 ""
             ).trim();
+
 
         var branch =
             String(
                 settings.githubBranch ||
                 settings.branch ||
                 "main"
-            ).trim() || "main";
+            )
+            .trim() ||
+            "main";
+
 
         var siteUrl =
             String(
@@ -2238,7 +2341,10 @@ button.run:hover:not(:disabled) {
                 "https://dyve.online"
             )
             .trim()
-            .replace(/\/+$/, "");
+            .replace(
+                /\/+$/,
+                ""
+            );
 
 
         var validRepo =
@@ -2266,20 +2372,24 @@ button.run:hover:not(:disabled) {
 
             name:
                 validRepo
-                    ? repo.split("/").slice(1).join("/")
+                    ? repo.split("/")[1]
                     : ""
 
         };
 
 
         $("repoValue").textContent =
-            repo || "Not configured";
+            repo ||
+            "Not configured";
+
 
         $("branchValue").textContent =
             branch;
 
+
         $("siteValue").textContent =
             siteUrl;
+
 
         if (!validRepo) {
 
@@ -2290,7 +2400,7 @@ button.run:hover:not(:disabled) {
                 "pill err";
 
             $("connectionMeta").textContent =
-                "GitHub repository is missing. Configure it in Tech Editor Settings.";
+                "GitHub repository is missing or invalid. Use owner/repository or a GitHub repository URL.";
 
             $("systemValue").textContent =
                 "BLOCKED";
@@ -2332,7 +2442,7 @@ button.run:hover:not(:disabled) {
             "pill ok";
 
         $("connectionMeta").textContent =
-            "GitHub repository and credentials are available. Press Check for Updates.";
+            "GitHub repository and credentials are configured. Press Check for Updates.";
 
         $("systemValue").textContent =
             "READY";
@@ -2357,6 +2467,7 @@ button.run:hover:not(:disabled) {
         var node =
             $("status");
 
+
         node.className =
             "status" +
             (
@@ -2364,6 +2475,7 @@ button.run:hover:not(:disabled) {
                     ? " " + type
                     : ""
             );
+
 
         $("statusText").textContent =
             message;
@@ -2385,14 +2497,18 @@ button.run:hover:not(:disabled) {
                 )
             );
 
+
         $("progressBar").style.width =
             safe + "%";
+
 
         $("progressPercent").textContent =
             Math.round(safe) + "%";
 
+
         $("progressStage").textContent =
-            stage || "Working";
+            stage ||
+            "Working";
 
     }
 
@@ -2411,6 +2527,7 @@ button.run:hover:not(:disabled) {
                 "div"
             );
 
+
         row.className =
             "log-line " +
             (
@@ -2418,34 +2535,51 @@ button.run:hover:not(:disabled) {
                 "info"
             );
 
+
         var time =
             document.createElement(
                 "span"
             );
 
+
         time.className =
             "log-time";
+
 
         time.textContent =
             new Date()
                 .toLocaleTimeString();
+
 
         var text =
             document.createElement(
                 "span"
             );
 
+
         text.className =
             "log-text";
+
 
         text.textContent =
             message;
 
-        row.appendChild(time);
-        row.appendChild(text);
+
+        row.appendChild(
+            time
+        );
+
+
+        row.appendChild(
+            text
+        );
+
 
         $("terminal")
-            .appendChild(row);
+            .appendChild(
+                row
+            );
+
 
         $("terminal").scrollTop =
             $("terminal").scrollHeight;
@@ -2455,7 +2589,8 @@ button.run:hover:not(:disabled) {
 
     function clearTerminal() {
 
-        $("terminal").innerHTML = "";
+        $("terminal").innerHTML =
+            "";
 
     }
 
@@ -2473,18 +2608,24 @@ button.run:hover:not(:disabled) {
         var row =
             $("stage" + name);
 
+
         var detailNode =
             $("stage" + name + "Detail");
 
+
         if (!row) {
+
             return;
+
         }
+
 
         row.classList.remove(
             "running",
             "success",
             "error"
         );
+
 
         if (stateName) {
 
@@ -2494,10 +2635,13 @@ button.run:hover:not(:disabled) {
 
         }
 
+
         if (detailNode) {
 
             detailNode.textContent =
-                detail || stateName || "waiting";
+                detail ||
+                stateName ||
+                "waiting";
 
         }
 
@@ -2511,15 +2655,17 @@ button.run:hover:not(:disabled) {
             "Github",
             "Template",
             "Live"
-        ].forEach(function (name) {
+        ].forEach(
+            function (name) {
 
-            stage(
-                name,
-                "",
-                "waiting"
-            );
+                stage(
+                    name,
+                    "",
+                    "waiting"
+                );
 
-        });
+            }
+        );
 
     }
 
@@ -2568,6 +2714,161 @@ button.run:hover:not(:disabled) {
     }
 
 
+    function githubApiBase() {
+
+        if (
+            !state.config ||
+            !state.config.validRepo
+        ) {
+
+            throw new Error(
+                "GitHub repository is not configured."
+            );
+
+        }
+
+
+        return (
+            "https://api.github.com/repos/" +
+            encodeURIComponent(
+                state.config.owner
+            ) +
+            "/" +
+            encodeURIComponent(
+                state.config.name
+            )
+        );
+
+    }
+
+
+    function githubErrorMessage(
+        status,
+        data,
+        endpoint
+    ) {
+
+        var apiMessage =
+            data &&
+            typeof data.message === "string"
+                ? data.message
+                : "";
+
+
+        if (
+            status === 401
+        ) {
+
+            return (
+                "GitHub authentication failed. " +
+                "The configured token is invalid, expired, or malformed."
+            );
+
+        }
+
+
+        if (
+            status === 403
+        ) {
+
+            return (
+                "GitHub denied this request. " +
+                "For a private repository, verify that the token has repository access and Contents read/write permission."
+            );
+
+        }
+
+
+        if (
+            status === 404
+        ) {
+
+            if (
+                endpoint === ""
+            ) {
+
+                return (
+                    "GitHub cannot access repository \"" +
+                    state.config.repo +
+                    "\". Verify the repository owner/name and make sure the configured token has access to this repository."
+                );
+
+            }
+
+
+            if (
+                endpoint.indexOf(
+                    "contents/"
+                ) === 0
+            ) {
+
+                var path =
+                    endpoint
+                        .replace(
+                            /^contents\//,
+                            ""
+                        )
+                        .split(
+                            "?ref="
+                        )[0];
+
+
+                return (
+                    "GitHub could not find this file: " +
+                    path +
+                    ". Verify the repository path and branch."
+                );
+
+            }
+
+
+            return (
+                "GitHub returned 404 for the requested endpoint: " +
+                endpoint
+            );
+
+        }
+
+
+        if (
+            status === 409
+        ) {
+
+            return (
+                "GitHub reported a conflict. " +
+                "The production branch may have changed while this operation was running."
+            );
+
+        }
+
+
+        if (
+            status === 422
+        ) {
+
+            return (
+                "GitHub rejected the request. " +
+                (
+                    apiMessage ||
+                    "The request data is invalid."
+                )
+            );
+
+        }
+
+
+        return (
+            apiMessage ||
+            (
+                "GitHub API returned HTTP " +
+                status +
+                "."
+            )
+        );
+
+    }
+
+
     async function githubRequest(
         endpoint,
         options
@@ -2588,6 +2889,7 @@ button.run:hover:not(:disabled) {
         var controller =
             new AbortController();
 
+
         var timeout =
             setTimeout(
                 function () {
@@ -2599,19 +2901,34 @@ button.run:hover:not(:disabled) {
             );
 
 
+        var path =
+            String(
+                endpoint || ""
+            );
+
+
+        var url =
+            githubApiBase();
+
+
+        if (path) {
+
+            url +=
+                "/" +
+                path;
+
+        }
+
+
         try {
 
             var response =
                 await fetch(
-                    "https://api.github.com/repos/" +
-                    state.config.owner +
-                    "/" +
-                    state.config.name +
-                    "/" +
-                    endpoint,
+                    url,
                     Object.assign(
                         {
-                            method: "GET",
+                            method:
+                                "GET",
 
                             headers:
                                 headers(false),
@@ -2633,6 +2950,7 @@ button.run:hover:not(:disabled) {
 
             var data = {};
 
+
             try {
 
                 data =
@@ -2643,7 +2961,10 @@ button.run:hover:not(:disabled) {
             } catch (error) {
 
                 data = {
-                    raw: raw
+
+                    raw:
+                        raw
+
                 };
 
             }
@@ -2651,56 +2972,12 @@ button.run:hover:not(:disabled) {
 
             if (!response.ok) {
 
-                var message =
-                    data.message ||
-                    (
-                        "GitHub API returned HTTP " +
-                        response.status
-                    );
-
-
-                if (
-                    response.status === 401
-                ) {
-
-                    message =
-                        "GitHub authentication failed. Your token is invalid or expired.";
-
-                }
-
-
-                if (
-                    response.status === 403
-                ) {
-
-                    message =
-                        "GitHub denied the request. Check token permissions and repository access.";
-
-                }
-
-
-                if (
-                    response.status === 404
-                ) {
-
-                    message =
-                        "GitHub could not find the repository or requested file.";
-
-                }
-
-
-                if (
-                    response.status === 409
-                ) {
-
-                    message =
-                        "GitHub reported a conflict. The production branch changed while this operation was running.";
-
-                }
-
-
                 throw new Error(
-                    message
+                    githubErrorMessage(
+                        response.status,
+                        data,
+                        path
+                    )
                 );
 
             }
@@ -2758,6 +3035,7 @@ button.run:hover:not(:disabled) {
             "connecting"
         );
 
+
         terminal(
             "Testing GitHub repository connection..."
         );
@@ -2809,22 +3087,38 @@ button.run:hover:not(:disabled) {
     ) {
 
         var clean =
-            String(value || "")
-                .replace(/\s/g, "");
+            String(
+                value || ""
+            )
+            .replace(
+                /\s/g,
+                ""
+            );
+
 
         var binary =
-            atob(clean);
+            atob(
+                clean
+            );
+
 
         var bytes =
             Uint8Array.from(
                 binary,
                 function (char) {
-                    return char.charCodeAt(0);
+
+                    return char.charCodeAt(
+                        0
+                    );
+
                 }
             );
 
+
         return new TextDecoder()
-            .decode(bytes);
+            .decode(
+                bytes
+            );
 
     }
 
@@ -2858,7 +3152,8 @@ button.run:hover:not(:disabled) {
 
                 throw new Error(
                     "GitHub returned no file content for " +
-                    path
+                    path +
+                    "."
                 );
 
             }
@@ -2866,7 +3161,8 @@ button.run:hover:not(:disabled) {
 
             return {
 
-                path: path,
+                path:
+                    path,
 
                 content:
                     decodeBase64Utf8(
@@ -2874,30 +3170,45 @@ button.run:hover:not(:disabled) {
                     ),
 
                 sha:
-                    data.sha || "",
+                    data.sha ||
+                    "",
 
-                exists: true
+                exists:
+                    true
 
             };
 
         } catch (error) {
 
+            /*
+             * Optional files may be absent.
+             *
+             * We ONLY treat a precise file-not-found error
+             * as optional. Repository authentication/access
+             * errors are never swallowed.
+             */
+
             if (
                 optional &&
-                /find the repository or requested file/i.test(
+                error &&
+                /^GitHub could not find this file:/i.test(
                     error.message
                 )
             ) {
 
                 return {
 
-                    path: path,
+                    path:
+                        path,
 
-                    content: null,
+                    content:
+                        null,
 
-                    sha: "",
+                    sha:
+                        "",
 
-                    exists: false
+                    exists:
+                        false
 
                 };
 
@@ -2921,8 +3232,12 @@ button.run:hover:not(:disabled) {
     ) {
 
         return (
-            source.indexOf(pair[0]) !== -1 &&
-            source.indexOf(pair[1]) !== -1
+            source.indexOf(
+                pair[0]
+            ) !== -1 &&
+            source.indexOf(
+                pair[1]
+            ) !== -1
         );
 
     }
@@ -2958,6 +3273,7 @@ button.run:hover:not(:disabled) {
                 pair[0]
             );
 
+
         var end =
             source.indexOf(
                 pair[1]
@@ -2976,7 +3292,8 @@ button.run:hover:not(:disabled) {
 
 
         return source.slice(
-            start + pair[0].length,
+            start +
+            pair[0].length,
             end
         );
 
@@ -2993,6 +3310,7 @@ button.run:hover:not(:disabled) {
             source.indexOf(
                 pair[0]
             );
+
 
         var end =
             source.indexOf(
@@ -3014,7 +3332,8 @@ button.run:hover:not(:disabled) {
 
 
         var endPosition =
-            end + pair[1].length;
+            end +
+            pair[1].length;
 
 
         return (
@@ -3098,10 +3417,12 @@ button.run:hover:not(:disabled) {
     ) {
 
         var match =
-            String(source || "")
-                .match(
-                    /DYVE_TECH_HOMEPAGE_TEMPLATE_VERSION:\s*([0-9A-Za-z._-]+)/i
-                );
+            String(
+                source || ""
+            )
+            .match(
+                /DYVE_TECH_HOMEPAGE_TEMPLATE_VERSION:\s*([0-9A-Za-z._-]+)/i
+            );
 
 
         return match
@@ -3120,11 +3441,13 @@ button.run:hover:not(:disabled) {
     ) {
 
         var result =
-            String(source || "")
-                .replace(
-                    /\r\n/g,
-                    "\n"
-                );
+            String(
+                source || ""
+            )
+            .replace(
+                /\r\n/g,
+                "\n"
+            );
 
 
         Object.values(
@@ -3136,6 +3459,7 @@ button.run:hover:not(:disabled) {
                     result.indexOf(
                         pair[0]
                     );
+
 
                 var end =
                     result.indexOf(
@@ -3157,7 +3481,8 @@ button.run:hover:not(:disabled) {
 
 
                 var endPosition =
-                    end + pair[1].length;
+                    end +
+                    pair[1].length;
 
 
                 result =
@@ -3200,14 +3525,19 @@ button.run:hover:not(:disabled) {
 
         return Array
             .from(
-                new Uint8Array(digest)
+                new Uint8Array(
+                    digest
+                )
             )
             .map(
                 function (byte) {
 
                     return byte
                         .toString(16)
-                        .padStart(2, "0");
+                        .padStart(
+                            2,
+                            "0"
+                        );
 
                 }
             )
@@ -3226,7 +3556,7 @@ button.run:hover:not(:disabled) {
             state.running
         ) {
 
-            return;
+            return false;
 
         }
 
@@ -3240,32 +3570,44 @@ button.run:hover:not(:disabled) {
         state.release =
             null;
 
+        state.installationCompleted =
+            false;
+
+
         $("checkBtn").disabled =
             true;
+
 
         $("updateBtn").disabled =
             true;
 
+
         $("checkBtn").textContent =
             "Checking...";
+
 
         $("releaseState").textContent =
             "CHECKING";
 
+
         $("releaseState").className =
             "pill warn";
 
+
         $("releaseMessage").textContent =
             "Inspecting the release channel...";
+
 
         resetPipeline();
 
         clearTerminal();
 
+
         setProgress(
             0,
             "Starting"
         );
+
 
         setStatus(
             "Starting production check...",
@@ -3285,9 +3627,11 @@ button.run:hover:not(:disabled) {
                 "reading"
             );
 
+
             terminal(
                 "Reading Tech Editor settings..."
             );
+
 
             if (
                 !loadConfig()
@@ -3306,10 +3650,24 @@ button.run:hover:not(:disabled) {
                 "valid"
             );
 
+
             terminal(
                 "Settings validated.",
                 "success"
             );
+
+
+            terminal(
+                "Repository: " +
+                state.config.repo
+            );
+
+
+            terminal(
+                "Branch: " +
+                state.config.branch
+            );
+
 
             setProgress(
                 10,
@@ -3322,6 +3680,7 @@ button.run:hover:not(:disabled) {
             ------------------------------------------------- */
 
             await testRepository();
+
 
             setProgress(
                 25,
@@ -3338,6 +3697,7 @@ button.run:hover:not(:disabled) {
                 "running",
                 "reading"
             );
+
 
             terminal(
                 "Reading canonical template: " +
@@ -3390,12 +3750,15 @@ button.run:hover:not(:disabled) {
                 "v" +
                 templateVersion;
 
+
             $("releaseVersion").textContent =
                 "v" +
                 templateVersion;
 
+
             $("templateFileState").textContent =
                 "valid";
+
 
             $("templateFileState").className =
                 "file-state ready";
@@ -3404,7 +3767,8 @@ button.run:hover:not(:disabled) {
             stage(
                 "Template",
                 "success",
-                "v" + templateVersion
+                "v" +
+                templateVersion
             );
 
 
@@ -3431,6 +3795,7 @@ button.run:hover:not(:disabled) {
                 "running",
                 "reading"
             );
+
 
             terminal(
                 "Reading production homepage: " +
@@ -3461,8 +3826,10 @@ button.run:hover:not(:disabled) {
                     "not found"
                 );
 
+
                 $("homepageFileState").textContent =
                     "will create";
+
 
                 $("homepageFileState").className =
                     "file-state ready";
@@ -3481,8 +3848,10 @@ button.run:hover:not(:disabled) {
                     "found"
                 );
 
+
                 $("homepageFileState").textContent =
                     "found";
+
 
                 $("homepageFileState").className =
                     "file-state ready";
@@ -3585,6 +3954,7 @@ button.run:hover:not(:disabled) {
                     "ok"
                 );
 
+
                 terminal(
                     "RELEASE READY: tech/index.html will be created.",
                     "success"
@@ -3599,6 +3969,7 @@ button.run:hover:not(:disabled) {
                     "ok"
                 );
 
+
                 terminal(
                     "RELEASE READY: production shell differs from the canonical template.",
                     "success"
@@ -3611,6 +3982,7 @@ button.run:hover:not(:disabled) {
                     "ok"
                 );
 
+
                 terminal(
                     "No homepage shell changes are required.",
                     "success"
@@ -3620,6 +3992,9 @@ button.run:hover:not(:disabled) {
 
 
             await loadHistory();
+
+
+            return true;
 
         } catch (error) {
 
@@ -3633,8 +4008,10 @@ button.run:hover:not(:disabled) {
             $("releaseState").textContent =
                 "CHECK FAILED";
 
+
             $("releaseState").className =
                 "pill err";
+
 
             $("releaseMessage").textContent =
                 error.message;
@@ -3658,12 +4035,6 @@ button.run:hover:not(:disabled) {
             );
 
 
-            stage(
-                "Settings",
-                "",
-                "waiting"
-            );
-
             if (
                 state.config &&
                 state.config.validRepo
@@ -3677,16 +4048,22 @@ button.run:hover:not(:disabled) {
 
             }
 
+
+            return false;
+
         } finally {
 
             state.running =
                 false;
 
+
             $("checkBtn").disabled =
                 false;
 
+
             $("checkBtn").textContent =
                 "Check for Updates";
+
 
             updateRunButton();
 
@@ -3706,7 +4083,9 @@ button.run:hover:not(:disabled) {
 
 
         if (!release) {
+
             return;
+
         }
 
 
@@ -3725,20 +4104,26 @@ button.run:hover:not(:disabled) {
             $("releaseState").textContent =
                 "CREATE";
 
+
             $("releaseState").className =
                 "pill ok";
+
 
             $("releaseMeta").textContent =
                 "Production homepage does not exist.";
 
+
             $("releaseMessage").textContent =
                 "The updater will create tech/index.html from the canonical template.";
+
 
             updateButton.textContent =
                 "Create Homepage";
 
+
             updateButton.disabled =
                 false;
+
 
             return;
 
@@ -3752,8 +4137,10 @@ button.run:hover:not(:disabled) {
             $("releaseState").textContent =
                 "UPDATE READY";
 
+
             $("releaseState").className =
                 "pill warn";
+
 
             $("releaseMeta").textContent =
                 "Template v" +
@@ -3761,14 +4148,18 @@ button.run:hover:not(:disabled) {
                 " · Live shell v" +
                 release.liveVersion;
 
+
             $("releaseMessage").textContent =
                 "A new homepage shell is available. Dynamic featured and latest article regions will be preserved.";
+
 
             updateButton.textContent =
                 "Run New Update";
 
+
             updateButton.disabled =
                 false;
+
 
             return;
 
@@ -3778,17 +4169,22 @@ button.run:hover:not(:disabled) {
         $("releaseState").textContent =
             "UP TO DATE";
 
+
         $("releaseState").className =
             "pill ok";
+
 
         $("releaseMeta").textContent =
             "Template and production shell are synchronized.";
 
+
         $("releaseMessage").textContent =
             "No homepage update is required.";
 
+
         updateButton.textContent =
             "Already Up To Date";
+
 
         updateButton.disabled =
             true;
@@ -3835,9 +4231,12 @@ button.run:hover:not(:disabled) {
         var data =
             await githubRequest(
                 "git/ref/heads/" +
-                encodeURIComponent(
-                    state.config.branch
-                )
+                state.config.branch
+                    .split("/")
+                    .map(
+                        encodeURIComponent
+                    )
+                    .join("/")
             );
 
 
@@ -3871,7 +4270,9 @@ button.run:hover:not(:disabled) {
             await githubRequest(
                 "git/blobs",
                 {
-                    method: "POST",
+
+                    method:
+                        "POST",
 
                     headers:
                         headers(true),
@@ -3879,13 +4280,16 @@ button.run:hover:not(:disabled) {
                     body:
                         JSON.stringify(
                             {
+
                                 content:
                                     content,
 
                                 encoding:
                                     "utf-8"
+
                             }
                         )
+
                 }
             );
 
@@ -3936,15 +4340,21 @@ button.run:hover:not(:disabled) {
 
 
             if (!raw) {
+
                 return [];
+
             }
 
 
             var parsed =
-                JSON.parse(raw);
+                JSON.parse(
+                    raw
+                );
 
 
-            return Array.isArray(parsed)
+            return Array.isArray(
+                parsed
+            )
                 ? parsed
                 : [];
 
@@ -3966,7 +4376,10 @@ button.run:hover:not(:disabled) {
             localStorage.setItem(
                 localHistoryKey(),
                 JSON.stringify(
-                    history.slice(0, 100)
+                    history.slice(
+                        0,
+                        100
+                    )
                 )
             );
 
@@ -4013,18 +4426,23 @@ button.run:hover:not(:disabled) {
                     state.history =
                         parsed.records;
 
+
                     writeLocalHistory(
                         state.history
                     );
 
+
                     renderTimeline();
+
 
                     $("historyState").textContent =
                         state.history.length +
                         " RECORDS";
 
+
                     $("historyState").className =
                         "pill ok";
+
 
                     return;
 
@@ -4045,13 +4463,16 @@ button.run:hover:not(:disabled) {
         state.history =
             local;
 
+
         renderTimeline();
 
 
         $("historyState").textContent =
             state.history.length
-                ? state.history.length + " LOCAL"
+                ? state.history.length +
+                  " LOCAL"
                 : "NO RECORDS";
+
 
         $("historyState").className =
             state.history.length
@@ -4068,6 +4489,7 @@ button.run:hover:not(:disabled) {
 
         return Object.assign(
             {
+
                 id:
                     "rel_" +
                     Date.now() +
@@ -4077,7 +4499,8 @@ button.run:hover:not(:disabled) {
                         .slice(2, 9),
 
                 timestamp:
-                    new Date().toISOString(),
+                    new Date()
+                        .toISOString(),
 
                 updaterVersion:
                     UPDATER_VERSION,
@@ -4096,7 +4519,8 @@ button.run:hover:not(:disabled) {
                         : ""
 
             },
-            data || {}
+            data ||
+            {}
         );
 
     }
@@ -4122,7 +4546,10 @@ button.run:hover:not(:disabled) {
 
         terminal(
             "Current branch head: " +
-            headSha.slice(0, 7)
+            headSha.slice(
+                0,
+                7
+            )
         );
 
 
@@ -4174,6 +4601,7 @@ button.run:hover:not(:disabled) {
         var historyPayload =
             JSON.stringify(
                 {
+
                     schemaVersion:
                         1,
 
@@ -4181,10 +4609,14 @@ button.run:hover:not(:disabled) {
                         "Dyve Tech Production Update System",
 
                     updatedAt:
-                        new Date().toISOString(),
+                        new Date()
+                            .toISOString(),
 
                     records:
-                        history.slice(0, 100)
+                        history.slice(
+                            0,
+                            100
+                        )
 
                 },
                 null,
@@ -4213,7 +4645,9 @@ button.run:hover:not(:disabled) {
             await githubRequest(
                 "git/trees",
                 {
-                    method: "POST",
+
+                    method:
+                        "POST",
 
                     headers:
                         headers(true),
@@ -4221,12 +4655,14 @@ button.run:hover:not(:disabled) {
                     body:
                         JSON.stringify(
                             {
+
                                 base_tree:
                                     baseTree,
 
                                 tree: [
 
                                     {
+
                                         path:
                                             HOMEPAGE_PATH,
 
@@ -4238,9 +4674,11 @@ button.run:hover:not(:disabled) {
 
                                         sha:
                                             homepageBlob
+
                                     },
 
                                     {
+
                                         path:
                                             HISTORY_PATH,
 
@@ -4252,12 +4690,14 @@ button.run:hover:not(:disabled) {
 
                                         sha:
                                             historyBlob
+
                                     }
 
                                 ]
 
                             }
                         )
+
                 }
             );
 
@@ -4294,7 +4734,9 @@ button.run:hover:not(:disabled) {
             await githubRequest(
                 "git/commits",
                 {
-                    method: "POST",
+
+                    method:
+                        "POST",
 
                     headers:
                         headers(true),
@@ -4302,6 +4744,7 @@ button.run:hover:not(:disabled) {
                     body:
                         JSON.stringify(
                             {
+
                                 message:
                                     commitMessage,
 
@@ -4312,8 +4755,10 @@ button.run:hover:not(:disabled) {
                                     [
                                         headSha
                                     ]
+
                             }
                         )
+
                 }
             );
 
@@ -4343,13 +4788,21 @@ button.run:hover:not(:disabled) {
         );
 
 
+        var refEndpoint =
+            "git/refs/heads/" +
+            state.config.branch
+                .split("/")
+                .map(
+                    encodeURIComponent
+                )
+                .join("/");
+
+
         var ref =
             await githubRequest(
-                "git/refs/heads/" +
-                encodeURIComponent(
-                    state.config.branch
-                ),
+                refEndpoint,
                 {
+
                     method:
                         "PATCH",
 
@@ -4359,13 +4812,16 @@ button.run:hover:not(:disabled) {
                     body:
                         JSON.stringify(
                             {
+
                                 sha:
                                     commit.sha,
 
                                 force:
                                     false
+
                             }
                         )
+
                 }
             );
 
@@ -4396,6 +4852,7 @@ button.run:hover:not(:disabled) {
 
 
         return {
+
             commitSha:
                 commit.sha,
 
@@ -4416,7 +4873,9 @@ button.run:hover:not(:disabled) {
         if (
             state.running
         ) {
+
             return;
+
         }
 
 
@@ -4454,11 +4913,17 @@ button.run:hover:not(:disabled) {
             true;
 
 
+        state.installationCompleted =
+            false;
+
+
         $("checkBtn").disabled =
             true;
 
+
         $("updateBtn").disabled =
             true;
+
 
         $("updateBtn").textContent =
             "Installing...";
@@ -4543,6 +5008,7 @@ button.run:hover:not(:disabled) {
                     "success"
                 );
 
+
                 terminal(
                     "Featured and latest publishing regions preserved.",
                     "success"
@@ -4614,11 +5080,13 @@ button.run:hover:not(:disabled) {
                         ? "release"
                         : "create",
                     {
+
                         status:
                             "success",
 
                         version:
-                            state.release.templateVersion,
+                            state.release
+                                .templateVersion,
 
                         target:
                             HOMEPAGE_PATH,
@@ -4645,9 +5113,12 @@ button.run:hover:not(:disabled) {
             var workingHistory =
                 [
                     record
-                ].concat(
-                    state.history || []
-                ).slice(
+                ]
+                .concat(
+                    state.history ||
+                    []
+                )
+                .slice(
                     0,
                     99
                 );
@@ -4665,11 +5136,12 @@ button.run:hover:not(:disabled) {
 
 
             /* -------------------------------------------------
-               UPDATE RECORD WITH COMMIT
+               UPDATE LOCAL RECORD
             ------------------------------------------------- */
 
             record.commit =
                 result.commitSha;
+
 
             record.commitShort =
                 result.commitSha.slice(
@@ -4685,25 +5157,16 @@ button.run:hover:not(:disabled) {
             var finalHistory =
                 [
                     record
-                ].concat(
-                    state.history || []
-                ).slice(
+                ]
+                .concat(
+                    state.history ||
+                    []
+                )
+                .slice(
                     0,
                     100
                 );
 
-
-            /*
-             * The history file committed above contained the
-             * record before the commit SHA was known. Save a
-             * second history commit only if necessary would create
-             * another production commit, which we explicitly avoid.
-             *
-             * The local history contains the full record.
-             * The next successful release will persist it with
-             * its commit SHA. This keeps the actual homepage
-             * release atomic.
-             */
 
             state.history =
                 finalHistory;
@@ -4720,6 +5183,7 @@ button.run:hover:not(:disabled) {
             $("historyState").textContent =
                 state.history.length +
                 " RECORDS";
+
 
             $("historyState").className =
                 "pill ok";
@@ -4740,6 +5204,7 @@ button.run:hover:not(:disabled) {
             $("installationState").textContent =
                 "INSTALLED";
 
+
             $("installationState").className =
                 "deploy-value green";
 
@@ -4758,6 +5223,7 @@ button.run:hover:not(:disabled) {
 
             $("releaseState").textContent =
                 "INSTALLED";
+
 
             $("releaseState").className =
                 "pill ok";
@@ -4804,31 +5270,19 @@ button.run:hover:not(:disabled) {
             );
 
 
+            state.installationCompleted =
+                true;
+
+
             /*
-             * Re-check after a short delay so the UI confirms
-             * the repository state again.
+             * Do not call checkForUpdates() from a timeout while
+             * state.running is still active. The old implementation
+             * had a race with finally and therefore never performed
+             * the intended post-release verification.
+             *
+             * We perform the verification after the current
+             * release transaction has completely finished.
              */
-
-            setTimeout(
-                function () {
-
-                    if (
-                        !state.running
-                    ) {
-
-                        return;
-
-                    }
-
-                    state.running =
-                        false;
-
-                    checkForUpdates();
-
-                },
-                1800
-            );
-
 
         } catch (error) {
 
@@ -4836,6 +5290,7 @@ button.run:hover:not(:disabled) {
                 createHistoryRecord(
                     "failure",
                     {
+
                         status:
                             "failed",
 
@@ -4860,9 +5315,12 @@ button.run:hover:not(:disabled) {
             state.history =
                 [
                     failedRecord
-                ].concat(
-                    state.history || []
-                ).slice(
+                ]
+                .concat(
+                    state.history ||
+                    []
+                )
+                .slice(
                     0,
                     100
                 );
@@ -4879,6 +5337,7 @@ button.run:hover:not(:disabled) {
             $("historyState").textContent =
                 state.history.length +
                 " RECORDS";
+
 
             $("historyState").className =
                 "pill warn";
@@ -4915,6 +5374,7 @@ button.run:hover:not(:disabled) {
             $("releaseState").textContent =
                 "UPDATE FAILED";
 
+
             $("releaseState").className =
                 "pill err";
 
@@ -4926,25 +5386,25 @@ button.run:hover:not(:disabled) {
             $("updateBtn").textContent =
                 "Retry Update";
 
-            $("updateBtn").disabled =
-                false;
 
         } finally {
 
-            if (
-                state.running
-            ) {
-
-                state.running =
-                    false;
-
-            }
+            state.running =
+                false;
 
 
             $("checkBtn").disabled =
                 false;
 
+
             if (
+                state.installationCompleted
+            ) {
+
+                $("updateBtn").disabled =
+                    true;
+
+            } else if (
                 state.release &&
                 (
                     !state.release.liveExists ||
@@ -4954,6 +5414,11 @@ button.run:hover:not(:disabled) {
 
                 $("updateBtn").disabled =
                     false;
+
+            } else {
+
+                $("updateBtn").disabled =
+                    true;
 
             }
 
@@ -4970,6 +5435,7 @@ button.run:hover:not(:disabled) {
 
         var container =
             $("timeline");
+
 
         container.innerHTML =
             "";
@@ -4990,16 +5456,20 @@ button.run:hover:not(:disabled) {
                     "div"
                 );
 
+
             empty.className =
                 "timeline-content";
+
 
             empty.innerHTML =
                 '<div class="timeline-event">No release records yet</div>' +
                 '<div class="timeline-detail">Your first production check or release will appear here automatically.</div>';
 
+
             container.appendChild(
                 empty
             );
+
 
             return;
 
@@ -5007,7 +5477,10 @@ button.run:hover:not(:disabled) {
 
 
         records
-            .slice(0, 50)
+            .slice(
+                0,
+                50
+            )
             .forEach(
                 function (record) {
 
@@ -5015,6 +5488,7 @@ button.run:hover:not(:disabled) {
                         document.createElement(
                             "div"
                         );
+
 
                     item.className =
                         "timeline-item";
@@ -5049,8 +5523,10 @@ button.run:hover:not(:disabled) {
                             "div"
                         );
 
+
                     marker.className =
                         "timeline-marker";
+
 
                     marker.textContent =
                         record.status ===
@@ -5069,6 +5545,7 @@ button.run:hover:not(:disabled) {
                             "div"
                         );
 
+
                     content.className =
                         "timeline-content";
 
@@ -5078,6 +5555,7 @@ button.run:hover:not(:disabled) {
                             "div"
                         );
 
+
                     top.className =
                         "timeline-top";
 
@@ -5086,6 +5564,7 @@ button.run:hover:not(:disabled) {
                         document.createElement(
                             "div"
                         );
+
 
                     event.className =
                         "timeline-event";
@@ -5137,6 +5616,7 @@ button.run:hover:not(:disabled) {
                             "div"
                         );
 
+
                     time.className =
                         "timeline-time";
 
@@ -5151,6 +5631,7 @@ button.run:hover:not(:disabled) {
                         event
                     );
 
+
                     top.appendChild(
                         time
                     );
@@ -5160,6 +5641,7 @@ button.run:hover:not(:disabled) {
                         document.createElement(
                             "div"
                         );
+
 
                     detail.className =
                         "timeline-detail";
@@ -5225,6 +5707,7 @@ button.run:hover:not(:disabled) {
                         top
                     );
 
+
                     content.appendChild(
                         detail
                     );
@@ -5240,8 +5723,10 @@ button.run:hover:not(:disabled) {
                                 "div"
                             );
 
+
                         commit.className =
                             "timeline-commit";
+
 
                         commit.textContent =
                             "commit " +
@@ -5255,6 +5740,7 @@ button.run:hover:not(:disabled) {
                                 )
                             );
 
+
                         content.appendChild(
                             commit
                         );
@@ -5266,9 +5752,11 @@ button.run:hover:not(:disabled) {
                         marker
                     );
 
+
                     item.appendChild(
                         content
                     );
+
 
                     container.appendChild(
                         item
@@ -5291,18 +5779,21 @@ button.run:hover:not(:disabled) {
             ).toLocaleString(
                 undefined,
                 {
+
                     dateStyle:
                         "medium",
 
                     timeStyle:
                         "short"
+
                 }
             );
 
         } catch (error) {
 
             return String(
-                value || ""
+                value ||
+                ""
             );
 
         }
@@ -5354,9 +5845,12 @@ button.run:hover:not(:disabled) {
         state.history =
             [
                 record
-            ].concat(
-                state.history || []
-            ).slice(
+            ]
+            .concat(
+                state.history ||
+                []
+            )
+            .slice(
                 0,
                 100
             );
@@ -5381,9 +5875,12 @@ button.run:hover:not(:disabled) {
             "click",
             async function () {
 
-                await checkForUpdates();
+                var success =
+                    await checkForUpdates();
+
 
                 if (
+                    success &&
                     state.release
                 ) {
 
@@ -5404,10 +5901,6 @@ button.run:hover:not(:disabled) {
 
     /* =========================================================
        INITIAL STATE
-       
-       IMPORTANT:
-       We intentionally DO NOT call checkForUpdates()
-       automatically here.
     ========================================================= */
 
     resetPipeline();
@@ -5416,8 +5909,10 @@ button.run:hover:not(:disabled) {
 
     renderTimeline();
 
+
     $("historyState").textContent =
         "READY";
+
 
     $("historyState").className =
         "pill";
@@ -5426,8 +5921,10 @@ button.run:hover:not(:disabled) {
     $("lastCommit").textContent =
         "Waiting";
 
+
     $("lastRelease").textContent =
         "Waiting";
+
 
     $("installationState").textContent =
         "Not run";
@@ -5438,6 +5935,27 @@ button.run:hover:not(:disabled) {
         UPDATER_VERSION +
         " initialized.",
         "success"
+    );
+
+
+    terminal(
+        "Canonical source: " +
+        TEMPLATE_PATH,
+        "info"
+    );
+
+
+    terminal(
+        "Production target: " +
+        HOMEPAGE_PATH,
+        "info"
+    );
+
+
+    terminal(
+        "Release history: " +
+        HISTORY_PATH,
+        "info"
     );
 
 
@@ -5460,8 +5978,6 @@ button.run:hover:not(:disabled) {
 
     /* =========================================================
        SETTINGS CHANGE
-       
-       This DOES NOT automatically start a check.
     ========================================================= */
 
     window.addEventListener(
