@@ -2,11 +2,11 @@
   "schemaVersion": 1,
   "system": "Dyve Tech Production Update System",
   "productionUrl": "https://www.dyve.online/tech/index.html",
-  "updatedAt": "2026-08-18T19:35:34.042Z",
+  "updatedAt": "2026-08-18T19:36:36.469Z",
   "records": [
     {
-      "id": "rel_1787081731070_nvbt8j4",
-      "timestamp": "2026-08-18T19:35:31.070Z",
+      "id": "rel_1787081793156_jfrqf38",
+      "timestamp": "2026-08-18T19:36:33.156Z",
       "updaterVersion": "5.1.0",
       "type": "release",
       "repository": "Jonatt-001/dyve",
@@ -16,9 +16,23 @@
       "target": "tech/index.html",
       "productionUrl": "https://www.dyve.online/tech/index.html",
       "source": "admin/tech-editor/tech-homepage-template.html",
-      "previousVersion": "3.0.0",
+      "previousVersion": "4.0.0",
       "action": "update",
       "dynamicRegions": []
+    },
+    {
+      "id": "rel_1787081748724_3ylj2s8",
+      "timestamp": "2026-08-18T19:35:48.724Z",
+      "updaterVersion": "5.1.0",
+      "type": "failure",
+      "repository": "Jonatt-001/dyve",
+      "branch": "main",
+      "status": "failed",
+      "version": "4.0.0",
+      "target": "tech/index.html",
+      "productionUrl": "https://www.dyve.online/tech/index.html",
+      "source": "admin/tech-editor/tech-homepage-template.html",
+      "error": "GitHub request timed out after 12 seconds. Check your connection and try again."
     },
     {
       "id": "rel_1787081719207_rih0gh6",
