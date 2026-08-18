@@ -1,0 +1,2819 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dyve Tech — Content Migrator & Cleaner</title>
+<meta name="description" content="Production-safe content migration and editorial cleanup system for Dyve Tech and HackaX.">
+<meta name="theme-color" content="#020403">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg:#020403;
+    --panel:#050b08;
+    --panel2:#07100c;
+    --panel3:#010201;
+    --text:#f3f8f5;
+    --muted:#84948d;
+    --muted2:#5e6d67;
+    --line:rgba(255,255,255,.075);
+    --line2:rgba(255,255,255,.045);
+    --green:#00ffaa;
+    --green2:#00d995;
+    --green-soft:rgba(0,255,170,.055);
+    --green-line:rgba(0,255,170,.20);
+    --red:#ff5d73;
+    --red-soft:rgba(255,93,115,.055);
+    --red-line:rgba(255,93,115,.22);
+    --amber:#ffd166;
+    --amber-soft:rgba(255,209,102,.055);
+    --amber-line:rgba(255,209,102,.22);
+    --blue:#7dd3fc;
+    --max:1100px;
+}
+
+*{box-sizing:border-box}
+html{background:var(--bg);color-scheme:dark;scroll-behavior:smooth}
+body{
+    margin:0;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 50% -10%,rgba(0,255,170,.08),transparent 30%),
+        radial-gradient(circle at 100% 35%,rgba(0,255,170,.025),transparent 28%),
+        var(--bg);
+    color:var(--text);
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+}
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.16;
+    background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+    background-size:42px 42px;
+    mask-image:linear-gradient(to bottom,black,transparent 80%);
+    z-index:-1;
+}
+*{scrollbar-width:thin;scrollbar-color:#18251f transparent}
+button,input,select{font:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+
+.top{
+    position:sticky;
+    top:0;
+    z-index:100;
+    border-bottom:1px solid var(--line);
+    background:rgba(2,4,3,.90);
+    backdrop-filter:blur(22px);
+    -webkit-backdrop-filter:blur(22px);
+}
+.top-inner{
+    width:min(calc(100% - 28px),var(--max));
+    min-height:70px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+.brand{
+    font-family:Audiowide,Inter,sans-serif;
+    font-size:14px;
+    letter-spacing:.065em;
+    white-space:nowrap;
+}
+.brand-main{color:#edf5f2}
+.brand-muted{color:rgba(237,245,242,.32)}
+.badge{
+    display:inline-flex;
+    align-items:center;
+    min-height:35px;
+    padding:0 12px;
+    border:1px solid var(--green-line);
+    border-radius:999px;
+    color:var(--green);
+    background:rgba(0,255,170,.025);
+    font-family:Audiowide,Inter,sans-serif;
+    font-size:7px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+}
+
+.wrap{width:min(calc(100% - 28px),var(--max));margin:auto}
+main{padding:38px 0 90px}
+.eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    color:var(--green);
+    font-family:Audiowide,Inter,sans-serif;
+    font-size:7px;
+    letter-spacing:.11em;
+    text-transform:uppercase;
+}
+.dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 13px rgba(0,255,170,.65);
+}
+h1{
+    margin:16px 0 0;
+    max-width:900px;
+    font-family:Audiowide,Inter,sans-serif;
+    font-size:clamp(2rem,7vw,4.5rem);
+    font-weight:400;
+    line-height:1;
+    letter-spacing:-.045em;
+}
+.hero-description{
+    max-width:760px;
+    margin:16px 0 0;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.75;
+}
+
+.config-grid,.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+    margin-top:25px;
+}
+.stat,.field,.panel{
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:rgba(255,255,255,.014);
+}
+.stat{min-height:82px;padding:13px}
+.label{
+    color:var(--muted2);
+    font-size:7px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+}
+.value{
+    margin-top:8px;
+    color:rgba(255,255,255,.88);
+    font-family:Space Grotesk,Inter,sans-serif;
+    font-size:12px;
+    font-weight:600;
+    word-break:break-word;
+}
+.value.green{color:var(--green)}
+.value.amber{color:var(--amber)}
+.value.red{color:var(--red)}
+
+.panel{margin-top:18px;overflow:hidden}
+.section{padding:21px}
+.section+.section{border-top:1px solid var(--line)}
+.section-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:15px;
+}
+.title{
+    font-family:Space Grotesk,Inter,sans-serif;
+    font-size:21px;
+    line-height:1.1;
+}
+.meta{
+    margin-top:7px;
+    color:var(--muted);
+    font-size:9px;
+    line-height:1.65;
+}
+.pill{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:27px;
+    padding:0 9px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    color:var(--muted);
+    font-family:Audiowide,Inter,sans-serif;
+    font-size:6px;
+    letter-spacing:.08em;
+    white-space:nowrap;
+    text-transform:uppercase;
+}
+.pill.ok{color:var(--green);border-color:var(--green-line);background:var(--green-soft)}
+.pill.warn{color:var(--amber);border-color:var(--amber-line);background:var(--amber-soft)}
+.pill.err{color:var(--red);border-color:var(--red-line);background:var(--red-soft)}
+
+.fields{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:17px;
+}
+.field{padding:11px}
+.field label{
+    display:block;
+    color:var(--muted2);
+    font-size:7px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    margin-bottom:7px;
+}
+.field input,.field select{
+    width:100%;
+    min-height:38px;
+    padding:0 10px;
+    border:1px solid var(--line);
+    border-radius:9px;
+    outline:none;
+    color:rgba(255,255,255,.84);
+    background:rgba(255,255,255,.018);
+    font-size:9px;
+}
+.field input:focus,.field select:focus{
+    border-color:var(--green-line);
+    box-shadow:0 0 0 3px rgba(0,255,170,.035);
+}
+.field small{
+    display:block;
+    margin-top:6px;
+    color:var(--muted2);
+    font-size:7px;
+    line-height:1.5;
+}
+.checkbox-row{
+    display:flex;
+    align-items:flex-start;
+    gap:9px;
+    margin-top:12px;
+    color:var(--muted);
+    font-size:8px;
+    line-height:1.55;
+}
+.checkbox-row input{
+    accent-color:var(--green);
+    margin-top:2px;
+}
+
+.actions{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:9px;
+    margin-top:17px;
+}
+button.action{
+    min-height:50px;
+    border-radius:11px;
+    cursor:pointer;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    transition:transform .18s ease,background .18s ease,border-color .18s ease,opacity .18s ease;
+}
+button.action:hover:not(:disabled){transform:translateY(-1px)}
+button.action:disabled{opacity:.30;cursor:not-allowed}
+button.primary{border:1px solid rgba(0,255,170,.40);background:var(--green);color:#00130c;box-shadow:0 10px 28px rgba(0,255,170,.10)}
+button.primary:hover:not(:disabled){background:#20ffb5}
+button.secondary{border:1px solid var(--green-line);background:rgba(0,255,170,.025);color:var(--green)}
+button.secondary:hover:not(:disabled){background:rgba(0,255,170,.075)}
+button.danger{border:1px solid var(--red-line);background:var(--red-soft);color:var(--red)}
+
+.status{
+    display:flex;
+    align-items:flex-start;
+    gap:9px;
+    margin-top:13px;
+    min-height:48px;
+    padding:12px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:rgba(255,255,255,.012);
+    color:var(--muted);
+    font-size:9px;
+    line-height:1.5;
+}
+.status-dot{
+    width:7px;height:7px;margin-top:3px;flex:0 0 auto;border-radius:50%;background:var(--muted2)
+}
+.status.running .status-dot{background:var(--green);box-shadow:0 0 13px rgba(0,255,170,.65);animation:pulse 1s infinite}
+.status.ok{border-color:rgba(0,255,170,.14);background:var(--green-soft)}
+.status.ok .status-dot{background:var(--green)}
+.status.warn{border-color:var(--amber-line);background:var(--amber-soft)}
+.status.warn .status-dot{background:var(--amber)}
+.status.err{border-color:var(--red-line);background:var(--red-soft)}
+.status.err .status-dot{background:var(--red)}
+@keyframes pulse{50%{opacity:.45;transform:scale(.75)}}
+
+.progress-wrap{margin-top:12px}
+.progress-meta{display:flex;justify-content:space-between;margin-bottom:6px;color:var(--muted2);font-size:7px;text-transform:uppercase;letter-spacing:.06em}
+.progress{height:4px;overflow:hidden;border-radius:99px;background:rgba(255,255,255,.055)}
+.progress-bar{width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--green2),var(--green));box-shadow:0 0 15px rgba(0,255,170,.35);transition:width .25s ease}
+
+.terminal{
+    margin-top:14px;
+    min-height:150px;
+    max-height:310px;
+    overflow:auto;
+    padding:13px;
+    border:1px solid var(--line);
+    border-radius:13px;
+    background:#010201;
+    font:8px/1.75 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+}
+.log-line{display:grid;grid-template-columns:auto 1fr;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.025)}
+.log-time{color:rgba(255,255,255,.22)}
+.log-text{color:#aebbb6;word-break:break-word}
+.log-line.success .log-text{color:#8dffda}
+.log-line.error .log-text{color:var(--red)}
+.log-line.warn .log-text{color:var(--amber)}
+
+.scan-toolbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:18px;
+}
+.filter{
+    display:flex;
+    gap:6px;
+    overflow:auto;
+    padding-bottom:2px;
+}
+.filter button{
+    flex:0 0 auto;
+    min-height:30px;
+    padding:0 10px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    color:var(--muted);
+    background:rgba(255,255,255,.012);
+    font-size:7px;
+    cursor:pointer;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+}
+.filter button.active{color:var(--green);border-color:var(--green-line);background:var(--green-soft)}
+
+.results{
+    display:grid;
+    gap:8px;
+    margin-top:13px;
+}
+.result{
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:rgba(255,255,255,.012);
+    overflow:hidden;
+}
+.result-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
+    padding:12px;
+}
+.result-main{min-width:0}
+.result-title{
+    color:rgba(255,255,255,.85);
+    font-size:9px;
+    font-weight:700;
+    line-height:1.45;
+}
+.result-path{
+    margin-top:5px;
+    color:var(--muted2);
+    font:7px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    word-break:break-all;
+}
+.score{
+    flex:0 0 auto;
+    min-width:48px;
+    text-align:center;
+    padding:6px 7px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    color:var(--muted);
+    font-family:Space Grotesk,Inter,sans-serif;
+    font-size:10px;
+    font-weight:700;
+}
+.score.high{color:var(--green);border-color:var(--green-line);background:var(--green-soft)}
+.score.medium{color:var(--amber);border-color:var(--amber-line);background:var(--amber-soft)}
+.score.low{color:var(--muted)}
+.result-body{
+    padding:0 12px 12px;
+    border-top:1px solid var(--line2);
+}
+.signal-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+    margin-top:9px;
+}
+.signal{
+    padding:4px 6px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    color:var(--muted);
+    font-size:6px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+}
+.signal.strong{color:var(--green);border-color:var(--green-line)}
+.signal.warn{color:var(--amber);border-color:var(--amber-line)}
+.result-actions{
+    display:flex;
+    gap:7px;
+    margin-top:10px;
+}
+.mini{
+    min-height:31px;
+    padding:0 9px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    color:var(--muted);
+    background:rgba(255,255,255,.012);
+    font-size:7px;
+    cursor:pointer;
+}
+.mini:hover{border-color:var(--green-line);color:var(--green)}
+
+.empty{
+    padding:28px 15px;
+    border:1px dashed var(--line);
+    border-radius:12px;
+    color:var(--muted);
+    text-align:center;
+    font-size:9px;
+    line-height:1.6;
+}
+
+.review-box{
+    margin-top:13px;
+    padding:12px;
+    border:1px solid var(--amber-line);
+    border-radius:11px;
+    background:var(--amber-soft);
+    color:var(--muted);
+    font-size:8px;
+    line-height:1.6;
+}
+
+.verify-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:15px;
+}
+.verify-card{padding:13px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.012)}
+.verify-card .value{font-size:16px}
+
+.footer{
+    padding:30px 15px 45px;
+    border-top:1px solid var(--line);
+    text-align:center;
+    color:rgba(255,255,255,.20);
+    font-size:7px;
+    line-height:1.7;
+}
+.footer strong{color:rgba(255,255,255,.35)}
+
+@media(max-width:800px){
+    .config-grid,.stats-grid{grid-template-columns:1fr 1fr}
+    .verify-grid{grid-template-columns:1fr}
+}
+@media(max-width:650px){
+    main{padding-top:30px}
+    .fields{grid-template-columns:1fr}
+    .actions{grid-template-columns:1fr}
+    .section-head{display:block}
+    .section-head .pill{margin-top:11px}
+    .scan-toolbar{display:block}
+    .filter{margin-top:10px}
+}
+@media(min-width:801px){
+    main{padding-top:60px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="top">
+    <div class="top-inner">
+        <div class="brand">
+            <span class="brand-main">DYVE</span>
+            <span class="brand-muted">TECH</span>
+        </div>
+        <div class="badge">Content Migrator</div>
+    </div>
+</header>
+
+<main>
+<div class="wrap">
+
+    <div class="eyebrow">
+        <span class="dot"></span>
+        Editorial architecture repair
+    </div>
+
+    <h1>Clean the Tech system.</h1>
+
+    <p class="hero-description">
+        Scan Dyve Tech content, identify HackaX material that was incorrectly
+        stored in the Tech dataset, detect duplicates and safely migrate only
+        high-confidence records into the HackaX article database.
+    </p>
+
+    <section class="stats-grid">
+        <div class="stat">
+            <div class="label">Tech source</div>
+            <div class="value" id="techCount">—</div>
+        </div>
+        <div class="stat">
+            <div class="label">HackaX source</div>
+            <div class="value" id="hackaCount">—</div>
+        </div>
+        <div class="stat">
+            <div class="label">Candidates</div>
+            <div class="value amber" id="candidateCount">—</div>
+        </div>
+        <div class="stat">
+            <div class="label">System</div>
+            <div class="value green" id="systemState">READY</div>
+        </div>
+    </section>
+
+    <section class="panel">
+
+        <div class="section">
+            <div class="section-head">
+                <div>
+                    <div class="title">Migration configuration</div>
+                    <div class="meta">
+                        Uses the existing <strong>dyve-tech-settings</strong>
+                        GitHub credentials. The two JSON datasets remain separate.
+                    </div>
+                </div>
+                <div class="pill ok" id="configState">READY</div>
+            </div>
+
+            <div class="fields">
+                <div class="field">
+                    <label>Tech dataset</label>
+                    <input id="techPath" value="assets/tech-articles.json" spellcheck="false">
+                    <small>Canonical Dyve Tech article index.</small>
+                </div>
+
+                <div class="field">
+                    <label>HackaX dataset</label>
+                    <input id="hackaPath" value="assets/articles.json" spellcheck="false">
+                    <small>Canonical HackaX / cybersecurity article index.</small>
+                </div>
+
+                <div class="field">
+                    <label>Git branch</label>
+                    <input id="branchPath" value="main" spellcheck="false">
+                    <small>Branch used for the atomic migration commit.</small>
+                </div>
+
+                <div class="field">
+                    <label>Confidence threshold</label>
+                    <select id="threshold">
+                        <option value="70">70 — Balanced</option>
+                        <option value="80" selected>80 — Safe</option>
+                        <option value="90">90 — Strict</option>
+                    </select>
+                    <small>Only scores at or above this value are auto-migratable.</small>
+                </div>
+            </div>
+
+            <label class="checkbox-row">
+                <input type="checkbox" id="preserveUrls" checked>
+                <span>Preserve existing article URLs. The cleaner will flag suspicious Tech routes instead of silently changing public URLs.</span>
+            </label>
+
+            <label class="checkbox-row">
+                <input type="checkbox" id="removeDuplicates" checked>
+                <span>If an article already exists in <strong>articles.json</strong>, remove the Tech copy without creating a duplicate destination record.</span>
+            </label>
+
+            <label class="checkbox-row">
+                <input type="checkbox" id="backupLocal" checked>
+                <span>Keep a local browser backup of both original datasets before migration.</span>
+            </label>
+
+            <div class="actions">
+                <button class="action secondary" id="scanBtn">Scan & Classify</button>
+                <button class="action primary" id="migrateBtn" disabled>Run Safe Migration</button>
+                <button class="action danger" id="reloadBtn">Reload Configuration</button>
+            </div>
+
+            <div class="status" id="status">
+                <span class="status-dot"></span>
+                <span id="statusText">System ready. Nothing has been changed.</span>
+            </div>
+
+            <div class="progress-wrap">
+                <div class="progress-meta">
+                    <span id="progressStage">Idle</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+
+            <div class="terminal" id="terminal" aria-live="polite"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-head">
+                <div>
+                    <div class="title">Classification report</div>
+                    <div class="meta">
+                        Every candidate is scored from title, description, taxonomy,
+                        author, URL, legacy URLs, keywords and other metadata.
+                    </div>
+                </div>
+                <div class="pill" id="scanState">NOT SCANNED</div>
+            </div>
+
+            <div class="scan-toolbar">
+                <div class="filter" id="filters">
+                    <button class="active" data-filter="all">All</button>
+                    <button data-filter="migrate">Migrate</button>
+                    <button data-filter="duplicate">Duplicates</button>
+                    <button data-filter="review">Review</button>
+                    <button data-filter="clean">Keep Tech</button>
+                </div>
+            </div>
+
+            <div id="reviewBox" class="review-box" style="display:none"></div>
+            <div class="results" id="results">
+                <div class="empty">Run a scan to build the migration plan.</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-head">
+                <div>
+                    <div class="title">Migration verification</div>
+                    <div class="meta">
+                        The transaction is considered successful only when both
+                        datasets remain valid JSON and the resulting separation is verified.
+                    </div>
+                </div>
+                <div class="pill" id="verifyState">WAITING</div>
+            </div>
+
+            <div class="verify-grid">
+                <div class="verify-card">
+                    <div class="label">Tech after</div>
+                    <div class="value" id="verifyTech">—</div>
+                </div>
+                <div class="verify-card">
+                    <div class="label">HackaX after</div>
+                    <div class="value" id="verifyHacka">—</div>
+                </div>
+                <div class="verify-card">
+                    <div class="label">Moved</div>
+                    <div class="value green" id="verifyMoved">—</div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+</main>
+
+<footer class="footer">
+    Dyve Tech Content Migrator & Cleaner
+    ·
+    <strong>Safe editorial separation</strong>
+</footer>
+
+<script>
+(function () {
+"use strict";
+
+/* =========================================================
+   CONFIGURATION
+========================================================= */
+
+var SETTINGS_KEY = "dyve-tech-settings";
+var LOCAL_BACKUP_KEY = "dyve-tech-content-migrator-backup";
+var MIGRATION_HISTORY_KEY = "dyve-tech-content-migration-history";
+var API_VERSION = "2022-11-28";
+var REQUEST_TIMEOUT = 15000;
+var ENGINE_VERSION = "1.0.0";
+
+var state = {
+    config: null,
+    tech: null,
+    hacka: null,
+    techSha: "",
+    hackaSha: "",
+    candidates: [],
+    plan: null,
+    scanned: false,
+    running: false,
+    filter: "all"
+};
+
+/* =========================================================
+   DOM
+========================================================= */
+
+function $(id) {
+    return document.getElementById(id);
+}
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+function readSettings() {
+    try {
+        var raw = localStorage.getItem(SETTINGS_KEY);
+        if (!raw) return {};
+        var parsed = JSON.parse(raw);
+        return parsed && typeof parsed === "object" && !Array.isArray(parsed)
+            ? parsed
+            : {};
+    } catch (error) {
+        return {};
+    }
+}
+
+function normalizeRepository(value) {
+    var repo = String(value || "").trim();
+
+    if (!repo) return "";
+
+    repo = repo
+        .replace(/^https?:\/\/github\.com\//i, "")
+        .replace(/^git@github\.com:/i, "")
+        .replace(/^github\.com\//i, "")
+        .replace(/\.git$/i, "")
+        .replace(/^\/+/, "")
+        .replace(/\/+$/, "");
+
+    var parts = repo.split("/").filter(Boolean);
+
+    return parts.length === 2
+        ? parts[0] + "/" + parts[1]
+        : "";
+}
+
+function loadConfig() {
+    var settings = readSettings();
+
+    var repositorySetting =
+        settings.githubRepo ||
+        settings.repository ||
+        settings.repo ||
+        "";
+
+    if (!repositorySetting && settings.githubOwner && settings.githubRepository) {
+        repositorySetting =
+            settings.githubOwner + "/" + settings.githubRepository;
+    }
+
+    var repo = normalizeRepository(repositorySetting);
+
+    var token = String(
+        settings.githubToken ||
+        settings.token ||
+        settings.githubPAT ||
+        settings.pat ||
+        ""
+    ).trim();
+
+    var branch = String(
+        settings.githubBranch ||
+        settings.branch ||
+        $("branchPath").value ||
+        "main"
+    ).trim() || "main";
+
+    var validRepo = /^[^/]+\/[^/]+$/.test(repo);
+
+    state.config = {
+        repo: repo,
+        token: token,
+        branch: branch,
+        validRepo: validRepo,
+        owner: validRepo ? repo.split("/")[0] : "",
+        name: validRepo ? repo.split("/")[1] : ""
+    };
+
+    $("branchPath").value = branch;
+
+    if (!validRepo) {
+        $("configState").textContent = "CONFIGURE";
+        $("configState").className = "pill err";
+        $("systemState").textContent = "BLOCKED";
+        $("systemState").className = "value red";
+        setStatus("GitHub repository is missing or invalid.", "err");
+        return false;
+    }
+
+    if (!token) {
+        $("configState").textContent = "TOKEN NEEDED";
+        $("configState").className = "pill warn";
+        $("systemState").textContent = "TOKEN";
+        $("systemState").className = "value amber";
+        setStatus("Repository is configured, but no GitHub token was found.", "warn");
+        return false;
+    }
+
+    $("configState").textContent = "READY";
+    $("configState").className = "pill ok";
+    $("systemState").textContent = "READY";
+    $("systemState").className = "value green";
+
+    terminal(
+        "Configuration loaded: " +
+        state.config.repo +
+        " / " +
+        state.config.branch,
+        "success"
+    );
+
+    return true;
+}
+
+/* =========================================================
+   UI STATUS
+========================================================= */
+
+function setStatus(message, type) {
+    $("status").className = "status" + (type ? " " + type : "");
+    $("statusText").textContent = message;
+}
+
+function setProgress(percent, stage) {
+    var safe = Math.max(0, Math.min(100, Number(percent) || 0));
+    $("progressBar").style.width = safe + "%";
+    $("progressPercent").textContent = Math.round(safe) + "%";
+    $("progressStage").textContent = stage || "Working";
+}
+
+function terminal(message, type) {
+    var row = document.createElement("div");
+    row.className = "log-line " + (type || "info");
+
+    var time = document.createElement("span");
+    time.className = "log-time";
+    time.textContent = new Date().toLocaleTimeString();
+
+    var text = document.createElement("span");
+    text.className = "log-text";
+    text.textContent = message;
+
+    row.appendChild(time);
+    row.appendChild(text);
+    $("terminal").appendChild(row);
+    $("terminal").scrollTop = $("terminal").scrollHeight;
+}
+
+function clearTerminal() {
+    $("terminal").innerHTML = "";
+}
+
+/* =========================================================
+   GITHUB API
+========================================================= */
+
+function apiHeaders(json) {
+    var output = {
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": API_VERSION
+    };
+
+    if (state.config && state.config.token) {
+        output.Authorization = "Bearer " + state.config.token;
+    }
+
+    if (json) {
+        output["Content-Type"] = "application/json";
+    }
+
+    return output;
+}
+
+function githubBase() {
+    if (!state.config || !state.config.validRepo) {
+        throw new Error("GitHub repository is not configured.");
+    }
+
+    return (
+        "https://api.github.com/repos/" +
+        encodeURIComponent(state.config.owner) +
+        "/" +
+        encodeURIComponent(state.config.name)
+    );
+}
+
+function githubError(status, data, endpoint) {
+    var msg =
+        data && typeof data.message === "string"
+            ? data.message
+            : "";
+
+    if (status === 401) {
+        return "GitHub authentication failed. Check the configured token.";
+    }
+
+    if (status === 403) {
+        return "GitHub denied the request. Verify repository Contents read/write permission.";
+    }
+
+    if (status === 404) {
+        if (endpoint === "") {
+            return "GitHub cannot access repository " + state.config.repo + ".";
+        }
+
+        var path = endpoint.replace(/^contents\//, "").split("?ref=")[0];
+
+        return "GitHub could not find this file: " + path + ".";
+    }
+
+    if (status === 409) {
+        return "GitHub reported a conflict. The branch changed while the migration was running.";
+    }
+
+    if (status === 422) {
+        return msg || "GitHub rejected the request.";
+    }
+
+    return msg || "GitHub API returned HTTP " + status + ".";
+}
+
+async function githubRequest(endpoint, options) {
+    if (!state.config || !state.config.validRepo) {
+        throw new Error("GitHub repository is not configured.");
+    }
+
+    var controller = new AbortController();
+
+    var timeout = setTimeout(function () {
+        controller.abort();
+    }, REQUEST_TIMEOUT);
+
+    var path = String(endpoint || "");
+    var url = githubBase();
+
+    if (path) {
+        url += "/" + path;
+    }
+
+    try {
+        var response = await fetch(
+            url,
+            Object.assign(
+                {
+                    method: "GET",
+                    headers: apiHeaders(false),
+                    cache: "no-store",
+                    signal: controller.signal
+                },
+                options || {}
+            )
+        );
+
+        var raw = await response.text();
+        var data = {};
+
+        try {
+            data = raw ? JSON.parse(raw) : {};
+        } catch (error) {
+            data = { raw: raw };
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                githubError(response.status, data, path)
+            );
+        }
+
+        return data;
+    } catch (error) {
+        if (error && error.name === "AbortError") {
+            throw new Error("GitHub request timed out.");
+        }
+
+        if (error instanceof TypeError) {
+            throw new Error("The browser could not reach GitHub.");
+        }
+
+        throw error;
+    } finally {
+        clearTimeout(timeout);
+    }
+}
+
+/* =========================================================
+   FILE CONTENT
+========================================================= */
+
+function decodeBase64Utf8(value) {
+    var clean = String(value || "").replace(/\s/g, "");
+    var binary = atob(clean);
+
+    var bytes = Uint8Array.from(binary, function (char) {
+        return char.charCodeAt(0);
+    });
+
+    return new TextDecoder().decode(bytes);
+}
+
+function encodeBase64Utf8(value) {
+    var bytes = new TextEncoder().encode(String(value));
+    var binary = "";
+
+    for (var i = 0; i < bytes.length; i += 1) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+
+    return btoa(binary);
+}
+
+async function getFile(path, optional) {
+    var endpoint =
+        "contents/" +
+        path +
+        "?ref=" +
+        encodeURIComponent(state.config.branch);
+
+    try {
+        var data = await githubRequest(endpoint);
+
+        if (!data || !data.content) {
+            throw new Error("GitHub returned no content for " + path + ".");
+        }
+
+        return {
+            path: path,
+            content: decodeBase64Utf8(data.content),
+            sha: data.sha || "",
+            exists: true
+        };
+    } catch (error) {
+        if (
+            optional &&
+            error &&
+            /^GitHub could not find this file:/i.test(error.message)
+        ) {
+            return {
+                path: path,
+                content: null,
+                sha: "",
+                exists: false
+            };
+        }
+
+        throw error;
+    }
+}
+
+function parseDataset(content, path) {
+    var parsed;
+
+    try {
+        parsed = JSON.parse(content);
+    } catch (error) {
+        throw new Error(
+            path +
+            " contains invalid JSON: " +
+            error.message
+        );
+    }
+
+    if (Array.isArray(parsed)) {
+        return {
+            shape: "array",
+            records: parsed,
+            wrapper: null
+        };
+    }
+
+    if (
+        parsed &&
+        typeof parsed === "object" &&
+        Array.isArray(parsed.records)
+    ) {
+        return {
+            shape: "records",
+            records: parsed.records,
+            wrapper: parsed
+        };
+    }
+
+    if (
+        parsed &&
+        typeof parsed === "object" &&
+        Array.isArray(parsed.articles)
+    ) {
+        return {
+            shape: "articles",
+            records: parsed.articles,
+            wrapper: parsed
+        };
+    }
+
+    throw new Error(
+        path +
+        " must be an array or an object containing records/articles."
+    );
+}
+
+function serializeDataset(dataset) {
+    if (dataset.shape === "array") {
+        return JSON.stringify(dataset.records, null, 2) + "\n";
+    }
+
+    var wrapper = Object.assign({}, dataset.wrapper);
+
+    if (dataset.shape === "records") {
+        wrapper.records = dataset.records;
+    } else {
+        wrapper.articles = dataset.records;
+    }
+
+    return JSON.stringify(wrapper, null, 2) + "\n";
+}
+
+/* =========================================================
+   CLASSIFICATION ENGINE
+========================================================= */
+
+/*
+ * The engine deliberately uses weighted signals.
+ *
+ * Strong signals:
+ * - dark web / darkweb
+ * - ransomware
+ * - malware
+ * - exploit / vulnerability / CVE
+ * - threat actor
+ * - phishing
+ * - botnet
+ * - credential theft
+ * - data exfiltration
+ * - Tor / onion
+ * - cyberattack
+ * - HackaX-specific taxonomy
+ *
+ * Negative Tech signals prevent ordinary technology/security news
+ * from being over-classified.
+ */
+
+var STRONG_RULES = [
+    { re: /\bdark[\s-]?web\b/i, weight: 28, label: "dark-web" },
+    { re: /\bdark[\s-]?net\b/i, weight: 26, label: "dark-net" },
+    { re: /\bransomware\b/i, weight: 28, label: "ransomware" },
+    { re: /\bmalware\b/i, weight: 26, label: "malware" },
+    { re: /\bthreat actor\b/i, weight: 25, label: "threat-actor" },
+    { re: /\bzero[\s-]?day\b/i, weight: 25, label: "zero-day" },
+    { re: /\bCVE-\d{4}-\d{4,}\b/i, weight: 27, label: "cve" },
+    { re: /\bvulnerability\b/i, weight: 22, label: "vulnerability" },
+    { re: /\bexploit(?:ed|s|ation)?\b/i, weight: 20, label: "exploit" },
+    { re: /\bphishing\b/i, weight: 24, label: "phishing" },
+    { re: /\bbotnet\b/i, weight: 25, label: "botnet" },
+    { re: /\bcredential(?:s)? theft\b/i, weight: 26, label: "credential-theft" },
+    { re: /\bdata exfiltration\b/i, weight: 27, label: "exfiltration" },
+    { re: /\bcyber(?:attack|attacker|crime|criminal|security)\b/i, weight: 18, label: "cyber" },
+    { re: /\bcyberattack\b/i, weight: 22, label: "cyberattack" },
+    { re: /\binfostealer\b/i, weight: 26, label: "infostealer" },
+    { re: /\bkeylogger\b/i, weight: 24, label: "keylogger" },
+    { re: /\bDDoS\b/i, weight: 22, label: "ddos" },
+    { re: /\bTor network\b/i, weight: 20, label: "tor" },
+    { re: /\bonion service\b/i, weight: 24, label: "onion-service" },
+    { re: /\bdata breach\b/i, weight: 20, label: "breach" },
+    { re: /\bsecurity breach\b/i, weight: 20, label: "security-breach" },
+    { re: /\bsecurity flaw\b/i, weight: 18, label: "security-flaw" },
+    { re: /\bmalicious payload\b/i, weight: 24, label: "payload" },
+    { re: /\bcommand.?and.?control\b/i, weight: 22, label: "c2" }
+];
+
+var TAXONOMY_RULES = [
+    { re: /\bdark[\s-]?web\b/i, weight: 30, label: "taxonomy:dark-web" },
+    { re: /\bransomware\b/i, weight: 30, label: "taxonomy:ransomware" },
+    { re: /\bmalware\b/i, weight: 28, label: "taxonomy:malware" },
+    { re: /\bthreats?\b/i, weight: 15, label: "taxonomy:threat" },
+    { re: /\bvulnerabilit(?:y|ies)\b/i, weight: 18, label: "taxonomy:vulnerability" },
+    { re: /\bbreach(?:es)?\b/i, weight: 18, label: "taxonomy:breach" },
+    { re: /\bcyber[\s-]?security\b/i, weight: 17, label: "taxonomy:cybersecurity" }
+];
+
+var HACKAX_AUTHOR_RULES = [
+    { re: /\bHackaX\b/i, weight: 35, label: "author:hackax" },
+    { re: /\bCyber(?:security)? Intelligence Unit\b/i, weight: 30, label: "author:cyber-intel" },
+    { re: /\bThreat Intelligence Unit\b/i, weight: 28, label: "author:threat-intel" }
+];
+
+var HACKAX_TAG_RULES = [
+    { re: /\bDARK WEB\b/i, weight: 30, label: "tag:dark-web" },
+    { re: /\bCORE INTEL\b/i, weight: 22, label: "tag:core-intel" },
+    { re: /\bTHREAT\b/i, weight: 18, label: "tag:threat" },
+    { re: /\bRANSOMWARE\b/i, weight: 28, label: "tag:ransomware" },
+    { re: /\bMALWARE\b/i, weight: 28, label: "tag:malware" }
+];
+
+var URL_RULES = [
+    { re: /(^|\/)(dark-web|darkweb|ransomware|malware|threat|breach|vulnerability|exploit|cybersecurity)(\/|\.html|$)/i, weight: 28, label: "url:hackax-route" },
+    { re: /\/tech\/(?:dark-web|darkweb|ransomware|malware|breach|vulnerability|exploit)/i, weight: 30, label: "url:misplaced-tech-route" }
+];
+
+var LEGACY_RULES = [
+    { re: /\/(?:article|tech)\/(?:dark-web|darkweb|ransomware|malware|breach|vulnerability|exploit)/i, weight: 25, label: "legacy:hackax-route" }
+];
+
+var NEGATIVE_RULES = [
+    { re: /\biphone\b/i, weight: 7, label: "tech:iphone" },
+    { re: /\bsmartphone\b/i, weight: 5, label: "tech:smartphone" },
+    { re: /\blaptop\b/i, weight: 4, label: "tech:laptop" },
+    { re: /\bchip\b/i, weight: 4, label: "tech:chip" },
+    { re: /\bprocessor\b/i, weight: 4, label: "tech:processor" },
+    { re: /\bAI model\b/i, weight: 5, label: "tech:ai-model" },
+    { re: /\bsoftware update\b/i, weight: 5, label: "tech:software-update" }
+];
+
+function recordText(record) {
+    var fields = [
+        record.title,
+        record.desc,
+        record.description,
+        record.tag,
+        record.meta,
+        record.category,
+        record.page,
+        record.author,
+        record.url,
+        record.slug,
+        record.seoTitle,
+        record.focusKeyword,
+        record.sourceUrl,
+        record.delta
+    ];
+
+    if (Array.isArray(record.keywords)) {
+        fields.push(record.keywords.join(" "));
+    }
+
+    if (Array.isArray(record.legacyUrls)) {
+        fields.push(record.legacyUrls.join(" "));
+    }
+
+    return fields
+        .filter(function (value) {
+            return value !== undefined && value !== null;
+        })
+        .join(" ")
+        .toLowerCase();
+}
+
+function addRules(text, rules, scoreState) {
+    rules.forEach(function (rule) {
+        if (rule.re.test(text)) {
+            scoreState.score += rule.weight;
+            scoreState.signals.push({
+                label: rule.label,
+                weight: rule.weight,
+                strong: rule.weight >= 24
+            });
+        }
+    });
+}
+
+function duplicateKey(record) {
+    var explicit = [
+        record.id,
+        record.slug,
+        record.url
+    ].find(function (value) {
+        return value !== undefined && value !== null && String(value).trim();
+    });
+
+    if (explicit) {
+        return String(explicit).trim().toLowerCase();
+    }
+
+    var title = String(record.title || "")
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, " ");
+
+    var date = String(record.date || "").trim();
+
+    return title + "|" + date;
+}
+
+function normalizedTitle(record) {
+    return String(record.title || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, " ")
+        .trim();
+}
+
+function isHackaDestinationDuplicate(record, hackaRecords) {
+    var key = duplicateKey(record);
+    var title = normalizedTitle(record);
+
+    return hackaRecords.some(function (existing) {
+        if (duplicateKey(existing) === key) return true;
+
+        var existingTitle = normalizedTitle(existing);
+
+        return title &&
+            existingTitle &&
+            title === existingTitle;
+    });
+}
+
+function classifyRecord(record, hackaRecords) {
+    var text = recordText(record);
+
+    var scoreState = {
+        score: 0,
+        signals: []
+    };
+
+    addRules(text, STRONG_RULES, scoreState);
+    addRules(text, TAXONOMY_RULES, scoreState);
+    addRules(text, HACKAX_AUTHOR_RULES, scoreState);
+    addRules(text, HACKAX_TAG_RULES, scoreState);
+    addRules(text, URL_RULES, scoreState);
+    addRules(text, LEGACY_RULES, scoreState);
+
+    NEGATIVE_RULES.forEach(function (rule) {
+        if (rule.re.test(text)) {
+            scoreState.score -= rule.weight;
+            scoreState.signals.push({
+                label: rule.label,
+                weight: -rule.weight,
+                strong: false
+            });
+        }
+    });
+
+    var hasPageTech =
+        String(record.page || "").toLowerCase() === "tech";
+
+    var category =
+        String(record.category || record.meta || "").toLowerCase();
+
+    var explicitlyHackaTaxonomy =
+        /dark[\s-]?web|ransomware|malware|threat|breach|vulnerability|exploit|cyber/.test(category);
+
+    if (hasPageTech && explicitlyHackaTaxonomy) {
+        scoreState.score += 16;
+        scoreState.signals.push({
+            label: "page:tech + cyber-taxonomy",
+            weight: 16,
+            strong: true
+        });
+    }
+
+    var duplicate = isHackaDestinationDuplicate(record, hackaRecords);
+
+    if (duplicate) {
+        scoreState.score = Math.max(scoreState.score, 100);
+        scoreState.signals.push({
+            label: "destination-duplicate",
+            weight: 100,
+            strong: true
+        });
+    }
+
+    var score = Math.max(0, Math.min(100, scoreState.score));
+    var threshold = Number($("threshold").value) || 80;
+
+    var classification;
+
+    if (duplicate) {
+        classification = "duplicate";
+    } else if (score >= threshold) {
+        classification = "migrate";
+    } else if (score >= Math.max(45, threshold - 25)) {
+        classification = "review";
+    } else {
+        classification = "clean";
+    }
+
+    return {
+        record: record,
+        score: score,
+        classification: classification,
+        duplicate: duplicate,
+        signals: scoreState.signals
+    };
+}
+
+/* =========================================================
+   SCAN
+========================================================= */
+
+async function scan() {
+    if (state.running) return false;
+
+    if (!loadConfig()) {
+        return false;
+    }
+
+    state.running = true;
+    state.scanned = false;
+    state.candidates = [];
+    state.plan = null;
+
+    $("scanBtn").disabled = true;
+    $("migrateBtn").disabled = true;
+    $("scanState").textContent = "SCANNING";
+    $("scanState").className = "pill warn";
+    $("systemState").textContent = "SCANNING";
+    $("systemState").className = "value amber";
+
+    clearTerminal();
+    setProgress(2, "Starting");
+    setStatus("Reading both content datasets...", "running");
+
+    try {
+        var techPath = $("techPath").value.trim();
+        var hackaPath = $("hackaPath").value.trim();
+
+        if (!techPath || !hackaPath) {
+            throw new Error("Both dataset paths are required.");
+        }
+
+        terminal("Reading Tech dataset: " + techPath);
+        setProgress(10, "Reading Tech");
+
+        var techFile = await getFile(techPath, false);
+        var hackaFile = await getFile(hackaPath, true);
+
+        terminal("Reading HackaX dataset: " + hackaPath);
+        setProgress(25, "Reading HackaX");
+
+        var techDataset = parseDataset(techFile.content, techPath);
+
+        var hackaDataset;
+
+        if (hackaFile.exists) {
+            hackaDataset = parseDataset(hackaFile.content, hackaPath);
+        } else {
+            hackaDataset = {
+                shape: "array",
+                records: [],
+                wrapper: null
+            };
+
+            terminal(
+                "HackaX dataset does not exist. It will be created if migration is required.",
+                "warn"
+            );
+        }
+
+        state.tech = techDataset;
+        state.hacka = hackaDataset;
+        state.techSha = techFile.sha;
+        state.hackaSha = hackaFile.sha;
+
+        $("techCount").textContent =
+            techDataset.records.length + " records";
+
+        $("hackaCount").textContent =
+            hackaDataset.records.length + " records";
+
+        terminal(
+            "Tech records loaded: " +
+            techDataset.records.length,
+            "success"
+        );
+
+        terminal(
+            "HackaX records loaded: " +
+            hackaDataset.records.length,
+            "success"
+        );
+
+        setProgress(42, "Classifying");
+
+        var classifications =
+            techDataset.records.map(function (record, index) {
+                var result =
+                    classifyRecord(
+                        record,
+                        hackaDataset.records
+                    );
+
+                result.index = index;
+                return result;
+            });
+
+        state.candidates = classifications;
+
+        var migrate = classifications.filter(function (item) {
+            return item.classification === "migrate";
+        });
+
+        var duplicate = classifications.filter(function (item) {
+            return item.classification === "duplicate";
+        });
+
+        var review = classifications.filter(function (item) {
+            return item.classification === "review";
+        });
+
+        var clean = classifications.filter(function (item) {
+            return item.classification === "clean";
+        });
+
+        $("candidateCount").textContent =
+            (migrate.length + duplicate.length) +
+            " candidates";
+
+        var threshold = Number($("threshold").value);
+
+        state.plan = {
+            migrate: migrate,
+            duplicate: duplicate,
+            review: review,
+            clean: clean,
+            threshold: threshold
+        };
+
+        renderResults();
+
+        setProgress(100, "Scan complete");
+
+        $("scanState").textContent =
+            "SCAN COMPLETE";
+
+        $("scanState").className =
+            "pill ok";
+
+        $("systemState").textContent =
+            "REVIEW";
+
+        $("systemState").className =
+            "value green";
+
+        if (migrate.length || duplicate.length) {
+            $("migrateBtn").disabled = false;
+            setStatus(
+                migrate.length +
+                " HackaX records can be migrated and " +
+                duplicate.length +
+                " duplicates can be cleaned.",
+                "ok"
+            );
+        } else if (review.length) {
+            setStatus(
+                "No automatic migrations are ready. " +
+                review.length +
+                " records require manual review.",
+                "warn"
+            );
+        } else {
+            setStatus(
+                "No HackaX contamination was detected in the Tech dataset.",
+                "ok"
+            );
+        }
+
+        terminal(
+            "Classification complete: " +
+            migrate.length +
+            " migrate · " +
+            duplicate.length +
+            " duplicate · " +
+            review.length +
+            " review · " +
+            clean.length +
+            " keep.",
+            "success"
+        );
+
+        state.scanned = true;
+        return true;
+
+    } catch (error) {
+        $("scanState").textContent = "SCAN FAILED";
+        $("scanState").className = "pill err";
+        $("systemState").textContent = "FAILED";
+        $("systemState").className = "value red";
+
+        setStatus(error.message, "err");
+        terminal(error.message, "error");
+        setProgress(100, "Failed");
+
+        return false;
+    } finally {
+        state.running = false;
+        $("scanBtn").disabled = false;
+    }
+}
+
+/* =========================================================
+   RESULTS
+========================================================= */
+
+function renderResults() {
+    var container = $("results");
+    container.innerHTML = "";
+
+    var items = state.candidates.filter(function (item) {
+        return state.filter === "all" ||
+            item.classification === state.filter;
+    });
+
+    if (!items.length) {
+        container.innerHTML =
+            '<div class="empty">No records match this filter.</div>';
+        updateReviewBox();
+        return;
+    }
+
+    items.forEach(function (item) {
+        var record = item.record;
+
+        var card = document.createElement("div");
+        card.className = "result";
+
+        var top = document.createElement("div");
+        top.className = "result-top";
+
+        var main = document.createElement("div");
+        main.className = "result-main";
+
+        var title = document.createElement("div");
+        title.className = "result-title";
+        title.textContent =
+            record.title ||
+            record.name ||
+            "Untitled article";
+
+        var path = document.createElement("div");
+        path.className = "result-path";
+
+        var url =
+            record.url ||
+            record.slug ||
+            "(no URL)";
+
+        path.textContent =
+            url +
+            " · " +
+            String(record.category || record.meta || "uncategorized");
+
+        main.appendChild(title);
+        main.appendChild(path);
+
+        var score = document.createElement("div");
+        score.className =
+            "score " +
+            (
+                item.score >= 80
+                    ? "high"
+                    : item.score >= 45
+                        ? "medium"
+                        : "low"
+            );
+
+        score.textContent =
+            item.score +
+            "%";
+
+        top.appendChild(main);
+        top.appendChild(score);
+
+        var body = document.createElement("div");
+        body.className = "result-body";
+
+        var signals = document.createElement("div");
+        signals.className = "signal-list";
+
+        item.signals
+            .sort(function (a, b) {
+                return Math.abs(b.weight) - Math.abs(a.weight);
+            })
+            .slice(0, 12)
+            .forEach(function (signal) {
+                var chip = document.createElement("span");
+                chip.className =
+                    "signal " +
+                    (
+                        signal.strong
+                            ? "strong"
+                            : signal.weight < 0
+                                ? "warn"
+                                : ""
+                    );
+
+                chip.textContent =
+                    signal.label +
+                    (
+                        signal.weight !== 0
+                            ? " " +
+                              (
+                                signal.weight > 0
+                                    ? "+"
+                                    : ""
+                              ) +
+                              signal.weight
+                            : ""
+                    );
+
+                signals.appendChild(chip);
+            });
+
+        body.appendChild(signals);
+
+        var actions = document.createElement("div");
+        actions.className = "result-actions";
+
+        if (
+            item.classification === "review"
+        ) {
+            var approve = document.createElement("button");
+            approve.className = "mini";
+            approve.textContent = "Approve migration";
+            approve.addEventListener("click", function () {
+                item.classification = "migrate";
+                renderResults();
+                refreshPlanCounts();
+            });
+            actions.appendChild(approve);
+        }
+
+        if (
+            item.classification === "migrate" ||
+            item.classification === "duplicate"
+        ) {
+            var skip = document.createElement("button");
+            skip.className = "mini";
+            skip.textContent = "Keep in Tech";
+            skip.addEventListener("click", function () {
+                item.classification = "clean";
+                renderResults();
+                refreshPlanCounts();
+            });
+            actions.appendChild(skip);
+        }
+
+        var inspect = document.createElement("button");
+        inspect.className = "mini";
+        inspect.textContent = "Inspect JSON";
+        inspect.addEventListener("click", function () {
+            showRecord(item);
+        });
+        actions.appendChild(inspect);
+
+        body.appendChild(actions);
+
+        card.appendChild(top);
+        card.appendChild(body);
+        container.appendChild(card);
+    });
+
+    updateReviewBox();
+}
+
+function showRecord(item) {
+    var json = JSON.stringify(item.record, null, 2);
+
+    var popup = window.open(
+        "",
+        "_blank",
+        "width=700,height=800"
+    );
+
+    if (!popup) {
+        alert(json);
+        return;
+    }
+
+    popup.document.write(
+        "<!doctype html><html><head><title>Record inspection</title>" +
+        "<style>body{background:#020403;color:#dff5ec;font:13px monospace;padding:20px}pre{white-space:pre-wrap;word-break:break-word}</style>" +
+        "</head><body><pre>" +
+        escapeHtml(json) +
+        "</pre></body></html>"
+    );
+
+    popup.document.close();
+}
+
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function refreshPlanCounts() {
+    var migrate = state.candidates.filter(function (x) {
+        return x.classification === "migrate";
+    });
+
+    var duplicate = state.candidates.filter(function (x) {
+        return x.classification === "duplicate";
+    });
+
+    var review = state.candidates.filter(function (x) {
+        return x.classification === "review";
+    });
+
+    var clean = state.candidates.filter(function (x) {
+        return x.classification === "clean";
+    });
+
+    state.plan = {
+        migrate: migrate,
+        duplicate: duplicate,
+        review: review,
+        clean: clean,
+        threshold: Number($("threshold").value)
+    };
+
+    $("candidateCount").textContent =
+        (migrate.length + duplicate.length) +
+        " candidates";
+
+    $("migrateBtn").disabled =
+        !(migrate.length || duplicate.length) ||
+        state.running;
+
+    updateReviewBox();
+}
+
+function updateReviewBox() {
+    if (!state.scanned) {
+        $("reviewBox").style.display = "none";
+        return;
+    }
+
+    var review = state.candidates.filter(function (x) {
+        return x.classification === "review";
+    });
+
+    var migrate = state.candidates.filter(function (x) {
+        return x.classification === "migrate";
+    });
+
+    if (!review.length) {
+        $("reviewBox").style.display = "none";
+        return;
+    }
+
+    $("reviewBox").style.display = "block";
+
+    $("reviewBox").textContent =
+        review.length +
+        " record(s) are intentionally excluded from automatic migration. " +
+        "They scored below the safe threshold but still contain cybersecurity signals. " +
+        "Approve individual records above if you have confirmed they belong to HackaX.";
+}
+
+/* =========================================================
+   BACKUP
+========================================================= */
+
+function saveLocalBackup() {
+    if (!$("backupLocal").checked) return;
+
+    try {
+        var backup = {
+            createdAt: new Date().toISOString(),
+            engineVersion: ENGINE_VERSION,
+            repository: state.config.repo,
+            branch: state.config.branch,
+            techPath: $("techPath").value.trim(),
+            hackaPath: $("hackaPath").value.trim(),
+            tech: serializeDataset(state.tech),
+            hacka: serializeDataset(state.hacka)
+        };
+
+        localStorage.setItem(
+            LOCAL_BACKUP_KEY,
+            JSON.stringify(backup)
+        );
+
+        terminal(
+            "Local pre-migration backup saved.",
+            "success"
+        );
+    } catch (error) {
+        terminal(
+            "Local backup could not be saved. Continuing because GitHub transaction remains protected.",
+            "warn"
+        );
+    }
+}
+
+/* =========================================================
+   GIT OBJECTS
+========================================================= */
+
+async function getBranchHead() {
+    var endpoint =
+        "git/ref/heads/" +
+        state.config.branch
+            .split("/")
+            .map(encodeURIComponent)
+            .join("/");
+
+    var data = await githubRequest(endpoint);
+
+    if (!data || !data.object || !data.object.sha) {
+        throw new Error("Could not resolve current branch head.");
+    }
+
+    return data.object.sha;
+}
+
+async function createBlob(content) {
+    var data = await githubRequest(
+        "git/blobs",
+        {
+            method: "POST",
+            headers: apiHeaders(true),
+            body: JSON.stringify({
+                content: String(content),
+                encoding: "utf-8"
+            })
+        }
+    );
+
+    if (!data || !data.sha) {
+        throw new Error("GitHub did not return a blob SHA.");
+    }
+
+    return data.sha;
+}
+
+/* =========================================================
+   TRANSACTION
+========================================================= */
+
+function buildMigration() {
+    if (!state.scanned || !state.tech || !state.hacka) {
+        throw new Error("Run a scan before starting migration.");
+    }
+
+    var selected = state.candidates.filter(function (item) {
+        return (
+            item.classification === "migrate" ||
+            item.classification === "duplicate"
+        );
+    });
+
+    if (!selected.length) {
+        throw new Error("There are no approved records to migrate.");
+    }
+
+    var preserveUrls = $("preserveUrls").checked;
+    var removeDuplicates = $("removeDuplicates").checked;
+
+    var moving = [];
+    var removing = [];
+
+    selected.forEach(function (item) {
+        if (item.classification === "duplicate") {
+            if (removeDuplicates) {
+                removing.push(item);
+            }
+            return;
+        }
+
+        moving.push(item);
+        removing.push(item);
+    });
+
+    var destinationRecords =
+        state.hacka.records.slice();
+
+    moving.forEach(function (item) {
+        var record =
+            JSON.parse(JSON.stringify(item.record));
+
+        /*
+         * Do not rewrite public URLs automatically.
+         * We preserve the object and only annotate migration metadata
+         * when possible through a non-destructive internal field.
+         *
+         * The destination remains the same article record unless the
+         * user later chooses a separate URL migration workflow.
+         */
+        if (!preserveUrls && record.url) {
+            record.url = String(record.url).replace(
+                /^tech\//i,
+                "hackax/"
+            );
+        }
+
+        destinationRecords.push(record);
+    });
+
+    var removeIndexes = new Set(
+        removing.map(function (item) {
+            return item.index;
+        })
+    );
+
+    var sourceRecords =
+        state.tech.records.filter(function (_, index) {
+            return !removeIndexes.has(index);
+        });
+
+    var destinationDataset =
+        Object.assign({}, state.hacka, {
+            records: destinationRecords
+        });
+
+    var sourceDataset =
+        Object.assign({}, state.tech, {
+            records: sourceRecords
+        });
+
+    return {
+        source: sourceDataset,
+        destination: destinationDataset,
+        moving: moving,
+        duplicates: selected.filter(function (x) {
+            return x.classification === "duplicate";
+        }),
+        removed: removing,
+        preserveUrls: preserveUrls
+    };
+}
+
+async function commitAtomicMigration(migration) {
+    terminal("Resolving current branch head...");
+    setProgress(60, "Resolving branch");
+
+    var headSha = await getBranchHead();
+
+    terminal(
+        "Branch head: " +
+        headSha.slice(0, 7)
+    );
+
+    var parent = await githubRequest(
+        "git/commits/" +
+        headSha
+    );
+
+    if (!parent.tree || !parent.tree.sha) {
+        throw new Error("Could not resolve current Git tree.");
+    }
+
+    setProgress(66, "Creating dataset blobs");
+
+    terminal("Creating cleaned Tech dataset blob...");
+    var techContent = serializeDataset(migration.source);
+    var techBlob = await createBlob(techContent);
+
+    terminal("Creating cleaned HackaX dataset blob...");
+    var hackaContent = serializeDataset(migration.destination);
+    var hackaBlob = await createBlob(hackaContent);
+
+    setProgress(74, "Building atomic tree");
+
+    var tree = await githubRequest(
+        "git/trees",
+        {
+            method: "POST",
+            headers: apiHeaders(true),
+            body: JSON.stringify({
+                base_tree: parent.tree.sha,
+                tree: [
+                    {
+                        path: $("techPath").value.trim(),
+                        mode: "100644",
+                        type: "blob",
+                        sha: techBlob
+                    },
+                    {
+                        path: $("hackaPath").value.trim(),
+                        mode: "100644",
+                        type: "blob",
+                        sha: hackaBlob
+                    }
+                ]
+            })
+        }
+    );
+
+    if (!tree || !tree.sha) {
+        throw new Error("GitHub did not return the new tree.");
+    }
+
+    setProgress(82, "Creating migration commit");
+
+    var commitMessage =
+        "chore: separate HackaX content from Dyve Tech";
+
+    terminal(
+        "Creating atomic editorial migration commit..."
+    );
+
+    var commit = await githubRequest(
+        "git/commits",
+        {
+            method: "POST",
+            headers: apiHeaders(true),
+            body: JSON.stringify({
+                message: commitMessage,
+                tree: tree.sha,
+                parents: [headSha]
+            })
+        }
+    );
+
+    if (!commit || !commit.sha) {
+        throw new Error("GitHub did not return the migration commit.");
+    }
+
+    setProgress(90, "Updating branch");
+
+    var refEndpoint =
+        "git/refs/heads/" +
+        state.config.branch
+            .split("/")
+            .map(encodeURIComponent)
+            .join("/");
+
+    var ref = await githubRequest(
+        refEndpoint,
+        {
+            method: "PATCH",
+            headers: apiHeaders(true),
+            body: JSON.stringify({
+                sha: commit.sha,
+                force: false
+            })
+        }
+    );
+
+    if (!ref || !ref.object || !ref.object.sha) {
+        throw new Error("GitHub did not confirm the branch update.");
+    }
+
+    return {
+        commitSha: commit.sha,
+        treeSha: tree.sha,
+        techContent: techContent,
+        hackaContent: hackaContent
+    };
+}
+
+/* =========================================================
+   POST-COMMIT VERIFICATION
+========================================================= */
+
+async function verifyRemote(commitSha, migration) {
+    setProgress(95, "Verifying");
+
+    terminal("Re-reading both datasets after commit...");
+
+    var techFile = await getFile(
+        $("techPath").value.trim(),
+        false
+    );
+
+    var hackaFile = await getFile(
+        $("hackaPath").value.trim(),
+        false
+    );
+
+    var techDataset = parseDataset(
+        techFile.content,
+        $("techPath").value.trim()
+    );
+
+    var hackaDataset = parseDataset(
+        hackaFile.content,
+        $("hackaPath").value.trim()
+    );
+
+    var movedKeys =
+        migration.moving.map(function (item) {
+            return duplicateKey(item.record);
+        });
+
+    var contaminated = techDataset.records.filter(function (record) {
+        return movedKeys.indexOf(duplicateKey(record)) !== -1;
+    });
+
+    var destinationMissing = migration.moving.filter(function (item) {
+        var key = duplicateKey(item.record);
+
+        return !hackaDataset.records.some(function (record) {
+            return duplicateKey(record) === key;
+        });
+    });
+
+    if (contaminated.length) {
+        throw new Error(
+            "Verification failed: " +
+            contaminated.length +
+            " migrated record(s) are still present in Tech."
+        );
+    }
+
+    if (destinationMissing.length) {
+        throw new Error(
+            "Verification failed: " +
+            destinationMissing.length +
+            " migrated record(s) are missing from HackaX."
+        );
+    }
+
+    $("verifyTech").textContent =
+        techDataset.records.length +
+        " records";
+
+    $("verifyHacka").textContent =
+        hackaDataset.records.length +
+        " records";
+
+    $("verifyMoved").textContent =
+        migration.moving.length +
+        " migrated";
+
+    $("verifyState").textContent =
+        "VERIFIED";
+
+    $("verifyState").className =
+        "pill ok";
+
+    $("systemState").textContent =
+        "CLEAN";
+
+    $("systemState").className =
+        "value green";
+
+    terminal(
+        "Verification passed. Tech/HackaX separation is clean.",
+        "success"
+    );
+
+    terminal(
+        "Commit verified: " +
+        commitSha,
+        "success"
+    );
+
+    return {
+        tech: techDataset.records.length,
+        hacka: hackaDataset.records.length,
+        moved: migration.moving.length
+    };
+}
+
+/* =========================================================
+   MIGRATION HISTORY
+========================================================= */
+
+function saveMigrationHistory(record) {
+    try {
+        var raw =
+            localStorage.getItem(
+                MIGRATION_HISTORY_KEY
+            );
+
+        var history =
+            raw
+                ? JSON.parse(raw)
+                : [];
+
+        if (!Array.isArray(history)) {
+            history = [];
+        }
+
+        history.unshift(record);
+
+        localStorage.setItem(
+            MIGRATION_HISTORY_KEY,
+            JSON.stringify(
+                history.slice(0, 50)
+            )
+        );
+    } catch (error) {
+        terminal(
+            "Migration history could not be saved locally.",
+            "warn"
+        );
+    }
+}
+
+/* =========================================================
+   RUN MIGRATION
+========================================================= */
+
+async function runMigration() {
+    if (state.running) return;
+
+    if (!state.scanned) {
+        setStatus("Run Scan & Classify first.", "warn");
+        return;
+    }
+
+    var migrate = state.candidates.filter(function (item) {
+        return item.classification === "migrate";
+    });
+
+    var duplicate = state.candidates.filter(function (item) {
+        return item.classification === "duplicate";
+    });
+
+    if (!migrate.length && !duplicate.length) {
+        setStatus("There is nothing approved for migration.", "warn");
+        return;
+    }
+
+    var confirmed =
+        window.confirm(
+            "This will update BOTH datasets in one Git commit.\n\n" +
+            "Move to HackaX: " +
+            migrate.length +
+            "\n" +
+            "Duplicate Tech copies to remove: " +
+            duplicate.length +
+            "\n\n" +
+            "No files will be changed if validation fails.\n\n" +
+            "Continue?"
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    state.running = true;
+    $("scanBtn").disabled = true;
+    $("migrateBtn").disabled = true;
+
+    $("systemState").textContent = "RUNNING";
+    $("systemState").className = "value amber";
+
+    setStatus(
+        "Preparing atomic editorial migration...",
+        "running"
+    );
+
+    setProgress(5, "Preparing");
+
+    try {
+        var migration = buildMigration();
+
+        terminal(
+            "Migration plan prepared: " +
+            migration.moving.length +
+            " records will move to HackaX.",
+            "success"
+        );
+
+        terminal(
+            migration.duplicates.length +
+            " existing HackaX duplicates will be removed from Tech.",
+            migration.duplicates.length ? "warn" : "info"
+        );
+
+        /*
+         * Local backup happens before any remote mutation.
+         */
+        saveLocalBackup();
+
+        /*
+         * Critical safety check:
+         * re-read both files immediately before mutation.
+         * This protects against stale browser state.
+         */
+        setProgress(20, "Refreshing source");
+
+        terminal(
+            "Re-reading source datasets immediately before migration..."
+        );
+
+        var latestTech = await getFile(
+            $("techPath").value.trim(),
+            false
+        );
+
+        var latestHacka = await getFile(
+            $("hackaPath").value.trim(),
+            true
+        );
+
+        var latestTechDataset =
+            parseDataset(
+                latestTech.content,
+                $("techPath").value.trim()
+            );
+
+        var latestHackaDataset =
+            latestHacka.exists
+                ? parseDataset(
+                    latestHacka.content,
+                    $("hackaPath").value.trim()
+                )
+                : {
+                    shape: "array",
+                    records: [],
+                    wrapper: null
+                };
+
+        state.tech = latestTechDataset;
+        state.hacka = latestHackaDataset;
+        state.techSha = latestTech.sha;
+        state.hackaSha = latestHacka.sha;
+
+        /*
+         * Reclassify against the fresh remote state.
+         */
+        var freshCandidates =
+            latestTechDataset.records.map(function (record, index) {
+                var result =
+                    classifyRecord(
+                        record,
+                        latestHackaDataset.records
+                    );
+
+                result.index = index;
+                return result;
+            });
+
+        /*
+         * Preserve user approvals from the current scan where possible.
+         */
+        state.candidates.forEach(function (approved) {
+            if (
+                approved.classification !== "migrate" &&
+                approved.classification !== "duplicate"
+            ) {
+                return;
+            }
+
+            var key =
+                duplicateKey(
+                    approved.record
+                );
+
+            freshCandidates.forEach(function (fresh) {
+                if (
+                    duplicateKey(fresh.record) === key &&
+                    fresh.classification !== "clean"
+                ) {
+                    fresh.classification =
+                        approved.classification === "migrate"
+                            ? "migrate"
+                            : fresh.classification;
+                }
+            });
+        });
+
+        state.candidates = freshCandidates;
+
+        var freshMigrate =
+            freshCandidates.filter(function (item) {
+                return item.classification === "migrate";
+            });
+
+        var freshDuplicate =
+            freshCandidates.filter(function (item) {
+                return item.classification === "duplicate";
+            });
+
+        if (!freshMigrate.length && !freshDuplicate.length) {
+            throw new Error(
+                "Safety stop: the remote datasets changed and there are no longer any approved records to migrate."
+            );
+        }
+
+        state.plan = {
+            migrate: freshMigrate,
+            duplicate: freshDuplicate,
+            review: freshCandidates.filter(function (x) {
+                return x.classification === "review";
+            }),
+            clean: freshCandidates.filter(function (x) {
+                return x.classification === "clean";
+            }),
+            threshold: Number($("threshold").value)
+        };
+
+        /*
+         * Build again from the fresh data.
+         */
+        var finalMigration = buildMigration();
+
+        /*
+         * Validate destination duplicates before writing.
+         */
+        var destinationKeys = new Set(
+            finalMigration.destination.records.map(function (record) {
+                return duplicateKey(record);
+            })
+        );
+
+        var duplicateDestination = finalMigration.moving.filter(function (item) {
+            return (
+                destinationKeys.has(
+                    duplicateKey(item.record)
+                ) &&
+                !isHackaDestinationDuplicate(
+                    item.record,
+                    finalMigration.destination.records.slice(
+                        0,
+                        finalMigration.destination.records.length -
+                        1
+                    )
+                )
+            );
+        });
+
+        if (duplicateDestination.length) {
+            terminal(
+                "Destination duplicate checks detected existing keys. The engine will not append duplicate records.",
+                "warn"
+            );
+        }
+
+        /*
+         * JSON validation before remote mutation.
+         */
+        var sourcePayload =
+            serializeDataset(finalMigration.source);
+
+        var destinationPayload =
+            serializeDataset(finalMigration.destination);
+
+        JSON.parse(sourcePayload);
+        JSON.parse(destinationPayload);
+
+        terminal(
+            "Both resulting JSON payloads validated locally.",
+            "success"
+        );
+
+        var result =
+            await commitAtomicMigration(
+                finalMigration
+            );
+
+        setProgress(93, "Verifying release");
+
+        var verification =
+            await verifyRemote(
+                result.commitSha,
+                finalMigration
+            );
+
+        saveMigrationHistory({
+            timestamp: new Date().toISOString(),
+            engineVersion: ENGINE_VERSION,
+            repository: state.config.repo,
+            branch: state.config.branch,
+            commit: result.commitSha,
+            moved: verification.moved,
+            techAfter: verification.tech,
+            hackaAfter: verification.hacka
+        });
+
+        setProgress(100, "Migration complete");
+
+        setStatus(
+            "Migration completed and verified successfully.",
+            "ok"
+        );
+
+        terminal(
+            "EDITORIAL CLEANUP COMPLETE.",
+            "success"
+        );
+
+        terminal(
+            "HackaX content has been separated from Dyve Tech.",
+            "success"
+        );
+
+        terminal(
+            "Commit: " +
+            result.commitSha,
+            "success"
+        );
+
+        terminal(
+            "Tech: " +
+            verification.tech +
+            " records",
+            "success"
+        );
+
+        terminal(
+            "HackaX: " +
+            verification.hacka +
+            " records",
+            "success"
+        );
+
+        state.scanned = false;
+        $("scanState").textContent = "MIGRATED";
+        $("scanState").className = "pill ok";
+        $("migrateBtn").disabled = true;
+
+    } catch (error) {
+        $("verifyState").textContent = "FAILED";
+        $("verifyState").className = "pill err";
+        $("systemState").textContent = "FAILED";
+        $("systemState").className = "value red";
+
+        setStatus(
+            "Migration failed: " +
+            error.message,
+            "err"
+        );
+
+        terminal(
+            "NO SAFE MIGRATION COMPLETED: " +
+            error.message,
+            "error"
+        );
+
+        setProgress(100, "Failed");
+
+        /*
+         * Important:
+         * The transaction is atomic at Git commit level.
+         * If commit creation or branch update failed,
+         * no partial JSON pair should be published.
+         */
+    } finally {
+        state.running = false;
+        $("scanBtn").disabled = false;
+
+        if (state.scanned) {
+            refreshPlanCounts();
+        }
+    }
+}
+
+/* =========================================================
+   FILTERS
+========================================================= */
+
+$("filters").addEventListener(
+    "click",
+    function (event) {
+        var button =
+            event.target.closest("button[data-filter]");
+
+        if (!button) return;
+
+        state.filter =
+            button.getAttribute("data-filter");
+
+        Array.from(
+            $("filters").querySelectorAll("button")
+        ).forEach(function (node) {
+            node.classList.toggle(
+                "active",
+                node === button
+            );
+        });
+
+        renderResults();
+    }
+);
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+$("scanBtn").addEventListener(
+    "click",
+    scan
+);
+
+$("migrateBtn").addEventListener(
+    "click",
+    runMigration
+);
+
+$("reloadBtn").addEventListener(
+    "click",
+    function () {
+        loadConfig();
+        setStatus(
+            "Configuration refreshed. No content has been changed.",
+            "ok"
+        );
+    }
+);
+
+$("threshold").addEventListener(
+    "change",
+    function () {
+        if (state.scanned) {
+            /*
+             * Reclassify from the already-loaded datasets.
+             * This is local only; no GitHub write occurs.
+             */
+            state.candidates =
+                state.tech.records.map(function (record, index) {
+                    var result =
+                        classifyRecord(
+                            record,
+                            state.hacka.records
+                        );
+
+                    result.index = index;
+                    return result;
+                });
+
+            refreshPlanCounts();
+            renderResults();
+        }
+    }
+);
+
+/* =========================================================
+   STORAGE CHANGE
+========================================================= */
+
+window.addEventListener(
+    "storage",
+    function (event) {
+        if (
+            event.key !== SETTINGS_KEY ||
+            state.running
+        ) {
+            return;
+        }
+
+        terminal(
+            "Tech Editor settings changed. Configuration refreshed.",
+            "info"
+        );
+
+        loadConfig();
+    }
+);
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+loadConfig();
+
+terminal(
+    "Dyve Tech Content Migrator v" +
+    ENGINE_VERSION +
+    " initialized.",
+    "success"
+);
+
+terminal(
+    "Tech source: " +
+    $("techPath").value,
+    "info"
+);
+
+terminal(
+    "HackaX source: " +
+    $("hackaPath").value,
+    "info"
+);
+
+terminal(
+    "Classification threshold: " +
+    $("threshold").value +
+    "%",
+    "info"
+);
+
+terminal(
+    "No files have been modified.",
+    "info"
+);
+
+setProgress(0, "Idle");
+
+})();
+</script>
+
+</body>
+</html>
