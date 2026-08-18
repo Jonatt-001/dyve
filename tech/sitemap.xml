@@ -2,7 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://dyve.online/tech/</loc>
-        <lastmod>2026-08-16</lastmod>
+        <lastmod>2026-08-18</lastmod>
+    </url>
+    <url>
+        <loc>https://dyve.online/tech/finally-github-restores-services-after-nearly-8hrs.html</loc>
+        <lastmod>2026-08-18</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/gemini-37-flash-vs-36-flash-whats-new-for-developers.html</loc>
