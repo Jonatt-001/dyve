@@ -4,7 +4,7 @@
 ============================================================
 DYVE TECH
 DYNAMIC TAXONOMY ENGINE
-VERSION: 2.0.0
+VERSION: 2.1.0
 
 Routes:
 
@@ -37,13 +37,35 @@ SEO OUTPUT:
 - noindex for 404 / empty taxonomy states
 - Canonical alias handling
 
+ARTICLE URL OUTPUT:
+
+/tech/:article-slug.html
+
+Example:
+
+/tech/gemini-37-flash-vs-36-flash-whats-new-for-developers.html
+
+IMPORTANT:
+
+The taxonomy engine MUST use the same canonical
+article URL structure as the Dyve Tech article system.
+
+No:
+
+/tech/article/:slug/
+/tech/article/:slug/
+
+Yes:
+
+/tech/:slug.html
+
 No dependencies.
 No build step.
 No manually-created category pages.
 
 Data source:
 
-assets/tech-articles.json
+/assets/tech-articles.json
 ============================================================
 */
 
@@ -54,8 +76,8 @@ assets/tech-articles.json
 
 const ARTICLES_URL =
     "https://www.dyve.online/assets/tech-articles.json";
-    
-    const SITE_URL =
+
+const SITE_URL =
     "https://www.dyve.online";
 
 const TECH_URL =
@@ -471,6 +493,49 @@ function stripHTML(value) {
 }
 
 
+/*
+------------------------------------------------------------
+CANONICAL ARTICLE SLUG NORMALIZATION
+
+Dyve Tech article slugs intentionally collapse decimal
+notation before the normal slugification process.
+
+Example:
+
+3.7 -> 37
+3.6 -> 36
+
+This ensures:
+
+"Gemini 3.7 Flash vs 3.6 Flash"
+
+becomes:
+
+"gemini-37-flash-vs-36-flash"
+
+instead of:
+
+"gemini-3-7-flash-vs-3-6-flash"
+
+The transformation is intentionally limited to numeric
+decimal separators so normal word boundaries remain intact.
+------------------------------------------------------------
+*/
+
+function normalizeArticleSlugInput(value) {
+
+    return String(
+        value || ""
+    )
+    .trim()
+    .replace(
+        /(\d)\.(\d)/g,
+        "$1$2"
+    );
+
+}
+
+
 function slugify(value) {
 
     return String(
@@ -483,6 +548,10 @@ function slugify(value) {
     )
     .toLowerCase()
     .trim()
+    .replace(
+        /(\d)\.(\d)/g,
+        "$1$2"
+    )
     .replace(
         /&/g,
         " and "
@@ -806,6 +875,31 @@ function articleTitle(
 }
 
 
+/*
+------------------------------------------------------------
+ARTICLE SLUG
+
+Priority:
+
+1. Existing article slug / urlSlug
+2. Existing permalink
+3. Article title
+
+If the supplied permalink is:
+
+/tech/gemini-37-flash-vs-36-flash-whats-new-for-developers.html
+
+the engine preserves:
+
+gemini-37-flash-vs-36-flash-whats-new-for-developers
+
+It does NOT reconstruct it from the title.
+
+This prevents taxonomy pages from inventing a different
+URL than the actual published article URL.
+------------------------------------------------------------
+*/
+
 function articleSlug(
     article
 ) {
@@ -825,59 +919,155 @@ function articleSlug(
         supplied
     ) {
 
-        return slugify(
+        let suppliedString =
             String(
                 supplied
             )
-            .replace(
-                /^\/+|\/+$/g,
+            .trim();
+
+
+        /*
+        ----------------------------------------------------
+        Absolute URL
+        ----------------------------------------------------
+        */
+
+        try {
+
+            if (
+                /^https?:\/\//i.test(
+                    suppliedString
+                )
+            ) {
+
+                suppliedString =
+                    new URL(
+                        suppliedString
+                    ).pathname;
+
+            }
+
+        } catch (error) {
+
+            /*
+             * Fall back to the supplied
+             * string if URL parsing fails.
+             */
+
+        }
+
+
+        /*
+        ----------------------------------------------------
+        Remove query string / hash
+        ----------------------------------------------------
+        */
+
+        suppliedString =
+            suppliedString
+                .split("?")[0]
+                .split("#")[0];
+
+
+        /*
+        ----------------------------------------------------
+        Remove trailing slash
+        ----------------------------------------------------
+        */
+
+        suppliedString =
+            suppliedString.replace(
+                /\/+$/g,
                 ""
-            )
-            .split("/")
-            .pop()
-        );
+            );
+
+
+        /*
+        ----------------------------------------------------
+        Remove .html extension
+        ----------------------------------------------------
+        */
+
+        suppliedString =
+            suppliedString.replace(
+                /\.html$/i,
+                ""
+            );
+
+
+        /*
+        ----------------------------------------------------
+        Extract final pathname segment
+        ----------------------------------------------------
+        */
+
+        suppliedString =
+            suppliedString
+                .split("/")
+                .pop();
+
+
+        if (
+            suppliedString
+        ) {
+
+            return slugify(
+                normalizeArticleSlugInput(
+                    suppliedString
+                )
+            );
+
+        }
 
     }
 
 
+    /*
+    --------------------------------------------------------
+    FALLBACK TO TITLE
+    --------------------------------------------------------
+    */
+
     return slugify(
-        articleTitle(
-            article
+        normalizeArticleSlugInput(
+            articleTitle(
+                article
+            )
         )
     );
+
 }
 
+
+/*
+------------------------------------------------------------
+CANONICAL DYVE TECH ARTICLE URL
+
+IMPORTANT:
+
+This MUST remain aligned with the real article router.
+
+Canonical format:
+
+/tech/:slug.html
+
+Example:
+
+/tech/gemini-37-flash-vs-36-flash-whats-new-for-developers.html
+
+NOT:
+
+/tech/article/:slug/
+
+NOT:
+
+/tech/article/:slug.html
+------------------------------------------------------------
+*/
 
 function articleURL(
     article
 ) {
-
-    const supplied =
-        firstValue(
-            article,
-            [
-                "url",
-                "link",
-                "permalink"
-            ]
-        );
-
-
-    if (
-        supplied &&
-        /^https?:\/\//i.test(
-            String(
-                supplied
-            )
-        )
-    ) {
-
-        return String(
-            supplied
-        );
-
-    }
-
 
     const slug =
         articleSlug(
@@ -887,11 +1077,10 @@ function articleURL(
 
     return (
         TECH_URL +
-        "article/" +
         encodeURIComponent(
             slug
         ) +
-        "/"
+        ".html"
     );
 
 }
