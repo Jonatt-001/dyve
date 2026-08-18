@@ -648,22 +648,6 @@ main {
         rgba(255,93,115,.08);
 }
 
-.pipeline-row.rebuild {
-    border-color:
-        rgba(255,209,102,.20);
-
-    background:
-        rgba(255,209,102,.025);
-}
-
-.pipeline-row.rebuild .pipeline-icon {
-    color:
-        var(--amber);
-
-    background:
-        rgba(255,209,102,.08);
-}
-
 .pipeline-name {
     color:
         rgba(255,255,255,.72);
@@ -813,11 +797,6 @@ main {
 .file-state.ready {
     color:
         var(--green);
-}
-
-.file-state.rebuild {
-    color:
-        var(--amber);
 }
 
 /* =========================================================
@@ -1275,14 +1254,6 @@ button.run:hover:not(:disabled) {
 }
 
 .timeline-item.warning .timeline-marker {
-    color:
-        var(--amber);
-
-    border-color:
-        rgba(255,209,102,.28);
-}
-
-.timeline-item.rebuild .timeline-marker {
     color:
         var(--amber);
 
@@ -2115,11 +2086,6 @@ button.run:hover:not(:disabled) {
         "dyve-tech-settings";
 
 
-    /*
-     * IMPORTANT:
-     * Dyve Tech admin/editor files live under /admin/tech-editor/.
-     */
-
     var TEMPLATE_PATH =
         "admin/tech-editor/tech-homepage-template.html";
 
@@ -2129,8 +2095,14 @@ button.run:hover:not(:disabled) {
     var HISTORY_PATH =
         "admin/tech-editor/update-history.json";
 
+    var PRODUCTION_URL =
+        "https://www.dyve.online/tech/index.html";
+
+    var PRODUCTION_ORIGIN =
+        "https://www.dyve.online";
+
     var UPDATER_VERSION =
-        "6.0.0";
+        "5.1.0";
 
     var API_VERSION =
         "2022-11-28";
@@ -2139,17 +2111,74 @@ button.run:hover:not(:disabled) {
         12000;
 
 
-    var MARKERS = {
+    /*
+     * The old updater treated FEATURED and LATEST as mandatory.
+     *
+     * That was the source of the false "missing publishing
+     * markers" failure.
+     *
+     * The new system discovers publishing markers from the
+     * canonical source itself.
+     *
+     * A valid pair looks like:
+     *
+     * <!-- DYVE_TECH_FEATURED_START -->
+     * ...
+     * <!-- DYVE_TECH_FEATURED_END -->
+     *
+     * Marker regions belonging to HEAD / META / SEO are never
+     * copied from production because those belong to the
+     * canonical source.
+     */
 
-        featured: [
-            "<!-- DYVE_TECH_FEATURED_START -->",
-            "<!-- DYVE_TECH_FEATURED_END -->"
-        ],
+    var DYNAMIC_REGION_NAMES = {
 
-        latest: [
-            "<!-- DYVE_TECH_LATEST_START -->",
-            "<!-- DYVE_TECH_LATEST_END -->"
-        ]
+        FEATURED: true,
+
+        LATEST: true,
+
+        TRENDING: true,
+
+        ARTICLES: true,
+
+        STORIES: true,
+
+        FEED: true,
+
+        NEWS: true,
+
+        CONTENT: true,
+
+        POSTS: true,
+
+        GRID: true,
+
+        SECONDARY: true,
+
+        DISCOVER: true
+
+    };
+
+
+    var EXCLUDED_REGION_NAMES = {
+
+        HEAD: true,
+
+        META: true,
+
+        SEO: true,
+
+        FOOTER: true,
+
+        HEADER: true,
+
+        NAV: true,
+
+        STRUCTURE: true,
+
+        SHELL: true,
+
+        PRODUCTION: true
 
     };
 
@@ -2170,7 +2199,11 @@ button.run:hover:not(:disabled) {
 
         checked: false,
 
-        installationCompleted: false
+        installationCompleted: false,
+
+        templateRegions: [],
+
+        dynamicRegions: []
 
     };
 
@@ -2207,7 +2240,9 @@ button.run:hover:not(:disabled) {
 
 
             var parsed =
-                JSON.parse(raw);
+                JSON.parse(
+                    raw
+                );
 
 
             if (
@@ -2302,6 +2337,67 @@ button.run:hover:not(:disabled) {
     }
 
 
+    function normalizeSiteUrl(
+        value
+    ) {
+
+        var url =
+            String(
+                value || ""
+            )
+            .trim();
+
+
+        if (!url) {
+
+            return PRODUCTION_ORIGIN;
+
+        }
+
+
+        url =
+            url.replace(
+                /\/+$/,
+                ""
+            );
+
+
+        /*
+         * Dyve Tech production is explicitly www.
+         * Normalize the old non-www value so generated
+         * metadata and release state do not drift.
+         */
+
+        if (
+            /^https?:\/\/dyve\.online$/i.test(
+                url
+            )
+        ) {
+
+            return PRODUCTION_ORIGIN;
+
+        }
+
+
+        if (
+            /^https?:\/\/dyve\.online\//i.test(
+                url
+            )
+        ) {
+
+            return url.replace(
+                /^https?:\/\/dyve\.online/i,
+                PRODUCTION_ORIGIN
+            );
+
+        }
+
+
+        return url;
+
+    }
+
+
     function loadConfig() {
 
         var settings =
@@ -2356,14 +2452,8 @@ button.run:hover:not(:disabled) {
 
 
         var siteUrl =
-            String(
-                settings.siteUrl ||
-                "https://dyve.online"
-            )
-            .trim()
-            .replace(
-                /\/+$/,
-                ""
+            normalizeSiteUrl(
+                settings.siteUrl
             );
 
 
@@ -2408,7 +2498,7 @@ button.run:hover:not(:disabled) {
 
 
         $("siteValue").textContent =
-            siteUrl;
+            PRODUCTION_URL;
 
 
         if (!validRepo) {
@@ -2643,8 +2733,7 @@ button.run:hover:not(:disabled) {
         row.classList.remove(
             "running",
             "success",
-            "error",
-            "rebuild"
+            "error"
         );
 
 
@@ -2794,7 +2883,7 @@ button.run:hover:not(:disabled) {
 
             return (
                 "GitHub denied this request. " +
-                "For a private repository, verify that the token has repository access and Contents read/write permission."
+                "Verify that the token has repository Contents read/write access."
             );
 
         }
@@ -2811,7 +2900,7 @@ button.run:hover:not(:disabled) {
                 return (
                     "GitHub cannot access repository \"" +
                     state.config.repo +
-                    "\". Verify the repository owner/name and make sure the configured token has access to this repository."
+                    "\". Verify the repository owner/name and token access."
                 );
 
             }
@@ -2857,7 +2946,7 @@ button.run:hover:not(:disabled) {
 
             return (
                 "GitHub reported a conflict. " +
-                "The production branch may have changed while this operation was running."
+                "The production branch changed while this operation was running. No forced overwrite was performed."
             );
 
         }
@@ -3236,34 +3325,243 @@ button.run:hover:not(:disabled) {
 
 
     /* =========================================================
-       MARKERS
+       PUBLISHING MARKER ENGINE
     ========================================================= */
 
-    function hasMarkerPair(
-        source,
-        pair
+    function normalizeSource(
+        source
     ) {
 
-        return (
-            typeof source === "string" &&
-            source.indexOf(
-                pair[0]
-            ) !== -1 &&
-            source.indexOf(
-                pair[1]
-            ) !== -1
+        return String(
+            source || ""
+        )
+        .replace(
+            /\r\n/g,
+            "\n"
+        )
+        .replace(
+            /\r/g,
+            "\n"
         );
 
     }
 
 
-    function hasRequiredMarkers(
+    function markerName(
+        value
+    ) {
+
+        return String(
+            value || ""
+        )
+        .trim()
+        .toUpperCase();
+
+    }
+
+
+    function discoverMarkers(
         source
     ) {
 
+        var text =
+            normalizeSource(
+                source
+            );
+
+
+        var startRegex =
+            /<!--\s*DYVE_TECH_([A-Z0-9_-]+)_START\s*-->/gi;
+
+        var endRegex =
+            /<!--\s*DYVE_TECH_([A-Z0-9_-]+)_END\s*-->/gi;
+
+
+        var starts = {};
+        var ends = {};
+
+        var match;
+
+
+        while (
+            (match =
+                startRegex.exec(
+                    text
+                ))
+        ) {
+
+            var startName =
+                markerName(
+                    match[1]
+                );
+
+
+            if (
+                !starts[startName]
+            ) {
+
+                starts[startName] = [];
+
+            }
+
+
+            starts[startName].push(
+                match.index
+            );
+
+        }
+
+
+        while (
+            (match =
+                endRegex.exec(
+                    text
+                ))
+        ) {
+
+            var endName =
+                markerName(
+                    match[1]
+                );
+
+
+            if (
+                !ends[endName]
+            ) {
+
+                ends[endName] = [];
+
+            }
+
+
+            ends[endName].push(
+                match.index
+            );
+
+        }
+
+
+        var names =
+            Object.keys(
+                starts
+            );
+
+
+        var regions = [];
+
+
+        names.forEach(
+            function (name) {
+
+                var startList =
+                    starts[name] ||
+                    [];
+
+                var endList =
+                    ends[name] ||
+                    [];
+
+
+                if (
+                    startList.length !==
+                    endList.length
+                ) {
+
+                    throw new Error(
+                        "Malformed canonical publishing markers for " +
+                        name +
+                        ". Every DYVE_TECH_" +
+                        name +
+                        "_START marker must have exactly one matching END marker."
+                    );
+
+                }
+
+
+                for (
+                    var index = 0;
+                    index < startList.length;
+                    index++
+                ) {
+
+                    var start =
+                        startList[index];
+
+                    var end =
+                        endList[index];
+
+
+                    if (
+                        end <= start
+                    ) {
+
+                        throw new Error(
+                            "Malformed canonical publishing region: " +
+                            name +
+                            ". The END marker occurs before its START marker."
+                        );
+
+                    }
+
+
+                    regions.push({
+
+                        name:
+                            name,
+
+                        start:
+                            start,
+
+                        end:
+                            end,
+
+                        startMarker:
+                            "<!-- DYVE_TECH_" +
+                            name +
+                            "_START -->",
+
+                        endMarker:
+                            "<!-- DYVE_TECH_" +
+                            name +
+                            "_END -->"
+
+                    });
+
+                }
+
+            }
+        );
+
+
+        regions.sort(
+            function (a, b) {
+
+                return a.start -
+                    b.start;
+
+            }
+        );
+
+
+        return regions;
+
+    }
+
+
+    function isDynamicRegion(
+        name
+    ) {
+
+        var normalized =
+            markerName(
+                name
+            );
+
+
         if (
-            typeof source !== "string" ||
-            !source.trim()
+            EXCLUDED_REGION_NAMES[
+                normalized
+            ]
         ) {
 
             return false;
@@ -3271,14 +3569,45 @@ button.run:hover:not(:disabled) {
         }
 
 
-        return Object.values(
-            MARKERS
-        ).every(
-            function (pair) {
+        if (
+            DYNAMIC_REGION_NAMES[
+                normalized
+            ]
+        ) {
 
-                return hasMarkerPair(
-                    source,
-                    pair
+            return true;
+
+        }
+
+
+        /*
+         * Unknown DYVE_TECH regions are treated as dynamic only
+         * when their name clearly describes content rather than
+         * document structure.
+         */
+
+        return (
+            /(?:ARTICLE|STORY|POST|CONTENT|FEED|NEWS|GRID|CARD|ITEM|LIST|TREND|FEATURE|DISCOVER)/i
+                .test(
+                    normalized
+                )
+        );
+
+    }
+
+
+    function getDynamicRegions(
+        source
+    ) {
+
+        return discoverMarkers(
+            source
+        )
+        .filter(
+            function (region) {
+
+                return isDynamicRegion(
+                    region.name
                 );
 
             }
@@ -3287,58 +3616,69 @@ button.run:hover:not(:disabled) {
     }
 
 
-    function getMissingMarkers(
+    function hasMalformedPublishingMarkers(
         source
     ) {
 
-        var missing = [];
+        /*
+         * discoverMarkers() performs the actual structural
+         * validation. This wrapper exists so callers can use a
+         * simple boolean check where appropriate.
+         */
+
+        try {
+
+            discoverMarkers(
+                source
+            );
 
 
-        Object.keys(
-            MARKERS
-        ).forEach(
-            function (key) {
+            return false;
 
-                var pair =
-                    MARKERS[key];
+        } catch (error) {
+
+            return true;
+
+        }
+
+    }
 
 
-                if (
-                    !hasMarkerPair(
-                        source,
-                        pair
-                    )
-                ) {
+    function regionKey(
+        region
+    ) {
 
-                    missing.push(
-                        key
-                    );
-
-                }
-
-            }
+        return (
+            markerName(
+                region.name
+            )
         );
-
-
-        return missing;
 
     }
 
 
     function extractRegion(
         source,
-        pair
+        region
     ) {
 
+        var text =
+            normalizeSource(
+                source
+            );
+
+
         var start =
-            source.indexOf(
-                pair[0]
+            text.indexOf(
+                region.startMarker
             );
 
 
         var end =
-            source.indexOf(
-                pair[1]
+            text.indexOf(
+                region.endMarker,
+                start +
+                region.startMarker.length
             );
 
 
@@ -3353,9 +3693,9 @@ button.run:hover:not(:disabled) {
         }
 
 
-        return source.slice(
+        return text.slice(
             start +
-            pair[0].length,
+            region.startMarker.length,
             end
         );
 
@@ -3364,19 +3704,27 @@ button.run:hover:not(:disabled) {
 
     function replaceRegion(
         source,
-        pair,
+        region,
         content
     ) {
 
+        var text =
+            normalizeSource(
+                source
+            );
+
+
         var start =
-            source.indexOf(
-                pair[0]
+            text.indexOf(
+                region.startMarker
             );
 
 
         var end =
-            source.indexOf(
-                pair[1]
+            text.indexOf(
+                region.endMarker,
+                start +
+                region.startMarker.length
             );
 
 
@@ -3387,7 +3735,9 @@ button.run:hover:not(:disabled) {
         ) {
 
             throw new Error(
-                "Managed publishing region is malformed."
+                "Publishing region " +
+                region.name +
+                " is malformed."
             );
 
         }
@@ -3395,29 +3745,102 @@ button.run:hover:not(:disabled) {
 
         var endPosition =
             end +
-            pair[1].length;
+            region.endMarker.length;
 
 
         return (
-            source.slice(
+            text.slice(
                 0,
                 start
             ) +
 
-            pair[0] +
+            region.startMarker +
 
             "\n" +
 
-            content +
+            String(
+                content || ""
+            ).trim() +
 
             "\n" +
 
-            pair[1] +
+            region.endMarker +
 
-            source.slice(
+            text.slice(
                 endPosition
             )
         );
+
+    }
+
+
+    function validateTemplateContract(
+        source
+    ) {
+
+        if (
+            !String(
+                source || ""
+            ).trim()
+        ) {
+
+            throw new Error(
+                "Canonical homepage template is empty."
+            );
+
+        }
+
+
+        if (
+            hasMalformedPublishingMarkers(
+                source
+            )
+        ) {
+
+            throw new Error(
+                "Canonical template contains malformed DYVE_TECH publishing markers. The marker pairs must be repaired before production can be rebuilt."
+            );
+
+        }
+
+
+        var regions =
+            discoverMarkers(
+                source
+            );
+
+
+        var dynamic =
+            regions.filter(
+                function (region) {
+
+                    return isDynamicRegion(
+                        region.name
+                    );
+
+                }
+            );
+
+
+        state.templateRegions =
+            regions;
+
+        state.dynamicRegions =
+            dynamic;
+
+
+        return {
+
+            total:
+                regions.length,
+
+            dynamic:
+                dynamic.length,
+
+            regions:
+                regions
+
+        };
 
     }
 
@@ -3428,27 +3851,91 @@ button.run:hover:not(:disabled) {
     ) {
 
         var result =
-            template;
+            normalizeSource(
+                template
+            );
 
 
-        Object.values(
-            MARKERS
-        ).forEach(
-            function (pair) {
+        var templateDynamic =
+            getDynamicRegions(
+                template
+            );
 
-                var liveRegion =
-                    extractRegion(
-                        live,
-                        pair
+
+        if (
+            !templateDynamic.length
+        ) {
+
+            /*
+             * Static canonical mode.
+             *
+             * This is intentional. The old implementation
+             * incorrectly rejected the template here.
+             *
+             * The canonical template is authoritative.
+             */
+
+            return result;
+
+        }
+
+
+        var liveRegions =
+            getDynamicRegions(
+                live
+            );
+
+
+        templateDynamic.forEach(
+            function (templateRegion) {
+
+                var matching =
+                    liveRegions.find(
+                        function (liveRegion) {
+
+                            return (
+                                regionKey(
+                                    liveRegion
+                                ) ===
+                                regionKey(
+                                    templateRegion
+                                )
+                            );
+
+                        }
                     );
 
 
                 if (
-                    liveRegion === null
+                    !matching
+                ) {
+
+                    /*
+                     * The canonical template owns this region.
+                     * If production has no matching region, keep
+                     * the canonical region rather than failing.
+                     */
+
+                    return;
+
+                }
+
+
+                var content =
+                    extractRegion(
+                        live,
+                        matching
+                    );
+
+
+                if (
+                    content === null
                 ) {
 
                     throw new Error(
-                        "Live homepage is missing a managed publishing region."
+                        "Production publishing region " +
+                        templateRegion.name +
+                        " could not be safely extracted."
                     );
 
                 }
@@ -3457,8 +3944,8 @@ button.run:hover:not(:disabled) {
                 result =
                     replaceRegion(
                         result,
-                        pair,
-                        liveRegion
+                        templateRegion,
+                        content
                     );
 
             }
@@ -3470,8 +3957,113 @@ button.run:hover:not(:disabled) {
     }
 
 
+    function staticSignature(
+        source
+    ) {
+
+        var result =
+            normalizeSource(
+                source
+            );
+
+
+        var regions =
+            discoverMarkers(
+                result
+            );
+
+
+        /*
+         * Only dynamic regions are normalized for shell comparison.
+         * SEO/head/document structure therefore remains canonical.
+         */
+
+        var dynamic =
+            regions.filter(
+                function (region) {
+
+                    return isDynamicRegion(
+                        region.name
+                    );
+
+                }
+            );
+
+
+        dynamic
+            .slice()
+            .sort(
+                function (a, b) {
+
+                    return b.start -
+                        a.start;
+
+                }
+            )
+            .forEach(
+                function (region) {
+
+                    var start =
+                        result.indexOf(
+                            region.startMarker
+                        );
+
+
+                    var end =
+                        result.indexOf(
+                            region.endMarker,
+                            start +
+                            region.startMarker.length
+                        );
+
+
+                    if (
+                        start === -1 ||
+                        end === -1 ||
+                        end < start
+                    ) {
+
+                        throw new Error(
+                            "Cannot calculate homepage signature because publishing region " +
+                            region.name +
+                            " is malformed."
+                        );
+
+                    }
+
+
+                    var endPosition =
+                        end +
+                        region.endMarker.length;
+
+
+                    result =
+                        result.slice(
+                            0,
+                            start
+                        ) +
+
+                        region.startMarker +
+
+                        "\n__DYVE_DYNAMIC_REGION__\n" +
+
+                        region.endMarker +
+
+                        result.slice(
+                            endPosition
+                        );
+
+                }
+            );
+
+
+        return result.trim();
+
+    }
+
+
     /* =========================================================
-       TEMPLATE VERSION
+       VERSION
     ========================================================= */
 
     function getVersion(
@@ -3495,82 +4087,8 @@ button.run:hover:not(:disabled) {
 
 
     /* =========================================================
-       STATIC SIGNATURE
+       HASH
     ========================================================= */
-
-    function staticSignature(
-        source
-    ) {
-
-        var result =
-            String(
-                source || ""
-            )
-            .replace(
-                /\r\n/g,
-                "\n"
-            );
-
-
-        Object.values(
-            MARKERS
-        ).forEach(
-            function (pair) {
-
-                var start =
-                    result.indexOf(
-                        pair[0]
-                    );
-
-
-                var end =
-                    result.indexOf(
-                        pair[1]
-                    );
-
-
-                if (
-                    start === -1 ||
-                    end === -1 ||
-                    end < start
-                ) {
-
-                    throw new Error(
-                        "Cannot calculate homepage signature because a publishing marker is missing."
-                    );
-
-                }
-
-
-                var endPosition =
-                    end +
-                    pair[1].length;
-
-
-                result =
-                    result.slice(
-                        0,
-                        start
-                    ) +
-
-                    pair[0] +
-
-                    "\n__DYVE_DYNAMIC_REGION__\n" +
-
-                    pair[1] +
-
-                    result.slice(
-                        endPosition
-                    );
-
-            }
-        );
-
-
-        return result.trim();
-
-    }
-
 
     async function hash(
         value
@@ -3604,6 +4122,46 @@ button.run:hover:not(:disabled) {
                 }
             )
             .join("");
+
+    }
+
+
+    /* =========================================================
+       URL NORMALIZATION
+    ========================================================= */
+
+    function normalizeProductionUrl(
+        source
+    ) {
+
+        var result =
+            normalizeSource(
+                source
+            );
+
+
+        /*
+         * Normalize only exact Dyve Tech URL forms.
+         *
+         * This prevents the updater from leaving the old
+         * non-www canonical URL inside the canonical homepage.
+         */
+
+        result =
+            result.replace(
+                /https?:\/\/dyve\.online\/tech\/(?:index\.html)?/gi,
+                PRODUCTION_URL
+            );
+
+
+        result =
+            result.replace(
+                /https?:\/\/www\.dyve\.online\/tech\/(?!index\.html)/gi,
+                "https://www.dyve.online/tech/"
+            );
+
+
+        return result;
 
     }
 
@@ -3731,6 +4289,12 @@ button.run:hover:not(:disabled) {
             );
 
 
+            terminal(
+                "Production URL: " +
+                PRODUCTION_URL
+            );
+
+
             setProgress(
                 10,
                 "Settings"
@@ -3775,31 +4339,15 @@ button.run:hover:not(:disabled) {
 
 
             state.template =
-                templateFile.content;
-
-
-            if (
-                !state.template
-            ) {
-
-                throw new Error(
-                    "Canonical homepage template is empty."
+                normalizeSource(
+                    templateFile.content
                 );
 
-            }
 
-
-            if (
-                !hasRequiredMarkers(
+            var templateContract =
+                validateTemplateContract(
                     state.template
-                )
-            ) {
-
-                throw new Error(
-                    "Canonical template is missing required publishing markers. The canonical source must be repaired before production can be rebuilt."
                 );
-
-            }
 
 
             var templateVersion =
@@ -3842,6 +4390,55 @@ button.run:hover:not(:disabled) {
             );
 
 
+            if (
+                templateContract.dynamic === 0
+            ) {
+
+                terminal(
+                    "Canonical template uses static canonical mode. No dynamic publishing regions are required.",
+                    "info"
+                );
+
+            } else {
+
+                terminal(
+                    "Detected " +
+                    templateContract.dynamic +
+                    " dynamic publishing region" +
+                    (
+                        templateContract.dynamic === 1
+                            ? ""
+                            : "s"
+                    ) +
+                    ".",
+                    "success"
+                );
+
+
+                templateContract.regions
+                    .filter(
+                        function (region) {
+
+                            return isDynamicRegion(
+                                region.name
+                            );
+
+                        }
+                    )
+                    .forEach(
+                        function (region) {
+
+                            terminal(
+                                "Managed region: " +
+                                region.name
+                            );
+
+                        }
+                    );
+
+            }
+
+
             setProgress(
                 42,
                 "Template"
@@ -3874,7 +4471,9 @@ button.run:hover:not(:disabled) {
 
             state.liveHomepage =
                 liveFile.exists
-                    ? liveFile.content
+                    ? normalizeSource(
+                        liveFile.content
+                    )
                     : null;
 
 
@@ -3898,91 +4497,44 @@ button.run:hover:not(:disabled) {
 
 
                 terminal(
-                    "Production homepage does not exist.",
+                    "Production homepage does not exist. This release will create tech/index.html.",
                     "warn"
                 );
 
+            } else {
 
-                terminal(
-                    "Canonical template will be used to create tech/index.html.",
-                    "success"
+                if (
+                    hasMalformedPublishingMarkers(
+                        state.liveHomepage
+                    )
+                ) {
+
+                    throw new Error(
+                        "Existing production homepage contains malformed DYVE_TECH publishing markers. No changes were made."
+                    );
+
+                }
+
+
+                stage(
+                    "Live",
+                    "success",
+                    "found"
                 );
 
-            } else {
+
+                $("homepageFileState").textContent =
+                    "found";
+
+
+                $("homepageFileState").className =
+                    "file-state ready";
+
 
                 terminal(
                     "Production homepage found.",
                     "success"
                 );
-
-
-                var missingMarkers =
-                    getMissingMarkers(
-                        state.liveHomepage
-                    );
-
-
-                if (
-                    missingMarkers.length
-                ) {
-
-                    stage(
-                        "Live",
-                        "rebuild",
-                        "rebuild"
-                    );
-
-
-                    $("homepageFileState").textContent =
-                        "rebuild";
-
-
-                    $("homepageFileState").className =
-                        "file-state rebuild";
-
-
-                    terminal(
-                        "Production homepage is structurally incompatible with the canonical publishing system.",
-                        "warn"
-                    );
-
-
-                    terminal(
-                        "Missing managed regions: " +
-                        missingMarkers.join(", ") +
-                        ".",
-                        "warn"
-                    );
-
-
-                    terminal(
-                        "Automatic reconstruction from the canonical template is available.",
-                        "success"
-                    );
-
-                } else {
-
-                    stage(
-                        "Live",
-                        "success",
-                        "valid"
-                    );
-
-
-                    $("homepageFileState").textContent =
-                        "valid";
-
-
-                    $("homepageFileState").className =
-                        "file-state ready";
-
-
-                    terminal(
-                        "Production homepage publishing markers verified.",
-                        "success"
-                    );
-
-                }
 
             }
 
@@ -4004,44 +4556,27 @@ button.run:hover:not(:disabled) {
 
 
             var liveSignature =
-                null;
-
-
-            var liveMarkersValid =
-                Boolean(
-                    state.liveHomepage &&
-                    hasRequiredMarkers(
+                state.liveHomepage
+                    ? staticSignature(
                         state.liveHomepage
                     )
-                );
-
-
-            if (
-                liveMarkersValid
-            ) {
-
-                liveSignature =
-                    staticSignature(
-                        state.liveHomepage
-                    );
-
-            }
+                    : null;
 
 
             var same =
                 Boolean(
                     state.liveHomepage &&
-                    liveMarkersValid &&
                     liveSignature ===
                     templateSignature
                 );
 
 
-            var repairRequired =
-                Boolean(
-                    state.liveHomepage &&
-                    !liveMarkersValid
-                );
+            var liveDynamicCount =
+                state.liveHomepage
+                    ? getDynamicRegions(
+                        state.liveHomepage
+                    ).length
+                    : 0;
 
 
             state.release = {
@@ -4061,12 +4596,6 @@ button.run:hover:not(:disabled) {
                         state.liveHomepage
                     ),
 
-                markersValid:
-                    liveMarkersValid,
-
-                repairRequired:
-                    repairRequired,
-
                 sameStaticShell:
                     same,
 
@@ -4080,7 +4609,13 @@ button.run:hover:not(:disabled) {
                         ? await hash(
                             liveSignature
                         )
-                        : null
+                        : null,
+
+                templateDynamicRegions:
+                    templateContract.dynamic,
+
+                liveDynamicRegions:
+                    liveDynamicCount
 
             };
 
@@ -4103,28 +4638,13 @@ button.run:hover:not(:disabled) {
             ) {
 
                 setStatus(
-                    "Production homepage is missing. A new homepage can be created.",
+                    "New homepage detected. It is ready to be created.",
                     "ok"
                 );
 
 
                 terminal(
-                    "RELEASE READY: tech/index.html will be created from the canonical template.",
-                    "success"
-                );
-
-            } else if (
-                state.release.repairRequired
-            ) {
-
-                setStatus(
-                    "Production homepage requires automatic reconstruction.",
-                    "warn"
-                );
-
-
-                terminal(
-                    "REBUILD READY: existing homepage will be replaced by the verified canonical template.",
+                    "RELEASE READY: tech/index.html will be created.",
                     "success"
                 );
 
@@ -4200,6 +4720,13 @@ button.run:hover:not(:disabled) {
             setProgress(
                 100,
                 "Failed"
+            );
+
+
+            stage(
+                "Template",
+                "error",
+                "failed"
             );
 
 
@@ -4285,39 +4812,6 @@ button.run:hover:not(:disabled) {
 
 
         if (
-            release.repairRequired
-        ) {
-
-            $("releaseState").textContent =
-                "REBUILD READY";
-
-
-            $("releaseState").className =
-                "pill warn";
-
-
-            $("releaseMeta").textContent =
-                "Existing homepage is missing the canonical managed publishing structure.";
-
-
-            $("releaseMessage").textContent =
-                "The updater will automatically reconstruct tech/index.html from the verified canonical template. No live content will be merged because the existing managed regions cannot be identified safely.";
-
-
-            updateButton.textContent =
-                "Rebuild Homepage";
-
-
-            updateButton.disabled =
-                false;
-
-
-            return;
-
-        }
-
-
-        if (
             !release.sameStaticShell
         ) {
 
@@ -4337,7 +4831,7 @@ button.run:hover:not(:disabled) {
 
 
             $("releaseMessage").textContent =
-                "A new homepage shell is available. Dynamic featured and latest article regions will be preserved.";
+                "A new homepage shell is available. Compatible dynamic publishing regions will be preserved automatically.";
 
 
             updateButton.textContent =
@@ -4397,7 +4891,6 @@ button.run:hover:not(:disabled) {
             state.release &&
             (
                 !state.release.liveExists ||
-                state.release.repairRequired ||
                 !state.release.sameStaticShell
             )
         ) {
@@ -4416,15 +4909,19 @@ button.run:hover:not(:disabled) {
 
     async function getBranchHead() {
 
+        var encodedBranch =
+            state.config.branch
+                .split("/")
+                .map(
+                    encodeURIComponent
+                )
+                .join("/");
+
+
         var data =
             await githubRequest(
                 "git/ref/heads/" +
-                state.config.branch
-                    .split("/")
-                    .map(
-                        encodeURIComponent
-                    )
-                    .join("/")
+                encodedBranch
             );
 
 
@@ -4715,10 +5212,10 @@ button.run:hover:not(:disabled) {
 
 
     /* =========================================================
-       ATOMIC RELEASE
+       RELEASE TREE
     ========================================================= */
 
-    async function commitRelease(
+    async function createReleaseCommit(
         homepage,
         history
     ) {
@@ -4795,6 +5292,9 @@ button.run:hover:not(:disabled) {
 
                     system:
                         "Dyve Tech Production Update System",
+
+                    productionUrl:
+                        PRODUCTION_URL,
 
                     updatedAt:
                         new Date()
@@ -4913,22 +5413,8 @@ button.run:hover:not(:disabled) {
         );
 
 
-        var action =
-            state.release &&
-            state.release.repairRequired
-                ? "rebuild"
-                : (
-                    state.release &&
-                    !state.release.liveExists
-                        ? "create"
-                        : "sync"
-                );
-
-
         var commitMessage =
-            "release: " +
-            action +
-            " Dyve Tech homepage v" +
+            "release: sync Dyve Tech homepage v" +
             state.release.templateVersion;
 
 
@@ -5042,10 +5528,16 @@ button.run:hover:not(:disabled) {
         }
 
 
-        setProgress(
-            94,
-            "Verifying installation"
-        );
+        if (
+            ref.object.sha !==
+            commit.sha
+        ) {
+
+            throw new Error(
+                "GitHub branch verification failed. The branch does not point to the release commit."
+            );
+
+        }
 
 
         terminal(
@@ -5060,9 +5552,67 @@ button.run:hover:not(:disabled) {
                 commit.sha,
 
             treeSha:
-                tree.sha
+                tree.sha,
+
+            parentSha:
+                headSha
 
         };
+
+    }
+
+
+    /* =========================================================
+       REMOTE VERIFICATION
+    ========================================================= */
+
+    async function verifyRemoteHomepage(
+        expectedContent
+    ) {
+
+        terminal(
+            "Verifying production homepage file in GitHub..."
+        );
+
+
+        var remote =
+            await getFile(
+                HOMEPAGE_PATH,
+                false
+            );
+
+
+        var expected =
+            normalizeSource(
+                expectedContent
+            );
+
+
+        var actual =
+            normalizeSource(
+                remote.content
+            );
+
+
+        if (
+            actual !==
+            expected
+        ) {
+
+            throw new Error(
+                "Post-release verification failed: GitHub does not contain the exact homepage generated by this release."
+            );
+
+        }
+
+
+        terminal(
+            "GitHub production file verified.",
+            "success"
+        );
+
+
+        return true;
 
     }
 
@@ -5099,7 +5649,6 @@ button.run:hover:not(:disabled) {
 
         if (
             state.release.liveExists &&
-            !state.release.repairRequired &&
             state.release.sameStaticShell
         ) {
 
@@ -5171,123 +5720,82 @@ button.run:hover:not(:disabled) {
 
             var finalHomepage;
 
-            var releaseAction;
-
-
-            /* -------------------------------------------------
-               TARGET DOES NOT EXIST
-            ------------------------------------------------- */
 
             if (
                 !freshLive.exists
             ) {
 
                 finalHomepage =
-                    state.template;
-
-                releaseAction =
-                    "create";
+                    normalizeProductionUrl(
+                        state.template
+                    );
 
 
                 terminal(
-                    "Target does not exist.",
+                    "Target does not exist. Creating tech/index.html.",
                     "warn"
-                );
-
-
-                terminal(
-                    "Building tech/index.html from canonical template.",
-                    "success"
                 );
 
             } else {
 
-                /* ---------------------------------------------
-                   TARGET EXISTS BUT MARKERS ARE MISSING
-                --------------------------------------------- */
+                if (
+                    hasMalformedPublishingMarkers(
+                        freshLive.content
+                    )
+                ) {
 
-                var freshMarkersValid =
-                    hasRequiredMarkers(
+                    throw new Error(
+                        "Safety stop: existing tech/index.html contains malformed publishing regions. No changes were made."
+                    );
+
+                }
+
+
+                finalHomepage =
+                    mergeLiveContent(
+                        state.template,
                         freshLive.content
                     );
 
 
+                finalHomepage =
+                    normalizeProductionUrl(
+                        finalHomepage
+                    );
+
+
+                terminal(
+                    "Canonical shell prepared.",
+                    "success"
+                );
+
+
+                var preservedRegions =
+                    getDynamicRegions(
+                        state.template
+                    );
+
+
                 if (
-                    !freshMarkersValid
+                    preservedRegions.length
                 ) {
 
-                    var freshMissingMarkers =
-                        getMissingMarkers(
-                            freshLive.content
-                        );
-
-
-                    finalHomepage =
-                        state.template;
-
-                    releaseAction =
-                        "rebuild";
-
-
-                    stage(
-                        "Live",
-                        "rebuild",
-                        "rebuilding"
-                    );
-
-
                     terminal(
-                        "Existing production homepage does not contain the canonical managed publishing structure.",
-                        "warn"
-                    );
-
-
-                    terminal(
-                        "Missing regions: " +
-                        freshMissingMarkers.join(
-                            ", "
+                        preservedRegions.length +
+                        " compatible dynamic publishing region" +
+                        (
+                            preservedRegions.length === 1
+                                ? ""
+                                : "s"
                         ) +
-                        ".",
-                        "warn"
-                    );
-
-
-                    terminal(
-                        "Rebuilding production homepage from canonical template.",
-                        "success"
-                    );
-
-
-                    terminal(
-                        "The canonical template is now the authoritative production source.",
-                        "success"
+                        " evaluated."
                     );
 
                 } else {
 
-                    /* -----------------------------------------
-                       TARGET EXISTS AND IS VALID
-                    ----------------------------------------- */
-
-                    finalHomepage =
-                        mergeLiveContent(
-                            state.template,
-                            freshLive.content
-                        );
-
-                    releaseAction =
-                        "update";
-
-
                     terminal(
-                        "Canonical shell prepared.",
-                        "success"
-                    );
-
-
-                    terminal(
-                        "Featured and latest publishing regions preserved.",
-                        "success"
+                        "Canonical template is static. No production HTML publishing regions were copied.",
+                        "info"
                     );
 
                 }
@@ -5305,14 +5813,19 @@ button.run:hover:not(:disabled) {
             );
 
 
+            validateTemplateContract(
+                state.template
+            );
+
+
             if (
-                !hasRequiredMarkers(
+                hasMalformedPublishingMarkers(
                     finalHomepage
                 )
             ) {
 
                 throw new Error(
-                    "Safety validation failed: resulting homepage is missing required markers."
+                    "Safety validation failed: resulting homepage contains malformed DYVE_TECH publishing markers."
                 );
 
             }
@@ -5342,8 +5855,41 @@ button.run:hover:not(:disabled) {
             }
 
 
+            if (
+                !finalHomepage.includes(
+                    "<html"
+                )
+            ) {
+
+                throw new Error(
+                    "Safety validation failed: resulting homepage does not appear to be a valid HTML document."
+                );
+
+            }
+
+
+            if (
+                !finalHomepage.includes(
+                    "</html>"
+                )
+            ) {
+
+                throw new Error(
+                    "Safety validation failed: resulting homepage is missing the closing HTML document tag."
+                );
+
+            }
+
+
             terminal(
                 "Homepage safety validation passed.",
+                "success"
+            );
+
+
+            terminal(
+                "Canonical production URL normalized to " +
+                PRODUCTION_URL,
                 "success"
             );
 
@@ -5352,19 +5898,11 @@ button.run:hover:not(:disabled) {
                HISTORY RECORD
             ------------------------------------------------- */
 
-            var recordType =
-                releaseAction === "rebuild"
-                    ? "rebuild"
-                    : (
-                        releaseAction === "create"
-                            ? "create"
-                            : "release"
-                    );
-
-
             var record =
                 createHistoryRecord(
-                    recordType,
+                    freshLive.exists
+                        ? "release"
+                        : "create",
                     {
 
                         status:
@@ -5377,6 +5915,9 @@ button.run:hover:not(:disabled) {
                         target:
                             HOMEPAGE_PATH,
 
+                        productionUrl:
+                            PRODUCTION_URL,
+
                         source:
                             TEMPLATE_PATH,
 
@@ -5388,15 +5929,21 @@ button.run:hover:not(:disabled) {
                                 : null,
 
                         action:
-                            releaseAction,
+                            freshLive.exists
+                                ? "update"
+                                : "create",
 
-                        repair:
-                            releaseAction ===
-                            "rebuild",
+                        dynamicRegions:
+                            getDynamicRegions(
+                                state.template
+                            )
+                            .map(
+                                function (region) {
 
-                        markerRepair:
-                            releaseAction ===
-                            "rebuild"
+                                    return region.name;
+
+                                }
+                            )
 
                     }
                 );
@@ -5417,14 +5964,46 @@ button.run:hover:not(:disabled) {
 
 
             /* -------------------------------------------------
+               CAPTURE BRANCH HEAD
+            ------------------------------------------------- */
+
+            var releaseHeadBeforeCommit =
+                await getBranchHead();
+
+
+            terminal(
+                "Release base confirmed: " +
+                releaseHeadBeforeCommit.slice(
+                    0,
+                    7
+                )
+            );
+
+
+            /* -------------------------------------------------
                COMMIT
             ------------------------------------------------- */
 
             var result =
-                await commitRelease(
+                await createReleaseCommit(
                     finalHomepage,
                     workingHistory
                 );
+
+
+            /* -------------------------------------------------
+               POST RELEASE VERIFICATION
+            ------------------------------------------------- */
+
+            setProgress(
+                94,
+                "Verifying installation"
+            );
+
+
+            await verifyRemoteHomepage(
+                finalHomepage
+            );
 
 
             /* -------------------------------------------------
@@ -5444,6 +6023,14 @@ button.run:hover:not(:disabled) {
 
             record.tree =
                 result.treeSha;
+
+
+            record.parent =
+                result.parentSha;
+
+
+            record.verified =
+                true;
 
 
             var finalHistory =
@@ -5494,10 +6081,7 @@ button.run:hover:not(:disabled) {
 
 
             $("installationState").textContent =
-                releaseAction ===
-                "rebuild"
-                    ? "REBUILT"
-                    : "INSTALLED";
+                "INSTALLED";
 
 
             $("installationState").className =
@@ -5506,27 +6090,18 @@ button.run:hover:not(:disabled) {
 
             setProgress(
                 100,
-                releaseAction ===
-                    "rebuild"
-                        ? "Rebuilt"
-                        : "Installed"
+                "Installed"
             );
 
 
             setStatus(
-                releaseAction ===
-                    "rebuild"
-                        ? "Dyve Tech homepage reconstructed and installed successfully."
-                        : "Dyve Tech homepage update installed successfully.",
+                "Dyve Tech homepage update installed successfully.",
                 "ok"
             );
 
 
             $("releaseState").textContent =
-                releaseAction ===
-                    "rebuild"
-                        ? "REBUILT"
-                        : "INSTALLED";
+                "INSTALLED";
 
 
             $("releaseState").className =
@@ -5534,24 +6109,15 @@ button.run:hover:not(:disabled) {
 
 
             $("releaseMessage").textContent =
-                releaseAction ===
-                    "rebuild"
-                        ? "The malformed production homepage was replaced with the verified canonical template. Vercel should now begin deployment automatically."
-                        : "Production branch updated successfully. Vercel should now begin deployment automatically.";
+                "Production branch updated and the GitHub homepage file was verified successfully. Vercel should now process the updated branch automatically.";
 
 
             $("updateBtn").textContent =
-                releaseAction ===
-                    "rebuild"
-                        ? "Rebuild Complete"
-                        : "Update Complete";
+                "Update Complete";
 
 
             terminal(
-                releaseAction ===
-                    "rebuild"
-                        ? "PRODUCTION REBUILD INSTALLED."
-                        : "PRODUCTION RELEASE INSTALLED.",
+                "Production release installed.",
                 "success"
             );
 
@@ -5571,23 +6137,23 @@ button.run:hover:not(:disabled) {
 
 
             terminal(
+                "Production URL: " +
+                PRODUCTION_URL,
+                "success"
+            );
+
+
+            terminal(
                 "History: " +
                 HISTORY_PATH,
                 "success"
             );
 
 
-            if (
-                releaseAction ===
-                "rebuild"
-            ) {
-
-                terminal(
-                    "Publishing markers repaired by canonical reconstruction.",
-                    "success"
-                );
-
-            }
+            terminal(
+                "GitHub post-release verification passed.",
+                "success"
+            );
 
 
             terminal(
@@ -5617,6 +6183,9 @@ button.run:hover:not(:disabled) {
 
                         target:
                             HOMEPAGE_PATH,
+
+                        productionUrl:
+                            PRODUCTION_URL,
 
                         source:
                             TEMPLATE_PATH,
@@ -5723,7 +6292,6 @@ button.run:hover:not(:disabled) {
                 state.release &&
                 (
                     !state.release.liveExists ||
-                    state.release.repairRequired ||
                     !state.release.sameStaticShell
                 )
             ) {
@@ -5834,20 +6402,6 @@ button.run:hover:not(:disabled) {
                     }
 
 
-                    if (
-                        record.type ===
-                        "rebuild" ||
-                        record.repair ===
-                        true
-                    ) {
-
-                        item.classList.add(
-                            "rebuild"
-                        );
-
-                    }
-
-
                     var marker =
                         document.createElement(
                             "div"
@@ -5866,12 +6420,7 @@ button.run:hover:not(:disabled) {
                                 record.type ===
                                 "check"
                                     ? "?"
-                                    : (
-                                        record.type ===
-                                        "rebuild"
-                                            ? "R"
-                                            : "✓"
-                                    )
+                                    : "✓"
                             );
 
 
@@ -5916,17 +6465,6 @@ button.run:hover:not(:disabled) {
 
                         label =
                             "Homepage created";
-
-                    }
-
-
-                    if (
-                        record.type ===
-                        "rebuild"
-                    ) {
-
-                        label =
-                            "Homepage rebuilt";
 
                     }
 
@@ -6060,36 +6598,6 @@ button.run:hover:not(:disabled) {
 
 
                     if (
-                        record.repair ===
-                        true
-                    ) {
-
-                        var repair =
-                            document.createElement(
-                                "div"
-                            );
-
-
-                        repair.className =
-                            "timeline-detail";
-
-
-                        repair.style.color =
-                            "var(--amber)";
-
-
-                        repair.textContent =
-                            "Canonical reconstruction performed";
-
-
-                        content.appendChild(
-                            repair
-                        );
-
-                    }
-
-
-                    if (
                         record.commitShort ||
                         record.commit
                     ) {
@@ -6211,14 +6719,8 @@ button.run:hover:not(:disabled) {
                     updateAvailable:
                         !state.release
                             .liveExists ||
-                        state.release
-                            .repairRequired ||
                         !state.release
-                            .sameStaticShell,
-
-                    repairRequired:
-                        state.release
-                            .repairRequired
+                            .sameStaticShell
 
                 }
             );
@@ -6335,6 +6837,13 @@ button.run:hover:not(:disabled) {
 
 
     terminal(
+        "Production URL: " +
+        PRODUCTION_URL,
+        "info"
+    );
+
+
+    terminal(
         "Release history: " +
         HISTORY_PATH,
         "info"
@@ -6342,8 +6851,8 @@ button.run:hover:not(:disabled) {
 
 
     terminal(
-        "Automatic reconstruction mode: ENABLED.",
-        "success"
+        "Publishing marker validation: adaptive.",
+        "info"
     );
 
 
