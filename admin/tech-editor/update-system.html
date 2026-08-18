@@ -25,7 +25,7 @@ main{padding:40px 0 80px}.eyebrow{font:8px Audiowide,sans-serif;letter-spacing:.
 
 <main class="wrap">
 <section class="hero">
-<div class="eyebrow"><span class="dot"></span>Canonical production channel</div>
+<div class="eyebrow"><span class="dot"></span>Canonical production channel · manual checks</div>
 <h1>Update the Tech system without publishing.</h1>
 <p>The Tech Editor owns article content. This system owns the production homepage template. Check the canonical template, review the difference, and run the update. The system creates or replaces <b>tech/index.html</b> while preserving its live publishing regions.</p>
 </section>
@@ -53,7 +53,7 @@ main{padding:40px 0 80px}.eyebrow{font:8px Audiowide,sans-serif;letter-spacing:.
 <div class="section-head">
 <div>
 <div class="title">Homepage release</div>
-<div class="meta" id="releaseMeta">Checking the canonical template against the live production homepage.</div>
+<div class="meta" id="releaseMeta">Nothing runs automatically. Tap Check for Update when you want to inspect production.</div>
 </div>
 <div class="version" id="releaseState">CHECKING</div>
 </div>
@@ -73,7 +73,7 @@ main{padding:40px 0 80px}.eyebrow{font:8px Audiowide,sans-serif;letter-spacing:.
 <button class="primary" id="updateBtn" disabled>RUN NEW UPDATE</button>
 </div>
 
-<div class="status" id="status"><i></i><span>Checking release channel...</span></div>
+<div class="status" id="status"><i></i><span>Ready. Tap Check for Update.</span></div>
 <div class="progress" id="progress"><span></span></div>
 <div class="log" id="log"></div>
 <div class="security">The updater reads the same <b>dyve-tech-settings</b> object as tech-editor/settings.html. No release payload folder or manual manifest is required. Checks are recorded locally; successful releases also receive a persistent repository audit record.</div>
@@ -116,9 +116,10 @@ const HISTORY_KEY = 'dyve-tech-update-history';
 const SERVER_HISTORY_PATH = 'tech-editor/update-history.json';
 const TEMPLATE_PATH = 'tech-editor/tech-homepage-template.html';
 const HOMEPAGE_PATH = 'tech/index.html';
-const UPDATER_VERSION = '3.0.0';
+const UPDATER_VERSION = '4.0.0';
 const MAX_LOCAL_RECORDS = 250;
 const STORAGE_SYNC_DEBOUNCE = 1400;
+const REQUEST_TIMEOUT_MS = 15000;
 
 const MARKERS = Object.freeze({
     head: ['<!-- DYVE_TECH_HEAD_START -->', '<!-- DYVE_TECH_HEAD_END -->'],
@@ -238,8 +239,18 @@ function loadHistory() {
 
 function saveHistory(records) {
     const trimmed = records.slice(0, MAX_LOCAL_RECORDS);
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(trimmed));
-    renderHistory(trimmed);
+
+    try {
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(trimmed));
+    } catch (error) {
+        console.warn('[Dyve Tech Update] Local history could not be persisted:', error);
+    }
+
+    try {
+        renderHistory(trimmed);
+    } catch (error) {
+        console.warn('[Dyve Tech Update] History render failed:', error);
+    }
 }
 
 function addHistory(type, title, detail, meta={}, status='ok') {
@@ -374,12 +385,31 @@ function authHeaders() {
     return headers;
 }
 
+async function fetchWithTimeout(url, options={}, timeoutMs=REQUEST_TIMEOUT_MS) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+        return await fetch(url, {
+            ...options,
+            signal: controller.signal
+        });
+    } catch (error) {
+        if (error && error.name === 'AbortError') {
+            throw new Error(`Request timed out after ${Math.round(timeoutMs / 1000)} seconds. Check your GitHub settings, connection, or repository access.`);
+        }
+        throw error;
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
 async function github(path, options={}) {
     if (!config?.valid) {
         throw new Error('GitHub repository is not configured.');
     }
 
-    const response = await fetch(
+    const response = await fetchWithTimeout(
         `https://api.github.com/repos/${config.owner}/${config.name}/${path}`,
         Object.assign({
             headers: authHeaders(),
@@ -397,7 +427,7 @@ async function github(path, options={}) {
 }
 
 async function githubText(path, optional=false) {
-    const response = await fetch(
+    const response = await fetchWithTimeout(
         `https://api.github.com/repos/${config.owner}/${config.name}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
         {
             headers: authHeaders(),
@@ -713,6 +743,7 @@ async function checkForUpdate(trigger='manual') {
         }
     } catch (error) {
         release = null;
+        resetProgress();
         $('releaseState').textContent = 'CHECK FAILED';
         $('releaseState').className = 'version err';
         $('releaseNote').className = 'note err';
@@ -905,7 +936,7 @@ async function verifyLiveDeployment(expectedHomepage, maxAttempts=15) {
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
         try {
             const separator = target.includes('?') ? '&' : '?';
-            const response = await fetch(
+            const response = await fetchWithTimeout(
                 `${target}${separator}dyve_update_check=${Date.now()}`,
                 {
                     cache: 'no-store',
@@ -1247,12 +1278,12 @@ function setupSettingsSync() {
             if (busy) return;
 
             syncConfig();
-            log('Tech Editor Settings changed. Synchronizing release configuration...', 'info');
+            log('Tech Editor Settings changed. Connection configuration synchronized.', 'info');
 
             addHistory(
                 'system',
                 'Settings synchronized',
-                `Update System received new repository configuration from Tech Editor Settings.`,
+                'Update System received new repository configuration from Tech Editor Settings. Network checking was not started automatically.',
                 {
                     repo: config.repo,
                     branch: config.branch
@@ -1260,7 +1291,12 @@ function setupSettingsSync() {
                 'info'
             );
 
-            checkForUpdate('settings-sync');
+            setStatus('Settings synchronized. Tap CHECK FOR UPDATE when you are ready.', 'ok');
+            $('releaseState').textContent = 'READY';
+            $('releaseState').className = 'version';
+            $('checkBtn').disabled = false;
+            $('checkBtn').textContent = 'CHECK FOR UPDATE';
+            $('updateBtn').disabled = true;
         }, STORAGE_SYNC_DEBOUNCE);
     });
 }
@@ -1287,7 +1323,12 @@ if (syncConfig()) {
         'info'
     );
 
-    checkForUpdate('initial-load');
+    setStatus('Ready. Tap CHECK FOR UPDATE to inspect the production homepage.', 'ok');
+    $('releaseState').textContent = 'READY';
+    $('releaseState').className = 'version';
+    $('checkBtn').disabled = false;
+    $('checkBtn').textContent = 'CHECK FOR UPDATE';
+    $('updateBtn').disabled = true;
 } else {
     setStatus('Configure Tech Editor GitHub settings before checking for updates.', 'err');
     addHistory(
