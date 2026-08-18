@@ -648,6 +648,22 @@ main {
         rgba(255,93,115,.08);
 }
 
+.pipeline-row.rebuild {
+    border-color:
+        rgba(255,209,102,.20);
+
+    background:
+        rgba(255,209,102,.025);
+}
+
+.pipeline-row.rebuild .pipeline-icon {
+    color:
+        var(--amber);
+
+    background:
+        rgba(255,209,102,.08);
+}
+
 .pipeline-name {
     color:
         rgba(255,255,255,.72);
@@ -797,6 +813,11 @@ main {
 .file-state.ready {
     color:
         var(--green);
+}
+
+.file-state.rebuild {
+    color:
+        var(--amber);
 }
 
 /* =========================================================
@@ -1254,6 +1275,14 @@ button.run:hover:not(:disabled) {
 }
 
 .timeline-item.warning .timeline-marker {
+    color:
+        var(--amber);
+
+    border-color:
+        rgba(255,209,102,.28);
+}
+
+.timeline-item.rebuild .timeline-marker {
     color:
         var(--amber);
 
@@ -2101,7 +2130,7 @@ button.run:hover:not(:disabled) {
         "admin/tech-editor/update-history.json";
 
     var UPDATER_VERSION =
-        "5.0.0";
+        "6.0.0";
 
     var API_VERSION =
         "2022-11-28";
@@ -2202,15 +2231,6 @@ button.run:hover:not(:disabled) {
 
     }
 
-
-    /*
-     * Accept all common repository formats:
-     *
-     * owner/repository
-     * owner/repository.git
-     * https://github.com/owner/repository
-     * https://github.com/owner/repository.git
-     */
 
     function normalizeRepository(
         value
@@ -2623,7 +2643,8 @@ button.run:hover:not(:disabled) {
         row.classList.remove(
             "running",
             "success",
-            "error"
+            "error",
+            "rebuild"
         );
 
 
@@ -3180,14 +3201,6 @@ button.run:hover:not(:disabled) {
 
         } catch (error) {
 
-            /*
-             * Optional files may be absent.
-             *
-             * We ONLY treat a precise file-not-found error
-             * as optional. Repository authentication/access
-             * errors are never swallowed.
-             */
-
             if (
                 optional &&
                 error &&
@@ -3232,6 +3245,7 @@ button.run:hover:not(:disabled) {
     ) {
 
         return (
+            typeof source === "string" &&
             source.indexOf(
                 pair[0]
             ) !== -1 &&
@@ -3247,6 +3261,16 @@ button.run:hover:not(:disabled) {
         source
     ) {
 
+        if (
+            typeof source !== "string" ||
+            !source.trim()
+        ) {
+
+            return false;
+
+        }
+
+
         return Object.values(
             MARKERS
         ).every(
@@ -3259,6 +3283,44 @@ button.run:hover:not(:disabled) {
 
             }
         );
+
+    }
+
+
+    function getMissingMarkers(
+        source
+    ) {
+
+        var missing = [];
+
+
+        Object.keys(
+            MARKERS
+        ).forEach(
+            function (key) {
+
+                var pair =
+                    MARKERS[key];
+
+
+                if (
+                    !hasMarkerPair(
+                        source,
+                        pair
+                    )
+                ) {
+
+                    missing.push(
+                        key
+                    );
+
+                }
+
+            }
+        );
+
+
+        return missing;
 
     }
 
@@ -3734,7 +3796,7 @@ button.run:hover:not(:disabled) {
             ) {
 
                 throw new Error(
-                    "Canonical template is missing required publishing markers."
+                    "Canonical template is missing required publishing markers. The canonical source must be repaired before production can be rebuilt."
                 );
 
             }
@@ -3836,31 +3898,91 @@ button.run:hover:not(:disabled) {
 
 
                 terminal(
-                    "Production homepage does not exist. This release will create tech/index.html.",
+                    "Production homepage does not exist.",
                     "warn"
                 );
 
-            } else {
 
-                stage(
-                    "Live",
-                    "success",
-                    "found"
+                terminal(
+                    "Canonical template will be used to create tech/index.html.",
+                    "success"
                 );
 
-
-                $("homepageFileState").textContent =
-                    "found";
-
-
-                $("homepageFileState").className =
-                    "file-state ready";
-
+            } else {
 
                 terminal(
                     "Production homepage found.",
                     "success"
                 );
+
+
+                var missingMarkers =
+                    getMissingMarkers(
+                        state.liveHomepage
+                    );
+
+
+                if (
+                    missingMarkers.length
+                ) {
+
+                    stage(
+                        "Live",
+                        "rebuild",
+                        "rebuild"
+                    );
+
+
+                    $("homepageFileState").textContent =
+                        "rebuild";
+
+
+                    $("homepageFileState").className =
+                        "file-state rebuild";
+
+
+                    terminal(
+                        "Production homepage is structurally incompatible with the canonical publishing system.",
+                        "warn"
+                    );
+
+
+                    terminal(
+                        "Missing managed regions: " +
+                        missingMarkers.join(", ") +
+                        ".",
+                        "warn"
+                    );
+
+
+                    terminal(
+                        "Automatic reconstruction from the canonical template is available.",
+                        "success"
+                    );
+
+                } else {
+
+                    stage(
+                        "Live",
+                        "success",
+                        "valid"
+                    );
+
+
+                    $("homepageFileState").textContent =
+                        "valid";
+
+
+                    $("homepageFileState").className =
+                        "file-state ready";
+
+
+                    terminal(
+                        "Production homepage publishing markers verified.",
+                        "success"
+                    );
+
+                }
 
             }
 
@@ -3882,18 +4004,43 @@ button.run:hover:not(:disabled) {
 
 
             var liveSignature =
-                state.liveHomepage
-                    ? staticSignature(
+                null;
+
+
+            var liveMarkersValid =
+                Boolean(
+                    state.liveHomepage &&
+                    hasRequiredMarkers(
                         state.liveHomepage
                     )
-                    : null;
+                );
+
+
+            if (
+                liveMarkersValid
+            ) {
+
+                liveSignature =
+                    staticSignature(
+                        state.liveHomepage
+                    );
+
+            }
 
 
             var same =
                 Boolean(
                     state.liveHomepage &&
+                    liveMarkersValid &&
                     liveSignature ===
                     templateSignature
+                );
+
+
+            var repairRequired =
+                Boolean(
+                    state.liveHomepage &&
+                    !liveMarkersValid
                 );
 
 
@@ -3913,6 +4060,12 @@ button.run:hover:not(:disabled) {
                     Boolean(
                         state.liveHomepage
                     ),
+
+                markersValid:
+                    liveMarkersValid,
+
+                repairRequired:
+                    repairRequired,
 
                 sameStaticShell:
                     same,
@@ -3950,13 +4103,28 @@ button.run:hover:not(:disabled) {
             ) {
 
                 setStatus(
-                    "New homepage detected. It is ready to be created.",
+                    "Production homepage is missing. A new homepage can be created.",
                     "ok"
                 );
 
 
                 terminal(
-                    "RELEASE READY: tech/index.html will be created.",
+                    "RELEASE READY: tech/index.html will be created from the canonical template.",
+                    "success"
+                );
+
+            } else if (
+                state.release.repairRequired
+            ) {
+
+                setStatus(
+                    "Production homepage requires automatic reconstruction.",
+                    "warn"
+                );
+
+
+                terminal(
+                    "REBUILD READY: existing homepage will be replaced by the verified canonical template.",
                     "success"
                 );
 
@@ -4035,20 +4203,6 @@ button.run:hover:not(:disabled) {
             );
 
 
-            if (
-                state.config &&
-                state.config.validRepo
-            ) {
-
-                stage(
-                    "Github",
-                    "error",
-                    "failed"
-                );
-
-            }
-
-
             return false;
 
         } finally {
@@ -4119,6 +4273,39 @@ button.run:hover:not(:disabled) {
 
             updateButton.textContent =
                 "Create Homepage";
+
+
+            updateButton.disabled =
+                false;
+
+
+            return;
+
+        }
+
+
+        if (
+            release.repairRequired
+        ) {
+
+            $("releaseState").textContent =
+                "REBUILD READY";
+
+
+            $("releaseState").className =
+                "pill warn";
+
+
+            $("releaseMeta").textContent =
+                "Existing homepage is missing the canonical managed publishing structure.";
+
+
+            $("releaseMessage").textContent =
+                "The updater will automatically reconstruct tech/index.html from the verified canonical template. No live content will be merged because the existing managed regions cannot be identified safely.";
+
+
+            updateButton.textContent =
+                "Rebuild Homepage";
 
 
             updateButton.disabled =
@@ -4210,6 +4397,7 @@ button.run:hover:not(:disabled) {
             state.release &&
             (
                 !state.release.liveExists ||
+                state.release.repairRequired ||
                 !state.release.sameStaticShell
             )
         ) {
@@ -4725,8 +4913,22 @@ button.run:hover:not(:disabled) {
         );
 
 
+        var action =
+            state.release &&
+            state.release.repairRequired
+                ? "rebuild"
+                : (
+                    state.release &&
+                    !state.release.liveExists
+                        ? "create"
+                        : "sync"
+                );
+
+
         var commitMessage =
-            "release: sync Dyve Tech homepage v" +
+            "release: " +
+            action +
+            " Dyve Tech homepage v" +
             state.release.templateVersion;
 
 
@@ -4820,6 +5022,7 @@ button.run:hover:not(:disabled) {
                                     false
 
                             }
+
                         )
 
                 }
@@ -4896,6 +5099,7 @@ button.run:hover:not(:disabled) {
 
         if (
             state.release.liveExists &&
+            !state.release.repairRequired &&
             state.release.sameStaticShell
         ) {
 
@@ -4967,6 +5171,12 @@ button.run:hover:not(:disabled) {
 
             var finalHomepage;
 
+            var releaseAction;
+
+
+            /* -------------------------------------------------
+               TARGET DOES NOT EXIST
+            ------------------------------------------------- */
 
             if (
                 !freshLive.exists
@@ -4975,44 +5185,112 @@ button.run:hover:not(:disabled) {
                 finalHomepage =
                     state.template;
 
+                releaseAction =
+                    "create";
+
 
                 terminal(
-                    "Target does not exist. Creating tech/index.html.",
+                    "Target does not exist.",
                     "warn"
+                );
+
+
+                terminal(
+                    "Building tech/index.html from canonical template.",
+                    "success"
                 );
 
             } else {
 
-                if (
-                    !hasRequiredMarkers(
+                /* ---------------------------------------------
+                   TARGET EXISTS BUT MARKERS ARE MISSING
+                --------------------------------------------- */
+
+                var freshMarkersValid =
+                    hasRequiredMarkers(
                         freshLive.content
-                    )
+                    );
+
+
+                if (
+                    !freshMarkersValid
                 ) {
 
-                    throw new Error(
-                        "Safety stop: existing tech/index.html does not contain the required managed publishing regions. No changes were made."
+                    var freshMissingMarkers =
+                        getMissingMarkers(
+                            freshLive.content
+                        );
+
+
+                    finalHomepage =
+                        state.template;
+
+                    releaseAction =
+                        "rebuild";
+
+
+                    stage(
+                        "Live",
+                        "rebuild",
+                        "rebuilding"
+                    );
+
+
+                    terminal(
+                        "Existing production homepage does not contain the canonical managed publishing structure.",
+                        "warn"
+                    );
+
+
+                    terminal(
+                        "Missing regions: " +
+                        freshMissingMarkers.join(
+                            ", "
+                        ) +
+                        ".",
+                        "warn"
+                    );
+
+
+                    terminal(
+                        "Rebuilding production homepage from canonical template.",
+                        "success"
+                    );
+
+
+                    terminal(
+                        "The canonical template is now the authoritative production source.",
+                        "success"
+                    );
+
+                } else {
+
+                    /* -----------------------------------------
+                       TARGET EXISTS AND IS VALID
+                    ----------------------------------------- */
+
+                    finalHomepage =
+                        mergeLiveContent(
+                            state.template,
+                            freshLive.content
+                        );
+
+                    releaseAction =
+                        "update";
+
+
+                    terminal(
+                        "Canonical shell prepared.",
+                        "success"
+                    );
+
+
+                    terminal(
+                        "Featured and latest publishing regions preserved.",
+                        "success"
                     );
 
                 }
-
-
-                finalHomepage =
-                    mergeLiveContent(
-                        state.template,
-                        freshLive.content
-                    );
-
-
-                terminal(
-                    "Canonical shell prepared.",
-                    "success"
-                );
-
-
-                terminal(
-                    "Featured and latest publishing regions preserved.",
-                    "success"
-                );
 
             }
 
@@ -5074,11 +5352,19 @@ button.run:hover:not(:disabled) {
                HISTORY RECORD
             ------------------------------------------------- */
 
+            var recordType =
+                releaseAction === "rebuild"
+                    ? "rebuild"
+                    : (
+                        releaseAction === "create"
+                            ? "create"
+                            : "release"
+                    );
+
+
             var record =
                 createHistoryRecord(
-                    freshLive.exists
-                        ? "release"
-                        : "create",
+                    recordType,
                     {
 
                         status:
@@ -5102,9 +5388,15 @@ button.run:hover:not(:disabled) {
                                 : null,
 
                         action:
-                            freshLive.exists
-                                ? "update"
-                                : "create"
+                            releaseAction,
+
+                        repair:
+                            releaseAction ===
+                            "rebuild",
+
+                        markerRepair:
+                            releaseAction ===
+                            "rebuild"
 
                     }
                 );
@@ -5202,7 +5494,10 @@ button.run:hover:not(:disabled) {
 
 
             $("installationState").textContent =
-                "INSTALLED";
+                releaseAction ===
+                "rebuild"
+                    ? "REBUILT"
+                    : "INSTALLED";
 
 
             $("installationState").className =
@@ -5211,18 +5506,27 @@ button.run:hover:not(:disabled) {
 
             setProgress(
                 100,
-                "Installed"
+                releaseAction ===
+                    "rebuild"
+                        ? "Rebuilt"
+                        : "Installed"
             );
 
 
             setStatus(
-                "Dyve Tech homepage update installed successfully.",
+                releaseAction ===
+                    "rebuild"
+                        ? "Dyve Tech homepage reconstructed and installed successfully."
+                        : "Dyve Tech homepage update installed successfully.",
                 "ok"
             );
 
 
             $("releaseState").textContent =
-                "INSTALLED";
+                releaseAction ===
+                    "rebuild"
+                        ? "REBUILT"
+                        : "INSTALLED";
 
 
             $("releaseState").className =
@@ -5230,15 +5534,24 @@ button.run:hover:not(:disabled) {
 
 
             $("releaseMessage").textContent =
-                "Production branch updated successfully. Vercel should now begin deployment automatically.";
+                releaseAction ===
+                    "rebuild"
+                        ? "The malformed production homepage was replaced with the verified canonical template. Vercel should now begin deployment automatically."
+                        : "Production branch updated successfully. Vercel should now begin deployment automatically.";
 
 
             $("updateBtn").textContent =
-                "Update Complete";
+                releaseAction ===
+                    "rebuild"
+                        ? "Rebuild Complete"
+                        : "Update Complete";
 
 
             terminal(
-                "Production release installed.",
+                releaseAction ===
+                    "rebuild"
+                        ? "PRODUCTION REBUILD INSTALLED."
+                        : "PRODUCTION RELEASE INSTALLED.",
                 "success"
             );
 
@@ -5264,6 +5577,19 @@ button.run:hover:not(:disabled) {
             );
 
 
+            if (
+                releaseAction ===
+                "rebuild"
+            ) {
+
+                terminal(
+                    "Publishing markers repaired by canonical reconstruction.",
+                    "success"
+                );
+
+            }
+
+
             terminal(
                 "Vercel deployment should now begin from the updated branch.",
                 "success"
@@ -5273,16 +5599,6 @@ button.run:hover:not(:disabled) {
             state.installationCompleted =
                 true;
 
-
-            /*
-             * Do not call checkForUpdates() from a timeout while
-             * state.running is still active. The old implementation
-             * had a race with finally and therefore never performed
-             * the intended post-release verification.
-             *
-             * We perform the verification after the current
-             * release transaction has completely finished.
-             */
 
         } catch (error) {
 
@@ -5386,7 +5702,6 @@ button.run:hover:not(:disabled) {
             $("updateBtn").textContent =
                 "Retry Update";
 
-
         } finally {
 
             state.running =
@@ -5408,6 +5723,7 @@ button.run:hover:not(:disabled) {
                 state.release &&
                 (
                     !state.release.liveExists ||
+                    state.release.repairRequired ||
                     !state.release.sameStaticShell
                 )
             ) {
@@ -5518,6 +5834,20 @@ button.run:hover:not(:disabled) {
                     }
 
 
+                    if (
+                        record.type ===
+                        "rebuild" ||
+                        record.repair ===
+                        true
+                    ) {
+
+                        item.classList.add(
+                            "rebuild"
+                        );
+
+                    }
+
+
                     var marker =
                         document.createElement(
                             "div"
@@ -5536,7 +5866,12 @@ button.run:hover:not(:disabled) {
                                 record.type ===
                                 "check"
                                     ? "?"
-                                    : "✓"
+                                    : (
+                                        record.type ===
+                                        "rebuild"
+                                            ? "R"
+                                            : "✓"
+                                    )
                             );
 
 
@@ -5581,6 +5916,17 @@ button.run:hover:not(:disabled) {
 
                         label =
                             "Homepage created";
+
+                    }
+
+
+                    if (
+                        record.type ===
+                        "rebuild"
+                    ) {
+
+                        label =
+                            "Homepage rebuilt";
 
                     }
 
@@ -5714,6 +6060,36 @@ button.run:hover:not(:disabled) {
 
 
                     if (
+                        record.repair ===
+                        true
+                    ) {
+
+                        var repair =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        repair.className =
+                            "timeline-detail";
+
+
+                        repair.style.color =
+                            "var(--amber)";
+
+
+                        repair.textContent =
+                            "Canonical reconstruction performed";
+
+
+                        content.appendChild(
+                            repair
+                        );
+
+                    }
+
+
+                    if (
                         record.commitShort ||
                         record.commit
                     ) {
@@ -5835,8 +6211,14 @@ button.run:hover:not(:disabled) {
                     updateAvailable:
                         !state.release
                             .liveExists ||
+                        state.release
+                            .repairRequired ||
                         !state.release
-                            .sameStaticShell
+                            .sameStaticShell,
+
+                    repairRequired:
+                        state.release
+                            .repairRequired
 
                 }
             );
@@ -5956,6 +6338,12 @@ button.run:hover:not(:disabled) {
         "Release history: " +
         HISTORY_PATH,
         "info"
+    );
+
+
+    terminal(
+        "Automatic reconstruction mode: ENABLED.",
+        "success"
     );
 
 
