@@ -3,25 +3,31 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Dyve Tech — Update System</title>
-<meta name="description" content="Install and synchronize the Dyve Tech production homepage.">
+<title>Dyve Tech — Production Update</title>
+<meta name="description" content="Dyve Tech production homepage update system with persistent deployment history.">
 <meta name="theme-color" content="#020403">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-:root{--bg:#020403;--panel:#07100c;--panel2:#050a08;--text:#f3f8f5;--muted:#82928c;--soft:#5d6b66;--line:rgba(255,255,255,.08);--green:#00ffaa;--green2:#00d995;--red:#ff5d73;--amber:#ffd166;--max:960px}
-*{box-sizing:border-box}html{background:var(--bg);color-scheme:dark;scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 50% -10%,rgba(0,255,170,.12),transparent 34%),radial-gradient(circle at 100% 40%,rgba(0,255,170,.025),transparent 30%),var(--bg);color:var(--text);font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}.wrap{width:min(calc(100% - 30px),var(--max));margin:auto}.top{position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);background:rgba(2,4,3,.86);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}.topin{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:15px}.brand{font:400 14px Audiowide,sans-serif;letter-spacing:.06em}.brand span{color:rgba(255,255,255,.32)}.badge{font:700 7px Audiowide,sans-serif;letter-spacing:.11em;text-transform:uppercase;color:var(--green);border:1px solid rgba(0,255,170,.22);border-radius:999px;padding:8px 10px}
-main{padding:45px 0 75px}.eyebrow{font:8px Audiowide,sans-serif;letter-spacing:.12em;color:var(--green);text-transform:uppercase}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 13px rgba(0,255,170,.65);margin-right:7px}.hero h1{font:400 clamp(2.25rem,7.5vw,5.2rem)/.99 Audiowide,sans-serif;letter-spacing:-.045em;margin:15px 0 14px}.hero p{max-width:760px;color:var(--muted);font-size:12px;line-height:1.85}.card{margin-top:25px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.026),rgba(255,255,255,.008));overflow:hidden}.section{padding:21px}.section+.section{border-top:1px solid var(--line)}.section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px}.title{font:400 21px Space Grotesk,sans-serif}.meta{margin-top:7px;color:var(--muted);font-size:9px;line-height:1.65}.version{font:700 8px Audiowide,sans-serif;letter-spacing:.07em;color:var(--green);border:1px solid rgba(0,255,170,.2);border-radius:999px;padding:7px 9px;white-space:nowrap}.version.warn{color:var(--amber);border-color:rgba(255,209,102,.22)}.version.err{color:var(--red);border-color:rgba(255,93,115,.22)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:16px}.stat{border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.018);padding:12px}.stat b{display:block;font:700 12px Space Grotesk,sans-serif;color:#f0f6f3;word-break:break-word}.stat span{display:block;margin-top:5px;color:var(--soft);font-size:7px;text-transform:uppercase;letter-spacing:.08em}.note{margin-top:15px;border:1px solid rgba(0,255,170,.1);background:rgba(0,255,170,.025);border-radius:11px;padding:12px;color:rgba(255,255,255,.58);font-size:9px;line-height:1.7}.note.warn{border-color:rgba(255,209,102,.12);background:rgba(255,209,102,.025)}.note.err{border-color:rgba(255,93,115,.14);background:rgba(255,93,115,.025)}.changes{margin-top:16px}.changes-title{font:700 7px Audiowide,sans-serif;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}.change{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.045);font-size:9px}.change i{width:6px;height:6px;border-radius:50%;background:var(--green);flex:0 0 auto}.change span{color:rgba(255,255,255,.65)}.change strong{margin-left:auto;color:var(--green);font-size:7px;text-transform:uppercase}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:17px}button{min-height:48px;border:0;border-radius:10px;font-size:9px;font-weight:900;letter-spacing:.025em;cursor:pointer;transition:.18s}button.primary{background:var(--green);color:#00130c;box-shadow:0 10px 26px rgba(0,255,170,.12)}button.primary:hover{background:#1fffb2;transform:translateY(-1px)}button.secondary{background:#07100c;color:rgba(255,255,255,.72);border:1px solid var(--line)}button.secondary:hover{background:#0a1510;color:white;border-color:rgba(255,255,255,.14)}button:disabled{opacity:.35;cursor:not-allowed;transform:none!important}.status{display:flex;align-items:center;gap:9px;margin-top:13px;padding:11px;border:1px solid var(--line);border-radius:10px;color:var(--muted);font-size:9px}.status i{width:7px;height:7px;border-radius:50%;background:var(--amber);flex:0 0 auto}.status.ok i{background:var(--green);box-shadow:0 0 12px rgba(0,255,170,.65)}.status.err i{background:var(--red);box-shadow:0 0 12px rgba(255,93,115,.4)}.progress{display:none;height:3px;margin-top:12px;background:rgba(255,255,255,.05);border-radius:99px;overflow:hidden}.progress.show{display:block}.progress span{display:block;width:0;height:100%;background:var(--green);transition:width .2s}.log{margin-top:14px;background:#010201;border:1px solid var(--line);border-radius:12px;padding:12px;min-height:145px;max-height:300px;overflow:auto;font:9px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.log div{padding:3px 0;border-bottom:1px solid rgba(255,255,255,.035)}.ok{color:#8dffda}.info{color:#aebbb6}.warn{color:var(--amber)}.err{color:var(--red)}.security{margin-top:13px;color:rgba(255,255,255,.27);font-size:8px;line-height:1.7}.footer{border-top:1px solid var(--line);padding:25px 0 35px;text-align:center;color:rgba(255,255,255,.2);font-size:8px}.hidden{display:none!important}
-@media(max-width:700px){main{padding-top:35px}.section-head{display:block}.version{display:inline-block;margin-top:11px}.grid{grid-template-columns:1fr}.actions{grid-template-columns:1fr}.wrap{width:min(calc(100% - 24px),var(--max))}}
+:root{--bg:#020403;--panel:#07100c;--panel2:#050a08;--text:#f3f8f5;--muted:#82928c;--soft:#5d6b66;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.045);--green:#00ffaa;--green2:#00d995;--red:#ff5d73;--amber:#ffd166;--blue:#7db7ff;--max:980px}
+*{box-sizing:border-box}html{background:var(--bg);color-scheme:dark;scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 50% -10%,rgba(0,255,170,.12),transparent 34%),radial-gradient(circle at 100% 40%,rgba(0,255,170,.025),transparent 30%),var(--bg);color:var(--text);font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}.wrap{width:min(calc(100% - 30px),var(--max));margin:auto}.top{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line);background:rgba(2,4,3,.86);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}.topin{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:15px}.brand{font:400 14px Audiowide,sans-serif;letter-spacing:.06em}.brand span{color:rgba(255,255,255,.32)}.badge{font:700 7px Audiowide,sans-serif;letter-spacing:.11em;text-transform:uppercase;color:var(--green);border:1px solid rgba(0,255,170,.22);border-radius:999px;padding:8px 10px}
+main{padding:40px 0 80px}.eyebrow{font:8px Audiowide,sans-serif;letter-spacing:.12em;color:var(--green);text-transform:uppercase}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 13px rgba(0,255,170,.65);margin-right:7px}.hero h1{font:400 clamp(2.25rem,7.5vw,5.2rem)/.99 Audiowide,sans-serif;letter-spacing:-.045em;margin:15px 0 14px}.hero p{max-width:780px;color:var(--muted);font-size:12px;line-height:1.85}.card{margin-top:23px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.026),rgba(255,255,255,.008));overflow:hidden}.section{padding:21px}.section+.section{border-top:1px solid var(--line)}.section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px}.title{font:400 21px Space Grotesk,sans-serif}.meta{margin-top:7px;color:var(--muted);font-size:9px;line-height:1.65}.version{font:700 8px Audiowide,sans-serif;letter-spacing:.07em;color:var(--green);border:1px solid rgba(0,255,170,.2);border-radius:999px;padding:7px 9px;white-space:nowrap}.version.warn{color:var(--amber);border-color:rgba(255,209,102,.22)}.version.err{color:var(--red);border-color:rgba(255,93,115,.22)}.version.blue{color:var(--blue);border-color:rgba(125,183,255,.22)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:16px}.stat{border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.018);padding:12px;min-width:0}.stat b{display:block;font:700 12px Space Grotesk,sans-serif;color:#f0f6f3;word-break:break-word;overflow:hidden;text-overflow:ellipsis}.stat span{display:block;margin-top:5px;color:var(--soft);font-size:7px;text-transform:uppercase;letter-spacing:.08em}.note{margin-top:15px;border:1px solid rgba(0,255,170,.1);background:rgba(0,255,170,.025);border-radius:11px;padding:12px;color:rgba(255,255,255,.62);font-size:9px;line-height:1.7}.note.warn{border-color:rgba(255,209,102,.12);background:rgba(255,209,102,.025)}.note.err{border-color:rgba(255,93,115,.14);background:rgba(255,93,115,.025)}.changes{margin-top:16px}.changes-title{font:700 7px Audiowide,sans-serif;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}.change{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:9px}.change i{width:6px;height:6px;border-radius:50%;background:var(--green);flex:0 0 auto}.change span{color:rgba(255,255,255,.65)}.change strong{margin-left:auto;color:var(--green);font-size:7px;text-transform:uppercase}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:17px}button{min-height:48px;border:0;border-radius:10px;font-size:9px;font-weight:900;letter-spacing:.025em;cursor:pointer;transition:.18s}button.primary{background:var(--green);color:#00130c;box-shadow:0 10px 26px rgba(0,255,170,.12)}button.primary:hover{background:#1fffb2;transform:translateY(-1px)}button.secondary{background:#07100c;color:rgba(255,255,255,.72);border:1px solid var(--line)}button.secondary:hover{background:#0a1510;color:white;border-color:rgba(255,255,255,.14)}button.danger{background:rgba(255,93,115,.06);color:#ff9aaa;border:1px solid rgba(255,93,115,.14)}button:disabled{opacity:.35;cursor:not-allowed;transform:none!important}.status{display:flex;align-items:center;gap:9px;margin-top:13px;padding:11px;border:1px solid var(--line);border-radius:10px;color:var(--muted);font-size:9px}.status i{width:7px;height:7px;border-radius:50%;background:var(--amber);flex:0 0 auto}.status.ok i{background:var(--green);box-shadow:0 0 12px rgba(0,255,170,.65)}.status.err i{background:var(--red);box-shadow:0 0 12px rgba(255,93,115,.4)}.status.blue i{background:var(--blue);box-shadow:0 0 12px rgba(125,183,255,.35)}.progress{display:none;height:3px;margin-top:12px;background:rgba(255,255,255,.05);border-radius:99px;overflow:hidden}.progress.show{display:block}.progress span{display:block;width:0;height:100%;background:var(--green);transition:width .2s}.log{margin-top:14px;background:#010201;border:1px solid var(--line);border-radius:12px;padding:12px;min-height:125px;max-height:260px;overflow:auto;font:9px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.log div{padding:3px 0;border-bottom:1px solid var(--line2)}.ok{color:#8dffda}.info{color:#aebbb6}.warn{color:var(--amber)}.err{color:var(--red)}.blue{color:var(--blue)}.security{margin-top:13px;color:rgba(255,255,255,.27);font-size:8px;line-height:1.7}
+.history-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.history-actions{display:flex;gap:7px;flex-wrap:wrap}.history-actions button{min-height:34px;padding:0 11px;font-size:7px}.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}.summary{padding:12px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.018)}.summary strong{display:block;font:700 18px Space Grotesk,sans-serif}.summary span{display:block;margin-top:4px;color:var(--soft);font-size:7px;text-transform:uppercase;letter-spacing:.08em}.timeline{position:relative;margin-top:6px}.timeline:before{content:"";position:absolute;left:9px;top:5px;bottom:5px;width:1px;background:linear-gradient(var(--green),rgba(255,255,255,.04))}.event{position:relative;padding-left:30px;padding-bottom:16px}.event:last-child{padding-bottom:0}.event-dot{position:absolute;left:4px;top:5px;width:11px;height:11px;border-radius:50%;border:3px solid var(--bg);background:var(--green);box-shadow:0 0 0 1px rgba(0,255,170,.3),0 0 12px rgba(0,255,170,.18)}.event.warn .event-dot{background:var(--amber);box-shadow:0 0 0 1px rgba(255,209,102,.25)}.event.err .event-dot{background:var(--red);box-shadow:0 0 0 1px rgba(255,93,115,.25)}.event.blue .event-dot{background:var(--blue);box-shadow:0 0 0 1px rgba(125,183,255,.25)}.event-card{border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.018);padding:12px}.event-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.event-title{font:600 11px Space Grotesk,sans-serif}.event-time{color:var(--soft);font-size:7px;white-space:nowrap}.event-detail{margin-top:7px;color:rgba(255,255,255,.57);font-size:9px;line-height:1.65;word-break:break-word}.event-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.chip{padding:4px 6px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:6.5px;text-transform:uppercase;letter-spacing:.06em}.timeline-empty{padding:25px 10px;text-align:center;border:1px dashed rgba(255,255,255,.08);border-radius:12px;color:var(--soft);font-size:9px}.footer{border-top:1px solid var(--line);padding:25px 0 35px;text-align:center;color:rgba(255,255,255,.2);font-size:8px}.hidden{display:none!important}
+@media(max-width:700px){main{padding-top:35px}.section-head{display:block}.version{display:inline-block;margin-top:11px}.grid,.summary-grid{grid-template-columns:1fr}.actions{grid-template-columns:1fr}.wrap{width:min(calc(100% - 24px),var(--max))}.history-toolbar{align-items:flex-start;flex-direction:column}.event-time{white-space:normal}}
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap topin"><div class="brand">DYVE <span>TECH</span></div><div class="badge">Production Update</div></div></header>
+<header class="top">
+<div class="wrap topin">
+<div class="brand">DYVE <span>TECH</span></div>
+<div class="badge">Production Update</div>
+</div>
+</header>
 
 <main class="wrap">
 <section class="hero">
 <div class="eyebrow"><span class="dot"></span>Canonical production channel</div>
 <h1>Update the Tech system without publishing.</h1>
-<p>The Tech Editor owns article content. This system owns the production homepage template. Check for a new template version, then run the update. The system creates or replaces <b>tech/index.html</b> while preserving its live publishing regions.</p>
+<p>The Tech Editor owns article content. This system owns the production homepage template. Check the canonical template, review the difference, and run the update. The system creates or replaces <b>tech/index.html</b> while preserving its live publishing regions.</p>
 </section>
 
 <section class="card">
@@ -38,13 +44,16 @@ main{padding:45px 0 75px}.eyebrow{font:8px Audiowide,sans-serif;letter-spacing:.
 <div class="stat"><b id="branchValue">—</b><span>Branch</span></div>
 <div class="stat"><b id="siteValue">—</b><span>Published site</span></div>
 </div>
+<div class="actions" style="margin-top:12px">
+<a class="secondary" href="settings.html" style="min-height:42px;display:flex;align-items:center;justify-content:center;text-decoration:none;border-radius:10px;font-size:8px;font-weight:900;letter-spacing:.025em;color:rgba(255,255,255,.72)">OPEN TECH EDITOR SETTINGS</a>
+</div>
 </div>
 
 <div class="section">
 <div class="section-head">
 <div>
 <div class="title">Homepage release</div>
-<div class="meta" id="releaseMeta">Check the canonical homepage template against the live production file.</div>
+<div class="meta" id="releaseMeta">Checking the canonical template against the live production homepage.</div>
 </div>
 <div class="version" id="releaseState">CHECKING</div>
 </div>
@@ -67,7 +76,31 @@ main{padding:45px 0 75px}.eyebrow{font:8px Audiowide,sans-serif;letter-spacing:.
 <div class="status" id="status"><i></i><span>Checking release channel...</span></div>
 <div class="progress" id="progress"><span></span></div>
 <div class="log" id="log"></div>
-<div class="security">The updater reads the same <b>dyve-tech-settings</b> object as tech-editor/settings.html. No release payload folder or manifest is required. The canonical homepage template is stored with the editor and the updater compares it with the live production homepage.</div>
+<div class="security">The updater reads the same <b>dyve-tech-settings</b> object as tech-editor/settings.html. No release payload folder or manual manifest is required. Checks are recorded locally; successful releases also receive a persistent repository audit record.</div>
+</div>
+</section>
+
+<section class="card" id="historySection">
+<div class="section">
+<div class="history-toolbar">
+<div>
+<div class="title">Update activity</div>
+<div class="meta">Persistent visual timeline of checks, updates, deployment verification and failures.</div>
+</div>
+<div class="history-actions">
+<button class="secondary" id="exportHistoryBtn">EXPORT RECORDS</button>
+<button class="danger" id="clearHistoryBtn">CLEAR LOCAL</button>
+</div>
+</div>
+
+<div class="summary-grid">
+<div class="summary"><strong id="summaryChecks">0</strong><span>Checks</span></div>
+<div class="summary"><strong id="summaryUpdates">0</strong><span>Updates</span></div>
+<div class="summary"><strong id="summaryFailures">0</strong><span>Failures</span></div>
+<div class="summary"><strong id="summaryLast">—</strong><span>Last update</span></div>
+</div>
+
+<div class="timeline" id="timeline"></div>
 </div>
 </section>
 </main>
@@ -79,14 +112,19 @@ main{padding:45px 0 75px}.eyebrow{font:8px Audiowide,sans-serif;letter-spacing:.
 'use strict';
 
 const SETTINGS_KEY = 'dyve-tech-settings';
+const HISTORY_KEY = 'dyve-tech-update-history';
+const SERVER_HISTORY_PATH = 'tech-editor/update-history.json';
 const TEMPLATE_PATH = 'tech-editor/tech-homepage-template.html';
 const HOMEPAGE_PATH = 'tech/index.html';
+const UPDATER_VERSION = '3.0.0';
+const MAX_LOCAL_RECORDS = 250;
+const STORAGE_SYNC_DEBOUNCE = 1400;
+
 const MARKERS = Object.freeze({
     head: ['<!-- DYVE_TECH_HEAD_START -->', '<!-- DYVE_TECH_HEAD_END -->'],
     featured: ['<!-- DYVE_TECH_FEATURED_START -->', '<!-- DYVE_TECH_FEATURED_END -->'],
     latest: ['<!-- DYVE_TECH_LATEST_START -->', '<!-- DYVE_TECH_LATEST_END -->']
 });
-const UPDATER_VERSION = '2.0.0';
 
 let config = null;
 let githubToken = '';
@@ -95,8 +133,20 @@ let liveHomepage = null;
 let canonicalTemplate = null;
 let currentHeadSha = '';
 let busy = false;
+let lastSettingsFingerprint = '';
+let settingsSyncTimer = null;
+let currentCheckId = null;
+let currentCheckStarted = 0;
 
 const $ = id => document.getElementById(id);
+
+function nowISO() {
+    return new Date().toISOString();
+}
+
+function makeId(prefix='evt') {
+    return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
+}
 
 function readSettings() {
     try {
@@ -106,6 +156,15 @@ function readSettings() {
     } catch {
         return {};
     }
+}
+
+function settingsFingerprint(settings=readSettings()) {
+    return JSON.stringify({
+        githubRepo: String(settings.githubRepo || '').trim(),
+        githubBranch: String(settings.githubBranch || 'main').trim() || 'main',
+        githubToken: String(settings.githubToken || '').trim(),
+        siteUrl: String(settings.siteUrl || '').trim()
+    });
 }
 
 function syncConfig() {
@@ -133,15 +192,14 @@ function syncConfig() {
         $('connectionState').textContent = 'NOT CONFIGURED';
         $('connectionState').className = 'version err';
         $('connectionMeta').textContent = 'Open tech-editor/settings.html and configure GitHub Repository.';
-        setStatus('GitHub repository is required before an update can be checked.', 'err');
         return false;
     }
 
-    $('connectionState').textContent = config.token ? 'SYNCED' : 'TOKEN NEEDED';
-    $('connectionState').className = config.token ? 'version' : 'version warn';
+    $('connectionState').textContent = config.token ? 'SYNCED' : 'PUBLIC CHECK';
+    $('connectionState').className = config.token ? 'version' : 'version blue';
     $('connectionMeta').textContent = config.token
         ? 'Using the same repository, branch and GitHub credential as Tech Editor Settings.'
-        : 'Repository is synchronized. Add a GitHub token in Tech Editor Settings before installing.';
+        : 'Repository is synchronized. The updater will attempt a public read; a token is required for installation.';
     return true;
 }
 
@@ -168,6 +226,141 @@ function log(message, type='info') {
     $('log').scrollTop = $('log').scrollHeight;
 }
 
+function loadHistory() {
+    try {
+        const raw = localStorage.getItem(HISTORY_KEY);
+        const records = raw ? JSON.parse(raw) : [];
+        return Array.isArray(records) ? records : [];
+    } catch {
+        return [];
+    }
+}
+
+function saveHistory(records) {
+    const trimmed = records.slice(0, MAX_LOCAL_RECORDS);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(trimmed));
+    renderHistory(trimmed);
+}
+
+function addHistory(type, title, detail, meta={}, status='ok') {
+    const records = loadHistory();
+
+    const record = {
+        id: makeId('timeline'),
+        timestamp: nowISO(),
+        type,
+        title,
+        detail,
+        status,
+        updaterVersion: UPDATER_VERSION,
+        repo: config?.repo || '',
+        branch: config?.branch || '',
+        ...meta
+    };
+
+    records.unshift(record);
+    saveHistory(records);
+    return record;
+}
+
+function updateHistory(id, patch) {
+    const records = loadHistory();
+    const index = records.findIndex(item => item.id === id);
+    if (index === -1) return;
+
+    records[index] = {
+        ...records[index],
+        ...patch,
+        updatedAt: nowISO()
+    };
+
+    saveHistory(records);
+}
+
+function formatTime(timestamp) {
+    const date = new Date(timestamp);
+    if (Number.isNaN(date.getTime())) return 'Unknown time';
+
+    return date.toLocaleString(undefined, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+}
+
+function formatShortDate(timestamp) {
+    const date = new Date(timestamp);
+    if (Number.isNaN(date.getTime())) return '—';
+
+    return date.toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric'
+    });
+}
+
+function eventClass(status) {
+    if (status === 'error') return 'err';
+    if (status === 'warning') return 'warn';
+    if (status === 'info') return 'blue';
+    return '';
+}
+
+function renderHistory(records=loadHistory()) {
+    const timeline = $('timeline');
+
+    const checks = records.filter(item => item.type === 'check').length;
+    const updates = records.filter(item => item.type === 'update').length;
+    const failures = records.filter(item => item.status === 'error').length;
+    const latestUpdate = records.find(item => item.type === 'update' && item.status === 'ok');
+
+    $('summaryChecks').textContent = checks;
+    $('summaryUpdates').textContent = updates;
+    $('summaryFailures').textContent = failures;
+    $('summaryLast').textContent = latestUpdate ? formatShortDate(latestUpdate.timestamp) : '—';
+
+    if (!records.length) {
+        timeline.innerHTML = '<div class="timeline-empty">No activity recorded yet. Run a check to create the first timeline record.</div>';
+        return;
+    }
+
+    timeline.innerHTML = records.map(item => {
+        const cls = eventClass(item.status);
+        const chips = [
+            item.version ? `v${item.version}` : '',
+            item.durationMs != null ? `${Math.max(0, Math.round(item.durationMs / 100) / 10)}s` : '',
+            item.commitSha ? item.commitSha.slice(0, 7) : '',
+            item.deployment === 'verified' ? 'LIVE VERIFIED' : '',
+            item.repo ? item.repo : ''
+        ].filter(Boolean);
+
+        return `
+        <article class="event ${cls}">
+            <span class="event-dot"></span>
+            <div class="event-card">
+                <div class="event-top">
+                    <div class="event-title">${escapeHTML(item.title || 'Activity')}</div>
+                    <div class="event-time">${escapeHTML(formatTime(item.timestamp))}</div>
+                </div>
+                <div class="event-detail">${escapeHTML(item.detail || '')}</div>
+                ${chips.length ? `<div class="event-meta">${chips.map(chip => `<span class="chip">${escapeHTML(chip)}</span>`).join('')}</div>` : ''}
+            </div>
+        </article>`;
+    }).join('');
+}
+
+function escapeHTML(value) {
+    return String(value ?? '').replace(/[&<>"']/g, char => ({
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        "'":'&#39;'
+    }[char]));
+}
+
 function authHeaders() {
     const headers = {
         'Accept': 'application/vnd.github+json',
@@ -182,7 +375,9 @@ function authHeaders() {
 }
 
 async function github(path, options={}) {
-    if (!config?.valid) throw new Error('GitHub repository is not configured.');
+    if (!config?.valid) {
+        throw new Error('GitHub repository is not configured.');
+    }
 
     const response = await fetch(
         `https://api.github.com/repos/${config.owner}/${config.name}/${path}`,
@@ -217,6 +412,14 @@ async function githubText(path, optional=false) {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
+        if (response.status === 401 || response.status === 403) {
+            throw new Error('GitHub denied repository access. Check the token and repository permissions in Tech Editor Settings.');
+        }
+
+        if (response.status === 404) {
+            throw new Error(`GitHub could not find ${path} on branch ${config.branch}.`);
+        }
+
         throw new Error(data.message || `Unable to read ${path} (HTTP ${response.status}).`);
     }
 
@@ -231,6 +434,17 @@ function decodeBase64Utf8(value) {
     const binary = atob(String(value).replace(/\s/g, ''));
     const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
     return new TextDecoder().decode(bytes);
+}
+
+function encodeBase64Utf8(value) {
+    const bytes = new TextEncoder().encode(String(value));
+    let binary = '';
+
+    for (let i = 0; i < bytes.length; i += 0x8000) {
+        binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+    }
+
+    return btoa(binary);
 }
 
 function extractRegion(source, start, end) {
@@ -326,12 +540,9 @@ function parseTemplateVersion(source) {
 }
 
 function parseReleaseInfo(template, live) {
-    const templateVersion = parseTemplateVersion(template);
-    const liveVersion = parseTemplateVersion(live);
-
     return {
-        templateVersion,
-        liveVersion,
+        templateVersion: parseTemplateVersion(template),
+        liveVersion: parseTemplateVersion(live),
         liveExists: Boolean(live),
         templateHasMarkers: hasMarkers(template),
         liveHasMarkers: Boolean(live) && hasMarkers(live)
@@ -343,13 +554,12 @@ function renderReleaseState() {
 
     const state = $('releaseState');
     const note = $('releaseNote');
-    const meta = $('releaseMeta');
     const update = $('updateBtn');
 
     state.className = 'version';
     update.disabled = true;
 
-    meta.textContent =
+    $('releaseMeta').textContent =
         `Canonical template v${release.templateVersion} · ` +
         (release.liveExists
             ? `Live homepage v${release.liveVersion}`
@@ -365,7 +575,6 @@ function renderReleaseState() {
 
     if (!release.liveExists) {
         state.textContent = 'CREATE';
-        state.className = 'version';
         note.className = 'note';
         note.textContent = 'tech/index.html does not exist. Run the update to create it from the canonical Tech homepage template.';
         update.disabled = false;
@@ -385,7 +594,6 @@ function renderReleaseState() {
 
     if (release.sameStaticShell) {
         state.textContent = 'UP TO DATE';
-        state.className = 'version';
         note.className = 'note';
         note.textContent = 'The live homepage shell already matches the canonical template. Article publishing regions are ignored during this comparison.';
         update.textContent = 'RUN NEW UPDATE';
@@ -395,35 +603,44 @@ function renderReleaseState() {
     state.textContent = 'UPDATE READY';
     state.className = 'version warn';
     note.className = 'note';
-    note.textContent = `A new homepage template is available. The update will replace the static shell and preserve the live featured, latest and SEO publishing regions.`;
+    note.textContent = 'A new homepage template is available. The update will replace the static shell and preserve the live featured, latest and SEO publishing regions.';
     update.disabled = false;
     update.textContent = `RUN v${release.templateVersion} UPDATE`;
 }
 
-async function checkForUpdate() {
+async function checkForUpdate(trigger='manual') {
     if (busy) return;
 
     if (!syncConfig()) {
         $('releaseState').textContent = 'BLOCKED';
         $('releaseState').className = 'version err';
-        return;
-    }
-
-    if (!githubToken) {
-        setStatus('Add your GitHub token in Tech Editor Settings before checking.', 'err');
-        $('releaseState').textContent = 'TOKEN NEEDED';
-        $('releaseState').className = 'version warn';
+        setStatus('Configure the GitHub repository in Tech Editor Settings first.', 'err');
+        addHistory('check', 'Configuration check blocked', 'GitHub repository is not configured in dyve-tech-settings.', {}, 'error');
         return;
     }
 
     busy = true;
+    currentCheckId = makeId('check');
+    currentCheckStarted = performance.now();
+
     $('checkBtn').disabled = true;
     $('updateBtn').disabled = true;
     $('checkBtn').textContent = 'CHECKING...';
     $('releaseState').textContent = 'CHECKING';
     $('releaseState').className = 'version';
-    setStatus('Reading canonical homepage and live production homepage...');
+    setStatus(config.token ? 'Reading canonical and live production files...' : 'Attempting public repository read...');
     resetProgress();
+
+    const checkRecord = addHistory(
+        'check',
+        trigger === 'settings-sync' ? 'Settings synchronized' : 'Production check started',
+        `Checking ${TEMPLATE_PATH} against ${HOMEPAGE_PATH}.`,
+        {
+            checkId: currentCheckId,
+            trigger
+        },
+        'info'
+    );
 
     try {
         log(`Repository: ${config.repo} / ${config.branch}`, 'info');
@@ -438,10 +655,9 @@ async function checkForUpdate() {
         }
 
         liveHomepage = await githubText(HOMEPAGE_PATH, true);
-        setProgress(45);
+        setProgress(50);
 
         const info = parseReleaseInfo(canonicalTemplate, liveHomepage);
-
         const canonicalSignature = staticSignature(canonicalTemplate);
         const liveSignature = liveHomepage ? staticSignature(liveHomepage) : null;
 
@@ -461,16 +677,39 @@ async function checkForUpdate() {
         renderReleaseState();
         setProgress(100);
 
+        const durationMs = performance.now() - currentCheckStarted;
+
         if (!release.liveExists) {
             setStatus(`New homepage available: create v${release.templateVersion}.`, 'ok');
-            log(`tech/index.html does not exist. It will be created by the updater.`, 'ok');
+            log('tech/index.html does not exist. It will be created by the updater.', 'ok');
+            updateHistory(checkRecord.id, {
+                status: 'ok',
+                title: 'Homepage creation detected',
+                detail: `Canonical template v${release.templateVersion} has no live tech/index.html.`,
+                version: release.templateVersion,
+                durationMs
+            });
         } else if (!release.sameStaticShell) {
             setStatus(`Homepage update v${release.templateVersion} is ready.`, 'ok');
-            log(`Static homepage shell differs from the canonical template.`, 'ok');
-            log(`Dynamic publishing regions will be preserved during installation.`, 'ok');
+            log('Static homepage shell differs from the canonical template.', 'ok');
+            log('Dynamic publishing regions will be preserved during installation.', 'ok');
+            updateHistory(checkRecord.id, {
+                status: 'ok',
+                title: 'Homepage update detected',
+                detail: `Canonical v${release.templateVersion} differs from the live homepage shell. Update is ready.`,
+                version: release.templateVersion,
+                durationMs
+            });
         } else {
             setStatus(`Tech homepage is already synchronized with v${release.templateVersion}.`, 'ok');
             log('No homepage shell update is required.', 'ok');
+            updateHistory(checkRecord.id, {
+                status: 'ok',
+                title: 'Homepage is up to date',
+                detail: `Live homepage shell matches canonical template v${release.templateVersion}.`,
+                version: release.templateVersion,
+                durationMs
+            });
         }
     } catch (error) {
         release = null;
@@ -480,6 +719,13 @@ async function checkForUpdate() {
         $('releaseNote').textContent = error.message;
         setStatus(error.message, 'err');
         log(error.message, 'err');
+
+        updateHistory(checkRecord.id, {
+            status: 'error',
+            title: 'Production check failed',
+            detail: error.message,
+            durationMs: performance.now() - currentCheckStarted
+        });
     } finally {
         busy = false;
         $('checkBtn').disabled = false;
@@ -489,7 +735,9 @@ async function checkForUpdate() {
 
 async function getHeadSha() {
     const data = await github(`git/ref/heads/${encodeURIComponent(config.branch)}`);
-    if (!data.object?.sha) throw new Error('Could not resolve the current production branch.');
+    if (!data.object?.sha) {
+        throw new Error('Could not resolve the current production branch.');
+    }
     return data.object.sha;
 }
 
@@ -582,46 +830,165 @@ async function createAtomicCommit(files, message) {
     return commit;
 }
 
+async function readServerHistory() {
+    try {
+        const text = await githubText(SERVER_HISTORY_PATH, true);
+
+        if (!text) {
+            return {
+                version: 1,
+                records: []
+            };
+        }
+
+        const parsed = JSON.parse(text);
+
+        if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.records)) {
+            throw new Error('Server update history is malformed.');
+        }
+
+        return parsed;
+    } catch (error) {
+        if (String(error.message || '').includes('Server update history')) {
+            throw error;
+        }
+
+        return {
+            version: 1,
+            records: []
+        };
+    }
+}
+
+async function buildServerHistory(nextRecord) {
+    const history = await readServerHistory();
+
+    history.records.unshift(nextRecord);
+    history.records = history.records.slice(0, 100);
+
+    return JSON.stringify(history, null, 2);
+}
+
+async function verifyLiveDeployment(expectedHomepage, maxAttempts=15) {
+    const target = `${config.siteUrl}/tech/`;
+
+    /*
+     * Verification is attempted only when the updater and published site
+     * share an origin. Cross-origin verification requires CORS on the site.
+     */
+    try {
+        const updaterOrigin = window.location.origin;
+        const siteOrigin = new URL(target).origin;
+
+        if (updaterOrigin !== siteOrigin) {
+            return {
+                status: 'unavailable',
+                detail: 'Repository update succeeded. Live verification was skipped because the published site is cross-origin.'
+            };
+        }
+    } catch {
+        return {
+            status: 'unavailable',
+            detail: 'Repository update succeeded. Live verification could not resolve the published site URL.'
+        };
+    }
+
+    const expectedSignature = staticSignature(expectedHomepage);
+
+    if (!expectedSignature) {
+        return {
+            status: 'unavailable',
+            detail: 'Repository update succeeded, but the expected homepage shell could not be fingerprinted.'
+        };
+    }
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        try {
+            const separator = target.includes('?') ? '&' : '?';
+            const response = await fetch(
+                `${target}${separator}dyve_update_check=${Date.now()}`,
+                {
+                    cache: 'no-store',
+                    headers: {
+                        'Cache-Control': 'no-cache'
+                    }
+                }
+            );
+
+            if (response.ok) {
+                const live = await response.text();
+
+                if (staticSignature(live) === expectedSignature) {
+                    return {
+                        status: 'verified',
+                        detail: `Live homepage verified on attempt ${attempt}.`
+                    };
+                }
+            }
+        } catch {
+            // Retry until the deployment window expires.
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 4000));
+    }
+
+    return {
+        status: 'pending',
+        detail: 'Repository update succeeded, but the live homepage was not yet verified within the deployment window.'
+    };
+}
+
 async function runUpdate() {
     if (busy) return;
 
     if (!release || !canonicalTemplate) {
-        await checkForUpdate();
+        await checkForUpdate('pre-update-check');
         if (!release) return;
     }
 
     if (release.liveExists && release.sameStaticShell) {
         setStatus('No homepage update is required.', 'ok');
+        addHistory('update', 'Update skipped', 'The live homepage shell already matches the canonical template.', {
+            version: release.templateVersion
+        }, 'info');
+        return;
+    }
+
+    if (!githubToken) {
+        setStatus('A GitHub token is required to install an update. Add it in Tech Editor Settings.', 'err');
+        addHistory('update', 'Update blocked', 'No GitHub token is available for repository write access.', {
+            version: release.templateVersion
+        }, 'error');
         return;
     }
 
     busy = true;
+    const started = performance.now();
+
     $('checkBtn').disabled = true;
     $('updateBtn').disabled = true;
     $('updateBtn').textContent = 'PREPARING...';
 
+    const updateRecord = addHistory(
+        'update',
+        'Homepage update started',
+        `Preparing canonical homepage v${release.templateVersion}.`,
+        {
+            version: release.templateVersion,
+            target: HOMEPAGE_PATH
+        },
+        'info'
+    );
+
     try {
-        if (!config.valid || !githubToken) {
-            throw new Error('GitHub configuration is incomplete. Configure it in tech-editor/settings.html.');
-        }
-
-        if (!canonicalTemplate) {
-            canonicalTemplate = await githubText(TEMPLATE_PATH);
-        }
-
-        if (!hasMarkers(canonicalTemplate)) {
-            throw new Error('Canonical homepage template is invalid.');
-        }
-
-        /*
-         * Re-read the live file immediately before writing.
-         * This prevents installing against stale homepage content if
-         * somebody published or changed the site after the last check.
-         */
-        setStatus('Rechecking live production homepage...');
+        setStatus('Rechecking live production homepage before installation...');
         liveHomepage = await githubText(HOMEPAGE_PATH, true);
         setProgress(10);
 
+        /*
+         * Protect against a race: if another publisher changed the homepage
+         * after the check, merge against the newest live file now.
+         */
         let finalHomepage;
 
         if (!liveHomepage) {
@@ -635,15 +1002,7 @@ async function runUpdate() {
             log('Live homepage has no managed markers. Replacing it with the canonical managed template.', 'warn');
         }
 
-        if (finalHomepage === liveHomepage) {
-            setStatus('Homepage is already synchronized.', 'ok');
-            $('releaseState').textContent = 'UP TO DATE';
-            $('releaseState').className = 'version';
-            return;
-        }
-
-        setProgress(35);
-        setStatus('Validating homepage before installation...');
+        setProgress(30);
 
         if (!hasMarkers(finalHomepage)) {
             throw new Error('Safety validation failed: resulting tech/index.html has missing publishing markers.');
@@ -655,63 +1014,290 @@ async function runUpdate() {
             throw new Error('Safety validation failed: resulting homepage shell does not match the canonical template.');
         }
 
+        const previousHash = liveHomepage
+            ? await sha256(staticSignature(liveHomepage) || '')
+            : null;
+
+        const resultHash = await sha256(finalSignature);
+
         log('Safety validation passed.', 'ok');
-        log(`Template version: v${release.templateVersion}.`, 'info');
-        log('Preparing one atomic Git commit.', 'info');
+        log(`Canonical template v${release.templateVersion}.`, 'info');
+        log(`Result shell hash: ${resultHash.slice(0, 16)}...`, 'info');
+
+        /*
+         * Server-side audit record is written in the same atomic commit.
+         * The record intentionally uses a release ID rather than a commit
+         * SHA because the SHA does not exist until the commit is created.
+         */
+        const releaseId = makeId('release');
+        const serverRecord = {
+            releaseId,
+            timestamp: nowISO(),
+            action: liveHomepage ? 'update' : 'create',
+            status: 'installed',
+            templateVersion: release.templateVersion,
+            target: HOMEPAGE_PATH,
+            templatePath: TEMPLATE_PATH,
+            previousShellHash: previousHash,
+            resultingShellHash: resultHash,
+            repository: config.repo,
+            branch: config.branch,
+            updaterVersion: UPDATER_VERSION
+        };
+
+        const serverHistoryContent = await buildServerHistory(serverRecord);
+
+        setStatus('Creating atomic production release...');
+        $('updateBtn').textContent = 'INSTALLING...';
 
         const commit = await createAtomicCommit(
-            [{
-                path: HOMEPAGE_PATH,
-                content: finalHomepage
-            }],
+            [
+                {
+                    path: HOMEPAGE_PATH,
+                    content: finalHomepage
+                },
+                {
+                    path: SERVER_HISTORY_PATH,
+                    content: serverHistoryContent
+                }
+            ],
             `release: sync Dyve Tech homepage v${release.templateVersion}`
         );
 
         setProgress(100);
-        setStatus(`Homepage update v${release.templateVersion} installed successfully.`, 'ok');
-        $('releaseState').textContent = 'INSTALLED';
-        $('releaseState').className = 'version';
-        $('updateBtn').textContent = 'UPDATE COMPLETE';
+
+        const durationMs = performance.now() - started;
+
+        updateHistory(updateRecord.id, {
+            status: 'ok',
+            title: liveHomepage ? 'Homepage update installed' : 'Homepage created',
+            detail: `Production shell v${release.templateVersion} was committed atomically. Dynamic article regions were preserved.`,
+            version: release.templateVersion,
+            commitSha: commit.sha,
+            releaseId,
+            durationMs
+        });
+
+        setStatus('Repository update installed. Verifying live deployment...', 'blue');
+        $('releaseState').textContent = 'DEPLOYING';
+        $('releaseState').className = 'version blue';
+        $('updateBtn').textContent = 'VERIFYING...';
 
         log(`Atomic commit created: ${commit.sha.slice(0, 7)}.`, 'ok');
         log('Vercel deployment should now begin from the updated production branch.', 'ok');
-        log('Tech Editor article publishing remains unchanged and independent.', 'ok');
+        log('Waiting for the published homepage to match the installed shell...', 'info');
 
-        /*
-         * Do not pretend the update is live before Vercel finishes.
-         * The repository update is the successful installation point.
-         */
+        const verification = await verifyLiveDeployment(finalHomepage);
+
+        if (verification.status === 'verified') {
+            setStatus('Update installed and live homepage verified.', 'ok');
+            $('releaseState').textContent = 'LIVE';
+            $('releaseState').className = 'version';
+            $('updateBtn').textContent = 'UPDATE COMPLETE';
+
+            updateHistory(updateRecord.id, {
+                deployment: 'verified',
+                detail: `Production shell v${release.templateVersion} was installed and verified live.`
+            });
+
+            addHistory(
+                'deployment',
+                'Deployment verified live',
+                verification.detail,
+                {
+                    version: release.templateVersion,
+                    commitSha: commit.sha,
+                    releaseId
+                },
+                'ok'
+            );
+
+            log('Live deployment verification passed.', 'ok');
+        } else {
+            setStatus(verification.detail, verification.status === 'pending' ? 'blue' : 'warn');
+            $('releaseState').textContent = verification.status === 'pending' ? 'DEPLOYING' : 'INSTALLED';
+            $('releaseState').className = verification.status === 'pending' ? 'version blue' : 'version warn';
+            $('updateBtn').textContent = 'RECHECK LIVE';
+
+            updateHistory(updateRecord.id, {
+                deployment: verification.status,
+                detail: verification.detail
+            });
+
+            addHistory(
+                'deployment',
+                verification.status === 'pending' ? 'Deployment still propagating' : 'Deployment verification skipped',
+                verification.detail,
+                {
+                    version: release.templateVersion,
+                    commitSha: commit.sha,
+                    releaseId
+                },
+                verification.status === 'pending' ? 'info' : 'warning'
+            );
+
+            log(verification.detail, verification.status === 'pending' ? 'info' : 'warn');
+        }
+
         setTimeout(() => {
-            checkForUpdate();
-        }, 1500);
+            checkForUpdate('post-update-verification');
+        }, 1800);
     } catch (error) {
+        const durationMs = performance.now() - started;
+
         setStatus(`Update failed: ${error.message}`, 'err');
         $('releaseState').textContent = 'UPDATE FAILED';
         $('releaseState').className = 'version err';
         $('releaseNote').className = 'note err';
         $('releaseNote').textContent = error.message;
-        log(error.message, 'err');
         $('updateBtn').disabled = false;
         $('updateBtn').textContent = 'RETRY UPDATE';
+
+        log(error.message, 'err');
+
+        updateHistory(updateRecord.id, {
+            status: 'error',
+            title: 'Homepage update failed',
+            detail: error.message,
+            durationMs
+        });
     } finally {
         busy = false;
         $('checkBtn').disabled = false;
     }
 }
 
-$('checkBtn').addEventListener('click', checkForUpdate);
-$('updateBtn').addEventListener('click', runUpdate);
+function exportHistory() {
+    const records = loadHistory();
 
-window.addEventListener('storage', event => {
-    if (event.key !== SETTINGS_KEY || busy) return;
-    log('Tech Editor Settings changed. Synchronizing...', 'info');
-    syncConfig();
-    checkForUpdate();
-});
+    const payload = {
+        exportedAt: nowISO(),
+        updaterVersion: UPDATER_VERSION,
+        records
+    };
+
+    const blob = new Blob(
+        [JSON.stringify(payload, null, 2)],
+        {type: 'application/json'}
+    );
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = `dyve-tech-update-history-${new Date().toISOString().slice(0,10)}.json`;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+    addHistory(
+        'system',
+        'Activity records exported',
+        `Exported ${records.length} local activity records.`,
+        {},
+        'info'
+    );
+}
+
+function clearHistory() {
+    const confirmed = window.confirm(
+        'Clear the local update timeline from this browser? Repository audit records will not be deleted.'
+    );
+
+    if (!confirmed) return;
+
+    localStorage.removeItem(HISTORY_KEY);
+    renderHistory([]);
+    setStatus('Local activity timeline cleared. Repository audit records remain intact.', 'ok');
+}
+
+function setupSettingsSync() {
+    lastSettingsFingerprint = settingsFingerprint();
+
+    window.addEventListener('storage', event => {
+        if (event.key !== SETTINGS_KEY) return;
+
+        const incoming = settingsFingerprint(
+            (() => {
+                try {
+                    const raw = event.newValue;
+                    const parsed = raw ? JSON.parse(raw) : {};
+                    return parsed && typeof parsed === 'object' ? parsed : {};
+                } catch {
+                    return {};
+                }
+            })()
+        );
+
+        /*
+         * The Tech Editor settings page can autosave frequently.
+         * Ignore storage events that do not actually change the
+         * connection values used by this updater.
+         */
+        if (incoming === lastSettingsFingerprint) return;
+
+        lastSettingsFingerprint = incoming;
+
+        clearTimeout(settingsSyncTimer);
+
+        settingsSyncTimer = setTimeout(() => {
+            if (busy) return;
+
+            syncConfig();
+            log('Tech Editor Settings changed. Synchronizing release configuration...', 'info');
+
+            addHistory(
+                'system',
+                'Settings synchronized',
+                `Update System received new repository configuration from Tech Editor Settings.`,
+                {
+                    repo: config.repo,
+                    branch: config.branch
+                },
+                'info'
+            );
+
+            checkForUpdate('settings-sync');
+        }, STORAGE_SYNC_DEBOUNCE);
+    });
+}
+
+$('checkBtn').addEventListener('click', () => checkForUpdate('manual'));
+$('updateBtn').addEventListener('click', runUpdate);
+$('exportHistoryBtn').addEventListener('click', exportHistory);
+$('clearHistoryBtn').addEventListener('click', clearHistory);
+
+renderHistory();
+setupSettingsSync();
 
 log(`Dyve Tech Update System v${UPDATER_VERSION} initialized.`, 'ok');
-syncConfig();
-checkForUpdate();
+
+if (syncConfig()) {
+    addHistory(
+        'system',
+        'Update System initialized',
+        `Connected to ${config.repo} / ${config.branch}.`,
+        {
+            repo: config.repo,
+            branch: config.branch
+        },
+        'info'
+    );
+
+    checkForUpdate('initial-load');
+} else {
+    setStatus('Configure Tech Editor GitHub settings before checking for updates.', 'err');
+    addHistory(
+        'system',
+        'Update System blocked',
+        'GitHub repository is not configured in dyve-tech-settings.',
+        {},
+        'error'
+    );
+}
 
 })();
 </script>
