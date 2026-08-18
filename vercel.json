@@ -1,0 +1,21 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/tech/category/:slug/",
+      "destination": "/api/tech-taxonomy?type=category&slug=:slug"
+    },
+    {
+      "source": "/tech/category/:slug",
+      "destination": "/api/tech-taxonomy?type=category&slug=:slug"
+    },
+    {
+      "source": "/tech/tag/:slug/",
+      "destination": "/api/tech-taxonomy?type=tag&slug=:slug"
+    },
+    {
+      "source": "/tech/tag/:slug",
+      "destination": "/api/tech-taxonomy?type=tag&slug=:slug"
+    }
+  ]
+}
