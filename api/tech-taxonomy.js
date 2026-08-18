@@ -43,7 +43,7 @@ No manually-created category pages.
 
 Data source:
 
-/tech/assets/tech-articles.json
+assets/tech-articles.json
 ============================================================
 */
 
@@ -53,9 +53,9 @@ Data source:
 ========================================================= */
 
 const ARTICLES_URL =
-    "https://www.dyve.online/tech/assets/tech-articles.json";
-
-const SITE_URL =
+    "https://www.dyve.online/assets/tech-articles.json";
+    
+    const SITE_URL =
     "https://www.dyve.online";
 
 const TECH_URL =
