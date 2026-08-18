@@ -3081,6 +3081,17 @@ img {
     "use strict";
 
     /* =========================================================
+       DYVE TECH ARTICLE ENGINE
+       
+       SOURCE OF TRUTH:
+       /assets/tech-articles.json
+    ========================================================= */
+
+    var ARTICLE_SOURCE =
+        "/assets/tech-articles.json";
+
+
+    /* =========================================================
        HEADER SCROLL STATE
     ========================================================= */
 
@@ -3124,81 +3135,954 @@ img {
 
 
     /* =========================================================
-       OPTIONAL ARTICLE STAT SYNC
+       URL NORMALIZER
        
-       This is intentionally non-blocking.
+       Your JSON stores article URLs like:
 
-       If tech-articles.json exists, the homepage can
-       automatically calculate the published article count
-       without affecting rendering or SEO.
+       tech/example.html
+
+       The actual public URL is:
+
+       /tech/example.html
     ========================================================= */
 
-    async function syncArticleCount() {
+    function normalizeArticleUrl(articleUrl) {
 
-        var countNode =
-            document.getElementById(
-                "publishedCount"
-            );
-
-        if (!countNode) {
-            return;
+        if (!articleUrl) {
+            return "#";
         }
 
-        try {
+        var value =
+            String(articleUrl).trim();
 
-            var response =
-                await fetch(
-                    "./tech-articles.json",
-                    {
-                        cache: "no-store"
-                    }
-                );
-
-            if (!response.ok) {
-                return;
-            }
-
-            var data =
-                await response.json();
-
-            var articles =
-                Array.isArray(data)
-                    ? data
-                    : (
-                        Array.isArray(data.articles)
-                            ? data.articles
-                            : []
-                    );
-
-            if (!articles.length) {
-                return;
-            }
-
-            countNode.textContent =
-                String(
-                    articles.length
-                );
-
-        } catch (error) {
-
-            /*
-             * This is intentionally silent.
-             * The static fallback remains visible.
-             */
-
+        if (!value) {
+            return "#";
         }
+
+        if (
+            value.indexOf("http://") === 0 ||
+            value.indexOf("https://") === 0 ||
+            value.indexOf("//") === 0
+        ) {
+            return value;
+        }
+
+        value =
+            value.replace(/^\/+/, "");
+
+        if (
+            value.indexOf("tech/") === 0
+        ) {
+            return "/" + value;
+        }
+
+        if (
+            value.indexOf("tech/") !== 0
+        ) {
+            return "/tech/" + value;
+        }
+
+        return "/" + value;
 
     }
 
 
-    syncArticleCount();
+    /* =========================================================
+       HTML ESCAPER
+       
+       Article data comes from JSON. Escape all text before
+       injecting it into the DOM.
+    ========================================================= */
+
+    function escapeHtml(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return "";
+        }
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =========================================================
+       DATE FORMATTER
+    ========================================================= */
+
+    function formatDate(value) {
+
+        if (!value) {
+            return "";
+        }
+
+        var date =
+            new Date(value);
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+            return escapeHtml(value);
+        }
+
+        return date.toLocaleDateString(
+            "en-US",
+            {
+                month: "short",
+                day: "numeric",
+                year: "numeric"
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       READ TIME
+    ========================================================= */
+
+    function formatReadTime(value) {
+
+        var minutes =
+            Number(value);
+
+        if (
+            !Number.isFinite(minutes) ||
+            minutes <= 0
+        ) {
+            return "4 min read";
+        }
+
+        return (
+            Math.max(
+                1,
+                Math.round(minutes)
+            ) +
+            " min read"
+        );
+
+    }
+
+
+    /* =========================================================
+       ARTICLE VALIDATION
+    ========================================================= */
+
+    function isValidArticle(article) {
+
+        if (
+            !article ||
+            typeof article !== "object"
+        ) {
+            return false;
+        }
+
+        if (
+            !article.title ||
+            !article.url
+        ) {
+            return false;
+        }
+
+        return true;
+
+    }
+
+
+    /* =========================================================
+       ARTICLE NORMALIZATION
+    ========================================================= */
+
+    function normalizeArticle(article) {
+
+        return {
+
+            title:
+                String(
+                    article.title || ""
+                ).trim(),
+
+            desc:
+                String(
+                    article.desc || ""
+                ).trim(),
+
+            image:
+                String(
+                    article.image || ""
+                ).trim(),
+
+            url:
+                normalizeArticleUrl(
+                    article.url
+                ),
+
+            tag:
+                String(
+                    article.tag ||
+                    article.category ||
+                    "Technology"
+                ).trim(),
+
+            meta:
+                String(
+                    article.meta ||
+                    article.category ||
+                    "technology"
+                ).trim(),
+
+            category:
+                String(
+                    article.category ||
+                    article.meta ||
+                    "technology"
+                ).trim(),
+
+            date:
+                article.date || "",
+
+            readTime:
+                article.readTime || 4,
+
+            author:
+                String(
+                    article.author ||
+                    "Dyve Tech Editorial Unit"
+                ).trim(),
+
+            modified:
+                article.modified ||
+                article.date ||
+                "",
+
+            seoTitle:
+                String(
+                    article.seoTitle ||
+                    article.title ||
+                    ""
+                ).trim()
+
+        };
+
+    }
+
+
+    /* =========================================================
+       CATEGORY LABEL
+    ========================================================= */
+
+    function categoryLabel(category) {
+
+        if (!category) {
+            return "TECHNOLOGY";
+        }
+
+        return String(category)
+            .replace(/[-_]+/g, " ")
+            .replace(/\b\w/g, function (letter) {
+                return letter.toUpperCase();
+            });
+
+    }
+
+
+    /* =========================================================
+       FEATURED ARTICLE RENDERER
+    ========================================================= */
+
+    function renderFeatured(article) {
+
+        var container =
+            document.querySelector(
+                ".featured-wrap"
+            );
+
+        if (!container) {
+            return;
+        }
+
+        if (!article) {
+
+            container.innerHTML =
+                '<div class="empty-state">' +
+                    '<span class="empty-state-label">' +
+                        'Technology Intelligence' +
+                    '</span>' +
+                    '<h2>' +
+                        'Awaiting new intelligence' +
+                    '</h2>' +
+                    '<p>' +
+                        'Published technology coverage will be indexed here automatically.' +
+                    '</p>' +
+                '</div>';
+
+            return;
+
+        }
+
+        var title =
+            escapeHtml(
+                article.title
+            );
+
+        var description =
+            escapeHtml(
+                article.desc
+            );
+
+        var image =
+            escapeHtml(
+                article.image
+            );
+
+        var url =
+            escapeHtml(
+                article.url
+            );
+
+        var tag =
+            escapeHtml(
+                article.tag
+            );
+
+        var date =
+            escapeHtml(
+                formatDate(
+                    article.date
+                )
+            );
+
+        var readTime =
+            escapeHtml(
+                formatReadTime(
+                    article.readTime
+                )
+            );
+
+        container.innerHTML =
+
+            '<article class="featured-card">' +
+
+                '<a' +
+                    ' href="' +
+                    url +
+                    '"' +
+                    ' class="featured-image"' +
+                    ' aria-label="' +
+                    title +
+                    '"' +
+                '>' +
+
+                    (
+                        image
+                            ?
+                            '<img' +
+                                ' src="' +
+                                image +
+                                '"' +
+                                ' alt="' +
+                                title +
+                                '"' +
+                                ' loading="eager"' +
+                                ' decoding="async"' +
+                            '>'
+                            :
+                            ''
+                    ) +
+
+                '</a>' +
+
+                '<div class="featured-body">' +
+
+                    '<span class="featured-tag">' +
+                        escapeHtml(
+                            categoryLabel(
+                                tag
+                            )
+                        ) +
+                    '</span>' +
+
+                    '<h2 class="featured-title">' +
+                        title +
+                    '</h2>' +
+
+                    '<p class="featured-excerpt">' +
+                        description +
+                    '</p>' +
+
+                    '<div class="featured-meta">' +
+
+                        '<span>' +
+                            date +
+                        '</span>' +
+
+                        '<span>' +
+                            '•' +
+                        '</span>' +
+
+                        '<span>' +
+                            readTime +
+                        '</span>' +
+
+                    '</div>' +
+
+                '</div>' +
+
+            '</article>';
+
+    }
+
+
+    /* =========================================================
+       LATEST ARTICLE CARD
+    ========================================================= */
+
+    function createArticleCard(article) {
+
+        var title =
+            escapeHtml(
+                article.title
+            );
+
+        var description =
+            escapeHtml(
+                article.desc
+            );
+
+        var image =
+            escapeHtml(
+                article.image
+            );
+
+        var url =
+            escapeHtml(
+                article.url
+            );
+
+        var tag =
+            escapeHtml(
+                article.tag
+            );
+
+        var category =
+            escapeHtml(
+                categoryLabel(
+                    article.category
+                )
+            );
+
+        var date =
+            escapeHtml(
+                formatDate(
+                    article.date
+                )
+            );
+
+        var readTime =
+            escapeHtml(
+                formatReadTime(
+                    article.readTime
+                )
+            );
+
+        return (
+
+            '<article class="article-card">' +
+
+                '<a' +
+                    ' href="' +
+                    url +
+                    '"' +
+                    ' aria-label="' +
+                    title +
+                    '"' +
+                '>' +
+
+                    '<div class="article-image">' +
+
+                        (
+                            image
+                                ?
+                                '<img' +
+                                    ' src="' +
+                                    image +
+                                    '"' +
+                                    ' alt="' +
+                                    title +
+                                    '"' +
+                                    ' loading="lazy"' +
+                                    ' decoding="async"' +
+                                '>'
+                                :
+                                ''
+                        ) +
+
+                        '<span class="article-tag">' +
+                            escapeHtml(
+                                tag ||
+                                category
+                            ) +
+                        '</span>' +
+
+                    '</div>' +
+
+                '</a>' +
+
+                '<div class="article-body">' +
+
+                    '<div class="article-category">' +
+                        category +
+                    '</div>' +
+
+                    '<a href="' +
+                        url +
+                    '">' +
+
+                        '<h3 class="article-title">' +
+                            title +
+                        '</h3>' +
+
+                    '</a>' +
+
+                    (
+                        description
+                            ?
+                            '<p class="article-excerpt">' +
+                                description +
+                            '</p>'
+                            :
+                            ''
+                    ) +
+
+                    '<div class="article-meta">' +
+
+                        '<span>' +
+                            date +
+                        '</span>' +
+
+                        '<span>' +
+                            '•' +
+                        '</span>' +
+
+                        '<span>' +
+                            readTime +
+                        '</span>' +
+
+                    '</div>' +
+
+                '</div>' +
+
+            '</article>'
+
+        );
+
+    }
+
+
+    /* =========================================================
+       LATEST ARTICLE RENDERER
+       
+       The newest article is used as Featured.
+       The following articles populate Latest.
+    ========================================================= */
+
+    function renderLatest(articles) {
+
+        var container =
+            document.querySelector(
+                ".latest-grid"
+            );
+
+        if (!container) {
+            return;
+        }
+
+        if (!articles.length) {
+
+            container.innerHTML =
+
+                '<div class="empty-state">' +
+
+                    '<span class="empty-state-label">' +
+                        'Technology Intelligence' +
+                    '</span>' +
+
+                    '<h2>' +
+                        'Awaiting new intelligence' +
+                    '</h2>' +
+
+                    '<p>' +
+                        'Published technology coverage will be indexed here automatically.' +
+                    '</p>' +
+
+                '</div>';
+
+            return;
+
+        }
+
+        /*
+         * Featured occupies the first position.
+         * Latest therefore begins from article #2.
+         */
+
+        var latest =
+            articles.slice(
+                1,
+                7
+            );
+
+        if (!latest.length) {
+
+            container.innerHTML =
+                createArticleCard(
+                    articles[0]
+                );
+
+            return;
+
+        }
+
+        container.innerHTML =
+            latest
+                .map(
+                    createArticleCard
+                )
+                .join("");
+
+    }
+
+
+    /* =========================================================
+       ARTICLE COUNT
+    ========================================================= */
+
+    function syncArticleCount(
+        articles
+    ) {
+
+        var node =
+            document.getElementById(
+                "publishedCount"
+            );
+
+        if (!node) {
+            return;
+        }
+
+        node.textContent =
+            String(
+                articles.length
+            );
+
+    }
+
+
+    /* =========================================================
+       CATEGORY COUNT
+    ========================================================= */
+
+    function syncCategoryCount(
+        articles
+    ) {
+
+        var node =
+            document.getElementById(
+                "categoryCount"
+            );
+
+        if (!node) {
+            return;
+        }
+
+        var categories =
+            {};
+
+        articles.forEach(
+            function (article) {
+
+                var category =
+                    String(
+                        article.category ||
+                        article.meta ||
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase();
+
+                if (category) {
+                    categories[category] = true;
+                }
+
+            }
+        );
+
+        node.textContent =
+            String(
+                Object.keys(
+                    categories
+                ).length
+            );
+
+    }
+
+
+    /* =========================================================
+       JSON-LD ARTICLE INDEX
+       
+       Keeps CollectionPage structured data aligned with the
+       actual published article inventory.
+    ========================================================= */
+
+    function syncStructuredData(
+        articles
+    ) {
+
+        var scripts =
+            document.querySelectorAll(
+                'script[type="application/ld+json"]'
+            );
+
+        if (!scripts.length) {
+            return;
+        }
+
+        var schemaScript =
+            scripts[0];
+
+        var schema;
+
+        try {
+
+            schema =
+                JSON.parse(
+                    schemaScript.textContent
+                );
+
+        } catch (error) {
+
+            return;
+
+        }
+
+        if (
+            !schema ||
+            !schema.mainEntity
+        ) {
+            return;
+        }
+
+        schema.mainEntity.numberOfItems =
+            articles.length;
+
+        schema.mainEntity.itemListElement =
+            articles
+                .slice(0, 20)
+                .map(
+                    function (
+                        article,
+                        index
+                    ) {
+
+                        return {
+
+                            "@type":
+                                "ListItem",
+
+                            "position":
+                                index + 1,
+
+                            "name":
+                                article.title,
+
+                            "url":
+                                new URL(
+                                    article.url,
+                                    window.location.origin
+                                ).href
+
+                        };
+
+                    }
+                );
+
+        schemaScript.textContent =
+            JSON.stringify(
+                schema
+            );
+
+    }
+
+
+    /* =========================================================
+       LOAD ARTICLES
+    ========================================================= */
+
+    async function loadArticles() {
+
+        var response;
+
+        try {
+
+            response =
+                await fetch(
+                    ARTICLE_SOURCE,
+                    {
+                        method: "GET",
+                        cache: "no-store",
+                        headers: {
+                            "Accept":
+                                "application/json"
+                        }
+                    }
+                );
+
+        } catch (error) {
+
+            console.error(
+                "[Dyve Tech] Unable to reach article database:",
+                error
+            );
+
+            return;
+
+        }
+
+        if (!response.ok) {
+
+            console.error(
+                "[Dyve Tech] Article database returned HTTP " +
+                response.status
+            );
+
+            return;
+
+        }
+
+        var data;
+
+        try {
+
+            data =
+                await response.json();
+
+        } catch (error) {
+
+            console.error(
+                "[Dyve Tech] Invalid JSON:",
+                error
+            );
+
+            return;
+
+        }
+
+        var articles =
+            Array.isArray(data)
+                ? data
+                : (
+                    Array.isArray(
+                        data.articles
+                    )
+                        ? data.articles
+                        : []
+                );
+
+        articles =
+            articles
+                .filter(
+                    isValidArticle
+                )
+                .map(
+                    normalizeArticle
+                )
+                .filter(
+                    function (article) {
+
+                        return (
+                            article.page === undefined ||
+                            article.page === "tech" ||
+                            article.url.indexOf("/tech/") === 0
+                        );
+
+                    }
+                )
+                .sort(
+                    function (
+                        a,
+                        b
+                    ) {
+
+                        var dateA =
+                            new Date(
+                                a.date ||
+                                a.modified ||
+                                0
+                            ).getTime();
+
+                        var dateB =
+                            new Date(
+                                b.date ||
+                                b.modified ||
+                                0
+                            ).getTime();
+
+                        return dateB - dateA;
+
+                    }
+                );
+
+        /*
+         * The first item is the newest article.
+         * In your current JSON this is the GitHub outage story.
+         */
+
+        renderFeatured(
+            articles[0] || null
+        );
+
+        renderLatest(
+            articles
+        );
+
+        syncArticleCount(
+            articles
+        );
+
+        syncCategoryCount(
+            articles
+        );
+
+        syncStructuredData(
+            articles
+        );
+
+        document.documentElement
+            .setAttribute(
+                "data-tech-articles-loaded",
+                "true"
+            );
+
+        console.info(
+            "[Dyve Tech] Loaded " +
+            articles.length +
+            " articles."
+        );
+
+    }
 
 
     /* =========================================================
        MENU BUTTON
-       
-       Keeps the template functional without requiring
-       a large drawer implementation.
     ========================================================= */
 
     var menuButton =
@@ -3224,16 +4108,17 @@ img {
                         : "true"
                 );
 
-                /*
-                 * The primary navigation is intentionally kept
-                 * simple here. The editor/update system does not
-                 * depend on this interaction.
-                 */
-
             }
         );
 
     }
+
+
+    /* =========================================================
+       BOOT
+    ========================================================= */
+
+    loadArticles();
 
 })();
 </script>
