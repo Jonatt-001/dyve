@@ -94,7 +94,7 @@
 /* =========================================================
    DYVE TECH
    CATEGORIES SYSTEM
-   VERSION: 3.0.0
+   VERSION: 3.1.0
 ========================================================= */
 
 :root{
@@ -3027,7 +3027,7 @@ main{
 
 
                 <a
-                    href="/tech/?category=artificial-intelligence"
+                    href="/tech/category/artificial-intelligence/"
                     class="category-explore"
                 >
                     Explore
@@ -3108,7 +3108,7 @@ main{
 
 
                 <a
-                    href="/tech/?category=developer-tools"
+                    href="/tech/category/developer-tools/"
                     class="category-explore"
                 >
                     Explore
@@ -3187,7 +3187,7 @@ main{
 
 
                 <a
-                    href="/tech/?category=software"
+                    href="/tech/category/software/"
                     class="category-explore"
                 >
                     Explore
@@ -3266,7 +3266,7 @@ main{
 
 
                 <a
-                    href="/tech/?category=hardware"
+                    href="/tech/category/hardware/"
                     class="category-explore"
                 >
                     Explore
@@ -3346,7 +3346,7 @@ main{
 
 
                 <a
-                    href="/tech/?category=mobile-technology"
+                    href="/tech/category/mobile-technology/"
                     class="category-explore"
                 >
                     Explore
@@ -3426,7 +3426,7 @@ main{
 
 
                 <a
-                    href="/tech/?category=cloud-infrastructure"
+                    href="/tech/category/cloud-infrastructure/"
                     class="category-explore"
                 >
                     Explore
@@ -3507,7 +3507,7 @@ main{
 
 
                 <a
-                    href="/tech/?category=emerging-technology"
+                    href="/tech/category/emerging-technology/"
                     class="category-explore"
                 >
                     Explore
@@ -3588,7 +3588,7 @@ main{
 
 
                 <a
-                    href="/tech/?category=platforms-products"
+                    href="/tech/category/platforms-products/"
                     class="category-explore"
                 >
                     Explore
@@ -3799,7 +3799,7 @@ main{
                 </p>
 
                 <a
-                    href="/tech/?category=artificial-intelligence"
+                    href="/tech/category/artificial-intelligence/"
                     class="leading-link"
                 >
                     Explore AI intelligence
@@ -4012,20 +4012,8 @@ main{
    CONFIG
 ========================================================= */
 
-/*
- * IMPORTANT:
- *
- * This page intentionally reads:
- *
- * /tech/assets/tech-articles.json
- *
- * NOT:
- *
- * /assets/articles.json
- */
-
 var ARTICLES_URL =
-    "assets/tech-articles.json";
+    "/assets/tech-articles.json";
 
 
 var state = {
@@ -4038,6 +4026,10 @@ var state = {
 
 };
 
+
+/* =========================================================
+   CATEGORY DATA
+========================================================= */
 
 var CATEGORY_NAMES = [
 
@@ -4058,6 +4050,47 @@ var CATEGORY_NAMES = [
     "Platforms & Products"
 
 ];
+
+
+/*
+ * Canonical public taxonomy routes.
+ *
+ * These routes are handled by Vercel:
+ *
+ * /tech/category/:slug/
+ *
+ * and rewritten to:
+ *
+ * /api/tech-taxonomy?type=category&slug=:slug
+ */
+
+var CATEGORY_ROUTES = {
+
+    "Artificial Intelligence":
+        "/tech/category/artificial-intelligence/",
+
+    "Developer Tools":
+        "/tech/category/developer-tools/",
+
+    "Software":
+        "/tech/category/software/",
+
+    "Hardware":
+        "/tech/category/hardware/",
+
+    "Mobile Technology":
+        "/tech/category/mobile-technology/",
+
+    "Cloud & Infrastructure":
+        "/tech/category/cloud-infrastructure/",
+
+    "Emerging Technology":
+        "/tech/category/emerging-technology/",
+
+    "Platforms & Products":
+        "/tech/category/platforms-products/"
+
+};
 
 
 /* =========================================================
@@ -4256,6 +4289,72 @@ function canonicalCategory(value){
             value || ""
         ).trim()
     );
+
+}
+
+
+/* =========================================================
+   APPLY CANONICAL CATEGORY ROUTES
+========================================================= */
+
+function applyCategoryRoutes(){
+
+    all(
+        ".category-card"
+    ).forEach(
+        function(card){
+
+            var category =
+                card.getAttribute(
+                    "data-json-category"
+                );
+
+
+            var route =
+                CATEGORY_ROUTES[
+                    category
+                ];
+
+
+            var link =
+                card.querySelector(
+                    ".category-explore"
+                );
+
+
+            if(
+                route &&
+                link
+            ){
+
+                link.href =
+                    route;
+
+            }
+
+        }
+    );
+
+
+    var leadingLink =
+        document.querySelector(
+            ".leading-link"
+        );
+
+
+    if(
+        leadingLink &&
+        CATEGORY_ROUTES[
+            "Artificial Intelligence"
+        ]
+    ){
+
+        leadingLink.href =
+            CATEGORY_ROUTES[
+                "Artificial Intelligence"
+            ];
+
+    }
 
 }
 
@@ -4768,21 +4867,31 @@ function categoryMatches(card){
         );
 
 
+    var nameNode =
+        card.querySelector(
+            ".category-name"
+        );
+
+
+    var descriptionNode =
+        card.querySelector(
+            ".category-description"
+        );
+
+
     var name =
         normalize(
-            card.querySelector(
-                ".category-name"
-            )?.textContent ||
-            ""
+            nameNode
+                ? nameNode.textContent
+                : ""
         );
 
 
     var description =
         normalize(
-            card.querySelector(
-                ".category-description"
-            )?.textContent ||
-            ""
+            descriptionNode
+                ? descriptionNode.textContent
+                : ""
         );
 
 
@@ -5118,6 +5227,8 @@ $("currentYear")
 /* =========================================================
    INITIAL RENDER
 ========================================================= */
+
+applyCategoryRoutes();
 
 renderCategories();
 
