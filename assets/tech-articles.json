@@ -1,5 +1,35 @@
 [
   {
+    "title": "Hacker claims 3.6 million Azure account records stolen from major companies",
+    "desc": "Hacker claims 3.6 million Azure account records stolen from major companies: threat actor is selling employee databases allegedly stolen from the Microsoft A...",
+    "image": "https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787151668/c3wrt9zftkohqo8vtz7r.jpg",
+    "url": "tech/hacker-claims-36-million-azure-account-records-stolen-from-major-companies.html",
+    "tag": "News",
+    "meta": "trends",
+    "category": "trends",
+    "date": "2026-08-19",
+    "page": "tech",
+    "delta": "assets/deltas/tech-hacker-claims-36-million-azure-account-records-stolen-from-major-companies.json",
+    "readTime": 9,
+    "author": "Dyve Tech Editorial Unit",
+    "modified": "2026-08-19T15:04:06.057Z",
+    "createdAt": "2026-08-19T15:04:06.057Z",
+    "seoTitle": "Hacker claims 3.6 million Azure account records stolen from ma...",
+    "focusKeyword": "threat",
+    "keywords": [
+      "threat",
+      "actor",
+      "selling",
+      "employee",
+      "databases",
+      "allegedly",
+      "stolen",
+      "microsoft"
+    ],
+    "sourceUrl": "",
+    "ogPrompt": "Modern technology visualization of Hacker claims 3.6 million Azure account records stolen from major companies. Focus on threat,actor,selling,employee,databases,allegedly,stolen,microsoft. Editorial, premium, high-tech aesthetic, clean composition, no text."
+  },
+  {
     "title": "FINALLY : GitHub restores services after nearly 8hrs",
     "desc": "GitHub restores services after nearly 8-hour outage disrupts Actions, APIs, PRs and Copilot: GitHub has restored services after a nearly eight-hour outage di...",
     "image": "https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787062157/a7ip8gv8it7jtamvzk9v.jpg",
