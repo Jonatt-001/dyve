@@ -2,8 +2,36 @@
   "schemaVersion": 1,
   "system": "Dyve Tech Production Update System",
   "productionUrl": "https://www.dyve.online/tech/index.html",
-  "updatedAt": "2026-08-18T19:36:36.469Z",
+  "updatedAt": "2026-08-19T15:05:44.945Z",
   "records": [
+    {
+      "id": "rel_1787151942320_4nizamj",
+      "timestamp": "2026-08-19T15:05:42.320Z",
+      "updaterVersion": "5.1.0",
+      "type": "release",
+      "repository": "Jonatt-001/dyve",
+      "branch": "main",
+      "status": "success",
+      "version": "4.0.0",
+      "target": "tech/index.html",
+      "productionUrl": "https://www.dyve.online/tech/index.html",
+      "source": "admin/tech-editor/tech-homepage-template.html",
+      "previousVersion": "unversioned",
+      "action": "update",
+      "dynamicRegions": []
+    },
+    {
+      "id": "rel_1787151939900_d4nclnh",
+      "timestamp": "2026-08-19T15:05:39.900Z",
+      "updaterVersion": "5.1.0",
+      "type": "check",
+      "repository": "Jonatt-001/dyve",
+      "branch": "main",
+      "status": "success",
+      "version": "4.0.0",
+      "liveVersion": "unversioned",
+      "updateAvailable": true
+    },
     {
       "id": "rel_1787081793156_jfrqf38",
       "timestamp": "2026-08-18T19:36:33.156Z",
