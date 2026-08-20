@@ -774,7 +774,8 @@ const STATIC_BUILD_CONFIG = {
     publicationName: 'Dyve Tech',
     defaultImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop',
     articleDataPath: 'assets/tech-articles.json',
-    techSitemapPath: 'tech/sitemap.xml'
+    techSitemapPath: 'tech/sitemap.xml',
+    homepageTemplatePath: 'tech-editor/tech-homepage-template.html'
 };
 
 const SECTION_CONFIG = {
@@ -1657,7 +1658,7 @@ function buildStaticHead(title, description, canonical, schema) {
 <script type="application/ld+json">${schema}<\/script>`;
 }
 
-function buildTechIndexHTML(siteUrl, articles) {
+function buildGeneratedTechIndexHTML(siteUrl, articles) {
     const list = validateArticleSet(articles)
         .filter(a => a.page === 'tech')
         .sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -1747,6 +1748,7 @@ function buildTechIndexHTML(siteUrl, articles) {
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- DYVE_TECH_HEAD_START -->
 ${buildStaticHead(title, description, canonical, schema)}
 <meta name="theme-color" content="#020403">
 <meta name="color-scheme" content="dark">
@@ -1754,6 +1756,7 @@ ${buildStaticHead(title, description, canonical, schema)}
 <meta property="og:image:alt" content="Dyve Tech technology news and intelligence">
 <meta name="twitter:image" content="${escapeAttr(featured?.image || STATIC_BUILD_CONFIG.defaultImage)}">
 <meta name="twitter:image:alt" content="Dyve Tech technology news and intelligence">
+<!-- DYVE_TECH_HEAD_END -->
 <style>${buildIndexStyles()}</style>
 </head>
 <body>
@@ -1790,7 +1793,9 @@ ${buildStaticHead(title, description, canonical, schema)}
         </div>
     </section>
 
+    <!-- DYVE_TECH_FEATURED_START -->
     ${featuredHtml}
+    <!-- DYVE_TECH_FEATURED_END -->
 
     <div class="section-head">
         <div>
@@ -1801,7 +1806,9 @@ ${buildStaticHead(title, description, canonical, schema)}
     </div>
 
     <section class="grid" aria-label="Latest Dyve Tech articles">
+        <!-- DYVE_TECH_LATEST_START -->
         ${cards || `<div class="empty-state compact"><h2>Awaiting new intelligence</h2><p>Published technology coverage will be indexed here automatically.</p></div>`}
+        <!-- DYVE_TECH_LATEST_END -->
     </section>
 
     <section class="network" aria-labelledby="networkTitle">
@@ -1855,10 +1862,137 @@ ${buildStaticHead(title, description, canonical, schema)}
 </body>
 </html>`;
 }
-function buildAllSectionIndexes(siteUrl, articles) {
+
+const DYVE_TECH_TEMPLATE_MARKERS = Object.freeze({
+    head: ['<!-- DYVE_TECH_HEAD_START -->', '<!-- DYVE_TECH_HEAD_END -->'],
+    featured: ['<!-- DYVE_TECH_FEATURED_START -->', '<!-- DYVE_TECH_FEATURED_END -->'],
+    latest: ['<!-- DYVE_TECH_LATEST_START -->', '<!-- DYVE_TECH_LATEST_END -->']
+});
+
+function replaceMarkedRegion(source, startMarker, endMarker, replacement) {
+    const start = source.indexOf(startMarker);
+    const end = source.indexOf(endMarker);
+
+    if (start === -1 || end === -1 || end < start) {
+        return { html: source, replaced: false };
+    }
+
+    const endPosition = end + endMarker.length;
+
+    return {
+        html: source.slice(0, start)
+            + startMarker
+            + '\n'
+            + replacement.trim()
+            + '\n'
+            + endMarker
+            + source.slice(endPosition),
+        replaced: true
+    };
+}
+
+function hasDyveTechTemplateMarkers(template) {
+    if (!template || typeof template !== 'string') return false;
+
+    return Object.values(DYVE_TECH_TEMPLATE_MARKERS).every(([start, end]) =>
+        template.includes(start) && template.includes(end)
+    );
+}
+
+function mergeGeneratedTechContentIntoTemplate(template, generated) {
+    let result = template;
+
+    const generatedHead = extractMarkedRegion(
+        generated,
+        DYVE_TECH_TEMPLATE_MARKERS.head[0],
+        DYVE_TECH_TEMPLATE_MARKERS.head[1]
+    );
+
+    const generatedFeatured = extractMarkedRegion(
+        generated,
+        DYVE_TECH_TEMPLATE_MARKERS.featured[0],
+        DYVE_TECH_TEMPLATE_MARKERS.featured[1]
+    );
+
+    const generatedLatest = extractMarkedRegion(
+        generated,
+        DYVE_TECH_TEMPLATE_MARKERS.latest[0],
+        DYVE_TECH_TEMPLATE_MARKERS.latest[1]
+    );
+
+    if (!generatedHead || !generatedFeatured || !generatedLatest) {
+        throw new Error('Generated Tech homepage is missing one or more publishing markers.');
+    }
+
+    result = replaceMarkedRegion(
+        result,
+        DYVE_TECH_TEMPLATE_MARKERS.head[0],
+        DYVE_TECH_TEMPLATE_MARKERS.head[1],
+        generatedHead
+    ).html;
+
+    result = replaceMarkedRegion(
+        result,
+        DYVE_TECH_TEMPLATE_MARKERS.featured[0],
+        DYVE_TECH_TEMPLATE_MARKERS.featured[1],
+        generatedFeatured
+    ).html;
+
+    result = replaceMarkedRegion(
+        result,
+        DYVE_TECH_TEMPLATE_MARKERS.latest[0],
+        DYVE_TECH_TEMPLATE_MARKERS.latest[1],
+        generatedLatest
+    ).html;
+
+    return result;
+}
+
+function extractMarkedRegion(source, startMarker, endMarker) {
+    if (!source || typeof source !== 'string') return null;
+
+    const start = source.indexOf(startMarker);
+    const end = source.indexOf(endMarker);
+
+    if (start === -1 || end === -1 || end < start) return null;
+
+    const contentStart = start + startMarker.length;
+    return source.slice(contentStart, end).trim();
+}
+
+function buildTechIndexHTML(siteUrl, articles, templateHTML = '') {
+    /*
+     * IMPORTANT:
+     * Tech Editor is a content publisher, not the homepage template builder.
+     *
+     * The production homepage template is installed by:
+     *     /tech-editor/update-system.html
+     *
+     * Once installed, Tech Editor ONLY replaces the three dynamic publishing
+     * regions. It never regenerates or replaces the homepage shell.
+     */
+    if (!hasDyveTechTemplateMarkers(templateHTML)) {
+        throw new Error(
+            'TECH HOMEPAGE TEMPLATE IS NOT INSTALLED. Open tech-editor/update-system.html, run Check for Updates, then run the homepage update before publishing Tech content.'
+        );
+    }
+
+    const generated = buildGeneratedTechIndexHTML(siteUrl, articles);
+
+    return mergeGeneratedTechContentIntoTemplate(
+        templateHTML,
+        generated
+    );
+}
+
+function buildAllSectionIndexes(siteUrl, articles, templates = {}) {
     const normalized = validateArticleSet(articles);
     return {
-        'tech/index.html': buildTechIndexHTML(siteUrl, normalized)
+        'tech/index.html': buildTechIndexHTML(
+            siteUrl,
+            normalized,
+            templates['tech/index.html'] || ''
+        )
     };
 }
 
@@ -1940,13 +2074,55 @@ async function buildStaticSite(config, articles, options = {}) {
         logBuild(`Validated ${normalized.length} article records.`, 'ok');
 
         const files = [];
-        const sectionOutputs = buildAllSectionIndexes(config.siteUrl, normalized);
+
+        /*
+         * IMPORTANT:
+         * tech/index.html is now the editable homepage template.
+         * We read the current deployed file before rebuilding so manual
+         * HTML/CSS changes survive future editor publications.
+         */
+        let existingTechIndex = null;
+
+        try {
+            existingTechIndex = await fetchGitHubText(
+                config,
+                'tech/index.html',
+                { optional: true }
+            );
+
+            if (!existingTechIndex) {
+                throw new Error(
+                    'tech/index.html does not exist yet. Open tech-editor/update-system.html and run the homepage update first.'
+                );
+            }
+
+            if (!hasDyveTechTemplateMarkers(existingTechIndex)) {
+                throw new Error(
+                    'tech/index.html is missing the required Dyve Tech publishing markers. Restore/install the canonical homepage through tech-editor/update-system.html before publishing.'
+                );
+            }
+
+            logBuild(
+                'Loaded the live tech/index.html as the immutable homepage shell. Only dynamic publishing regions will be changed.',
+                'ok'
+            );
+        } catch (error) {
+            throw new Error(
+                `Tech homepage template check failed: ${error.message}`
+            );
+        }
+
+        const sectionOutputs = buildAllSectionIndexes(
+            config.siteUrl,
+            normalized,
+            { 'tech/index.html': existingTechIndex || '' }
+        );
 
         Object.entries(sectionOutputs).forEach(([path, content]) => {
             files.push({ path, content });
             const page = path.split('/')[0];
             const count = normalized.filter(a => a.page === page).length;
-            logBuild(`Generated ${path} from page="${page}" (${count} articles).`, 'ok');
+            logBuild(`Updated dynamic content in ${path} from page="${page}" (${count} articles). The homepage shell was not regenerated.`, 'ok');
         });
 
         if (STATIC_BUILD_CONFIG.generateSitemap) {
@@ -2704,7 +2880,7 @@ async function rebuildStaticIndex() {
         showToast(
             migration.redirects.length
                 ? `Static rebuild complete. Migrated ${migration.redirects.length} legacy route(s).`
-                : 'Static publishing system rebuilt successfully.'
+                : 'Static publishing data rebuilt successfully. The homepage template was preserved.'
         );
     } catch (error) {
         console.error('Static build error:', error);
@@ -3464,8 +3640,31 @@ async function publishArticle() {
             });
         }
 
-        const sectionOutputs = buildAllSectionIndexes(config.siteUrl, normalized);
-        Object.entries(sectionOutputs).forEach(([path, content]) => files.push({ path, content }));
+        /*
+         * Never generate a new Tech homepage from the editor.
+         * Read the production homepage and update only its publishing markers.
+         */
+        const existingTechIndex = await fetchGitHubText(
+            config,
+            'tech/index.html',
+            { optional: true }
+        );
+
+        if (!existingTechIndex || !hasDyveTechTemplateMarkers(existingTechIndex)) {
+            throw new Error(
+                'Tech homepage is not installed or is missing its publishing markers. Open tech-editor/update-system.html and run the homepage update first.'
+            );
+        }
+
+        const sectionOutputs = buildAllSectionIndexes(
+            config.siteUrl,
+            normalized,
+            { 'tech/index.html': existingTechIndex }
+        );
+
+        Object.entries(sectionOutputs).forEach(([path, content]) => {
+            files.push({ path, content });
+        });
 
         files.push({
             path: STATIC_BUILD_CONFIG.techSitemapPath,
