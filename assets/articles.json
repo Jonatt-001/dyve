@@ -1,5 +1,95 @@
 [
   {
+    "id": "40ca3c1b-731e-45c4-811c-b59aa461597b",
+    "title": "CISA: How Medusa Ransomware Attacked 500+ Critical Companies",
+    "slug": "cisa-how-medusa-ransomware-attacked-500-critical-companies",
+    "desc": "A CISA, FBI and HHS joint advisory warns of the TTPs of Medusa ransomware actors, as OPSWAT's James Neilson blames lack o — Dyve HackaX ransomware intelligence..",
+    "description": "A CISA, FBI and HHS joint advisory warns of the TTPs of Medusa ransomware actors, as OPSWAT's James Neilson blames lack o — Dyve HackaX ransomware intelligence..",
+    "image": "https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787258753/hackax/hackax/cisa-how-medusa-ransomware-attacked-500-critical-companies-featured-1787258748267.jpg",
+    "imageAlt": "CISA: How Medusa Ransomware Attacked 500+ Critical Companies — Ransomware Intelligence | RANSOMWARE | Dyve HackaX",
+    "imageTitle": "CISA: How Medusa Ransomware Attacked 500+ Critical Companies | Dyve HackaX",
+    "imageCaption": "CISA: How Medusa Ransomware Attacked 500+ Critical Companies — Ransomware Intelligence | RANSOMWARE.",
+    "imageWidth": 500,
+    "imageHeight": 370,
+    "imagePublicId": "hackax/hackax/cisa-how-medusa-ransomware-attacked-500-critical-companies-featured-1787258748267",
+    "imageSeoName": "cisa-how-medusa-ransomware-attacked-500-critical-companies-featured",
+    "url": "article/ransomware/cisa-how-medusa-ransomware-attacked-500-critical-companies.html",
+    "canonical": "https://dyve.online/article/ransomware/cisa-how-medusa-ransomware-attacked-500-critical-companies.html",
+    "tag": "RANSOMWARE",
+    "meta": "Verified Intel",
+    "category": "ransomware",
+    "categoryLabel": "Ransomware Intelligence",
+    "page": "homepage",
+    "brand": "hackax",
+    "publisher": "Dyve HackaX",
+    "author": "Dyve HackaX Intelligence Unit",
+    "keywords": [
+      "medusa",
+      "ransomware",
+      "actors",
+      "systems",
+      "cisa",
+      "critical",
+      "infrastructure",
+      "security",
+      "james",
+      "organisations",
+      "access",
+      "opswat",
+      "neilson",
+      "threat",
+      "group",
+      "attacked",
+      "500",
+      "companies",
+      "intelligence"
+    ],
+    "content": "{\"ops\":[{\"attributes\":{\"bold\":true},\"insert\":\"A CISA, FBI and HHS joint advisory warns of the TTPs of Medusa \"},{\"attributes\":{\"bold\":true,\"link\":\"https://dyve.online/article/ransomware/us-bank-investigates-lockbits-claims-as-ransomware-crims-set-pay-or-leak-deadline.html\"},\"insert\":\"ransomware\"},{\"attributes\":{\"bold\":true},\"insert\":\" actors, as OPSWAT's James Neilson blames lack of IT \"},{\"attributes\":{\"bold\":true,\"link\":\"https://dyve.online/tech/dark-web-hacker-economy.html\"},\"insert\":\"threat\"},{\"attributes\":{\"bold\":true},\"insert\":\" awareness within OT\"},{\"insert\":\"\\nHaving claimed over 500 \"},{\"attributes\":{\"link\":\"https://dyve.online/tech/nigeria-records-4975-weekly-cyberattacks-as-ransomware-victims-surge-87.html\"},\"insert\":\"victims\"},{\"insert\":\" from the critical infrastructure industries, the Medusa \"},{\"attributes\":{\"color\":\"#000000\",\"link\":\"https://cybermagazine.com/news/sophos-state-of-ransomware-report-a-step-ahead-of-attackers\"},\"insert\":\"ransomware actors have been actively attacking\"},{\"insert\":\" organisations since 2021 until at least until April 2026. \\n\\nThe Cybersecurity and Infrastructure Security Agency (\"},{\"attributes\":{\"color\":\"#000000\",\"link\":\"https://cybermagazine.com/company/cisa\"},\"insert\":\"CISA\"},{\"insert\":\") has released new information regarding the tactics, techniques & procedures (TTPs) of this infamous \"},{\"attributes\":{\"link\":\"https://dyve.online/tech/ransomware-attacks-surge-20-in-july-what-you-need-to-know.html\"},\"insert\":\"ransomware\"},{\"insert\":\"-as-a-service (RaaS) group. \\nThe joint advisory is part of a collective response under the #StopRansomware effort by the \"},{\"attributes\":{\"color\":\"#000000\",\"link\":\"https://cybermagazine.com/company/fbi\"},\"insert\":\"FBI\"},{\"insert\":\", CISA and the US Department of Health and Human Services (HHS).\\nMedusa actors are known to recruit initial access brokers (IABs) from darknet forums and marketplaces for as little as US$100 up to US$1m.\\nLike most threat actors, Medusa also relies on phishing campaigns as its primary method of stealing credentials. \\nUnpatched software is another big entry point for the Medusa actors, even exploiting new vulnerabilities within 24 hours of disclosure. \\n\\n“The fact that around 200 \"},{\"attributes\":{\"color\":\"#000000\",\"link\":\"https://cybermagazine.com/news/inside-the-foxconn-cyberattack-by-nitrogen-ransomware-group\"},\"insert\":\"organisations have been attacked\"},{\"insert\":\" in the past year proves that we're seeing critical infrastructure become an increasingly preferred target for threat actors,” says \"},{\"attributes\":{\"color\":\"#000000\",\"link\":\"https://cybermagazine.com/executive/jon-abbott\"},\"insert\":\"Jon Abbott\"},{\"insert\":\", CEO and Co-Founder at \"},{\"attributes\":{\"color\":\"#000000\",\"link\":\"https://cybermagazine.com/company/threat-aware\"},\"insert\":\"ThreatAware\"},{\"insert\":\". \\n“Medusa ransomware are well known for seeking out weaker points of entry into organisations to then move laterally to launch their attack on target \"},{\"attributes\":{\"link\":\"https://dyve.online/tech/dark-web-monitoring.html\"},\"insert\":\"systems\"},{\"insert\":\". \\n“When considering the possibilities for disruption that an attack can cause, it's no surprise that these critical sectors are being targeted.”\\nHow they quietly live off the land\"},{\"attributes\":{\"header\":2},\"insert\":\"\\n\"},{\"insert\":\"Once a victim is compromised, persistence is established by creating a “domain account to maintain access to victim systems”.\\nStealth is paramount to stay hidden and live off the land as long as possible, which explains why Medusa deploys a number of tactics to stay hidden. \\nThey have been known to cover their tracks by deleting PowerShell command line history.\\nMedusa actors have abused the legitimate Windows comsvcs.dll component to create an Local Security Authority Subsystem Service (LSASS) memory dump – allowing them to extract credentials while potentially evading detection by avoiding dedicated credential-dumping tools.\\nThey are also known to deploy payloads which are obfuscated base64 strings read into memory. \\n\\nAnother interesting technique deployed by the group is to place tooling like Rclone – which is used to exfiltrate data – within pre-existing Windows Defender excluded folders to prevent discovery.  \\nMedusa actors have \"},{\"attributes\":{\"color\":\"#000000\",\"link\":\"https://cybermagazine.com/news/plm-zero-day-flaw-exploited-by-clop-in-massive-data-breach\"},\"insert\":\"affected industries\"},{\"insert\":\" in medical, education, legal, insurance, technology and manufacturing sectors. \\n“The risk of healthcare or financial systems poses a huge threat to safety and so they’re often more likely to pay a ransom in hopes of being able to keep running smoothly,” Jon notes.\\nHe says that visibility across the entire inventory is crucial. \\nMedusa ransomware group’s modus operandi is to seek privileged access and then move laterally to find valuable systems on which to deploy the ransomware\"},{\"attributes\":{\"blockquote\":true},\"insert\":\"\\n\\n\"},{\"insert\":\"James Neilson, SVP of Global Sales at OPSWAT\"},{\"attributes\":{\"blockquote\":true},\"insert\":\"\\n\\n\"},{\"insert\":\"“This then makes the job of patching security gaps and isolating unauthorised access within the network, as advised by CISA, much easier,” Jon says, “Without complete asset visibility, critical infrastructure organisations are taking risks they simply cannot afford and leaving gaps for Medusa to exploit.” \\n\\nLateral movement and execution \"},{\"attributes\":{\"header\":2},\"insert\":\"\\n\"},{\"insert\":\"As is usually the \"},{\"attributes\":{\"color\":\"#000000\",\"link\":\"https://cybermagazine.com/news/sophos-flags-vect-teampcp-cybercriminal-ransomware-alliance\"},\"insert\":\"case with cybercriminal groups\"},{\"insert\":\", Medusa leverages a host of legitimate remote monitoring and management (RMM) tools for its nefarious activities. \\nTo stay under the radar, they go for tools that are already present in the victim’s environment. \\nThe FBI has found Medusa to use AnyDesk, Atera, ConnectWise, eHorus, N-able, BeyondTrust, SimpleHelp and Splashtop.\\nMedusa uses the above tools along with Remote Desktop Protocol (RDP) to move laterally across the network, identifying files for encryption and exfiltration. \\n“Medusa ransomware group’s modus operandi is to seek privileged access and then move laterally to find valuable systems on which to \"},{\"attributes\":{\"color\":\"#000000\",\"link\":\"https://cybermagazine.com/news/checkpoint-ransomeware-up-60-as-gen-ai-data-risk-soars\"},\"insert\":\"deploy the ransomware\"},{\"insert\":\",” notes \"},{\"attributes\":{\"color\":\"#000000\",\"link\":\"https://cybermagazine.com/executive/james-neilson\"},\"insert\":\"James Neilson\"},{\"insert\":\", SVP of Global Sales at \"},{\"attributes\":{\"color\":\"#000000\",\"link\":\"https://cybermagazine.com/company/opswat\"},\"insert\":\"OPSWAT\"},{\"insert\":\".\\n“IT systems, internet connectivity and transient devices remain major attack surfaces for ICS/OT infrastructure and Medusa ransomware looks to exploit these.”\\n\\nOperating a leak site on Tor like most extortion groups, Medusa uses a double-extortion model, where victims are to pay for both decryption of their files and again to prevent the public release.  \\n“One of the major factors in why Medusa ransomware has been so successful in breaching critical infrastructure organisations is that there’s a lack of understanding among security teams regarding the impact of IT threats on OT environments,” James says. \\n“IT security controls are often directly \"},{\"attributes\":{\"color\":\"#000000\",\"link\":\"https://cybermagazine.com/news/dragos-putting-operational-technology-risk-in-perspective\"},\"insert\":\"applied to OT systems\"},{\"insert\":\", which creates a false sense of security and causes disruptive false positives. \\n\\n\"},{\"attributes\":{\"link\":\"https://dyve.online/article/ransomware/us-bank-investigates-lockbits-claims-as-ransomware-crims-set-pay-or-leak-deadline.html\"},\"insert\":\"US Bank investigates LockBit's claims as ransomware crims set pay-or-leak deadline\"},{\"attributes\":{\"link\":\"https://dyve.online/tech/dark-web-marketplaces.html\"},\"insert\":\"Dark Web Marketplaces Explained (Vendors, Escrow, Trade Systems)\"},{\"insert\":\"\\n\"}]}",
+    "internalLinks": 7,
+    "relatedArticles": [
+      {
+        "id": "b2c2e0a1-3581-42fd-87d3-b092affa511f",
+        "title": "US Bank investigates LockBit's claims as ransomware crims set pay-or-leak deadline",
+        "url": "article/ransomware/us-bank-investigates-lockbits-claims-as-ransomware-crims-set-pay-or-leak-deadline.html",
+        "score": 36.5
+      },
+      {
+        "id": null,
+        "title": "Ransomware Attacks Surge 20% in July: What You Need to Know",
+        "url": "tech/ransomware-attacks-surge-20-in-july-what-you-need-to-know.html",
+        "score": 21
+      },
+      {
+        "id": null,
+        "title": "Dark Web Monitoring Systems (How Organizations Track Threats)",
+        "url": "tech/dark-web-monitoring.html",
+        "score": 17.5
+      },
+      {
+        "id": null,
+        "title": "Nigeria Records 4,975 Weekly Cyberattacks as Ransomware Victims Surge 87%",
+        "url": "tech/nigeria-records-4975-weekly-cyberattacks-as-ransomware-victims-surge-87.html",
+        "score": 17.5
+      },
+      {
+        "id": null,
+        "title": "What Hackers Buy on the Dark Web (Access, Exploits, Data)",
+        "url": "tech/dark-web-hacker-economy.html",
+        "score": 9
+      },
+      {
+        "id": null,
+        "title": "Dark Web Marketplaces Explained (Vendors, Escrow, Trade Systems)",
+        "url": "tech/dark-web-marketplaces.html",
+        "score": 8
+      }
+    ],
+    "ogPrompt": "Editorial cyber threat intelligence cover art about medusa, ransomware, actors, systems, cisa, critical; dark black background, emerald green network glow, forensic interface details, realistic intelligence analysis aesthetic, high contrast, premium publication artwork, no text, no logos.",
+    "date": "2026-08-20",
+    "publishedAt": "2026-08-20T20:46:40.815Z",
+    "updatedAt": "2026-08-20T20:46:34.150Z"
+  },
+  {
     "id": "b2c2e0a1-3581-42fd-87d3-b092affa511f",
     "title": "US Bank investigates LockBit's claims as ransomware crims set pay-or-leak deadline",
     "slug": "us-bank-investigates-lockbits-claims-as-ransomware-crims-set-pay-or-leak-deadline",
