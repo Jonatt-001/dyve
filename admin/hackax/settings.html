@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Dyve | HackaX Settings</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#020403">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={
+    theme:{
+        extend:{
+            colors:{
+                dyve:{
+                    bg:"#020403",
+                    card:"#07100d",
+                    accent:"#00ffaa",
+                    accent2:"#0bdc96"
+                }
+            }
+        }
+    }
+};
+</script>
+<style>
+*{box-sizing:border-box}
+html,body{width:100%;max-width:100%;overflow-x:hidden}
+body{font-family:Inter,system-ui,sans-serif}
+button,a,input,select{touch-action:manipulation}
+button{-webkit-tap-highlight-color:transparent}
+button:active,a:active{transform:scale(.985)}
+.settings-card{background:#fff;border:1px solid #e2e8f0;border-radius:18px;box-shadow:0 10px 30px rgba(15,23,42,.045)}
+.nav-item{transition:.15s}
+.nav-item.active{background:#ecfdf5;color:#047857;border-color:#a7f3d0}
+.field{width:100%;border:1px solid #cbd5e1;border-radius:12px;padding:12px 14px;outline:0;background:#fff}
+.field:focus{border-color:#00aa78;box-shadow:0 0 0 3px rgba(0,255,170,.12)}
+.mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,monospace}
+.status-dot{width:8px;height:8px;border-radius:999px;display:inline-block}
+.toast{animation:toastIn .2s ease}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+.mobile-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+</style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen">
+
+<header class="bg-dyve-bg text-white sticky top-0 z-50 border-b border-white/10">
+<div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+    <a href="index.html" class="min-w-0">
+        <div class="font-black tracking-wide text-sm sm:text-base">DYVE<span class="text-dyve-accent">|</span>HACKAX</div>
+        <div class="text-[9px] text-white/45 uppercase tracking-[.2em]">Publisher Control</div>
+    </a>
+    <div class="flex items-center gap-2">
+        <span id="headerState" class="hidden sm:inline-flex items-center gap-2 text-[10px] text-white/55 border border-white/10 rounded-full px-3 py-1.5">
+            <span id="headerDot" class="status-dot bg-slate-500"></span>
+            <span id="headerText">Not configured</span>
+        </span>
+        <a href="index.html" class="bg-dyve-accent text-dyve-bg px-3 py-2 rounded-lg text-xs font-extrabold">Editor</a>
+    </div>
+</div>
+</header>
+
+<main class="max-w-6xl mx-auto px-4 py-6 sm:py-8">
+<div class="grid lg:grid-cols-[230px_minmax(0,1fr)] gap-6">
+
+<aside class="settings-card p-3 h-fit lg:sticky lg:top-24">
+    <div class="px-3 py-3 mb-1">
+        <div class="text-[10px] uppercase tracking-[.18em] text-slate-400 font-bold">HackaX</div>
+        <div class="font-extrabold mt-1">Settings</div>
+    </div>
+    <nav class="space-y-1" id="nav">
+        <button type="button" data-section="connection" class="nav-item active w-full text-left px-3 py-2.5 rounded-xl text-sm font-bold">Connection</button>
+        <button type="button" data-section="publishing" class="nav-item w-full text-left px-3 py-2.5 rounded-xl text-sm font-bold">Publishing</button>
+        <button type="button" data-section="seo" class="nav-item w-full text-left px-3 py-2.5 rounded-xl text-sm font-bold">SEO & Intelligence</button>
+        <button type="button" data-section="media" class="nav-item w-full text-left px-3 py-2.5 rounded-xl text-sm font-bold">Media</button>
+        <button type="button" data-section="security" class="nav-item w-full text-left px-3 py-2.5 rounded-xl text-sm font-bold">Security</button>
+        <button type="button" data-section="diagnostics" class="nav-item w-full text-left px-3 py-2.5 rounded-xl text-sm font-bold">Diagnostics</button>
+    </nav>
+    <div class="border-t mt-4 pt-4 px-3 pb-2">
+        <a href="drafts.html" class="block text-xs font-bold text-slate-600 py-2">Drafts</a>
+        <a href="published.html" class="block text-xs font-bold text-slate-600 py-2">Published Intel</a>
+    </div>
+</aside>
+
+<section class="min-w-0">
+<div class="mb-6">
+    <div class="flex flex-wrap items-center gap-2">
+        <span class="text-[10px] font-black tracking-[.18em] uppercase text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1">HackaX only</span>
+        <span id="dirtyBadge" class="hidden text-[10px] font-black tracking-[.18em] uppercase text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-3 py-1">Unsaved changes</span>
+    </div>
+    <h1 class="text-2xl sm:text-3xl font-black mt-3 tracking-tight">Publisher configuration</h1>
+    <p class="text-sm text-slate-500 mt-2 max-w-2xl">Control the GitHub publishing pipeline, article routing, SEO automation, media handling and local security settings used by the HackaX editor.</p>
+</div>
+
+<div id="globalStatus" class="hidden mb-5 rounded-2xl border p-4 text-sm"></div>
+
+<form id="settingsForm" class="space-y-5">
+
+<section data-panel="connection" class="settings-card p-5 sm:p-6">
+<div class="flex items-start justify-between gap-4 mb-5">
+    <div><h2 class="font-black text-lg">GitHub connection</h2><p class="text-xs text-slate-500 mt-1">Required for publishing and loading the HackaX article corpus.</p></div>
+    <span id="connectionBadge" class="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-slate-100 text-slate-500">Not tested</span>
+</div>
+<div class="grid sm:grid-cols-2 gap-4">
+    <label class="block sm:col-span-2"><span class="text-xs font-bold">Repository</span><input id="repo" class="field mt-2" placeholder="owner/repository" autocomplete="off"></label>
+    <label class="block sm:col-span-2"><span class="text-xs font-bold">Personal Access Token</span>
+        <div class="relative mt-2">
+            <input id="token" type="password" class="field pr-20" autocomplete="new-password" placeholder="github_pat_...">
+            <button type="button" id="toggleToken" class="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] font-bold text-slate-500 px-2 py-2">Show</button>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-2">Stored in this browser's localStorage. Do not use a token with broader permissions than necessary.</p>
+    </label>
+    <label class="block"><span class="text-xs font-bold">Branch</span><input id="branch" class="field mt-2" value="main" autocomplete="off"></label>
+    <label class="block"><span class="text-xs font-bold">Production Site URL</span><input id="siteUrl" type="url" class="field mt-2" value="https://dyve.online" autocomplete="url"></label>
+</div>
+<div class="flex flex-wrap gap-2 mt-5">
+    <button type="submit" class="bg-dyve-accent text-dyve-bg rounded-xl px-5 py-3 font-black text-sm">Save Settings</button>
+    <button type="button" id="testConnection" class="border border-slate-300 bg-white rounded-xl px-5 py-3 font-bold text-sm">Test Connection</button>
+</div>
+</section>
+
+<section data-panel="publishing" class="settings-card p-5 sm:p-6 hidden">
+<h2 class="font-black text-lg">Publishing pipeline</h2>
+<p class="text-xs text-slate-500 mt-1">These paths must remain aligned with the HackaX editor.</p>
+<div class="grid sm:grid-cols-2 gap-4 mt-5">
+    <label class="block"><span class="text-xs font-bold">Article database</span><input class="field mt-2 mono text-xs" id="articleDb" value="assets/articles.json"></label>
+    <label class="block"><span class="text-xs font-bold">Main sitemap</span><input class="field mt-2 mono text-xs" id="sitemap" value="hackax-sitemap.xml"></label>
+    <label class="block"><span class="text-xs font-bold">News sitemap</span><input class="field mt-2 mono text-xs" id="newsSitemap" value="hackax-news-sitemap.xml"></label>
+    <label class="block"><span class="text-xs font-bold">Image sitemap</span><input class="field mt-2 mono text-xs" id="imageSitemap" value="hackax-image-sitemap.xml"></label>
+</div>
+<div class="mt-5 rounded-xl bg-slate-50 border p-4">
+    <div class="text-[10px] uppercase tracking-widest font-black text-slate-400">Routing contract</div>
+    <div class="grid sm:grid-cols-2 gap-2 mt-3 text-xs mono text-slate-600">
+        <div>article/{slug}.html</div><div>breaches/{slug}.html</div>
+        <div>dark-web/{slug}.html</div><div>ransomware/{slug}.html</div>
+        <div>signals/{slug}.html</div><div>threat-actors/{slug}.html</div>
+    </div>
+</div>
+</section>
+
+<section data-panel="seo" class="settings-card p-5 sm:p-6 hidden">
+<h2 class="font-black text-lg">SEO & intelligence automation</h2>
+<p class="text-xs text-slate-500 mt-1">Controls used by the editor's local SEO analysis engine.</p>
+<div class="grid sm:grid-cols-2 gap-4 mt-5">
+    <label class="block"><span class="text-xs font-bold">Minimum article words</span><input id="minWords" type="number" min="0" class="field mt-2" value="500"></label>
+    <label class="block"><span class="text-xs font-bold">Target H2 sections</span><input id="targetH2" type="number" min="0" class="field mt-2" value="2"></label>
+    <label class="block"><span class="text-xs font-bold">Target internal links</span><input id="targetLinks" type="number" min="0" class="field mt-2" value="2"></label>
+    <label class="block"><span class="text-xs font-bold">Meta description minimum</span><input id="metaMin" type="number" min="0" max="160" class="field mt-2" value="140"></label>
+</div>
+<div class="grid sm:grid-cols-2 gap-3 mt-5">
+    <label class="flex items-center justify-between gap-3 border rounded-xl p-4"><span><b class="text-sm">Auto image alt</b><small class="block text-[11px] text-slate-500 mt-1">Generate contextual alt text.</small></span><input id="autoAlt" type="checkbox" class="w-5 h-5 accent-emerald-500"></label>
+    <label class="flex items-center justify-between gap-3 border rounded-xl p-4"><span><b class="text-sm">Auto internal linking</b><small class="block text-[11px] text-slate-500 mt-1">Use only high-confidence matches.</small></span><input id="autoLinks" type="checkbox" class="w-5 h-5 accent-emerald-500"></label>
+</div>
+</section>
+
+<section data-panel="media" class="settings-card p-5 sm:p-6 hidden">
+<h2 class="font-black text-lg">Media pipeline</h2>
+<p class="text-xs text-slate-500 mt-1">Cloudinary is used by the editor for featured and article images.</p>
+<div class="grid sm:grid-cols-2 gap-4 mt-5">
+    <label class="block"><span class="text-xs font-bold">Cloudinary cloud name</span><input id="cloudName" class="field mt-2" value="dxdbn6xwy"></label>
+    <label class="block"><span class="text-xs font-bold">Upload preset</span><input id="uploadPreset" class="field mt-2" value="geefox_unsigned"></label>
+    <label class="block sm:col-span-2"><span class="text-xs font-bold">Upload endpoint</span><input id="cloudEndpoint" class="field mt-2 mono text-xs" value="https://api.cloudinary.com/v1_1/dxdbn6xwy/image/upload"></label>
+</div>
+<div class="mt-5 bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-800">
+    The upload preset must be compatible with unsigned browser uploads. Do not place a Cloudinary API secret in this page.
+</div>
+</section>
+
+<section data-panel="security" class="settings-card p-5 sm:p-6 hidden">
+<h2 class="font-black text-lg">Security & isolation</h2>
+<div class="space-y-3 mt-5">
+    <div class="border rounded-xl p-4"><b class="text-sm">HackaX namespace</b><div class="mono text-xs text-slate-500 mt-1">dyve-hackax-settings</div></div>
+    <div class="border rounded-xl p-4"><b class="text-sm">Tech isolation</b><p class="text-xs text-slate-500 mt-1">This publisher is restricted to HackaX intelligence and uses the HackaX article workflow. It does not intentionally publish Dyve Tech content.</p></div>
+    <div class="border border-red-200 bg-red-50 rounded-xl p-4"><b class="text-sm text-red-800">Credential control</b><p class="text-xs text-red-700 mt-1">Removing the token clears only this browser's saved GitHub credential. It does not revoke the token at GitHub.</p><button type="button" id="removeToken" class="mt-3 border border-red-300 text-red-700 rounded-lg px-3 py-2 text-xs font-bold bg-white">Remove Saved Token</button></div>
+</div>
+</section>
+
+<section data-panel="diagnostics" class="settings-card p-5 sm:p-6 hidden">
+<div class="flex items-center justify-between gap-3"><div><h2 class="font-black text-lg">Diagnostics</h2><p class="text-xs text-slate-500 mt-1">Validate the local configuration before publishing.</p></div><button type="button" id="runDiagnostics" class="bg-dyve-bg text-white rounded-xl px-4 py-2.5 text-xs font-bold">Run Diagnostics</button></div>
+<div id="diagnostics" class="space-y-2 mt-5">
+    <div class="text-sm text-slate-400">Run diagnostics to inspect the current configuration.</div>
+</div>
+</section>
+
+</form>
+
+<div class="settings-card p-5 sm:p-6 mt-5">
+<div class="flex flex-wrap items-center justify-between gap-3">
+    <div><h2 class="font-black">Danger zone</h2><p class="text-xs text-slate-500 mt-1">Resetting removes HackaX settings from this browser.</p></div>
+    <button type="button" id="resetSettings" class="border border-red-300 text-red-700 bg-white rounded-xl px-4 py-2.5 text-xs font-bold">Reset HackaX Settings</button>
+</div>
+</div>
+
+</section>
+</div>
+</main>
+
+<div id="toast" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-[100] bg-dyve-bg text-white border border-emerald-400/30 rounded-xl px-5 py-3 text-sm shadow-2xl"></div>
+
+<script>
+const KEY="dyve-hackax-settings";
+const DEFAULTS={
+    githubRepo:"",
+    githubToken:"",
+    githubBranch:"main",
+    siteUrl:"https://dyve.online",
+    articleDb:"assets/articles.json",
+    sitemap:"hackax-sitemap.xml",
+    newsSitemap:"hackax-news-sitemap.xml",
+    imageSitemap:"hackax-image-sitemap.xml",
+    minWords:500,
+    targetH2:2,
+    targetLinks:2,
+    metaMin:140,
+    autoAlt:true,
+    autoLinks:true,
+    cloudName:"dxdbn6xwy",
+    uploadPreset:"geefox_unsigned",
+    cloudEndpoint:"https://api.cloudinary.com/v1_1/dxdbn6xwy/image/upload"
+};
+const $=id=>document.getElementById(id);
+let dirty=false;
+
+function get(){
+    try{
+        const value=JSON.parse(localStorage.getItem(KEY)||"{}");
+        return {...DEFAULTS,...(value&&typeof value==="object"?value:{})};
+    }catch(e){return {...DEFAULTS}}
+}
+function toast(message){
+    const e=$("toast");
+    e.textContent=message;
+    e.classList.remove("hidden");
+    clearTimeout(window.__toast);
+    window.__toast=setTimeout(()=>e.classList.add("hidden"),3200);
+}
+function markDirty(){
+    dirty=true;
+    $("dirtyBadge").classList.remove("hidden");
+}
+function setSaved(){
+    dirty=false;
+    $("dirtyBadge").classList.add("hidden");
+}
+function showStatus(message,ok=true){
+    const e=$("globalStatus");
+    e.textContent=message;
+    e.className=`mb-5 rounded-2xl border p-4 text-sm ${ok?"bg-emerald-50 border-emerald-200 text-emerald-800":"bg-red-50 border-red-200 text-red-800"}`;
+    e.classList.remove("hidden");
+}
+function readForm(){
+    return {
+        githubRepo:$("repo").value.trim(),
+        githubToken:$("token").value.trim(),
+        githubBranch:$("branch").value.trim()||"main",
+        siteUrl:($("siteUrl").value.trim()||"https://dyve.online").replace(/\/+$/,""),
+        articleDb:$("articleDb").value.trim()||DEFAULTS.articleDb,
+        sitemap:$("sitemap").value.trim()||DEFAULTS.sitemap,
+        newsSitemap:$("newsSitemap").value.trim()||DEFAULTS.newsSitemap,
+        imageSitemap:$("imageSitemap").value.trim()||DEFAULTS.imageSitemap,
+        minWords:Math.max(0,Number($("minWords").value)||500),
+        targetH2:Math.max(0,Number($("targetH2").value)||2),
+        targetLinks:Math.max(0,Number($("targetLinks").value)||2),
+        metaMin:Math.min(160,Math.max(0,Number($("metaMin").value)||140)),
+        autoAlt:$("autoAlt").checked,
+        autoLinks:$("autoLinks").checked,
+        cloudName:$("cloudName").value.trim(),
+        uploadPreset:$("uploadPreset").value.trim(),
+        cloudEndpoint:$("cloudEndpoint").value.trim()
+    };
+}
+function save(showMessage=true){
+    localStorage.setItem(KEY,JSON.stringify(readForm()));
+    setSaved();
+    updateHeader();
+    if(showMessage){showStatus("HackaX settings saved successfully.");toast("Settings saved");}
+}
+function fill(s){
+    $("repo").value=s.githubRepo||"";
+    $("token").value=s.githubToken||"";
+    $("branch").value=s.githubBranch||"main";
+    $("siteUrl").value=s.siteUrl||DEFAULTS.siteUrl;
+    $("articleDb").value=s.articleDb||DEFAULTS.articleDb;
+    $("sitemap").value=s.sitemap||DEFAULTS.sitemap;
+    $("newsSitemap").value=s.newsSitemap||DEFAULTS.newsSitemap;
+    $("imageSitemap").value=s.imageSitemap||DEFAULTS.imageSitemap;
+    $("minWords").value=s.minWords;
+    $("targetH2").value=s.targetH2;
+    $("targetLinks").value=s.targetLinks;
+    $("metaMin").value=s.metaMin;
+    $("autoAlt").checked=s.autoAlt!==false;
+    $("autoLinks").checked=s.autoLinks!==false;
+    $("cloudName").value=s.cloudName||DEFAULTS.cloudName;
+    $("uploadPreset").value=s.uploadPreset||DEFAULTS.uploadPreset;
+    $("cloudEndpoint").value=s.cloudEndpoint||DEFAULTS.cloudEndpoint;
+}
+function updateHeader(){
+    const s=get();
+    const configured=!!(s.githubRepo&&s.githubToken);
+    $("headerDot").className=`status-dot ${configured?"bg-emerald-400":"bg-slate-500"}`;
+    $("headerText").textContent=configured?"Configured":"Not configured";
+    $("connectionBadge").textContent=configured?"Configured":"Not configured";
+    $("connectionBadge").className=`text-[10px] font-black uppercase px-2.5 py-1 rounded-full ${configured?"bg-emerald-50 text-emerald-700":"bg-slate-100 text-slate-500"}`;
+}
+function setSection(name){
+    document.querySelectorAll("[data-panel]").forEach(x=>x.classList.toggle("hidden",x.dataset.panel!==name));
+    document.querySelectorAll(".nav-item").forEach(x=>x.classList.toggle("active",x.dataset.section===name));
+    history.replaceState(null,"","#"+name);
+}
+function tokenPreview(){
+    const s=get();
+    $("token").value=s.githubToken||"";
+}
+async function testConnection(){
+    const s=readForm();
+    if(!s.githubRepo||!s.githubToken){
+        showStatus("Enter a GitHub repository and token before testing.",false);
+        return;
+    }
+    const button=$("testConnection");
+    button.disabled=true;
+    button.textContent="Testing...";
+    try{
+        const response=await fetch(`https://api.github.com/repos/${encodeURIComponent(s.githubRepo)}`,{
+            headers:{Authorization:`Bearer ${s.githubToken}`,Accept:"application/vnd.github+json"}
+        });
+        if(!response.ok){
+            let detail="";
+            try{const d=await response.json();detail=d.message||""}catch(e){}
+            throw new Error(detail||`GitHub returned HTTP ${response.status}`);
+        }
+        const repo=await response.json();
+        $("connectionBadge").textContent="Connected";
+        $("connectionBadge").className="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700";
+        showStatus(`GitHub connection verified: ${repo.full_name}. Default branch: ${repo.default_branch||s.githubBranch}.`);
+        toast("GitHub connection verified");
+    }catch(e){
+        $("connectionBadge").textContent="Failed";
+        $("connectionBadge").className="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-red-50 text-red-700";
+        showStatus("GitHub connection failed: "+e.message,false);
+    }finally{
+        button.disabled=false;
+        button.textContent="Test Connection";
+    }
+}
+function runDiagnostics(){
+    const s=readForm();
+    const checks=[
+        [!!s.githubRepo,"GitHub repository is configured"],
+        [!!s.githubToken,"GitHub token is configured"],
+        [/^[^/]+\/[^/]+$/.test(s.githubRepo),"Repository format looks valid"],
+        [/^https?:\/\/.+/i.test(s.siteUrl),"Production URL looks valid"],
+        [s.articleDb==="assets/articles.json","Article database matches the editor contract"],
+        [!!s.sitemap&&!!s.newsSitemap&&!!s.imageSitemap,"All sitemap paths are configured"],
+        [!!s.cloudName&&!!s.uploadPreset&&/^https:\/\//i.test(s.cloudEndpoint),"Cloudinary media configuration is present"],
+        [s.minWords>=300,"Minimum article depth is at least 300 words"],
+        [s.metaMin>=120&&s.metaMin<=160,"Meta description target is within a practical range"]
+    ];
+    $("diagnostics").innerHTML=checks.map(([ok,label])=>`
+        <div class="flex items-center gap-3 rounded-xl border p-3 ${ok?"bg-emerald-50 border-emerald-200":"bg-amber-50 border-amber-200"}">
+            <span class="font-black ${ok?"text-emerald-700":"text-amber-700"}">${ok?"✓":"!"}</span>
+            <span class="text-sm ${ok?"text-emerald-800":"text-amber-800"}">${label}</span>
+        </div>
+    `).join("");
+}
+document.addEventListener("DOMContentLoaded",()=>{
+    fill(get());
+    updateHeader();
+
+    document.querySelectorAll(".nav-item").forEach(button=>{
+        button.addEventListener("click",()=>setSection(button.dataset.section));
+    });
+
+    const hash=location.hash.replace("#","");
+    if(["connection","publishing","seo","media","security","diagnostics"].includes(hash))setSection(hash);
+
+    document.querySelectorAll("input,select").forEach(input=>{
+        input.addEventListener("input",markDirty);
+        input.addEventListener("change",markDirty);
+    });
+
+    $("settingsForm").addEventListener("submit",e=>{
+        e.preventDefault();
+        save(true);
+    });
+
+    $("testConnection").addEventListener("click",testConnection);
+
+    $("toggleToken").addEventListener("click",()=>{
+        const input=$("token");
+        const showing=input.type==="text";
+        input.type=showing?"password":"text";
+        $("toggleToken").textContent=showing?"Show":"Hide";
+    });
+
+    $("removeToken").addEventListener("click",()=>{
+        if(!confirm("Remove the saved GitHub token from this browser?")){
+            return;
+        }
+        $("token").value="";
+        save(false);
+        showStatus("Saved GitHub token removed from this browser.");
+        toast("Token removed");
+    });
+
+    $("resetSettings").addEventListener("click",()=>{
+        if(!confirm("Reset all HackaX settings stored in this browser?")){
+            return;
+        }
+        localStorage.removeItem(KEY);
+        fill(DEFAULTS);
+        setSaved();
+        updateHeader();
+        showStatus("HackaX settings have been reset.");
+        toast("Settings reset");
+    });
+
+    $("runDiagnostics").addEventListener("click",runDiagnostics);
+
+    window.addEventListener("beforeunload",e=>{
+        if(dirty){
+            e.preventDefault();
+            e.returnValue="";
+        }
+    });
+});
+</script>
+</body>
+</html>
