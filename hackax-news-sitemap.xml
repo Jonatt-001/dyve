@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+
+
+<url>
+<loc>https://dyve.online/article/ransomware/us-bank-investigates-lockbits-claims-as-ransomware-crims-set-pay-or-leak-deadline.html</loc>
+<news:news>
+<news:publication>
+<news:name>Dyve HackaX</news:name>
+<news:language>en</news:language>
+</news:publication>
+<news:publication_date>2026-08-20T00:00:00.000Z</news:publication_date>
+<news:title>US Bank investigates LockBit&#039;s claims as ransomware crims set pay-or-leak deadline</news:title>
+</news:news>
+</url>
+
+
+</urlset>
