@@ -1180,7 +1180,7 @@
                  * production results route when the results UI is connected.
                  */
                 sessionStorage.setItem("hackaxScanResult", JSON.stringify(data));
-                window.location.href = "/results.html";
+                window.location.href = "/hackax/results.html";
             } catch (error) {
                 scanError.textContent = String(error.message || "SCAN FAILED. TRY AGAIN.").toUpperCase();
                 showToast("Scan failed. Check the domain and try again.");
