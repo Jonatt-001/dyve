@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#050505">
+    <meta name="description" content="HackaX Domain Intelligence by Dyve. Scan a public domain for security, DNS, TLS, email and web trust signals.">
+    <meta property="og:title" content="HackaX Domain Intelligence">
+    <meta property="og:description" content="See what your domain exposes. Run a live security and trust scan.">
+    <meta property="og:type" content="website">
+    <title>HackaX — Domain Intelligence</title>
+
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap");
+
+        :root {
+            --bg: #050505;
+            --ink: #f2f0e8;
+            --muted: #8f8e87;
+            --line: rgba(242, 240, 232, .17);
+            --line-soft: rgba(242, 240, 232, .08);
+            --acid: #d7ff3f;
+            --acid-dim: rgba(215, 255, 63, .12);
+            --violet: #6f38ff;
+            --violet-2: #a46dff;
+            --panel: #0a0a0a;
+            --danger: #ff665f;
+            --amber: #f4bb55;
+            --green: #73e8a6;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--ink);
+            background: var(--bg);
+            font-family: Inter, Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: .045;
+            background-image:
+                linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
+            background-size: 70px 70px;
+            mask-image: linear-gradient(to bottom, black, transparent 70%);
+            z-index: 20;
+        }
+
+        ::selection {
+            background: var(--acid);
+            color: #000;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        .shell {
+            width: min(1440px, calc(100% - 48px));
+            margin: 0 auto;
+        }
+
+        .topbar {
+            height: 78px;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            border-bottom: 1px solid var(--line);
+            position: relative;
+            z-index: 50;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            letter-spacing: -.04em;
+            width: fit-content;
+        }
+
+        .brand-mark {
+            width: 28px;
+            height: 28px;
+            display: grid;
+            place-items: center;
+            border: 1px solid var(--ink);
+            transform: rotate(45deg);
+        }
+
+        .brand-mark span {
+            width: 8px;
+            height: 8px;
+            background: var(--acid);
+            display: block;
+        }
+
+        .brand-word {
+            font-size: 17px;
+        }
+
+        .brand-word b {
+            color: var(--acid);
+        }
+
+        .nav {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            font-size: 12px;
+            color: #c9c8c1;
+        }
+
+        .nav a {
+            position: relative;
+        }
+
+        .nav a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -6px;
+            height: 1px;
+            background: var(--acid);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .25s ease;
+        }
+
+        .nav a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .top-action {
+            justify-self: end;
+            display: flex;
+            gap: 9px;
+            align-items: center;
+        }
+
+        .status {
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+            letter-spacing: .08em;
+            color: var(--acid);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .status i {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--acid);
+            box-shadow: 0 0 14px var(--acid);
+        }
+
+        .menu {
+            display: none;
+            border: 1px solid var(--line);
+            background: transparent;
+            color: var(--ink);
+            width: 40px;
+            height: 40px;
+        }
+
+        .hero {
+            min-height: calc(100svh - 78px);
+            display: grid;
+            grid-template-columns: 1.06fr .94fr;
+            position: relative;
+            border-bottom: 1px solid var(--line);
+            overflow: hidden;
+        }
+
+        .hero-copy {
+            padding: clamp(70px, 10vw, 145px) 40px 80px 0;
+            position: relative;
+            z-index: 3;
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: var(--muted);
+            font-family: "DM Mono", monospace;
+            font-size: 10px;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: "00";
+            color: var(--acid);
+        }
+
+        h1 {
+            margin: 30px 0 25px;
+            max-width: 860px;
+            font-family: "Barlow Condensed", Impact, sans-serif;
+            font-size: clamp(76px, 10.5vw, 162px);
+            line-height: .78;
+            text-transform: uppercase;
+            letter-spacing: -.055em;
+            font-weight: 800;
+        }
+
+        h1 .outline {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(242,240,232,.8);
+        }
+
+        h1 .acid {
+            color: var(--acid);
+        }
+
+        .hero-description {
+            max-width: 510px;
+            margin-left: 3px;
+            color: #b6b5ae;
+            font-size: clamp(15px, 1.4vw, 19px);
+            line-height: 1.65;
+        }
+
+        .scan-box {
+            margin-top: 38px;
+            width: min(650px, 100%);
+            display: flex;
+            border: 1px solid rgba(242,240,232,.3);
+            background: rgba(5,5,5,.8);
+            padding: 5px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .scan-box:focus-within {
+            border-color: var(--acid);
+            box-shadow: 0 0 0 1px rgba(215,255,63,.16);
+        }
+
+        .scan-box input {
+            min-width: 0;
+            flex: 1;
+            height: 58px;
+            padding: 0 16px;
+            border: 0;
+            outline: 0;
+            color: var(--ink);
+            background: transparent;
+            font-family: "DM Mono", monospace;
+            font-size: 13px;
+        }
+
+        .scan-box input::placeholder {
+            color: #66655f;
+        }
+
+        .scan-box button {
+            border: 0;
+            min-width: 145px;
+            padding: 0 22px;
+            background: var(--acid);
+            color: #050505;
+            font-weight: 900;
+            cursor: pointer;
+            transition: transform .2s ease, background .2s ease;
+        }
+
+        .scan-box button:hover {
+            transform: translate(-2px, -2px);
+            background: #e5ff75;
+        }
+
+        .scan-box button:disabled {
+            opacity: .55;
+            cursor: wait;
+            transform: none;
+        }
+
+        .micro {
+            margin-top: 12px;
+            color: #64635e;
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+        .hero-visual {
+            position: relative;
+            min-height: 720px;
+            overflow: hidden;
+            border-left: 1px solid var(--line);
+            background:
+                radial-gradient(circle at 52% 43%, rgba(111,56,255,.23), transparent 17%),
+                radial-gradient(circle at 55% 43%, rgba(164,109,255,.14), transparent 31%),
+                #070707;
+        }
+
+        .portal {
+            position: absolute;
+            width: min(54vw, 700px);
+            height: min(54vw, 700px);
+            min-width: 450px;
+            min-height: 450px;
+            left: 50%;
+            top: 47%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 50% 50%, rgba(0,0,0,.95) 0 11%, transparent 12%),
+                repeating-radial-gradient(
+                    ellipse at center,
+                    transparent 0 20px,
+                    rgba(111,56,255,.15) 21px 23px,
+                    transparent 24px 34px
+                );
+            filter: blur(.1px);
+            animation: portalSpin 26s linear infinite;
+        }
+
+        .portal::before,
+        .portal::after {
+            content: "";
+            position: absolute;
+            inset: 8%;
+            border-radius: 48% 52% 44% 56%;
+            border: 1px solid rgba(164,109,255,.38);
+            transform: rotate(23deg) skewX(-7deg);
+            box-shadow:
+                0 0 55px rgba(111,56,255,.18),
+                inset 0 0 45px rgba(111,56,255,.12);
+        }
+
+        .portal::after {
+            inset: 18%;
+            transform: rotate(-31deg) skewY(9deg);
+            border-color: rgba(215,255,63,.12);
+        }
+
+        @keyframes portalSpin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .visual-core {
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            left: 50%;
+            top: 47%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: #050505;
+            border: 1px solid rgba(215,255,63,.5);
+            box-shadow:
+                0 0 70px rgba(111,56,255,.55),
+                0 0 20px rgba(215,255,63,.2);
+            display: grid;
+            place-items: center;
+        }
+
+        .visual-core::before {
+            content: "";
+            width: 27px;
+            height: 27px;
+            border: 1px solid var(--acid);
+            transform: rotate(45deg);
+            box-shadow: 0 0 30px rgba(215,255,63,.45);
+        }
+
+        .visual-label {
+            position: absolute;
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: #aaa9a2;
+        }
+
+        .visual-label.one { left: 9%; top: 17%; }
+        .visual-label.two { right: 8%; top: 29%; }
+        .visual-label.three { left: 15%; bottom: 19%; }
+        .visual-label.four { right: 10%; bottom: 11%; }
+
+        .visual-label b {
+            color: var(--acid);
+            font-weight: 500;
+        }
+
+        .corner {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+        }
+
+        .corner::before,
+        .corner::after {
+            content: "";
+            position: absolute;
+            background: var(--line);
+        }
+
+        .corner::before {
+            width: 18px;
+            height: 1px;
+        }
+
+        .corner::after {
+            width: 1px;
+            height: 18px;
+        }
+
+        .corner.tl { top: 25px; left: 25px; }
+        .corner.tr { top: 25px; right: 25px; transform: rotate(90deg); }
+        .corner.bl { bottom: 25px; left: 25px; transform: rotate(-90deg); }
+        .corner.br { bottom: 25px; right: 25px; transform: rotate(180deg); }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .stat {
+            min-height: 185px;
+            padding: 24px 26px;
+            border-right: 1px solid var(--line);
+            position: relative;
+        }
+
+        .stat:last-child {
+            border-right: 0;
+        }
+
+        .stat-label {
+            display: flex;
+            justify-content: space-between;
+            color: #77766f;
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            margin-top: 48px;
+            font-family: "Barlow Condensed", sans-serif;
+            font-size: clamp(44px, 5vw, 72px);
+            line-height: .8;
+            letter-spacing: -.04em;
+        }
+
+        .stat small {
+            display: block;
+            margin-top: 14px;
+            color: var(--acid);
+            font-family: "DM Mono", monospace;
+            font-size: 8px;
+        }
+
+        .section {
+            position: relative;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section-head {
+            min-height: 520px;
+            display: grid;
+            grid-template-columns: 1.25fr .75fr;
+            align-items: end;
+            gap: 50px;
+            padding: 90px 0 85px;
+        }
+
+        .index {
+            color: var(--acid);
+            font-family: "DM Mono", monospace;
+            font-size: 10px;
+            letter-spacing: .1em;
+            margin-bottom: 25px;
+        }
+
+        .section h2 {
+            max-width: 850px;
+            margin: 0;
+            font-family: "Barlow Condensed", sans-serif;
+            font-size: clamp(64px, 8.5vw, 128px);
+            line-height: .79;
+            letter-spacing: -.05em;
+            text-transform: uppercase;
+        }
+
+        .section h2 span {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(242,240,232,.75);
+        }
+
+        .section-copy {
+            color: #a2a19a;
+            font-size: 15px;
+            line-height: 1.75;
+            max-width: 450px;
+            padding-bottom: 5px;
+        }
+
+        .signal-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-top: 1px solid var(--line);
+        }
+
+        .signal {
+            min-height: 280px;
+            padding: 25px;
+            border-right: 1px solid var(--line);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .signal:last-child {
+            border-right: 0;
+        }
+
+        .signal-number {
+            color: #686760;
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+        }
+
+        .signal-icon {
+            width: 62px;
+            height: 62px;
+            margin-top: 55px;
+            border: 1px solid var(--line);
+            display: grid;
+            place-items: center;
+            color: var(--acid);
+        }
+
+        .signal h3 {
+            margin: 23px 0 8px;
+            font-size: 16px;
+        }
+
+        .signal p {
+            margin: 0;
+            color: #74736d;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .signal::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            right: -90px;
+            bottom: -100px;
+            border-radius: 50%;
+            background: rgba(111,56,255,.18);
+            filter: blur(30px);
+        }
+
+        .workflow {
+            min-height: 650px;
+            display: grid;
+            grid-template-columns: .7fr 1.3fr;
+            gap: 80px;
+            padding: 110px 0;
+        }
+
+        .workflow-intro h2 {
+            margin: 0;
+            font-family: "Barlow Condensed", sans-serif;
+            text-transform: uppercase;
+            font-size: clamp(62px, 7vw, 105px);
+            line-height: .8;
+            letter-spacing: -.05em;
+        }
+
+        .workflow-intro p {
+            max-width: 360px;
+            margin-top: 30px;
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .steps {
+            border-top: 1px solid var(--line);
+        }
+
+        .step {
+            display: grid;
+            grid-template-columns: 70px 1fr auto;
+            gap: 25px;
+            align-items: center;
+            min-height: 135px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .step-num {
+            color: var(--acid);
+            font-family: "DM Mono", monospace;
+            font-size: 10px;
+        }
+
+        .step h3 {
+            font-size: 19px;
+            margin: 0 0 7px;
+        }
+
+        .step p {
+            margin: 0;
+            color: #73726c;
+            font-size: 12px;
+        }
+
+        .step-mark {
+            width: 28px;
+            height: 28px;
+            border: 1px solid var(--line);
+            position: relative;
+        }
+
+        .step-mark::before {
+            content: "";
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            left: 9px;
+            top: 9px;
+            background: var(--acid);
+        }
+
+        .cta {
+            min-height: 620px;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            display: grid;
+            place-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: "";
+            position: absolute;
+            width: 550px;
+            height: 550px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(111,56,255,.25), transparent 65%);
+            filter: blur(10px);
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta h2 {
+            margin: 0;
+            font-family: "Barlow Condensed", sans-serif;
+            font-size: clamp(70px, 10vw, 145px);
+            line-height: .75;
+            letter-spacing: -.06em;
+            text-transform: uppercase;
+        }
+
+        .cta h2 span {
+            color: var(--acid);
+        }
+
+        .cta p {
+            max-width: 520px;
+            margin: 30px auto;
+            color: #94938d;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            min-height: 52px;
+            align-items: center;
+            padding: 0 24px;
+            background: var(--acid);
+            color: #050505;
+            font-weight: 900;
+            font-size: 13px;
+        }
+
+        footer {
+            min-height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            color: #66655f;
+            font-family: "DM Mono", monospace;
+            font-size: 9px;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+
+        .toast {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 100;
+            max-width: 360px;
+            padding: 14px 16px;
+            background: #111;
+            border: 1px solid var(--line);
+            color: var(--ink);
+            font-size: 12px;
+            transform: translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+            transition: .25s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .scan-error {
+            color: #ffaaa6;
+            font-family: "DM Mono", monospace;
+            font-size: 10px;
+            margin-top: 10px;
+            min-height: 14px;
+        }
+
+        @media (max-width: 1000px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-visual {
+                min-height: 520px;
+                border-left: 0;
+                border-top: 1px solid var(--line);
+            }
+
+            .hero-copy {
+                padding-right: 0;
+            }
+
+            .section-head {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .signal-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .signal:nth-child(2) {
+                border-right: 0;
+            }
+
+            .signal:nth-child(-n+2) {
+                border-bottom: 1px solid var(--line);
+            }
+
+            .workflow {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .shell {
+                width: min(100% - 24px, 1440px);
+            }
+
+            .topbar {
+                grid-template-columns: 1fr auto;
+                height: 66px;
+            }
+
+            .nav,
+            .status {
+                display: none;
+            }
+
+            .menu {
+                display: grid;
+                place-items: center;
+            }
+
+            h1 {
+                font-size: clamp(70px, 21vw, 118px);
+            }
+
+            .hero-copy {
+                padding-top: 70px;
+                padding-bottom: 60px;
+            }
+
+            .scan-box {
+                flex-direction: column;
+            }
+
+            .scan-box input {
+                height: 56px;
+            }
+
+            .scan-box button {
+                height: 52px;
+                width: 100%;
+            }
+
+            .hero-visual {
+                min-height: 440px;
+            }
+
+            .portal {
+                min-width: 370px;
+                min-height: 370px;
+            }
+
+            .visual-label {
+                font-size: 7px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .stat {
+                min-height: 145px;
+                border-right: 0;
+                border-bottom: 1px solid var(--line);
+            }
+
+            .stat:last-child {
+                border-bottom: 0;
+            }
+
+            .stat-value {
+                margin-top: 34px;
+            }
+
+            .section-head {
+                padding: 75px 0;
+            }
+
+            .section h2 {
+                font-size: clamp(65px, 19vw, 110px);
+            }
+
+            .signal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .signal,
+            .signal:nth-child(2) {
+                border-right: 0;
+                border-bottom: 1px solid var(--line);
+                min-height: 230px;
+            }
+
+            .signal:last-child {
+                border-bottom: 0;
+            }
+
+            .signal-icon {
+                margin-top: 35px;
+            }
+
+            .workflow {
+                padding: 80px 0;
+            }
+
+            .step {
+                grid-template-columns: 45px 1fr auto;
+                gap: 12px;
+            }
+
+            .step h3 {
+                font-size: 16px;
+            }
+
+            .cta {
+                min-height: 510px;
+            }
+
+            footer {
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+                padding: 30px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="topbar shell">
+        <a class="brand" href="#">
+            <span class="brand-mark"><span></span></span>
+            <span class="brand-word">DYVE <b>/</b> HACKAX</span>
+        </a>
+
+        <nav class="nav" aria-label="Primary">
+            <a href="#signals">Signals</a>
+            <a href="#workflow">How it works</a>
+            <a href="#scan">Scan</a>
+        </nav>
+
+        <div class="top-action">
+            <span class="status"><i></i> SCANNER ONLINE</span>
+            <button class="menu" type="button" aria-label="Menu">≡</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero shell" id="scan">
+            <div class="hero-copy">
+                <div class="eyebrow">DOMAIN INTELLIGENCE / PUBLIC SURFACE</div>
+
+                <h1>
+                    SEE WHAT<br>
+                    <span class="outline">YOUR DOMAIN</span><br>
+                    <span class="acid">EXPOSES.</span>
+                </h1>
+
+                <p class="hero-description">
+                    HackaX scans the public-facing signals around a domain and turns them into one clear technical picture — transport security, TLS, HTTP headers, DNS, email authentication and web discovery.
+                </p>
+
+                <form class="scan-box" id="scanForm">
+                    <input
+                        id="domain"
+                        name="domain"
+                        type="text"
+                        autocomplete="url"
+                        spellcheck="false"
+                        placeholder="ENTER DOMAIN — example.com"
+                        aria-label="Domain to scan"
+                        required
+                    >
+                    <button id="scanButton" type="submit">RUN INTELLIGENCE →</button>
+                </form>
+
+                <div class="scan-error" id="scanError" aria-live="polite"></div>
+
+                <div class="micro">
+                    LIVE SERVER-SIDE CHECKS / PUBLIC DOMAINS ONLY / NO LOGIN REQUIRED
+                </div>
+            </div>
+
+            <div class="hero-visual" aria-hidden="true">
+                <div class="corner tl"></div>
+                <div class="corner tr"></div>
+                <div class="corner bl"></div>
+                <div class="corner br"></div>
+
+                <div class="visual-label one">01 / <b>TRANSPORT</b><br>HTTPS · TLS</div>
+                <div class="visual-label two">02 / <b>WEB</b><br>HEADERS · POLICY</div>
+                <div class="visual-label three">03 / <b>DNS</b><br>A · AAAA · NS · MX</div>
+                <div class="visual-label four">04 / <b>MAIL</b><br>SPF · DMARC</div>
+
+                <div class="portal"></div>
+                <div class="visual-core"></div>
+            </div>
+        </section>
+
+        <section class="stats shell" aria-label="Scanner capabilities">
+            <article class="stat">
+                <div class="stat-label">
+                    <span>CHECKS / CORE</span>
+                    <span>+</span>
+                </div>
+                <div class="stat-value">14+</div>
+                <small>LIVE SIGNALS</small>
+            </article>
+
+            <article class="stat">
+                <div class="stat-label">
+                    <span>INTELLIGENCE / LAYER</span>
+                    <span>01</span>
+                </div>
+                <div class="stat-value">REAL</div>
+                <small>SERVER-SIDE OBSERVATIONS</small>
+            </article>
+
+            <article class="stat">
+                <div class="stat-label">
+                    <span>OUTPUT / MODE</span>
+                    <span>→</span>
+                </div>
+                <div class="stat-value">CLEAR</div>
+                <small>FINDINGS + REMEDIATION</small>
+            </article>
+        </section>
+
+        <section class="section shell" id="signals">
+            <div class="section-head">
+                <div>
+                    <div class="index">01. SIGNALS</div>
+                    <h2>READ THE<br><span>SURFACE.</span></h2>
+                </div>
+
+                <div class="section-copy">
+                    A domain is more than a homepage. Its public infrastructure leaves signals across transport, HTTP, DNS, mail and discovery layers. HackaX pulls those signals together so weak points are visible before they become somebody else's discovery.
+                </div>
+            </div>
+
+            <div class="signal-grid">
+                <article class="signal">
+                    <div class="signal-number">01 / TRANSPORT</div>
+                    <div class="signal-icon">↗</div>
+                    <h3>HTTPS + TLS</h3>
+                    <p>Certificate validity, trust state, expiry and secure transport behavior.</p>
+                </article>
+
+                <article class="signal">
+                    <div class="signal-number">02 / WEB</div>
+                    <div class="signal-icon">[]</div>
+                    <h3>SECURITY HEADERS</h3>
+                    <p>HSTS, CSP, framing protection, MIME sniffing and browser policy signals.</p>
+                </article>
+
+                <article class="signal">
+                    <div class="signal-number">03 / DNS</div>
+                    <div class="signal-icon">::</div>
+                    <h3>DNS INTELLIGENCE</h3>
+                    <p>IPv4, IPv6, nameservers and mail exchange records resolved live.</p>
+                </article>
+
+                <article class="signal">
+                    <div class="signal-number">04 / MAIL</div>
+                    <div class="signal-icon">@</div>
+                    <h3>EMAIL TRUST</h3>
+                    <p>SPF, DMARC and MX configuration signals that affect domain trust.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="workflow shell" id="workflow">
+            <div class="workflow-intro">
+                <div class="index">02. PROCESS</div>
+                <h2>FROM<br>DOMAIN<br>TO <span>INTEL.</span></h2>
+                <p>
+                    No dashboard clutter. No mystery score with no evidence. Run the domain, inspect the signal, understand the finding, then act on the recommendation.
+                </p>
+            </div>
+
+            <div class="steps">
+                <article class="step">
+                    <div class="step-num">01</div>
+                    <div>
+                        <h3>ENTER A DOMAIN</h3>
+                        <p>Start with any public domain you are authorized to assess.</p>
+                    </div>
+                    <div class="step-mark"></div>
+                </article>
+
+                <article class="step">
+                    <div class="step-num">02</div>
+                    <div>
+                        <h3>COLLECT PUBLIC SIGNALS</h3>
+                        <p>HackaX resolves DNS, connects to HTTPS/TLS and inspects public web responses.</p>
+                    </div>
+                    <div class="step-mark"></div>
+                </article>
+
+                <article class="step">
+                    <div class="step-num">03</div>
+                    <div>
+                        <h3>CLASSIFY THE FINDINGS</h3>
+                        <p>Each observation is separated into pass, warning or failure with severity.</p>
+                    </div>
+                    <div class="step-mark"></div>
+                </article>
+
+                <article class="step">
+                    <div class="step-num">04</div>
+                    <div>
+                        <h3>KNOW WHAT TO FIX</h3>
+                        <p>Every actionable finding includes evidence and a practical remediation direction.</p>
+                    </div>
+                    <div class="step-mark"></div>
+                </article>
+            </div>
+        </section>
+
+        <section class="cta shell">
+            <div class="cta-content">
+                <div class="index">03. START</div>
+                <h2>SCAN<br><span>THE SURFACE.</span></h2>
+                <p>
+                    One domain. One live intelligence pass. A clearer picture of what your public infrastructure is telling the world.
+                </p>
+                <a class="cta-btn" href="#scan" id="ctaScan">SCAN A DOMAIN →</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="shell">
+        <span>DYVE / HACKAX — DOMAIN INTELLIGENCE</span>
+        <span>PUBLIC SURFACE / 2026</span>
+    </footer>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const form = document.getElementById("scanForm");
+        const domainInput = document.getElementById("domain");
+        const scanButton = document.getElementById("scanButton");
+        const scanError = document.getElementById("scanError");
+        const toast = document.getElementById("toast");
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add("show");
+            window.setTimeout(() => toast.classList.remove("show"), 3200);
+        }
+
+        form.addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const domain = domainInput.value.trim();
+
+            if (!domain) {
+                scanError.textContent = "ENTER A DOMAIN TO BEGIN.";
+                return;
+            }
+
+            scanError.textContent = "";
+            scanButton.disabled = true;
+            scanButton.textContent = "SCANNING...";
+            showToast("HackaX is collecting public domain signals.");
+
+            try {
+                const response = await fetch("/api/scan", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ domain })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || "The scan could not be completed.");
+                }
+
+                /*
+                 * The scanner landing page intentionally sends the result to the
+                 * existing /api/scan endpoint. Replace this redirect with your
+                 * production results route when the results UI is connected.
+                 */
+                sessionStorage.setItem("hackaxScanResult", JSON.stringify(data));
+                window.location.href = "/results.html";
+            } catch (error) {
+                scanError.textContent = String(error.message || "SCAN FAILED. TRY AGAIN.").toUpperCase();
+                showToast("Scan failed. Check the domain and try again.");
+            } finally {
+                scanButton.disabled = false;
+                scanButton.textContent = "RUN INTELLIGENCE →";
+            }
+        });
+
+        document.getElementById("ctaScan").addEventListener("click", function() {
+            window.setTimeout(() => domainInput.focus(), 250);
+        });
+    </script>
+</body>
+</html>
