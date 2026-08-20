@@ -4,6 +4,15 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
 xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
 <url>
+<loc>https://dyve.online/article/ransomware/cisa-how-medusa-ransomware-attacked-500-critical-companies.html</loc>
+<image:image>
+<image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787258753/hackax/hackax/cisa-how-medusa-ransomware-attacked-500-critical-companies-featured-1787258748267.jpg</image:loc>
+<image:title>CISA: How Medusa Ransomware Attacked 500+ Critical Companies | Dyve HackaX</image:title>
+<image:caption>CISA: How Medusa Ransomware Attacked 500+ Critical Companies — Ransomware Intelligence | RANSOMWARE | Dyve HackaX</image:caption>
+</image:image>
+</url>
+
+<url>
 <loc>https://dyve.online/article/ransomware/us-bank-investigates-lockbits-claims-as-ransomware-crims-set-pay-or-leak-deadline.html</loc>
 <image:image>
 <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787254969/hackax/hackax/us-bank-investigates-lockbits-claims-as-ransomware-crims-set-pay-or-leak-deadline-featured-1787254960943.jpg</image:loc>
