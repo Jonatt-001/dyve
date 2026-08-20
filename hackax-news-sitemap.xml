@@ -5,6 +5,18 @@ xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
 
 
 <url>
+<loc>https://dyve.online/article/ransomware/cisa-how-medusa-ransomware-attacked-500-critical-companies.html</loc>
+<news:news>
+<news:publication>
+<news:name>Dyve HackaX</news:name>
+<news:language>en</news:language>
+</news:publication>
+<news:publication_date>2026-08-20T00:00:00.000Z</news:publication_date>
+<news:title>CISA: How Medusa Ransomware Attacked 500+ Critical Companies</news:title>
+</news:news>
+</url>
+
+<url>
 <loc>https://dyve.online/article/ransomware/us-bank-investigates-lockbits-claims-as-ransomware-crims-set-pay-or-leak-deadline.html</loc>
 <news:news>
 <news:publication>
