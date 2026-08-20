@@ -1,0 +1,6230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
+<meta name="theme-color" content="#050807">
+<meta name="color-scheme" content="dark">
+
+<title>Latest Cybersecurity Intelligence | Dyve HackaX</title>
+
+<meta
+    name="description"
+    content="Latest cybersecurity intelligence from Dyve HackaX covering dark web activity, ransomware, data breaches, threat actors, vulnerabilities, malware and security analysis."
+>
+
+<meta
+    name="keywords"
+    content="cybersecurity intelligence, cyber threats, dark web intelligence, ransomware, data breaches, threat actors, vulnerabilities, malware, cyber analysis, HackaX"
+>
+
+<meta name="author" content="Dyve HackaX">
+<meta name="publisher" content="Dyve HackaX">
+
+<meta
+    name="robots"
+    content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+>
+
+<link
+    rel="canonical"
+    href="https://dyve.online/intelligence/"
+>
+
+<meta
+    property="og:type"
+    content="website"
+>
+
+<meta
+    property="og:site_name"
+    content="Dyve HackaX"
+>
+
+<meta
+    property="og:title"
+    content="Latest Cybersecurity Intelligence | Dyve HackaX"
+>
+
+<meta
+    property="og:description"
+    content="Cyber intelligence, threat reporting and analysis from Dyve HackaX."
+>
+
+<meta
+    property="og:url"
+    content="https://dyve.online/intelligence/"
+>
+
+<meta
+    property="og:image"
+    content="https://dyve.online/assets/dyve.png"
+>
+
+<meta
+    name="twitter:card"
+    content="summary_large_image"
+>
+
+<meta
+    name="twitter:title"
+    content="Latest Cybersecurity Intelligence | Dyve HackaX"
+>
+
+<meta
+    name="twitter:description"
+    content="Cyber intelligence, threat reporting and analysis from Dyve HackaX."
+>
+
+<meta
+    name="twitter:image"
+    content="https://dyve.online/assets/dyve.png"
+>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+>
+
+<link
+    rel="preload"
+    href="/assets/articles.json"
+    as="fetch"
+    crossorigin
+>
+
+<style>
+
+:root {
+    --bg: #030605;
+    --surface: #07100c;
+    --surface-2: #09130f;
+    --surface-3: #0d1914;
+
+    --text: #f4f8f6;
+    --soft: #b9c4bf;
+    --muted: #747f79;
+    --muted-2: #4e5953;
+
+    --green: #00ffa3;
+    --green-2: #19d991;
+
+    --green-soft: rgba(0,255,163,.075);
+    --green-border: rgba(0,255,163,.18);
+
+    --red: #ff4d4d;
+
+    --border: rgba(255,255,255,.075);
+    --border-soft: rgba(255,255,255,.045);
+
+    --radius: 20px;
+
+    --sans: "DM Sans", sans-serif;
+    --display: "Manrope", sans-serif;
+
+    --ease: cubic-bezier(.22,1,.36,1);
+
+    --max-width: 1280px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    background: var(--bg);
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 50% -20%,
+            rgba(0,255,163,.055),
+            transparent 36%
+        ),
+        #030605;
+
+    color: var(--text);
+
+    font-family: var(--sans);
+
+    -webkit-font-smoothing: antialiased;
+
+    overflow-x: hidden;
+}
+
+body.locked {
+    overflow: hidden;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    display: block;
+    width: 100%;
+}
+
+::selection {
+    background: var(--green);
+    color: #00150c;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    height: 70px;
+
+    border-bottom: 1px solid var(--border-soft);
+
+    background:
+        rgba(3,6,5,.91);
+
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+}
+
+.topbar-inner {
+    width: 100%;
+    max-width: var(--max-width);
+
+    height: 100%;
+
+    margin: auto;
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
+}
+
+.hamburger {
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid var(--border);
+    border-radius: 50%;
+
+    color: var(--soft);
+}
+
+.hamburger svg {
+    width: 19px;
+    height: 19px;
+}
+
+.brand {
+    position: absolute;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    white-space: nowrap;
+}
+
+.brand-symbol {
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background: var(--green);
+    color: #00150c;
+
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.brand-name {
+    font-family: var(--display);
+
+    font-size: 21px;
+    font-weight: 800;
+
+    letter-spacing: -.06em;
+}
+
+.brand-divider {
+    color: var(--muted-2);
+
+    font-size: 19px;
+}
+
+.brand-hackax {
+    color: var(--green);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: .1em;
+}
+
+.top-actions {
+    margin-left: auto;
+}
+
+.icon-button {
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid var(--border);
+    border-radius: 50%;
+
+    color: var(--soft);
+
+    transition:
+        color .25s ease,
+        background .25s ease,
+        border-color .25s ease,
+        transform .25s var(--ease);
+}
+
+.icon-button:hover {
+    color: var(--green);
+
+    background: var(--green-soft);
+
+    border-color: var(--green-border);
+
+    transform: translateY(-1px);
+}
+
+.icon-button svg {
+    width: 19px;
+    height: 19px;
+}
+
+/* =========================================================
+   DESKTOP HEADER
+========================================================= */
+
+.desktop-nav {
+    display: none;
+}
+
+@media (min-width: 1000px) {
+
+    .hamburger {
+        display: none;
+    }
+
+    .brand {
+        position: static;
+        transform: none;
+    }
+
+    .desktop-nav {
+        margin-left: auto;
+        margin-right: 30px;
+
+        display: flex;
+        align-items: center;
+        gap: 28px;
+    }
+
+    .desktop-nav a {
+        color: var(--muted);
+
+        font-size: 12px;
+        font-weight: 600;
+
+        transition: color .2s ease;
+    }
+
+    .desktop-nav a:hover {
+        color: var(--text);
+    }
+
+}
+
+/* =========================================================
+   CATEGORY FILTER BAR
+========================================================= */
+
+.category-nav {
+    position: sticky;
+    top: 70px;
+
+    z-index: 90;
+
+    border-bottom: 1px solid var(--border-soft);
+
+    background:
+        rgba(3,6,5,.91);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.category-scroll {
+    width: 100%;
+    max-width: var(--max-width);
+
+    margin: auto;
+    padding: 0 20px;
+
+    display: flex;
+    align-items: stretch;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+}
+
+.category-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+/*
+ * IMPORTANT:
+ *
+ * These are BUTTONS rather than normal navigation links.
+ * They filter the current intelligence feed.
+ */
+
+.category-filter {
+    position: relative;
+
+    flex: 0 0 auto;
+
+    min-height: 52px;
+
+    padding: 0 15px;
+
+    display: flex;
+    align-items: center;
+
+    color: var(--muted);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: .075em;
+
+    transition:
+        color .2s ease,
+        background .2s ease;
+}
+
+.category-filter:hover {
+    color: var(--text);
+}
+
+.category-filter.active {
+    color: var(--green);
+}
+
+.category-filter.active::after {
+    content: "";
+
+    position: absolute;
+
+    left: 8px;
+    right: 8px;
+    bottom: 0;
+
+    height: 2px;
+
+    background: var(--green);
+
+    box-shadow:
+        0 0 13px rgba(0,255,163,.35);
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.page {
+    width: 100%;
+    max-width: var(--max-width);
+
+    margin: auto;
+
+    padding:
+        42px
+        20px
+        100px;
+}
+
+/* =========================================================
+   PAGE INTRO
+========================================================= */
+
+.intro {
+    margin-bottom: 38px;
+}
+
+.eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin-bottom: 14px;
+
+    color: var(--green);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: .17em;
+}
+
+.live-dot {
+    position: relative;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--green);
+}
+
+.live-dot::after {
+    content: "";
+
+    position: absolute;
+
+    inset: -5px;
+
+    border: 1px solid rgba(0,255,163,.2);
+
+    border-radius: 50%;
+
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0% {
+        opacity: .9;
+        transform: scale(.7);
+    }
+
+    70% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+
+}
+
+.page-title {
+    font-family: var(--display);
+
+    font-size: clamp(
+        42px,
+        10vw,
+        78px
+    );
+
+    line-height: .94;
+
+    letter-spacing: -.075em;
+
+    font-weight: 800;
+}
+
+.page-description {
+    max-width: 700px;
+
+    margin-top: 17px;
+
+    color: var(--muted);
+
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    margin-bottom: 60px;
+
+    overflow: hidden;
+
+    border: 1px solid var(--green-border);
+
+    border-radius: var(--radius);
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(0,255,163,.04),
+            transparent 50%
+        ),
+        var(--surface);
+}
+
+.status-card {
+    min-height: 100px;
+
+    padding: 18px;
+
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.status-card:nth-child(2n) {
+    border-right: 0;
+}
+
+.status-card:nth-last-child(-n+2) {
+    border-bottom: 0;
+}
+
+.status-label {
+    color: var(--muted);
+
+    font-size: 9px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: .13em;
+}
+
+.status-value {
+    margin-top: 8px;
+
+    color: var(--green);
+
+    font-family: var(--display);
+
+    font-size: 18px;
+    font-weight: 700;
+
+    letter-spacing: -.035em;
+}
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section {
+    margin-bottom: 72px;
+}
+
+.section-head {
+    margin-bottom: 19px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.section-kicker {
+    margin-bottom: 9px;
+
+    color: var(--muted);
+
+    font-size: 9px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: .18em;
+}
+
+.section-title {
+    font-family: var(--display);
+
+    font-size: clamp(
+        28px,
+        6vw,
+        42px
+    );
+
+    line-height: 1;
+
+    letter-spacing: -.055em;
+
+    font-weight: 800;
+}
+
+.section-title.green {
+    color: var(--green);
+}
+
+.section-title.red {
+    color: var(--red);
+}
+
+.section-action {
+    flex: 0 0 auto;
+
+    color: var(--green);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    white-space: nowrap;
+
+    transition:
+        transform .25s var(--ease),
+        color .2s ease;
+}
+
+.section-action:hover {
+    color: #6dffc5;
+    transform: translateX(4px);
+}
+
+/* =========================================================
+   FEATURED
+========================================================= */
+
+.featured-card {
+    position: relative;
+
+    display: block;
+
+    min-height: 500px;
+
+    overflow: hidden;
+
+    border: 1px solid var(--green-border);
+
+    border-radius: 24px;
+
+    background: var(--surface);
+}
+
+.featured-image {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform 1s var(--ease);
+}
+
+.featured-card:hover .featured-image {
+    transform: scale(1.035);
+}
+
+.featured-gradient {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,.03) 0%,
+            rgba(0,0,0,.18) 38%,
+            rgba(0,0,0,.82) 74%,
+            rgba(0,0,0,.97) 100%
+        );
+}
+
+.featured-grid {
+    position: absolute;
+
+    inset: 0;
+
+    opacity: .14;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.025) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.025) 1px,
+            transparent 1px
+        );
+
+    background-size: 24px 24px;
+}
+
+.featured-badge {
+    position: absolute;
+
+    top: 18px;
+    left: 18px;
+
+    padding: 8px 12px;
+
+    border: 1px solid var(--green-border);
+
+    border-radius: 999px;
+
+    background:
+        rgba(3,14,9,.72);
+
+    color: var(--green);
+
+    font-size: 9px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: .13em;
+
+    backdrop-filter: blur(10px);
+}
+
+.featured-content {
+    position: absolute;
+
+    left: 24px;
+    right: 24px;
+    bottom: 26px;
+}
+
+.featured-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #a8b4ae;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: .09em;
+}
+
+.featured-category {
+    color: var(--green);
+}
+
+.featured-dot {
+    width: 3px;
+    height: 3px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.35);
+}
+
+.featured-title {
+    max-width: 950px;
+
+    margin-top: 13px;
+
+    font-family: var(--display);
+
+    font-size: clamp(
+        28px,
+        7vw,
+        55px
+    );
+
+    line-height: 1.02;
+
+    letter-spacing: -.06em;
+
+    font-weight: 800;
+}
+
+.featured-description {
+    max-width: 780px;
+
+    margin-top: 14px;
+
+    color: #c2cbc6;
+
+    font-size: 13px;
+
+    line-height: 1.65;
+}
+
+.featured-read {
+    display: inline-flex;
+
+    margin-top: 20px;
+
+    color: var(--green);
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+/* =========================================================
+   ARTICLE LIST
+========================================================= */
+
+.article-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.article-card {
+    display: grid;
+
+    grid-template-columns: minmax(0,1fr) 116px;
+
+    gap: 15px;
+
+    padding: 18px 0;
+
+    border-bottom: 1px solid var(--border-soft);
+
+    transition:
+        transform .35s var(--ease),
+        opacity .25s ease;
+}
+
+.article-card:hover {
+    transform: translateX(4px);
+}
+
+.article-copy {
+    min-width: 0;
+}
+
+.article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    gap: 7px;
+
+    color: var(--muted-2);
+
+    font-size: 8px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+.article-category {
+    color: var(--green);
+}
+
+.article-title {
+    margin-top: 8px;
+
+    font-family: var(--display);
+
+    font-size: 17px;
+
+    line-height: 1.24;
+
+    letter-spacing: -.035em;
+
+    font-weight: 700;
+}
+
+.article-description {
+    display: none;
+
+    margin-top: 9px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.55;
+}
+
+.article-image {
+    width: 116px;
+    height: 86px;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    background: var(--surface-2);
+}
+
+.article-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform .7s var(--ease);
+}
+
+.article-card:hover .article-image img {
+    transform: scale(1.07);
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state {
+    padding: 25px;
+
+    border: 1px dashed var(--border);
+
+    border-radius: 15px;
+
+    background: var(--surface);
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+.empty-state strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--soft);
+
+    font-family: var(--display);
+
+    font-size: 15px;
+}
+
+/* =========================================================
+   CATEGORY FEED MODE
+========================================================= */
+
+.category-feed-intro {
+    display: none;
+
+    margin-bottom: 25px;
+
+    padding: 19px;
+
+    border: 1px solid var(--green-border);
+
+    border-radius: 16px;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(0,255,163,.05),
+            transparent 55%
+        ),
+        var(--surface);
+}
+
+.category-feed-intro.visible {
+    display: block;
+}
+
+.category-feed-label {
+    color: var(--green);
+
+    font-size: 9px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: .14em;
+}
+
+.category-feed-title {
+    margin-top: 7px;
+
+    font-family: var(--display);
+
+    font-size: 22px;
+
+    letter-spacing: -.045em;
+
+    font-weight: 800;
+}
+
+.category-feed-description {
+    margin-top: 7px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+/* =========================================================
+   MATRIX
+========================================================= */
+
+.matrix {
+    display: grid;
+
+    grid-template-columns: repeat(2,1fr);
+
+    gap: 9px;
+}
+
+.matrix-card {
+    min-height: 110px;
+
+    padding: 17px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 15px;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(0,255,163,.035),
+            transparent 60%
+        ),
+        var(--surface);
+
+    transition:
+        border-color .25s ease,
+        transform .3s var(--ease);
+}
+
+.matrix-card:hover {
+    border-color: var(--green-border);
+
+    transform: translateY(-2px);
+}
+
+.matrix-number {
+    color: var(--muted-2);
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: .12em;
+}
+
+.matrix-name {
+    margin-top: 14px;
+
+    color: var(--soft);
+
+    font-family: var(--display);
+
+    font-size: 15px;
+    font-weight: 700;
+
+    letter-spacing: -.025em;
+}
+
+.matrix-count {
+    margin-top: 7px;
+
+    color: var(--green);
+
+    font-size: 9px;
+    font-weight: 700;
+}
+
+/* =========================================================
+   TRENDING
+========================================================= */
+
+.trending-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.trending-item {
+    display: grid;
+
+    grid-template-columns: 42px 1fr;
+
+    gap: 12px;
+
+    padding: 17px 0;
+
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.trending-number {
+    color: var(--muted-2);
+
+    font-family: var(--display);
+
+    font-size: 22px;
+
+    font-weight: 800;
+
+    letter-spacing: -.06em;
+}
+
+.trending-title {
+    font-family: var(--display);
+
+    font-size: 14px;
+
+    line-height: 1.35;
+
+    letter-spacing: -.025em;
+
+    font-weight: 700;
+}
+
+.trending-meta {
+    margin-top: 7px;
+
+    color: var(--muted-2);
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: .08em;
+}
+
+/* =========================================================
+   BRIEF
+========================================================= */
+
+.brief-card {
+    position: relative;
+
+    overflow: hidden;
+
+    margin-top: 65px;
+
+    padding: 28px;
+
+    border: 1px solid var(--green-border);
+
+    border-radius: 20px;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(0,255,163,.07),
+            transparent 45%
+        ),
+        var(--surface);
+}
+
+.brief-label {
+    color: var(--green);
+
+    font-size: 9px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: .15em;
+}
+
+.brief-title {
+    max-width: 600px;
+
+    margin-top: 9px;
+
+    font-family: var(--display);
+
+    font-size: 27px;
+
+    line-height: 1.05;
+
+    letter-spacing: -.05em;
+
+    font-weight: 800;
+}
+
+.brief-copy {
+    max-width: 600px;
+
+    margin-top: 10px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+.brief-form {
+    display: flex;
+
+    gap: 7px;
+
+    max-width: 500px;
+
+    margin-top: 19px;
+}
+
+.brief-input {
+    min-width: 0;
+
+    flex: 1;
+
+    height: 44px;
+
+    padding: 0 13px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #030605;
+
+    color: var(--text);
+
+    font-size: 12px;
+}
+
+.brief-input:focus {
+    border-color: var(--green-border);
+}
+
+.brief-submit {
+    height: 44px;
+
+    padding: 0 17px;
+
+    border-radius: 9px;
+
+    background: var(--green);
+
+    color: #00150c;
+
+    font-size: 10px;
+
+    font-weight: 800;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+    padding:
+        34px
+        20px
+        110px;
+
+    border-top: 1px solid var(--border-soft);
+}
+
+.footer-inner {
+    width: 100%;
+    max-width: var(--max-width);
+
+    margin: auto;
+}
+
+.footer-brand {
+    font-family: var(--display);
+
+    font-size: 18px;
+
+    font-weight: 800;
+
+    letter-spacing: -.05em;
+}
+
+.footer-brand span {
+    color: var(--green);
+}
+
+.footer-description {
+    max-width: 550px;
+
+    margin-top: 10px;
+
+    color: var(--muted-2);
+
+    font-size: 11px;
+
+    line-height: 1.65;
+}
+
+.footer-links {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 15px;
+
+    margin-top: 22px;
+}
+
+.footer-links a {
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+.footer-copy {
+    margin-top: 25px;
+
+    color: var(--muted-2);
+
+    font-size: 9px;
+}
+
+/* =========================================================
+   MOBILE BOTTOM NAV
+========================================================= */
+
+.bottom-nav {
+    position: fixed;
+
+    left: 12px;
+    right: 12px;
+
+    bottom:
+        max(
+            12px,
+            env(safe-area-inset-bottom)
+        );
+
+    z-index: 150;
+
+    height: 62px;
+
+    padding: 5px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-around;
+
+    border: 1px solid var(--border);
+
+    border-radius: 19px;
+
+    background:
+        rgba(7,12,9,.94);
+
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.45);
+}
+
+.bottom-item {
+    width: 55px;
+    height: 51px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 4px;
+
+    border-radius: 14px;
+
+    color: var(--muted-2);
+}
+
+.bottom-item.active {
+    color: var(--green);
+
+    background:
+        var(--green-soft);
+}
+
+.bottom-item svg {
+    width: 17px;
+    height: 17px;
+}
+
+.bottom-item span {
+    font-size: 8px;
+
+    font-weight: 800;
+}
+
+/* =========================================================
+   DRAWER
+========================================================= */
+
+.drawer-backdrop {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 300;
+
+    background:
+        rgba(0,0,0,.68);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition:
+        opacity .3s ease,
+        visibility .3s ease;
+}
+
+.drawer-backdrop.open {
+    opacity: 1;
+
+    visibility: visible;
+}
+
+.drawer {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    z-index: 310;
+
+    width:
+        min(
+            88vw,
+            380px
+        );
+
+    padding: 22px;
+
+    overflow-y: auto;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(0,255,163,.06),
+            transparent 42%
+        ),
+        #050806;
+
+    border-right: 1px solid var(--border);
+
+    transform:
+        translateX(-100%);
+
+    transition:
+        transform .5s var(--ease);
+}
+
+.drawer.open {
+    transform:
+        translateX(0);
+}
+
+.drawer-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 38px;
+}
+
+.drawer-brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+.drawer-brand-symbol {
+    width: 31px;
+    height: 31px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 8px;
+
+    background: var(--green);
+
+    color: #00150c;
+
+    font-weight: 800;
+}
+
+.drawer-brand-name {
+    font-family: var(--display);
+
+    font-size: 19px;
+
+    font-weight: 800;
+
+    letter-spacing: -.05em;
+}
+
+.drawer-brand-hackax {
+    color: var(--green);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: .1em;
+}
+
+.drawer-nav {
+    display: flex;
+
+    flex-direction: column;
+}
+
+.drawer-link {
+    padding: 17px 0;
+
+    border-bottom: 1px solid var(--border-soft);
+
+    font-family: var(--display);
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    letter-spacing: -.04em;
+
+    transition:
+        color .2s ease,
+        padding-left .3s var(--ease);
+}
+
+.drawer-link:hover {
+    color: var(--green);
+
+    padding-left: 5px;
+}
+
+.drawer-link small {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--muted-2);
+
+    font-family: var(--sans);
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: .14em;
+}
+
+.drawer-link.active {
+    color: var(--green);
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 400;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(0,255,163,.06),
+            transparent 40%
+        ),
+        rgba(2,5,4,.985);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition:
+        opacity .3s ease,
+        visibility .3s ease;
+}
+
+.search-overlay.open {
+    opacity: 1;
+
+    visibility: visible;
+}
+
+.search-inner {
+    width: 100%;
+    max-width: 900px;
+
+    margin: auto;
+
+    padding:
+        90px
+        20px
+        30px;
+}
+
+.search-close {
+    display: flex;
+
+    justify-content: flex-end;
+}
+
+.search-input-wrap {
+    margin-top: 65px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.14);
+}
+
+.search-input {
+    width: 100%;
+
+    height: 85px;
+
+    border: 0;
+
+    outline: 0;
+
+    background: transparent;
+
+    color: var(--text);
+
+    font-family: var(--display);
+
+    font-size:
+        clamp(
+            32px,
+            7vw,
+            64px
+        );
+
+    font-weight: 800;
+
+    letter-spacing: -.06em;
+}
+
+.search-input::placeholder {
+    color: var(--muted-2);
+}
+
+.search-description {
+    margin-top: 13px;
+
+    color: var(--muted-2);
+
+    font-size: 10px;
+}
+
+/* =========================================================
+   SKELETON
+========================================================= */
+
+.skeleton {
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        #08100c;
+}
+
+.skeleton::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    transform:
+        translateX(-100%);
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.045),
+            transparent
+        );
+
+    animation:
+        skeletonMove 1.35s infinite;
+}
+
+@keyframes skeletonMove {
+
+    to {
+        transform:
+            translateX(100%);
+    }
+
+}
+
+.featured-skeleton {
+    min-height: 500px;
+
+    border-radius: 24px;
+
+    border: 1px solid var(--border);
+}
+
+.list-skeleton {
+    height: 112px;
+
+    margin-bottom: 1px;
+
+    border-bottom: 1px solid var(--border-soft);
+}
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+.reveal {
+    opacity: 0;
+
+    transform:
+        translateY(17px);
+
+    transition:
+        opacity .7s var(--ease),
+        transform .7s var(--ease);
+}
+
+.reveal.visible {
+    opacity: 1;
+
+    transform:
+        translateY(0);
+}
+
+/* =========================================================
+   DESKTOP / TABLET
+========================================================= */
+
+@media (min-width: 700px) {
+
+    .page {
+        padding-top: 62px;
+    }
+
+    .status-grid {
+        grid-template-columns:
+            repeat(3,1fr);
+    }
+
+    .status-card {
+        border-bottom: 0;
+    }
+
+    .status-card:nth-child(2n) {
+        border-right: 1px solid var(--border);
+    }
+
+    .status-card:nth-child(3n) {
+        border-right: 0;
+    }
+
+    .article-card {
+        grid-template-columns:
+            170px 1fr;
+
+        gap: 20px;
+    }
+
+    .article-image {
+        width: 170px;
+        height: 112px;
+
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .article-copy {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .article-title {
+        font-size: 20px;
+    }
+
+    .article-description {
+        display: block;
+    }
+
+    .matrix {
+        grid-template-columns:
+            repeat(3,1fr);
+    }
+
+    .bottom-nav {
+        display: none;
+    }
+
+    .footer {
+        padding-bottom: 45px;
+    }
+
+}
+
+@media (min-width: 1050px) {
+
+    .page {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .status-grid {
+        grid-template-columns:
+            repeat(6,1fr);
+    }
+
+    .status-card {
+        border-right: 1px solid var(--border);
+    }
+
+    .status-card:nth-child(3n) {
+        border-right: 1px solid var(--border);
+    }
+
+    .status-card:last-child {
+        border-right: 0;
+    }
+
+    .featured-card {
+        min-height: 620px;
+    }
+
+    .featured-content {
+        left: 42px;
+        right: 42px;
+        bottom: 38px;
+    }
+
+    .featured-badge {
+        top: 25px;
+        left: 25px;
+    }
+
+    .article-card {
+        grid-template-columns:
+            190px 1fr;
+    }
+
+    .article-image {
+        width: 190px;
+        height: 125px;
+    }
+
+    .article-title {
+        font-size: 21px;
+    }
+
+    .matrix {
+        grid-template-columns:
+            repeat(4,1fr);
+    }
+
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration:
+            .01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            .01ms !important;
+
+        scroll-behavior:
+            auto !important;
+    }
+
+    .reveal {
+        opacity: 1;
+
+        transform: none;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =======================================================
+     HEADER
+======================================================= -->
+
+<header class="topbar">
+
+    <div class="topbar-inner">
+
+        <button
+            class="hamburger"
+            id="menuButton"
+            type="button"
+            aria-label="Open HackaX menu"
+        >
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+            >
+                <path d="M4 7h16"/>
+                <path d="M4 12h16"/>
+                <path d="M4 17h16"/>
+            </svg>
+
+        </button>
+
+
+        <a
+            href="/"
+            class="brand"
+            aria-label="Dyve HackaX"
+        >
+
+            <span class="brand-symbol">
+                D
+            </span>
+
+            <span class="brand-name">
+                dyve
+            </span>
+
+            <span class="brand-divider">
+                //
+            </span>
+
+            <span class="brand-hackax">
+                HACKAX
+            </span>
+
+        </a>
+
+
+        <nav
+            class="desktop-nav"
+            aria-label="HackaX navigation"
+        >
+
+            <a href="/intelligence/">
+                Intelligence
+            </a>
+
+            <a href="/signals/">
+                Signals
+            </a>
+
+            <a href="/dark-web/">
+                Dark Web
+            </a>
+
+            <a href="/ransomware/">
+                Ransomware
+            </a>
+
+            <a href="/breaches/">
+                Breaches
+            </a>
+
+        </nav>
+
+
+        <div class="top-actions">
+
+            <button
+                class="icon-button"
+                id="searchButton"
+                type="button"
+                aria-label="Search HackaX"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                >
+                    <circle
+                        cx="11"
+                        cy="11"
+                        r="6.5"
+                    />
+
+                    <path d="m16 16 5 5"/>
+                </svg>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =======================================================
+     IN-PAGE CATEGORY FILTER
+======================================================= -->
+
+<nav
+    class="category-nav"
+    aria-label="HackaX intelligence filters"
+>
+
+    <div
+        class="category-scroll"
+        id="categoryFilters"
+    >
+
+        <button
+            type="button"
+            class="category-filter active"
+            data-category="latest"
+        >
+            Latest Intelligence
+        </button>
+
+
+        <button
+            type="button"
+            class="category-filter"
+            data-category="dark-web"
+        >
+            Dark Web
+        </button>
+
+
+        <button
+            type="button"
+            class="category-filter"
+            data-category="ransomware"
+        >
+            Ransomware
+        </button>
+
+
+        <button
+            type="button"
+            class="category-filter"
+            data-category="breach"
+        >
+            Breaches
+        </button>
+
+
+        <button
+            type="button"
+            class="category-filter"
+            data-category="analysis"
+        >
+            Analysis
+        </button>
+
+
+        <button
+            type="button"
+            class="category-filter"
+            data-category="threat-actors"
+        >
+            Threat Actors
+        </button>
+
+
+        <button
+            type="button"
+            class="category-filter"
+            data-category="signals"
+        >
+            Signals
+        </button>
+
+
+        <button
+            type="button"
+            class="category-filter"
+            data-category="vulnerabilities"
+        >
+            Vulnerabilities
+        </button>
+
+
+        <button
+            type="button"
+            class="category-filter"
+            data-category="malware"
+        >
+            Malware
+        </button>
+
+
+        <button
+            type="button"
+            class="category-filter"
+            data-category="technology"
+        >
+            Cyber Technology
+        </button>
+
+    </div>
+
+</nav>
+
+
+<!-- =======================================================
+     MAIN
+======================================================= -->
+
+<main class="page">
+
+    <!-- ===================================================
+         INTRO
+    ==================================================== -->
+
+    <section
+        class="intro reveal"
+        id="intro"
+    >
+
+        <div class="eyebrow">
+
+            <span class="live-dot"></span>
+
+            HackaX Intelligence Desk
+
+        </div>
+
+
+        <h1
+            class="page-title"
+            id="pageTitle"
+        >
+            Latest Intelligence
+        </h1>
+
+
+        <p
+            class="page-description"
+            id="pageDescription"
+        >
+            Recent cybersecurity intelligence across threats,
+            incidents, adversaries, vulnerabilities and emerging
+            attack activity tracked by Dyve HackaX.
+        </p>
+
+    </section>
+
+
+    <!-- ===================================================
+         STATUS
+    ==================================================== -->
+
+    <section
+        class="status-grid reveal"
+        id="statusGrid"
+    >
+
+        <div class="status-card">
+
+            <span class="status-label">
+                Coverage
+            </span>
+
+            <strong class="status-value">
+                Global
+            </strong>
+
+        </div>
+
+
+        <div class="status-card">
+
+            <span class="status-label">
+                Focus
+            </span>
+
+            <strong class="status-value">
+                Cyber Threats
+            </strong>
+
+        </div>
+
+
+        <div class="status-card">
+
+            <span class="status-label">
+                Format
+            </span>
+
+            <strong class="status-value">
+                Intel + Analysis
+            </strong>
+
+        </div>
+
+
+        <div class="status-card">
+
+            <span class="status-label">
+                Feed
+            </span>
+
+            <strong
+                class="status-value"
+                id="feedStatus"
+            >
+                Syncing
+            </strong>
+
+        </div>
+
+
+        <div class="status-card">
+
+            <span class="status-label">
+                Records
+            </span>
+
+            <strong
+                class="status-value"
+                id="recordCount"
+            >
+                --
+            </strong>
+
+        </div>
+
+
+        <div class="status-card">
+
+            <span class="status-label">
+                Unit
+            </span>
+
+            <strong class="status-value">
+                HackaX
+            </strong>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         CATEGORY MODE INTRO
+    ==================================================== -->
+
+    <section
+        class="category-feed-intro"
+        id="categoryFeedIntro"
+    >
+
+        <div
+            class="category-feed-label"
+            id="categoryFeedLabel"
+        >
+            Intelligence Filter
+        </div>
+
+
+        <h2
+            class="category-feed-title"
+            id="categoryFeedTitle"
+        >
+            Dark Web
+        </h2>
+
+
+        <p
+            class="category-feed-description"
+            id="categoryFeedDescription"
+        ></p>
+
+    </section>
+
+
+    <!-- ===================================================
+         FEATURED
+    ==================================================== -->
+
+    <section
+        class="section reveal"
+        id="featuredSection"
+    >
+
+        <div class="section-head">
+
+            <div>
+
+                <div class="section-kicker">
+                    Featured
+                </div>
+
+                <h2
+                    class="section-title"
+                    id="featuredHeading"
+                >
+                    Featured Intelligence
+                </h2>
+
+            </div>
+
+
+            <a
+                href="/intelligence/"
+                class="section-action"
+                id="featuredAction"
+            >
+                Full Feed →
+            </a>
+
+        </div>
+
+
+        <div id="featuredContainer">
+
+            <div class="featured-skeleton skeleton"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         ARTICLE FEED
+    ==================================================== -->
+
+    <section
+        class="section reveal"
+        id="feedSection"
+    >
+
+        <div class="section-head">
+
+            <div>
+
+                <div class="section-kicker">
+                    <span id="feedSectionKicker">
+                        Latest
+                    </span>
+                </div>
+
+                <h2
+                    class="section-title"
+                    id="feedSectionTitle"
+                >
+                    Latest Intelligence
+                </h2>
+
+            </div>
+
+
+            <a
+                href="/intelligence/"
+                class="section-action"
+                id="feedAction"
+            >
+                View All →
+            </a>
+
+        </div>
+
+
+        <p
+            class="page-description"
+            id="feedDescription"
+            style="margin-top:-8px;margin-bottom:14px;"
+        >
+            Recent reporting and intelligence across the Dyve
+            HackaX coverage network.
+        </p>
+
+
+        <div
+            class="article-list"
+            id="articleFeed"
+        >
+
+            <div class="list-skeleton skeleton"></div>
+
+            <div class="list-skeleton skeleton"></div>
+
+            <div class="list-skeleton skeleton"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         LATEST PAGE CATEGORY SECTIONS
+    ==================================================== -->
+
+    <div id="categorySections">
+
+        <!-- DARK WEB -->
+
+        <section
+            class="section category-section reveal"
+            data-category-section="dark-web"
+        >
+
+            <div class="section-head">
+
+                <div>
+
+                    <div class="section-kicker">
+                        Underground Intelligence
+                    </div>
+
+                    <h2 class="section-title green">
+                        Dark Web Intelligence
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="/dark-web/"
+                    class="section-action"
+                >
+                    View All →
+                </a>
+
+            </div>
+
+
+            <p
+                class="page-description"
+                style="margin-top:-8px;margin-bottom:14px;"
+            >
+                Reporting and analysis covering underground activity,
+                exposed data, illicit ecosystems and emerging cyber signals.
+            </p>
+
+
+            <div
+                class="category-feed"
+                data-feed-category="dark-web"
+            ></div>
+
+        </section>
+
+
+        <!-- RANSOMWARE -->
+
+        <section
+            class="section category-section reveal"
+            data-category-section="ransomware"
+        >
+
+            <div class="section-head">
+
+                <div>
+
+                    <div class="section-kicker">
+                        Extortion & Disruption
+                    </div>
+
+                    <h2 class="section-title">
+                        Ransomware Intelligence
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="/ransomware/"
+                    class="section-action"
+                >
+                    View All →
+                </a>
+
+            </div>
+
+
+            <p
+                class="page-description"
+                style="margin-top:-8px;margin-bottom:14px;"
+            >
+                Ransomware campaigns, extortion activity, victim
+                disclosures, leak operations and evolving attack patterns.
+            </p>
+
+
+            <div
+                class="category-feed"
+                data-feed-category="ransomware"
+            ></div>
+
+        </section>
+
+
+        <!-- BREACHES -->
+
+        <section
+            class="section category-section reveal"
+            data-category-section="breach"
+        >
+
+            <div class="section-head">
+
+                <div>
+
+                    <div class="section-kicker">
+                        Incident Coverage
+                    </div>
+
+                    <h2 class="section-title red">
+                        Breach Intelligence
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="/breaches/"
+                    class="section-action"
+                >
+                    View All →
+                </a>
+
+            </div>
+
+
+            <p
+                class="page-description"
+                style="margin-top:-8px;margin-bottom:14px;"
+            >
+                Data breaches, exposed systems, compromised infrastructure
+                and incident reporting from the cybersecurity landscape.
+            </p>
+
+
+            <div
+                class="category-feed"
+                data-feed-category="breach"
+            ></div>
+
+        </section>
+
+
+        <!-- ANALYSIS -->
+
+        <section
+            class="section category-section reveal"
+            data-category-section="analysis"
+        >
+
+            <div class="section-head">
+
+                <div>
+
+                    <div class="section-kicker">
+                        Research
+                    </div>
+
+                    <h2 class="section-title">
+                        Threat Analysis
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="/analysis/"
+                    class="section-action"
+                >
+                    View All →
+                </a>
+
+            </div>
+
+
+            <p
+                class="page-description"
+                style="margin-top:-8px;margin-bottom:14px;"
+            >
+                Contextual analysis connecting incidents, technologies,
+                threat actors, attack patterns and wider cyber risk.
+            </p>
+
+
+            <div
+                class="category-feed"
+                data-feed-category="analysis"
+            ></div>
+
+        </section>
+
+
+        <!-- THREAT ACTORS -->
+
+        <section
+            class="section category-section reveal"
+            data-category-section="threat-actors"
+        >
+
+            <div class="section-head">
+
+                <div>
+
+                    <div class="section-kicker">
+                        Adversary Intelligence
+                    </div>
+
+                    <h2 class="section-title">
+                        Threat Actors
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="/threat-actors/"
+                    class="section-action"
+                >
+                    View All →
+                </a>
+
+            </div>
+
+
+            <div
+                class="category-feed"
+                data-feed-category="threat-actors"
+            ></div>
+
+        </section>
+
+
+        <!-- SIGNALS -->
+
+        <section
+            class="section category-section reveal"
+            data-category-section="signals"
+        >
+
+            <div class="section-head">
+
+                <div>
+
+                    <div class="section-kicker">
+                        Monitoring
+                    </div>
+
+                    <h2 class="section-title">
+                        Threat Signals
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="/signals/"
+                    class="section-action"
+                >
+                    View All →
+                </a>
+
+            </div>
+
+
+            <div
+                class="category-feed"
+                data-feed-category="signals"
+            ></div>
+
+        </section>
+
+
+        <!-- VULNERABILITIES -->
+
+        <section
+            class="section category-section reveal"
+            data-category-section="vulnerabilities"
+        >
+
+            <div class="section-head">
+
+                <div>
+
+                    <div class="section-kicker">
+                        Exposure
+                    </div>
+
+                    <h2 class="section-title">
+                        Vulnerability Intelligence
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="/vulnerabilities/"
+                    class="section-action"
+                >
+                    View All →
+                </a>
+
+            </div>
+
+
+            <div
+                class="category-feed"
+                data-feed-category="vulnerabilities"
+            ></div>
+
+        </section>
+
+
+        <!-- MALWARE -->
+
+        <section
+            class="section category-section reveal"
+            data-category-section="malware"
+        >
+
+            <div class="section-head">
+
+                <div>
+
+                    <div class="section-kicker">
+                        Malicious Software
+                    </div>
+
+                    <h2 class="section-title">
+                        Malware Intelligence
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="/malware/"
+                    class="section-action"
+                >
+                    View All →
+                </a>
+
+            </div>
+
+
+            <div
+                class="category-feed"
+                data-feed-category="malware"
+            ></div>
+
+        </section>
+
+
+        <!-- TECHNOLOGY -->
+
+        <section
+            class="section category-section reveal"
+            data-category-section="technology"
+        >
+
+            <div class="section-head">
+
+                <div>
+
+                    <div class="section-kicker">
+                        Security Technology
+                    </div>
+
+                    <h2 class="section-title">
+                        Cyber Technology
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="/technology/"
+                    class="section-action"
+                >
+                    View All →
+                </a>
+
+            </div>
+
+
+            <div
+                class="category-feed"
+                data-feed-category="technology"
+            ></div>
+
+        </section>
+
+    </div>
+
+
+    <!-- ===================================================
+         INTELLIGENCE MATRIX
+    ==================================================== -->
+
+    <section
+        class="section reveal"
+        id="matrixSection"
+    >
+
+        <div class="section-head">
+
+            <div>
+
+                <div class="section-kicker">
+                    Coverage Network
+                </div>
+
+                <h2 class="section-title">
+                    Intelligence Domains
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="matrix"
+            id="intelligenceMatrix"
+        ></div>
+
+    </section>
+
+
+    <!-- ===================================================
+         TRENDING
+    ==================================================== -->
+
+    <section
+        class="section reveal"
+        id="trendingSection"
+    >
+
+        <div class="section-head">
+
+            <div>
+
+                <div class="section-kicker">
+                    Signal Strength
+                </div>
+
+                <h2 class="section-title">
+                    Trending Intelligence
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="trending-list"
+            id="trendingList"
+        ></div>
+
+    </section>
+
+
+    <!-- ===================================================
+         BRIEF
+    ==================================================== -->
+
+    <section
+        class="brief-card reveal"
+        id="briefSection"
+    >
+
+        <div class="brief-label">
+            HackaX Intelligence Brief
+        </div>
+
+
+        <h2 class="brief-title">
+            Cybersecurity intelligence without the noise.
+        </h2>
+
+
+        <p class="brief-copy">
+            Follow the signals, incidents, adversaries and analysis
+            shaping the threat landscape.
+        </p>
+
+
+        <form
+            class="brief-form"
+            id="briefForm"
+        >
+
+            <input
+                class="brief-input"
+                type="email"
+                name="email"
+                placeholder="Your email address"
+                autocomplete="email"
+                required
+            >
+
+
+            <button
+                class="brief-submit"
+                type="submit"
+            >
+                Subscribe
+            </button>
+
+        </form>
+
+    </section>
+
+</main>
+
+
+<!-- =======================================================
+     FOOTER
+======================================================= -->
+
+<footer class="footer">
+
+    <div class="footer-inner">
+
+        <div class="footer-brand">
+            DYVE <span>// HACKAX</span>
+        </div>
+
+
+        <p class="footer-description">
+            Cyber intelligence, security reporting and threat analysis
+            focused on signals, incidents, adversaries, vulnerabilities,
+            dark web activity and emerging cyber threats.
+        </p>
+
+
+        <nav class="footer-links">
+
+            <a href="/about-us/">
+                About HackaX
+            </a>
+
+            <a href="/methodology/">
+                Methodology
+            </a>
+
+            <a href="/editorial-policy/">
+                Editorial Policy
+            </a>
+
+            <a href="/signals/">
+                Signals
+            </a>
+
+            <a href="/breaches/">
+                Breaches
+            </a>
+
+            <a href="/dark-web/">
+                Dark Web
+            </a>
+
+            <a href="/ransomware/">
+                Ransomware
+            </a>
+
+            <a href="/sitemap.xml">
+                Sitemap
+            </a>
+
+        </nav>
+
+
+        <div class="footer-copy">
+            © 2026 Dyve HackaX. Cyber intelligence and security reporting.
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =======================================================
+     MOBILE BOTTOM NAV
+======================================================= -->
+
+<nav class="bottom-nav">
+
+    <a
+        href="/intelligence/"
+        class="bottom-item active"
+    >
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+        >
+            <path d="M4 5h16v14H4z"/>
+            <path d="M8 9h8"/>
+            <path d="M8 13h5"/>
+        </svg>
+
+        <span>
+            Intel
+        </span>
+
+    </a>
+
+
+    <a
+        href="/signals/"
+        class="bottom-item"
+    >
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+        >
+            <path d="M4 17l4-5 4 3 8-9"/>
+            <path d="M4 20h16"/>
+        </svg>
+
+        <span>
+            Signals
+        </span>
+
+    </a>
+
+
+    <button
+        class="bottom-item"
+        id="bottomSearch"
+        type="button"
+    >
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+        >
+            <circle
+                cx="11"
+                cy="11"
+                r="6.5"
+            />
+
+            <path d="m16 16 5 5"/>
+        </svg>
+
+        <span>
+            Search
+        </span>
+
+    </button>
+
+
+    <button
+        class="bottom-item"
+        id="bottomMenu"
+        type="button"
+    >
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+        >
+            <path d="M4 7h16"/>
+            <path d="M4 12h16"/>
+            <path d="M4 17h16"/>
+        </svg>
+
+        <span>
+            Menu
+        </span>
+
+    </button>
+
+</nav>
+
+
+<!-- =======================================================
+     DRAWER
+======================================================= -->
+
+<div
+    class="drawer-backdrop"
+    id="drawerBackdrop"
+></div>
+
+
+<aside
+    class="drawer"
+    id="drawer"
+    aria-label="HackaX navigation"
+>
+
+    <div class="drawer-header">
+
+        <a
+            href="/"
+            class="drawer-brand"
+        >
+
+            <span class="drawer-brand-symbol">
+                D
+            </span>
+
+            <span class="drawer-brand-name">
+                dyve
+            </span>
+
+            <span class="drawer-brand-hackax">
+                HACKAX
+            </span>
+
+        </a>
+
+
+        <button
+            class="icon-button"
+            id="closeDrawer"
+            type="button"
+            aria-label="Close menu"
+        >
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+            >
+                <path d="m6 6 12 12"/>
+                <path d="M18 6 6 18"/>
+            </svg>
+
+        </button>
+
+    </div>
+
+
+    <!--
+        IMPORTANT:
+        Drawer items ARE real navigation.
+        These links intentionally leave /intelligence/.
+    -->
+
+    <nav class="drawer-nav">
+
+        <a
+            class="drawer-link active"
+            href="/intelligence/"
+        >
+
+            <small>
+                HackaX
+            </small>
+
+            Latest Intelligence
+
+        </a>
+
+
+        <a
+            class="drawer-link"
+            href="/dark-web/"
+        >
+
+            <small>
+                Underground
+            </small>
+
+            Dark Web
+
+        </a>
+
+
+        <a
+            class="drawer-link"
+            href="/ransomware/"
+        >
+
+            <small>
+                Extortion
+            </small>
+
+            Ransomware
+
+        </a>
+
+
+        <a
+            class="drawer-link"
+            href="/breaches/"
+        >
+
+            <small>
+                Incidents
+            </small>
+
+            Breaches
+
+        </a>
+
+
+        <a
+            class="drawer-link"
+            href="/analysis/"
+        >
+
+            <small>
+                Research
+            </small>
+
+            Threat Analysis
+
+        </a>
+
+
+        <a
+            class="drawer-link"
+            href="/threat-actors/"
+        >
+
+            <small>
+                Adversaries
+            </small>
+
+            Threat Actors
+
+        </a>
+
+
+        <a
+            class="drawer-link"
+            href="/signals/"
+        >
+
+            <small>
+                Monitoring
+            </small>
+
+            Threat Signals
+
+        </a>
+
+
+        <a
+            class="drawer-link"
+            href="/vulnerabilities/"
+        >
+
+            <small>
+                Exposure
+            </small>
+
+            Vulnerabilities
+
+        </a>
+
+
+        <a
+            class="drawer-link"
+            href="/malware/"
+        >
+
+            <small>
+                Malicious Software
+            </small>
+
+            Malware
+
+        </a>
+
+
+        <a
+            class="drawer-link"
+            href="/technology/"
+        >
+
+            <small>
+                Security Technology
+            </small>
+
+            Cyber Technology
+
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<!-- =======================================================
+     SEARCH
+======================================================= -->
+
+<div
+    class="search-overlay"
+    id="searchOverlay"
+>
+
+    <div class="search-inner">
+
+        <div class="search-close">
+
+            <button
+                class="icon-button"
+                id="closeSearch"
+                type="button"
+                aria-label="Close search"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                >
+                    <path d="m6 6 12 12"/>
+                    <path d="M18 6 6 18"/>
+                </svg>
+
+            </button>
+
+        </div>
+
+
+        <div class="search-input-wrap">
+
+            <input
+                class="search-input"
+                id="searchInput"
+                type="search"
+                placeholder="Search HackaX..."
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <p class="search-description">
+            Search cybersecurity intelligence, threats, incidents,
+            adversaries, vulnerabilities and analysis.
+        </p>
+
+    </div>
+
+</div>
+
+
+<script>
+
+(function () {
+
+    "use strict";
+
+
+    /* =====================================================
+       CONFIG
+    ===================================================== */
+
+    const CONFIG = {
+
+        siteUrl:
+            "https://dyve.online",
+
+        database:
+            "/assets/articles.json",
+
+        intelligenceRoute:
+            "/intelligence/",
+
+        categories: {
+
+            latest: {
+
+                title:
+                    "Latest Intelligence",
+
+                description:
+                    "Recent cybersecurity intelligence across threats, incidents, adversaries, vulnerabilities and emerging attack activity tracked by Dyve HackaX.",
+
+                route:
+                    "/intelligence/"
+
+            },
+
+            "dark-web": {
+
+                title:
+                    "Dark Web Intelligence",
+
+                description:
+                    "Reporting and analysis covering underground activity, exposed data, illicit ecosystems and emerging cyber signals.",
+
+                route:
+                    "/dark-web/"
+
+            },
+
+            ransomware: {
+
+                title:
+                    "Ransomware Intelligence",
+
+                description:
+                    "Ransomware campaigns, extortion activity, victim disclosures, leak operations and evolving attack patterns.",
+
+                route:
+                    "/ransomware/"
+
+            },
+
+            breach: {
+
+                title:
+                    "Breach Intelligence",
+
+                description:
+                    "Data breaches, exposed systems, compromised infrastructure and incident reporting from the cybersecurity landscape.",
+
+                route:
+                    "/breaches/"
+
+            },
+
+            analysis: {
+
+                title:
+                    "Threat Analysis",
+
+                description:
+                    "Contextual analysis connecting incidents, technologies, threat actors, attack patterns and wider cyber risk.",
+
+                route:
+                    "/analysis/"
+
+            },
+
+            "threat-actors": {
+
+                title:
+                    "Threat Actors",
+
+                description:
+                    "Adversary profiles, campaigns, tactics, infrastructure and observable threat actor activity.",
+
+                route:
+                    "/threat-actors/"
+
+            },
+
+            signals: {
+
+                title:
+                    "Threat Signals",
+
+                description:
+                    "Notable cybersecurity developments and signals requiring closer attention.",
+
+                route:
+                    "/signals/"
+
+            },
+
+            vulnerabilities: {
+
+                title:
+                    "Vulnerability Intelligence",
+
+                description:
+                    "Security weaknesses, exploitation context, vulnerability disclosures and exposure intelligence.",
+
+                route:
+                    "/vulnerabilities/"
+
+            },
+
+            malware: {
+
+                title:
+                    "Malware Intelligence",
+
+                description:
+                    "Malware campaigns, payloads, infostealers, loaders, trojans and malicious software activity.",
+
+                route:
+                    "/malware/"
+
+            },
+
+            technology: {
+
+                title:
+                    "Cyber Technology",
+
+                description:
+                    "Cybersecurity technology, security infrastructure and emerging technology-related security developments.",
+
+                route:
+                    "/technology/"
+
+            }
+
+        }
+
+    };
+
+
+    /* =====================================================
+       DOM
+    ===================================================== */
+
+    const $ = function (selector) {
+        return document.querySelector(selector);
+    };
+
+
+    const $$ = function (selector) {
+        return Array.from(
+            document.querySelectorAll(selector)
+        );
+    };
+
+
+    const pageTitle =
+        $("#pageTitle");
+
+
+    const pageDescription =
+        $("#pageDescription");
+
+
+    const feedStatus =
+        $("#feedStatus");
+
+
+    const recordCount =
+        $("#recordCount");
+
+
+    const featuredContainer =
+        $("#featuredContainer");
+
+
+    const articleFeed =
+        $("#articleFeed");
+
+
+    const featuredHeading =
+        $("#featuredHeading");
+
+
+    const featuredAction =
+        $("#featuredAction");
+
+
+    const feedSectionKicker =
+        $("#feedSectionKicker");
+
+
+    const feedSectionTitle =
+        $("#feedSectionTitle");
+
+
+    const feedAction =
+        $("#feedAction");
+
+
+    const feedDescription =
+        $("#feedDescription");
+
+
+    const categorySections =
+        $("#categorySections");
+
+
+    const matrix =
+        $("#intelligenceMatrix");
+
+
+    const trendingList =
+        $("#trendingList");
+
+
+    const categoryFeedIntro =
+        $("#categoryFeedIntro");
+
+
+    const categoryFeedLabel =
+        $("#categoryFeedLabel");
+
+
+    const categoryFeedTitle =
+        $("#categoryFeedTitle");
+
+
+    const categoryFeedDescription =
+        $("#categoryFeedDescription");
+
+
+    /* =====================================================
+       HACKAX CATEGORY SET
+    ===================================================== */
+
+    const HACKAX_CATEGORIES =
+        new Set([
+
+            "dark-web",
+            "ransomware",
+            "breach",
+            "analysis",
+            "threat-actors",
+            "signals",
+            "vulnerabilities",
+            "malware",
+            "technology"
+
+        ]);
+
+
+    /* =====================================================
+       STRICT HACKAX RECORD FILTER
+    ===================================================== */
+
+    function isHackaXArticle(article) {
+
+        if (
+            !article ||
+            typeof article !== "object"
+        ) {
+            return false;
+        }
+
+
+        const brand =
+            String(
+                article.brand || ""
+            )
+                .trim()
+                .toLowerCase();
+
+
+        const page =
+            String(
+                article.page || ""
+            )
+                .trim()
+                .toLowerCase();
+
+
+        const category =
+            String(
+                article.category ||
+                article.meta ||
+                ""
+            )
+                .trim()
+                .toLowerCase();
+
+
+        const url =
+            String(
+                article.url || ""
+            )
+                .trim()
+                .toLowerCase()
+                .replace(/^\/+/, "");
+
+
+        /*
+         * NEVER allow explicitly Tech records.
+         */
+
+        if (
+            brand === "tech" ||
+            brand === "dyve-tech"
+        ) {
+            return false;
+        }
+
+
+        if (
+            page === "tech"
+        ) {
+            return false;
+        }
+
+
+        if (
+            url.startsWith("tech/")
+        ) {
+            return false;
+        }
+
+
+        /*
+         * Explicit HackaX record.
+         */
+
+        if (
+            brand === "hackax"
+        ) {
+            return true;
+        }
+
+
+        /*
+         * Existing HackaX category/page records.
+         */
+
+        if (
+            HACKAX_CATEGORIES.has(
+                category
+            )
+        ) {
+            return true;
+        }
+
+
+        if (
+            HACKAX_CATEGORIES.has(
+                page
+            )
+        ) {
+            return true;
+        }
+
+
+        return false;
+
+    }
+
+
+    /* =====================================================
+       NORMALIZE CATEGORY
+    ===================================================== */
+
+    function normalizeCategory(value) {
+
+        const category =
+            String(
+                value || ""
+            )
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, "-");
+
+
+        const aliases = {
+
+            breaches:
+                "breach",
+
+            "data-breach":
+                "breach",
+
+            "data-breaches":
+                "breach",
+
+            "threat-analysis":
+                "analysis",
+
+            "threat-actor":
+                "threat-actors",
+
+            "threat-actors":
+                "threat-actors",
+
+            "threat-signal":
+                "signals",
+
+            signal:
+                "signals",
+
+            vulnerability:
+                "vulnerabilities",
+
+            "cyber-technology":
+                "technology"
+
+        };
+
+
+        return (
+            aliases[category] ||
+            category
+        );
+
+    }
+
+
+    function getCategory(article) {
+
+        return normalizeCategory(
+            article.category ||
+            article.meta ||
+            article.page
+        );
+
+    }
+
+
+    /* =====================================================
+       ESCAPE
+    ===================================================== */
+
+    function escapeHTML(value) {
+
+        return String(
+            value || ""
+        )
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =====================================================
+       DATE
+    ===================================================== */
+
+    function getDate(article) {
+
+        const raw =
+            article.date ||
+            article.modified ||
+            "";
+
+
+        const date =
+            new Date(
+                raw + "T12:00:00"
+            );
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+            return "Recently";
+        }
+
+
+        return new Intl.DateTimeFormat(
+            "en-US",
+            {
+                month:
+                    "short",
+
+                day:
+                    "numeric",
+
+                year:
+                    "numeric"
+            }
+        ).format(date);
+
+    }
+
+
+    /* =====================================================
+       SORT
+    ===================================================== */
+
+    function sortNewest(
+        articles
+    ) {
+
+        return [...articles].sort(
+            function (a,b) {
+
+                const aTime =
+                    new Date(
+                        (
+                            a.date ||
+                            a.modified ||
+                            "1970-01-01"
+                        ) +
+                        "T12:00:00"
+                    ).getTime();
+
+
+                const bTime =
+                    new Date(
+                        (
+                            b.date ||
+                            b.modified ||
+                            "1970-01-01"
+                        ) +
+                        "T12:00:00"
+                    ).getTime();
+
+
+                return bTime - aTime;
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       ARTICLE URL
+    ===================================================== */
+
+    function getArticleURL(
+        article
+    ) {
+
+        let url =
+            String(
+                article.url || ""
+            )
+                .trim()
+                .replace(/^\/+/, "");
+
+
+        if (!url) {
+            return "#";
+        }
+
+
+        return "/" + url;
+
+    }
+
+
+    /* =====================================================
+       ARTICLE IMAGE
+    ===================================================== */
+
+    function getImage(
+        article
+    ) {
+
+        return (
+            article.image ||
+            "/assets/dyve.png"
+        );
+
+    }
+
+
+    /* =====================================================
+       READ TIME
+    ===================================================== */
+
+    function getReadTime(
+        article
+    ) {
+
+        const time =
+            Number(
+                article.readTime
+            );
+
+
+        if (
+            Number.isFinite(time) &&
+            time > 0
+        ) {
+
+            return (
+                time +
+                (
+                    time === 1
+                        ? " min read"
+                        : " min read"
+                )
+            );
+
+        }
+
+
+        return "Intel";
+
+    }
+
+
+    /* =====================================================
+       FILTER
+    ===================================================== */
+
+    function getArticlesForCategory(
+        articles,
+        category
+    ) {
+
+        if (
+            category === "latest"
+        ) {
+
+            return sortNewest(
+                articles
+            );
+
+        }
+
+
+        return sortNewest(
+            articles.filter(
+                function (article) {
+
+                    return (
+                        getCategory(article) ===
+                        category
+                    );
+
+                }
+            )
+        );
+
+    }
+
+
+    /* =====================================================
+       URL QUERY STATE
+    ===================================================== */
+
+    function getCategoryFromURL() {
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const value =
+            params.get(
+                "category"
+            );
+
+
+        if (
+            value &&
+            CONFIG.categories[value]
+        ) {
+
+            return value;
+
+        }
+
+
+        return "latest";
+
+    }
+
+
+    let currentCategory =
+        getCategoryFromURL();
+
+
+    /* =====================================================
+       UPDATE URL WITHOUT RELOAD
+    ===================================================== */
+
+    function updateURL(
+        category,
+        replace
+    ) {
+
+        const url =
+            new URL(
+                window.location.href
+            );
+
+
+        if (
+            category === "latest"
+        ) {
+
+            url.searchParams.delete(
+                "category"
+            );
+
+        } else {
+
+            url.searchParams.set(
+                "category",
+                category
+            );
+
+        }
+
+
+        if (replace) {
+
+            window.history.replaceState(
+                {
+                    category:
+                        category
+                },
+                "",
+                url.pathname +
+                url.search +
+                url.hash
+            );
+
+        } else {
+
+            window.history.pushState(
+                {
+                    category:
+                        category
+                },
+                "",
+                url.pathname +
+                url.search +
+                url.hash
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       UPDATE CATEGORY BUTTONS
+    ===================================================== */
+
+    function updateFilterButtons() {
+
+        $$(".category-filter")
+            .forEach(
+                function (button) {
+
+                    const active =
+                        button.dataset.category ===
+                        currentCategory;
+
+
+                    button.classList.toggle(
+                        "active",
+                        active
+                    );
+
+
+                    if (active) {
+
+                        button.scrollIntoView({
+                            behavior:
+                                "smooth",
+
+                            block:
+                                "nearest",
+
+                            inline:
+                                "center"
+                        });
+
+                    }
+
+                }
+            );
+
+    }
+
+
+    /* =====================================================
+       SEO
+    ===================================================== */
+
+    function updateSEO() {
+
+        const config =
+            CONFIG.categories[
+                currentCategory
+            ];
+
+
+        if (!config) {
+            return;
+        }
+
+
+        const title =
+            currentCategory === "latest"
+
+                ? "Latest Cybersecurity Intelligence | Dyve HackaX"
+
+                : (
+                    config.title +
+                    " | Dyve HackaX"
+                );
+
+
+        document.title =
+            title;
+
+
+        pageTitle.textContent =
+            config.title;
+
+
+        pageDescription.textContent =
+            config.description;
+
+
+        const description =
+            $('meta[name="description"]');
+
+
+        if (description) {
+
+            description.setAttribute(
+                "content",
+                config.description
+            );
+
+        }
+
+
+        const canonical =
+            document.querySelector(
+                'link[rel="canonical"]'
+            );
+
+
+        if (canonical) {
+
+            canonical.href =
+                CONFIG.siteUrl +
+                CONFIG.intelligenceRoute;
+
+        }
+
+
+        const ogTitle =
+            $('meta[property="og:title"]');
+
+
+        const ogDescription =
+            $('meta[property="og:description"]');
+
+
+        const ogURL =
+            $('meta[property="og:url"]');
+
+
+        if (ogTitle) {
+
+            ogTitle.content =
+                title;
+
+        }
+
+
+        if (ogDescription) {
+
+            ogDescription.content =
+                config.description;
+
+        }
+
+
+        if (ogURL) {
+
+            ogURL.content =
+                CONFIG.siteUrl +
+                CONFIG.intelligenceRoute;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       CATEGORY FILTER TRANSITION
+    ===================================================== */
+
+    async function switchCategory(
+        category,
+        push
+    ) {
+
+        if (
+            !CONFIG.categories[category]
+        ) {
+            category =
+                "latest";
+        }
+
+
+        currentCategory =
+            category;
+
+
+        if (push) {
+
+            updateURL(
+                category,
+                false
+            );
+
+        }
+
+
+        updateFilterButtons();
+
+
+        updateSEO();
+
+
+        renderFeedState(
+            window.__hackaxArticles ||
+            []
+        );
+
+
+        window.scrollTo({
+            top:
+                0,
+
+            behavior:
+                "smooth"
+        });
+
+    }
+
+
+    /* =====================================================
+       FEATURED CARD
+    ===================================================== */
+
+    function renderFeatured(
+        articles
+    ) {
+
+        if (
+            !articles.length
+        ) {
+
+            featuredContainer.innerHTML = `
+
+                <div class="empty-state">
+
+                    <strong>
+                        No published intelligence yet.
+                    </strong>
+
+                    HackaX does not currently have
+                    articles in this intelligence domain.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        const article =
+            articles[0];
+
+
+        const title =
+            escapeHTML(
+                article.title ||
+                "Untitled intelligence"
+            );
+
+
+        const description =
+            escapeHTML(
+                article.desc ||
+                "Dyve HackaX cybersecurity intelligence."
+            );
+
+
+        const category =
+            escapeHTML(
+                getCategory(article)
+                    .replace(/-/g, " ")
+                    .toUpperCase()
+            );
+
+
+        const tag =
+            escapeHTML(
+                article.tag ||
+                "LIVE INTEL"
+            );
+
+
+        featuredContainer.innerHTML = `
+
+            <a
+                class="featured-card"
+                href="${escapeHTML(
+                    getArticleURL(article)
+                )}"
+                aria-label="${title}"
+            >
+
+                <img
+                    class="featured-image"
+                    src="${escapeHTML(
+                        getImage(article)
+                    )}"
+                    alt="${title} - Dyve HackaX"
+                    loading="eager"
+                    decoding="async"
+                >
+
+
+                <div class="featured-gradient"></div>
+
+
+                <div class="featured-grid"></div>
+
+
+                <span class="featured-badge">
+                    ${tag}
+                </span>
+
+
+                <div class="featured-content">
+
+                    <div class="featured-meta">
+
+                        <span class="featured-category">
+                            ${category}
+                        </span>
+
+                        <span class="featured-dot"></span>
+
+                        <span>
+                            ${escapeHTML(
+                                getDate(article)
+                            )}
+                        </span>
+
+                        <span class="featured-dot"></span>
+
+                        <span>
+                            ${escapeHTML(
+                                getReadTime(article)
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <h3 class="featured-title">
+                        ${title}
+                    </h3>
+
+
+                    <p class="featured-description">
+                        ${description}
+                    </p>
+
+
+                    <span class="featured-read">
+                        Read full intelligence →
+                    </span>
+
+                </div>
+
+            </a>
+
+        `;
+
+    }
+
+
+    /* =====================================================
+       ARTICLE CARD
+    ===================================================== */
+
+    function createArticleCard(
+        article
+    ) {
+
+        const title =
+            escapeHTML(
+                article.title ||
+                "Untitled intelligence"
+            );
+
+
+        const description =
+            escapeHTML(
+                article.desc ||
+                "Dyve HackaX cybersecurity intelligence."
+            );
+
+
+        const category =
+            escapeHTML(
+                getCategory(article)
+                    .replace(/-/g, " ")
+                    .toUpperCase()
+            );
+
+
+        const tag =
+            escapeHTML(
+                article.tag ||
+                category
+            );
+
+
+        return `
+
+            <a
+                class="article-card reveal"
+                href="${escapeHTML(
+                    getArticleURL(article)
+                )}"
+                aria-label="${title}"
+            >
+
+                <div class="article-copy">
+
+                    <div class="article-meta">
+
+                        <span class="article-category">
+                            ${tag}
+                        </span>
+
+                        <span>
+                            •
+                        </span>
+
+                        <span>
+                            ${escapeHTML(
+                                getDate(article)
+                            )}
+                        </span>
+
+                        <span>
+                            •
+                        </span>
+
+                        <span>
+                            ${escapeHTML(
+                                getReadTime(article)
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <h3 class="article-title">
+                        ${title}
+                    </h3>
+
+
+                    <p class="article-description">
+                        ${description}
+                    </p>
+
+                </div>
+
+
+                <div class="article-image">
+
+                    <img
+                        src="${escapeHTML(
+                            getImage(article)
+                        )}"
+                        alt="${title} - Dyve HackaX"
+                        loading="lazy"
+                        decoding="async"
+                    >
+
+                </div>
+
+            </a>
+
+        `;
+
+    }
+
+
+    /* =====================================================
+       CATEGORY SECTION CARD FEED
+    ===================================================== */
+
+    function renderCategorySections(
+        articles
+    ) {
+
+        $$(".category-feed")
+            .forEach(
+                function (container) {
+
+                    const category =
+                        container.dataset.feedCategory;
+
+
+                    const categoryArticles =
+                        getArticlesForCategory(
+                            articles,
+                            category
+                        );
+
+
+                    if (
+                        !categoryArticles.length
+                    ) {
+
+                        container.innerHTML = `
+
+                            <div class="empty-state">
+
+                                <strong>
+                                    Intelligence stream pending.
+                                </strong>
+
+                                No published HackaX records
+                                currently exist in this domain.
+
+                            </div>
+
+                        `;
+
+                        return;
+
+                    }
+
+
+                    container.innerHTML = `
+
+                        <div class="article-list">
+
+                            ${
+                                categoryArticles
+                                    .slice(0,4)
+                                    .map(
+                                        createArticleCard
+                                    )
+                                    .join("")
+                            }
+
+                        </div>
+
+                    `;
+
+                }
+            );
+
+
+        observeReveals();
+
+    }
+
+
+    /* =====================================================
+       LATEST / FILTERED FEED
+    ===================================================== */
+
+    function renderPrimaryFeed(
+        articles
+    ) {
+
+        const filtered =
+            getArticlesForCategory(
+                articles,
+                currentCategory
+            );
+
+
+        /*
+         * FEATURED
+         */
+
+        renderFeatured(
+            filtered
+        );
+
+
+        /*
+         * Primary article list.
+         *
+         * On Latest:
+         * show newest records.
+         *
+         * On category:
+         * show newest records from that category.
+         */
+
+        const list =
+            filtered.slice(
+                0,
+                10
+            );
+
+
+        if (
+            !list.length
+        ) {
+
+            articleFeed.innerHTML = `
+
+                <div class="empty-state">
+
+                    <strong>
+                        No intelligence found.
+                    </strong>
+
+                    There are currently no published
+                    HackaX articles in this category.
+
+                </div>
+
+            `;
+
+        } else {
+
+            articleFeed.innerHTML =
+                list
+                    .map(
+                        createArticleCard
+                    )
+                    .join("");
+
+        }
+
+
+        /*
+         * Update headings.
+         */
+
+        if (
+            currentCategory === "latest"
+        ) {
+
+            featuredHeading.textContent =
+                "Featured Intelligence";
+
+
+            featuredAction.href =
+                "/intelligence/";
+
+
+            featuredAction.textContent =
+                "Full Feed →";
+
+
+            feedSectionKicker.textContent =
+                "Latest";
+
+
+            feedSectionTitle.textContent =
+                "Latest Intelligence";
+
+
+            feedAction.href =
+                "/intelligence/";
+
+
+            feedAction.textContent =
+                "View All →";
+
+
+            feedDescription.textContent =
+                "Recent reporting and intelligence across the Dyve HackaX coverage network.";
+
+
+            categoryFeedIntro.classList.remove(
+                "visible"
+            );
+
+
+            categorySections.style.display =
+                "";
+
+        } else {
+
+            const config =
+                CONFIG.categories[
+                    currentCategory
+                ];
+
+
+            featuredHeading.textContent =
+                config.title;
+
+
+            featuredAction.href =
+                config.route;
+
+
+            featuredAction.textContent =
+                "Full Category →";
+
+
+            feedSectionKicker.textContent =
+                "Category Feed";
+
+
+            feedSectionTitle.textContent =
+                config.title;
+
+
+            feedAction.href =
+                config.route;
+
+
+            feedAction.textContent =
+                "Dedicated Page →";
+
+
+            feedDescription.textContent =
+                config.description;
+
+
+            categoryFeedLabel.textContent =
+                "Intelligence Filter";
+
+
+            categoryFeedTitle.textContent =
+                config.title;
+
+
+            categoryFeedDescription.textContent =
+                config.description;
+
+
+            categoryFeedIntro.classList.add(
+                "visible"
+            );
+
+
+            /*
+             * This is critical:
+             *
+             * When a top category is selected,
+             * the page DOES NOT navigate.
+             *
+             * It becomes a category-specific feed.
+             */
+
+            categorySections.style.display =
+                "none";
+
+        }
+
+
+        observeReveals();
+
+    }
+
+
+    /* =====================================================
+       MASTER RENDER
+    ===================================================== */
+
+    function renderFeedState(
+        articles
+    ) {
+
+        renderPrimaryFeed(
+            articles
+        );
+
+
+        renderCategorySections(
+            articles
+        );
+
+
+        renderMatrix(
+            articles
+        );
+
+
+        renderTrending(
+            articles
+        );
+
+
+        updateStructuredData(
+            articles
+        );
+
+    }
+
+
+    /* =====================================================
+       MATRIX
+    ===================================================== */
+
+    function renderMatrix(
+        articles
+    ) {
+
+        const domains = [
+
+            ["01","Dark Web","dark-web"],
+
+            ["02","Ransomware","ransomware"],
+
+            ["03","Breaches","breach"],
+
+            ["04","Threat Analysis","analysis"],
+
+            ["05","Threat Actors","threat-actors"],
+
+            ["06","Threat Signals","signals"],
+
+            ["07","Vulnerabilities","vulnerabilities"],
+
+            ["08","Malware","malware"],
+
+            ["09","Cyber Technology","technology"]
+
+        ];
+
+
+        matrix.innerHTML =
+            domains
+                .map(
+                    function (
+                        domain
+                    ) {
+
+                        const count =
+                            articles.filter(
+                                function (
+                                    article
+                                ) {
+
+                                    return (
+                                        getCategory(article) ===
+                                        domain[2]
+                                    );
+
+                                }
+                            ).length;
+
+
+                        return `
+
+                            <button
+                                type="button"
+                                class="matrix-card"
+                                data-matrix-category="${escapeHTML(
+                                    domain[2]
+                                )}"
+                            >
+
+                                <div class="matrix-number">
+                                    ${domain[0]}
+                                </div>
+
+
+                                <div class="matrix-name">
+                                    ${domain[1]}
+                                </div>
+
+
+                                <div class="matrix-count">
+                                    ${count}
+                                    ${
+                                        count === 1
+                                            ? " report"
+                                            : " reports"
+                                    }
+                                </div>
+
+                            </button>
+
+                        `;
+
+                    }
+                )
+                .join("");
+
+
+        $$(".matrix-card")
+            .forEach(
+                function (button) {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            switchCategory(
+                                button.dataset.matrixCategory,
+                                true
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* =====================================================
+       TRENDING
+    ===================================================== */
+
+    function renderTrending(
+        articles
+    ) {
+
+        const filtered =
+            getArticlesForCategory(
+                articles,
+                currentCategory
+            );
+
+
+        const items =
+            filtered.slice(
+                0,
+                5
+            );
+
+
+        if (
+            !items.length
+        ) {
+
+            trendingList.innerHTML =
+                "";
+
+            return;
+
+        }
+
+
+        trendingList.innerHTML =
+            items
+                .map(
+                    function (
+                        article,
+                        index
+                    ) {
+
+                        const title =
+                            escapeHTML(
+                                article.title ||
+                                "Untitled intelligence"
+                            );
+
+
+                        const category =
+                            escapeHTML(
+                                getCategory(article)
+                                    .replace(/-/g, " ")
+                                    .toUpperCase()
+                            );
+
+
+                        return `
+
+                            <a
+                                href="${escapeHTML(
+                                    getArticleURL(article)
+                                )}"
+                                class="trending-item"
+                            >
+
+                                <span class="trending-number">
+                                    ${String(
+                                        index + 1
+                                    ).padStart(2,"0")}
+                                </span>
+
+
+                                <div>
+
+                                    <h3 class="trending-title">
+                                        ${title}
+                                    </h3>
+
+
+                                    <div class="trending-meta">
+                                        ${category}
+                                        •
+                                        ${escapeHTML(
+                                            getDate(article)
+                                        )}
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                        `;
+
+                    }
+                )
+                .join("");
+
+    }
+
+
+    /* =====================================================
+       STRUCTURED DATA
+    ===================================================== */
+
+    function updateStructuredData(
+        articles
+    ) {
+
+        const config =
+            CONFIG.categories[
+                currentCategory
+            ];
+
+
+        if (!config) {
+            return;
+        }
+
+
+        const list =
+            getArticlesForCategory(
+                articles,
+                currentCategory
+            )
+                .slice(0,20);
+
+
+        const items =
+            list.map(
+                function (
+                    article,
+                    index
+                ) {
+
+                    const url =
+                        CONFIG.siteUrl +
+                        getArticleURL(article);
+
+
+                    return {
+
+                        "@type":
+                            "ListItem",
+
+                        "position":
+                            index + 1,
+
+                        "url":
+                            url,
+
+                        "name":
+                            article.title || ""
+
+                    };
+
+                }
+            );
+
+
+        const schema = {
+
+            "@context":
+                "https://schema.org",
+
+            "@graph": [
+
+                {
+
+                    "@type":
+                        "CollectionPage",
+
+                    "@id":
+                        CONFIG.siteUrl +
+                        CONFIG.intelligenceRoute +
+                        "#collection",
+
+                    "url":
+                        CONFIG.siteUrl +
+                        CONFIG.intelligenceRoute,
+
+                    "name":
+                        config.title +
+                        " | Dyve HackaX",
+
+                    "description":
+                        config.description,
+
+                    "isPartOf": {
+
+                        "@type":
+                            "WebSite",
+
+                        "name":
+                            "Dyve HackaX",
+
+                        "url":
+                            CONFIG.siteUrl
+
+                    },
+
+                    "publisher": {
+
+                        "@type":
+                            "Organization",
+
+                        "name":
+                            "Dyve HackaX",
+
+                        "url":
+                            CONFIG.siteUrl
+
+                    },
+
+                    "mainEntity": {
+
+                        "@type":
+                            "ItemList",
+
+                        "itemListElement":
+                            items
+
+                    }
+
+                },
+
+                {
+
+                    "@type":
+                        "BreadcrumbList",
+
+                    "itemListElement": [
+
+                        {
+
+                            "@type":
+                                "ListItem",
+
+                            "position":
+                                1,
+
+                            "name":
+                                "Dyve HackaX",
+
+                            "item":
+                                CONFIG.siteUrl +
+                                "/"
+
+                        },
+
+                        {
+
+                            "@type":
+                                "ListItem",
+
+                            "position":
+                                2,
+
+                            "name":
+                                config.title,
+
+                            "item":
+                                CONFIG.siteUrl +
+                                CONFIG.intelligenceRoute
+
+                        }
+
+                    ]
+
+                }
+
+            ]
+
+        };
+
+
+        let script =
+            document.getElementById(
+                "hackaxStructuredData"
+            );
+
+
+        if (!script) {
+
+            script =
+                document.createElement(
+                    "script"
+                );
+
+            script.type =
+                "application/ld+json";
+
+            script.id =
+                "hackaxStructuredData";
+
+            document.head.appendChild(
+                script
+            );
+
+        }
+
+
+        script.textContent =
+            JSON.stringify(
+                schema
+            );
+
+    }
+
+
+    /* =====================================================
+       LOAD ARTICLES.JSON
+    ===================================================== */
+
+    async function loadArticles() {
+
+        try {
+
+            feedStatus.textContent =
+                "Syncing";
+
+
+            const response =
+                await fetch(
+                    CONFIG.database,
+                    {
+                        method:
+                            "GET",
+
+                        cache:
+                            "no-cache",
+
+                        headers: {
+
+                            "Accept":
+                                "application/json"
+
+                        }
+
+                    }
+                );
+
+
+            if (
+                !response.ok
+            ) {
+
+                throw new Error(
+                    "Unable to load articles.json"
+                );
+
+            }
+
+
+            const raw =
+                await response.json();
+
+
+            if (
+                !Array.isArray(raw)
+            ) {
+
+                throw new Error(
+                    "articles.json is not an array"
+                );
+
+            }
+
+
+            /*
+             * HARD HACKAX FILTER.
+             *
+             * This prevents the intelligence page
+             * from accidentally loading Dyve Tech
+             * content.
+             */
+
+            const hackaXArticles =
+                raw.filter(
+                    isHackaXArticle
+                );
+
+
+            const articles =
+                sortNewest(
+                    hackaXArticles
+                );
+
+
+            window.__hackaxArticles =
+                articles;
+
+
+            feedStatus.textContent =
+                "Updated";
+
+
+            recordCount.textContent =
+                String(
+                    articles.length
+                );
+
+
+            updateFilterButtons();
+
+
+            updateSEO();
+
+
+            renderFeedState(
+                articles
+            );
+
+
+            requestAnimationFrame(
+                function () {
+
+                    $("#intro")
+                        ?.classList
+                        .add("visible");
+
+
+                    $("#statusGrid")
+                        ?.classList
+                        .add("visible");
+
+
+                    $$(".section.reveal")
+                        .forEach(
+                            function (
+                                section
+                            ) {
+
+                                section.classList.add(
+                                    "visible"
+                                );
+
+                            }
+                        );
+
+                }
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "HackaX intelligence feed:",
+                error
+            );
+
+
+            feedStatus.textContent =
+                "Offline";
+
+
+            recordCount.textContent =
+                "--";
+
+
+            const errorHTML = `
+
+                <div class="empty-state">
+
+                    <strong>
+                        Intelligence feed unavailable.
+                    </strong>
+
+                    HackaX could not load
+                    <code>/assets/articles.json</code>.
+                    Make sure the file exists and contains
+                    valid JSON.
+
+                </div>
+
+            `;
+
+
+            featuredContainer.innerHTML =
+                errorHTML;
+
+
+            articleFeed.innerHTML =
+                errorHTML;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       REVEAL OBSERVER
+    ===================================================== */
+
+    function observeReveals() {
+
+        const elements =
+            $$(".reveal:not(.observed)");
+
+
+        if (
+            !("IntersectionObserver" in window)
+        ) {
+
+            elements.forEach(
+                function (
+                    element
+                ) {
+
+                    element.classList.add(
+                        "visible"
+                    );
+
+                }
+            );
+
+            return;
+
+        }
+
+
+        const observer =
+            new IntersectionObserver(
+                function (
+                    entries,
+                    instance
+                ) {
+
+                    entries.forEach(
+                        function (
+                            entry
+                        ) {
+
+                            if (
+                                entry.isIntersecting
+                            ) {
+
+                                entry.target.classList.add(
+                                    "visible"
+                                );
+
+
+                                instance.unobserve(
+                                    entry.target
+                                );
+
+                            }
+
+                        }
+                    );
+
+                },
+                {
+
+                    threshold:
+                        .05,
+
+                    rootMargin:
+                        "0px 0px -25px 0px"
+
+                }
+            );
+
+
+        elements.forEach(
+            function (
+                element,
+                index
+            ) {
+
+                element.classList.add(
+                    "observed"
+                );
+
+
+                element.style.transitionDelay =
+                    Math.min(
+                        index * 30,
+                        180
+                    ) +
+                    "ms";
+
+
+                observer.observe(
+                    element
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       CATEGORY FILTER EVENTS
+    ===================================================== */
+
+    $$(".category-filter")
+        .forEach(
+            function (
+                button
+            ) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const category =
+                            button.dataset.category;
+
+
+                        switchCategory(
+                            category,
+                            true
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+    /* =====================================================
+       BROWSER BACK / FORWARD
+    ===================================================== */
+
+    window.addEventListener(
+        "popstate",
+        function () {
+
+            currentCategory =
+                getCategoryFromURL();
+
+
+            updateFilterButtons();
+
+
+            updateSEO();
+
+
+            renderFeedState(
+                window.__hackaxArticles ||
+                []
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       DRAWER
+    ===================================================== */
+
+    const drawer =
+        $("#drawer");
+
+
+    const drawerBackdrop =
+        $("#drawerBackdrop");
+
+
+    const menuButton =
+        $("#menuButton");
+
+
+    const bottomMenu =
+        $("#bottomMenu");
+
+
+    const closeDrawer =
+        $("#closeDrawer");
+
+
+    function openDrawer() {
+
+        drawer.classList.add(
+            "open"
+        );
+
+
+        drawerBackdrop.classList.add(
+            "open"
+        );
+
+
+        document.body.classList.add(
+            "locked"
+        );
+
+    }
+
+
+    function closeDrawerPanel() {
+
+        drawer.classList.remove(
+            "open"
+        );
+
+
+        drawerBackdrop.classList.remove(
+            "open"
+        );
+
+
+        document.body.classList.remove(
+            "locked"
+        );
+
+    }
+
+
+    menuButton?.addEventListener(
+        "click",
+        openDrawer
+    );
+
+
+    bottomMenu?.addEventListener(
+        "click",
+        openDrawer
+    );
+
+
+    closeDrawer?.addEventListener(
+        "click",
+        closeDrawerPanel
+    );
+
+
+    drawerBackdrop?.addEventListener(
+        "click",
+        closeDrawerPanel
+    );
+
+
+    /*
+     * Drawer links are deliberately NOT intercepted.
+     *
+     * They perform real navigation.
+     */
+
+    $$(".drawer-link")
+        .forEach(
+            function (
+                link
+            ) {
+
+                link.addEventListener(
+                    "click",
+                    function () {
+
+                        closeDrawerPanel();
+
+                    }
+                );
+
+            }
+        );
+
+
+    /* =====================================================
+       SEARCH
+    ===================================================== */
+
+    const searchOverlay =
+        $("#searchOverlay");
+
+
+    const searchButton =
+        $("#searchButton");
+
+
+    const bottomSearch =
+        $("#bottomSearch");
+
+
+    const closeSearch =
+        $("#closeSearch");
+
+
+    const searchInput =
+        $("#searchInput");
+
+
+    function openSearch() {
+
+        searchOverlay.classList.add(
+            "open"
+        );
+
+
+        document.body.classList.add(
+            "locked"
+        );
+
+
+        setTimeout(
+            function () {
+
+                searchInput.focus();
+
+            },
+            250
+        );
+
+    }
+
+
+    function closeSearchPanel() {
+
+        searchOverlay.classList.remove(
+            "open"
+        );
+
+
+        document.body.classList.remove(
+            "locked"
+        );
+
+
+        searchInput.value =
+            "";
+
+    }
+
+
+    searchButton?.addEventListener(
+        "click",
+        openSearch
+    );
+
+
+    bottomSearch?.addEventListener(
+        "click",
+        openSearch
+    );
+
+
+    closeSearch?.addEventListener(
+        "click",
+        closeSearchPanel
+    );
+
+
+    /* =====================================================
+       SEARCH LIVE FILTER
+    ===================================================== */
+
+    searchInput?.addEventListener(
+        "input",
+        function () {
+
+            const query =
+                searchInput.value
+                    .trim()
+                    .toLowerCase();
+
+
+            if (
+                !query
+            ) {
+
+                return;
+
+            }
+
+
+            const articles =
+                window.__hackaxArticles ||
+                [];
+
+
+            const matches =
+                articles.filter(
+                    function (
+                        article
+                    ) {
+
+                        const haystack =
+                            [
+
+                                article.title,
+
+                                article.desc,
+
+                                article.category,
+
+                                article.tag,
+
+                                article.author
+
+                            ]
+                                .join(" ")
+                                .toLowerCase();
+
+
+                        return haystack.includes(
+                            query
+                        );
+
+                    }
+                );
+
+
+            if (
+                !matches.length
+            ) {
+
+                articleFeed.innerHTML = `
+
+                    <div class="empty-state">
+
+                        <strong>
+                            No intelligence found.
+                        </strong>
+
+                        No HackaX article matches
+                        "${escapeHTML(query)}".
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            articleFeed.innerHTML =
+                matches
+                    .slice(0,10)
+                    .map(
+                        createArticleCard
+                    )
+                    .join("");
+
+
+            observeReveals();
+
+        }
+    );
+
+
+    /* =====================================================
+       KEYBOARD
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (
+            event
+        ) {
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                closeDrawerPanel();
+
+                closeSearchPanel();
+
+            }
+
+
+            if (
+                (
+                    event.metaKey ||
+                    event.ctrlKey
+                ) &&
+                event.key.toLowerCase() === "k"
+            ) {
+
+                event.preventDefault();
+
+                openSearch();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       NEWSLETTER
+    ===================================================== */
+
+    $("#briefForm")
+        ?.addEventListener(
+            "submit",
+            function (
+                event
+            ) {
+
+                event.preventDefault();
+
+
+                const input =
+                    this.querySelector(
+                        "input"
+                    );
+
+
+                const button =
+                    this.querySelector(
+                        "button"
+                    );
+
+
+                if (
+                    !input.value.trim()
+                ) {
+
+                    input.focus();
+
+                    return;
+
+                }
+
+
+                const original =
+                    button.textContent;
+
+
+                button.textContent =
+                    "Subscribed";
+
+
+                input.value =
+                    "";
+
+
+                setTimeout(
+                    function () {
+
+                        button.textContent =
+                            original;
+
+                    },
+                    3000
+                );
+
+            }
+        );
+
+
+    /* =====================================================
+       INITIALIZE
+    ===================================================== */
+
+    updateFilterButtons();
+
+    updateSEO();
+
+    loadArticles();
+
+})();
+
+</script>
+
+
+<!-- =======================================================
+     ORGANIZATION SCHEMA
+======================================================= -->
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Dyve HackaX",
+    "url": "https://dyve.online/",
+    "logo": "https://dyve.online/assets/dyve.png",
+    "description": "Cybersecurity intelligence and reporting platform covering threats, breaches, ransomware, dark web activity, threat actors, vulnerabilities, malware and security analysis."
+}
+</script>
+
+</body>
+</html>
