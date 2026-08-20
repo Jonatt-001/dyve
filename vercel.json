@@ -16,6 +16,10 @@
     {
       "source": "/tech/tag/:slug",
       "destination": "/api/tech-taxonomy?type=tag&slug=:slug"
+    },
+    {
+      "source": "/hackax/scan",
+      "destination": "/api/scan"
     }
   ]
 }
