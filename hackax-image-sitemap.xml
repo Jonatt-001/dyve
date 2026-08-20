@@ -4,6 +4,15 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
 xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
 <url>
+<loc>https://dyve.online/article/microsoft-turns-the-tables-on-macsync-stealer-by-hunting-its-behavior-not-its-domains.html</loc>
+<image:image>
+<image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787267098/hackax/hackax/microsoft-turns-the-tables-on-macsync-stealer-by-hunting-its-behavior-not-its-domains-featured-1787267096420.jpg</image:loc>
+<image:title>Microsoft Turns the Tables on MacSync Stealer by Hunting Its Behavior, Not Its Domains | Dyve HackaX</image:title>
+<image:caption>Microsoft Turns the Tables on MacSync Stealer by Hunting Its Behavior, Not Its Domains — Threat Analysis | LIVE INTEL | Dyve HackaX</image:caption>
+</image:image>
+</url>
+
+<url>
 <loc>https://dyve.online/article/ransomware/cisa-how-medusa-ransomware-attacked-500-critical-companies.html</loc>
 <image:image>
 <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787258753/hackax/hackax/cisa-how-medusa-ransomware-attacked-500-critical-companies-featured-1787258748267.jpg</image:loc>
