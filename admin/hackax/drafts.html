@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Dyve | HackaX Drafts</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#020403">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{dyve:{bg:"#020403",accent:"#00ffaa"}}}}}</script>
+<style>
+*{box-sizing:border-box}html,body{width:100%;max-width:100%;overflow-x:hidden}
+button,a,input{touch-action:manipulation}button{-webkit-tap-highlight-color:transparent}
+button:active,a:active{transform:scale(.985)}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:18px}
+</style>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-900">
+<header class="bg-dyve-bg text-white border-b border-white/10 sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center gap-3">
+<a href="index.html"><b>DYVE<span class="text-dyve-accent">|</span>HACKAX</b><p class="text-[9px] text-white/45 uppercase tracking-[.2em]">Draft Workspace</p></a>
+<div class="flex gap-2"><a href="published.html" class="border border-white/10 px-3 py-2 rounded-lg text-xs font-bold">Published</a><a href="index.html" class="bg-dyve-accent text-dyve-bg px-3 py-2 rounded-lg text-xs font-black">New Intel</a></div>
+</div>
+</header>
+<main class="max-w-5xl mx-auto px-4 py-6 sm:py-8">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+<div><div class="text-[10px] uppercase tracking-[.18em] font-black text-emerald-700">Local workspace</div><h1 class="text-2xl sm:text-3xl font-black mt-1">HackaX Drafts</h1><p id="count" class="text-sm text-slate-500 mt-1">Loading...</p></div>
+<button id="clear" type="button" class="border border-red-200 text-red-700 bg-white rounded-xl px-4 py-2.5 text-xs font-bold">Clear all</button>
+</div>
+<div class="card p-3 mb-5"><input id="search" class="w-full border rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-emerald-200" placeholder="Search drafts by title or category..."></div>
+<div id="list" class="space-y-3"></div>
+</main>
+<div id="toast" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-dyve-bg text-white border border-emerald-400/30 rounded-xl px-5 py-3 text-sm"></div>
+<script>
+const KEY="dyve-hackax-drafts",EDIT="dyve-hackax-edit-article";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+let drafts=[];
+function read(){try{const a=JSON.parse(localStorage.getItem(KEY)||"[]");return Array.isArray(a)?a:[]}catch(e){return[]}}
+function toast(m){const e=$("toast");e.textContent=m;e.classList.remove("hidden");clearTimeout(window.__t);window.__t=setTimeout(()=>e.classList.add("hidden"),2500)}
+function save(a){localStorage.setItem(KEY,JSON.stringify(a))}
+function render(){
+    const q=$("search").value.trim().toLowerCase();
+    const a=drafts.filter(d=>[d.title,d.category,d.intelTag,d.metaStatus].join(" ").toLowerCase().includes(q));
+    $("count").textContent=`${a.length} draft${a.length===1?"":"s"} · ${drafts.length} stored locally`;
+    $("list").innerHTML=a.length?a.map(d=>`
+        <article class="card p-4 sm:p-5">
+            <div class="flex flex-col sm:flex-row justify-between gap-4">
+                <div class="min-w-0">
+                    <div class="flex flex-wrap gap-2 items-center">
+                        <span class="text-[10px] font-black uppercase text-emerald-700">${esc(d.category||"Intel")}</span>
+                        ${d.intelTag?`<span class="text-[10px] font-black uppercase bg-slate-100 px-2 py-1 rounded-full">${esc(d.intelTag)}</span>`:""}
+                    </div>
+                    <h2 class="font-black text-lg mt-2">${esc(d.title||"Untitled Draft")}</h2>
+                    <p class="text-xs text-slate-500 mt-1">${esc(d.updatedAt?new Date(d.updatedAt).toLocaleString():"Unknown update time")}</p>
+                    <p class="text-sm text-slate-600 mt-3 line-clamp-2">${esc(d.description||"No description yet.")}</p>
+                </div>
+                <button type="button" data-del="${esc(d.id)}" class="self-start text-red-600 text-xs font-bold px-2 py-1">Delete</button>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t">
+                <button type="button" data-open="${esc(d.id)}" class="bg-dyve-bg text-white rounded-lg px-4 py-2.5 text-xs font-black">Open Editor</button>
+                <button type="button" data-pub="${esc(d.id)}" class="border rounded-lg px-4 py-2.5 text-xs font-bold">Edit & Publish</button>
+            </div>
+        </article>
+    `).join(""):`<div class="card p-10 text-center text-sm text-slate-500">${q?"No drafts match your search.":"No HackaX drafts saved yet."}</div>`;
+    document.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>{
+        if(!confirm("Delete this HackaX draft?"))return;
+        drafts=drafts.filter(x=>String(x.id)!==String(b.dataset.del));save(drafts);render();toast("Draft deleted");
+    }));
+    document.querySelectorAll("[data-open],[data-pub]").forEach(b=>b.addEventListener("click",()=>{
+        const id=b.dataset.open||b.dataset.pub,d=drafts.find(x=>String(x.id)===String(id));
+        if(!d)return;
+        localStorage.setItem(EDIT,JSON.stringify(d));
+        location.href="index.html?draft="+encodeURIComponent(d.id);
+    }));
+}
+$("clear").addEventListener("click",()=>{
+    if(!drafts.length)return toast("There are no drafts to clear");
+    if(!confirm("Delete all HackaX drafts from this browser?"))return;
+    drafts=[];save(drafts);render();toast("All drafts cleared");
+});
+$("search").addEventListener("input",render);
+drafts=read();render();
+</script>
+</body>
+</html>
