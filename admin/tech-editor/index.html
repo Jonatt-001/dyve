@@ -436,6 +436,8 @@
                         <label class="block text-xs font-medium text-gray-400 mb-2">Featured Image</label>
                         <div class="space-y-2">
                             <input type="hidden" id="imageUrlInput" value="">
+                            <input type="text" id="imageAltInput" value="" placeholder="Image alt text will be generated automatically"
+                                   class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f15e50] text-white placeholder:text-gray-500">
                             <input type="file" id="featuredImageInput" accept="image/*"
                                    class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f15e50] text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#f15e50] file:text-white hover:file:bg-[#d94a3e]">
                             <div id="featuredImagePreview" class="hidden">
@@ -763,9 +765,13 @@ async function prepareImageForCloudinary(file, contextLabel = 'image') {
 
 
 const STATIC_BUILD_CONFIG = {
-    generateTechIndex: true,
+    generateTechIndex: false,
+    updateHomepageOnPublish: false,
+    updateHomepageOnPublish: false,
     generateCategoryPages: false,
     generateSitemap: true,
+    generateRss: true,
+    rssItemLimit: 50,
     generateRobots: false,
     maxArticlesPerIndex: 100,
     siteName: 'Dyve Tech',
@@ -775,6 +781,8 @@ const STATIC_BUILD_CONFIG = {
     defaultImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop',
     articleDataPath: 'assets/tech-articles.json',
     techSitemapPath: 'tech/sitemap.xml',
+    techRssPath: 'tech/rss.xml',
+    cloudinaryFolder: 'dyve-tech',
     homepageTemplatePath: 'tech-editor/tech-homepage-template.html'
 };
 
@@ -1335,6 +1343,7 @@ function normalizeArticle(article) {
         url,
         desc: String(article.desc || '').trim(),
         image: String(article.image || STATIC_BUILD_CONFIG.defaultImage),
+        imageAlt: String(article.imageAlt || '').trim(),
         tag,
         meta: category,
         category,
@@ -1644,6 +1653,7 @@ function buildStaticHead(title, description, canonical, schema) {
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="${escapeAttr(STATIC_BUILD_CONFIG.publisherName)}">
 <link rel="canonical" href="${escapeAttr(canonical)}">
+<link rel="alternate" type="application/rss+xml" title="Dyve Tech RSS" href="${escapeAttr(`${siteUrl}/${STATIC_BUILD_CONFIG.techRssPath}`)}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${escapeAttr(title)}">
 <meta property="og:description" content="${escapeAttr(description)}">
@@ -2000,18 +2010,24 @@ function buildSitemapXML(siteUrl, articles) {
     const normalized = validateArticleSet(sortArticles(articles));
     const today = new Date().toISOString().slice(0, 10);
     const urls = new Map();
-    const techUrl = `${siteUrl}/tech/`;
-    urls.set(techUrl, normalized[0]?.date || today);
-    normalized.forEach(article => {
-        urls.set(articleUrl(siteUrl, article), String(article.modified || article.date).slice(0, 10));
-    });
-    const body = [...urls.entries()].map(([loc, lastmod]) => `
+    urls.set(`${siteUrl}/tech/`, normalized[0]?.date || today);
+    normalized.forEach(article => urls.set(articleUrl(siteUrl, article), String(article.modified || article.date).slice(0, 10)));
+    const body = [...urls.entries()].map(([loc, lastmod]) => {
+        const article = normalized.find(item => articleUrl(siteUrl, item) === loc);
+        const image = article?.image ? `
+        <image:image>
+            <image:loc>${escapeHtml(article.image)}</image:loc>
+            <image:title>${escapeHtml(article.title)}</image:title>
+            <image:caption>${escapeHtml(article.imageAlt || article.desc || article.title)}</image:caption>
+        </image:image>` : '';
+        return `
     <url>
         <loc>${escapeHtml(loc)}</loc>
-        <lastmod>${escapeHtml(String(lastmod).slice(0, 10))}</lastmod>
-    </url>`).join('');
+        <lastmod>${escapeHtml(String(lastmod).slice(0, 10))}</lastmod>${image}
+    </url>`;
+    }).join('');
     return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${body}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">${body}
 </urlset>`;
 }
 
@@ -2075,55 +2091,16 @@ async function buildStaticSite(config, articles, options = {}) {
 
         const files = [];
 
-        /*
-         * IMPORTANT:
-         * tech/index.html is now the editable homepage template.
-         * We read the current deployed file before rebuilding so manual
-         * HTML/CSS changes survive future editor publications.
-         */
-        let existingTechIndex = null;
-
-        try {
-            existingTechIndex = await fetchGitHubText(
-                config,
-                'tech/index.html',
-                { optional: true }
-            );
-
-            if (!existingTechIndex) {
-                throw new Error(
-                    'tech/index.html does not exist yet. Open tech-editor/update-system.html and run the homepage update first.'
-                );
+        if (STATIC_BUILD_CONFIG.updateHomepageOnPublish) {
+            const existingTechIndex = await fetchGitHubText(config, 'tech/index.html', { optional: true });
+            if (!existingTechIndex || !hasDyveTechTemplateMarkers(existingTechIndex)) {
+                throw new Error('Homepage publishing is enabled but tech/index.html is not a valid Dyve Tech template.');
             }
-
-            if (!hasDyveTechTemplateMarkers(existingTechIndex)) {
-                throw new Error(
-                    'tech/index.html is missing the required Dyve Tech publishing markers. Restore/install the canonical homepage through tech-editor/update-system.html before publishing.'
-                );
-            }
-
-            logBuild(
-                'Loaded the live tech/index.html as the immutable homepage shell. Only dynamic publishing regions will be changed.',
-                'ok'
-            );
-        } catch (error) {
-            throw new Error(
-                `Tech homepage template check failed: ${error.message}`
-            );
+            const sectionOutputs = buildAllSectionIndexes(config.siteUrl, normalized, { 'tech/index.html': existingTechIndex });
+            Object.entries(sectionOutputs).forEach(([path, content]) => files.push({ path, content }));
+        } else {
+            logBuild('Homepage safety lock active: tech/index.html remains untouched.', 'ok');
         }
-
-        const sectionOutputs = buildAllSectionIndexes(
-            config.siteUrl,
-            normalized,
-            { 'tech/index.html': existingTechIndex || '' }
-        );
-
-        Object.entries(sectionOutputs).forEach(([path, content]) => {
-            files.push({ path, content });
-            const page = path.split('/')[0];
-            const count = normalized.filter(a => a.page === page).length;
-            logBuild(`Updated dynamic content in ${path} from page="${page}" (${count} articles). The homepage shell was not regenerated.`, 'ok');
-        });
 
         if (STATIC_BUILD_CONFIG.generateSitemap) {
             files.push({
@@ -2131,6 +2108,11 @@ async function buildStaticSite(config, articles, options = {}) {
                 content: buildSitemapXML(config.siteUrl, normalized)
             });
             logBuild('Generated tech/sitemap.xml from canonical article routes.', 'ok');
+        }
+
+        if (STATIC_BUILD_CONFIG.generateRss) {
+            files.push({ path: STATIC_BUILD_CONFIG.techRssPath, content: buildRssXML(config.siteUrl, normalized) });
+            logBuild('Generated tech/rss.xml.', 'ok');
         }
 
 
@@ -3094,28 +3076,14 @@ function initQuill() {
                             showToast('Preparing branded image...');
 
                             try {
-                                const brandedFile = await prepareImageForCloudinary(file, 'inline image');
-
-                                const formData = new FormData();
-                                formData.append('file', brandedFile);
-                                formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
-                                formData.append('tags', 'dyve-tech,dyve-watermarked');
-
-                                const response = await fetch(CLOUDINARY_CONFIG.endpoint, {
-                                    method: 'POST',
-                                    body: formData
-                                });
-
-                                const data = await response.json();
-
-                                if (data.secure_url) {
-                                    const range = quill.getSelection(true) || { index: quill.getLength() - 1 };
-                                    quill.insertEmbed(range.index, 'image', data.secure_url);
-                                    quill.setSelection(range.index + 1);
-                                    showToast('Branded image inserted.');
-                                } else {
-                                    throw new Error(data.error?.message || 'Upload failed');
-                                }
+                                const articleTitle = document.getElementById('titleInput').value.trim() || 'dyve-tech-article';
+                                const uploaded = await uploadImageToCloudinary(file, articleTitle, 'inline', 'inline image');
+                                const range = quill.getSelection(true) || { index: quill.getLength() - 1 };
+                                quill.insertEmbed(range.index, 'image', uploaded.url);
+                                quill.setSelection(range.index + 1);
+                                const alt = deriveImageAltText(articleTitle, document.getElementById('descriptionInput').value.trim(), quill.root.innerHTML, document.getElementById('categorySelect').value);
+                                quill.root.querySelectorAll('img').forEach(img => { if (img.src === uploaded.url) img.setAttribute('alt', alt); });
+                                showToast(`Branded image inserted as ${uploaded.filename}.`);
                             } catch (error) {
                                 console.error('Image upload error:', error);
                                 showToast(error.message || 'Image upload failed.');
@@ -3139,6 +3107,7 @@ function collectCurrentDraft() {
         category: document.getElementById('categorySelect').value,
         contentType: document.getElementById('contentTypeSelect').value,
         imageUrl: document.getElementById('imageUrlInput').value,
+        imageAlt: document.getElementById('imageAltInput').value.trim(),
         ogImagePrompt: document.getElementById('ogImagePrompt').value.trim(),
         seoTitle: document.getElementById('seoTitleInput').value.trim(),
         focusKeyword: document.getElementById('focusKeywordInput').value.trim(),
@@ -3181,6 +3150,7 @@ function loadCurrentDraft() {
         document.getElementById('categorySelect').value = draft.category || '';
         document.getElementById('contentTypeSelect').value = draft.contentType || '';
         document.getElementById('imageUrlInput').value = draft.imageUrl || '';
+        document.getElementById('imageAltInput').value = draft.imageAlt || '';
         document.getElementById('ogImagePrompt').value = draft.ogImagePrompt || '';
         document.getElementById('seoTitleInput').value = draft.seoTitle || '';
         document.getElementById('focusKeywordInput').value = draft.focusKeyword || '';
@@ -3207,6 +3177,7 @@ function clearForm() {
     document.getElementById('categorySelect').value = '';
     document.getElementById('contentTypeSelect').value = '';
     document.getElementById('imageUrlInput').value = '';
+    document.getElementById('imageAltInput').value = '';
     document.getElementById('ogImagePrompt').value = '';
     document.getElementById('seoTitleInput').value = '';
     document.getElementById('focusKeywordInput').value = '';
@@ -3300,6 +3271,7 @@ async function loadEditData() {
         document.getElementById('titleInput').value = edit.title || '';
         document.getElementById('descriptionInput').value = edit.desc || '';
         document.getElementById('imageUrlInput').value = edit.image || '';
+        document.getElementById('imageAltInput').value = edit.imageAlt || '';
         document.getElementById('seoTitleInput').value = edit.seoTitle || '';
         document.getElementById('focusKeywordInput').value = edit.focusKeyword || '';
         document.getElementById('keywordsInput').value = Array.isArray(edit.keywords) ? edit.keywords.join(', ') : (edit.keywords || '');
@@ -3392,52 +3364,95 @@ async function loadEditData() {
    IMAGE UPLOAD
    ============================================================ */
 
+function slugifyImageName(value) {
+    return generateSlug(String(value || 'image')) || 'image';
+}
+function deriveImageAltText(title, description, articleHTML = '', category = '') {
+    const doc = new DOMParser().parseFromString(String(articleHTML || ''), 'text/html');
+    const heading = doc.querySelector('h2, h3')?.textContent?.trim() || '';
+    const paragraph = doc.querySelector('p')?.textContent?.trim() || '';
+    const source = heading || paragraph || description || title;
+    const categoryLabel = getCategoryMeta(category).label;
+    return truncate((source || `${title}${categoryLabel ? ` - ${categoryLabel}` : ''}`).replace(/\s+/g, ' ').trim(), 140);
+}
+function renameImageFile(file, baseName) {
+    const type = file.type || 'image/jpeg';
+    const ext = type === 'image/png' ? 'png' : type === 'image/webp' ? 'webp' : 'jpg';
+    return new File([file], `${slugifyImageName(baseName)}.${ext}`, { type, lastModified: Date.now() });
+}
+function getCloudinaryPublicId(title, kind = 'featured') {
+    return `dyve-tech/${slugifyImageName(title || 'dyve-tech-image')}-${kind}${kind === 'featured' ? '' : `-${Date.now()}`}`;
+}
+async function uploadImageToCloudinary(file, title, kind, contextLabel) {
+    const brandedFile = await prepareImageForCloudinary(file, contextLabel || 'image');
+    const renamedFile = renameImageFile(brandedFile, `${title || file.name.replace(/\.[^.]+$/, '')}-${kind}`);
+    const upload = async (includePublicId) => {
+        const formData = new FormData();
+        formData.append('file', renamedFile);
+        formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
+        formData.append('use_filename', 'true');
+        formData.append('unique_filename', 'false');
+        if (includePublicId) formData.append('public_id', getCloudinaryPublicId(title, kind));
+        formData.append('tags', `dyve-tech,dyve-watermarked,${kind}`);
+        const response = await fetch(CLOUDINARY_CONFIG.endpoint, { method: 'POST', body: formData });
+        const data = await response.json();
+        return { response, data };
+    };
+    let result = await upload(true);
+    if (!result.response.ok && result.data?.error?.message && /public.?id|not allowed|unsigned/i.test(result.data.error.message)) {
+        result = await upload(false);
+    }
+    if (!result.response.ok || !result.data.secure_url) throw new Error(result.data.error?.message || 'Image upload failed.');
+    return { url: result.data.secure_url, filename: renamedFile.name, publicId: result.data.public_id || '' };
+}
+
+function sanitizeArticleBodyForPublication(articleHTML, fallbackAlt) {
+    const doc = new DOMParser().parseFromString(String(articleHTML || ''), 'text/html');
+    const firstImage = doc.querySelector('img');
+    doc.querySelectorAll('img').forEach((img, index) => {
+        const existing = String(img.getAttribute('alt') || '').trim();
+        const context = (img.parentElement?.textContent || '').replace(/\s+/g, ' ').trim();
+        img.setAttribute('alt', truncate(existing || context || fallbackAlt || `Dyve Tech article image ${index + 1}`, 140));
+        img.setAttribute('loading', img === firstImage ? 'eager' : 'lazy');
+        img.setAttribute('decoding', 'async');
+        img.removeAttribute('onclick'); img.removeAttribute('onerror'); img.removeAttribute('onload');
+    });
+    doc.querySelectorAll('a[href]').forEach(a => { a.removeAttribute('onclick'); a.removeAttribute('target'); });
+    return doc.body.innerHTML.trim();
+}
+function buildRssXML(siteUrl, articles) {
+    const list = validateArticleSet(sortArticles(articles)).filter(a => a.page === 'tech').slice(0, STATIC_BUILD_CONFIG.rssItemLimit);
+    const feedUrl = `${siteUrl}/${STATIC_BUILD_CONFIG.techRssPath}`;
+    const items = list.map(article => {
+        const url = articleUrl(siteUrl, article);
+        const d = new Date(article.modified || article.date);
+        const pubDate = Number.isNaN(d.getTime()) ? new Date().toUTCString() : d.toUTCString();
+        return `\n    <item>\n        <title>${escapeHtml(article.title)}</title>\n        <link>${escapeHtml(url)}</link>\n        <guid isPermaLink="true">${escapeHtml(url)}</guid>\n        <description>${escapeHtml(article.desc || article.title)}</description>\n        <pubDate>${escapeHtml(pubDate)}</pubDate>\n        <dc:creator>${escapeHtml(article.author || STATIC_BUILD_CONFIG.publisherName)}</dc:creator>\n        <category>${escapeHtml(getCategoryMeta(article.category).label)}</category>\n        <media:content url="${escapeAttr(article.image || STATIC_BUILD_CONFIG.defaultImage)}" medium="image" />\n        <media:thumbnail url="${escapeAttr(article.image || STATIC_BUILD_CONFIG.defaultImage)}" />\n        <content:encoded><![CDATA[<p>${escapeHtml(article.desc || '')}</p>]]></content:encoded>\n    </item>`;
+    }).join('');
+    return `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">\n<channel>\n    <title>${escapeHtml(STATIC_BUILD_CONFIG.publicationName)}</title>\n    <link>${escapeHtml(`${siteUrl}/tech/`)}</link>\n    <description>Technology news, analysis and intelligence from Dyve Tech.</description>\n    <language>en</language>\n    <lastBuildDate>${escapeHtml(new Date().toUTCString())}</lastBuildDate>\n    <generator>Dyve Tech Editorial Publisher</generator>\n    <atom:link href="${escapeAttr(feedUrl)}" rel="self" type="application/rss+xml" />\n${items}\n</channel>\n</rss>`;
+}
+
 async function handleFeaturedImageUpload(event) {
     const files = event.target.files;
-
     if (!files.length) return;
-
     const file = files[0];
-
-    if (file.size > 5 * 1024 * 1024) {
-        showToast('Image must be under 5MB.');
-        event.target.value = '';
-        return;
-    }
-
-    showToast('Preparing branded featured image...');
-
+    if (file.size > 5 * 1024 * 1024) { showToast('Image must be under 5MB.'); event.target.value = ''; return; }
+    const title = document.getElementById('titleInput').value.trim() || file.name.replace(/\.[^.]+$/, '');
+    const description = document.getElementById('descriptionInput').value.trim();
+    const category = document.getElementById('categorySelect').value;
+    showToast('Preparing and naming featured image...');
     try {
-        const brandedFile = await prepareImageForCloudinary(file, 'featured image');
-
-        const formData = new FormData();
-        formData.append('file', brandedFile);
-        formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
-        formData.append('tags', 'dyve-tech,dyve-watermarked');
-
-        const response = await fetch(CLOUDINARY_CONFIG.endpoint, {
-            method: 'POST',
-            body: formData
-        });
-
-        const data = await response.json();
-
-        if (!data.secure_url) {
-            throw new Error(data.error?.message || 'Upload failed');
-        }
-
-        document.getElementById('imageUrlInput').value = data.secure_url;
-        document.getElementById('featuredImagePreviewImg').src = data.secure_url;
+        const uploaded = await uploadImageToCloudinary(file, title, 'featured', 'featured image');
+        const alt = deriveImageAltText(title, description, quill ? quill.root.innerHTML : '', category);
+        document.getElementById('imageUrlInput').value = uploaded.url;
+        document.getElementById('imageAltInput').value = alt;
+        document.getElementById('featuredImagePreviewImg').src = uploaded.url;
+        document.getElementById('featuredImagePreviewImg').alt = alt;
         document.getElementById('featuredImagePreview').classList.remove('hidden');
-
-        showToast('Branded image uploaded successfully.');
+        showToast(`Featured image uploaded as ${uploaded.filename}`);
         autoSaveDraft();
-    } catch (error) {
-        console.error('Image upload error:', error);
-        showToast(error.message || 'Image upload failed. Please try again.');
-    } finally {
-        event.target.value = '';
-    }
+    } catch (error) { console.error('Image upload error:', error); showToast(error.message || 'Image upload failed. Please try again.'); }
+    finally { event.target.value = ''; }
 }
 
 /* ============================================================
@@ -3540,7 +3555,10 @@ async function publishArticle() {
     resetBuildLog();
 
     try {
-        const articleHTML = quill ? quill.root.innerHTML : '<p>No content.</p>';
+        const rawArticleHTML = quill ? quill.root.innerHTML : '<p>No content.</p>';
+        const generatedImageAlt = document.getElementById('imageAltInput').value.trim() || deriveImageAltText(title, description, rawArticleHTML, category);
+        document.getElementById('imageAltInput').value = generatedImageAlt;
+        const articleHTML = sanitizeArticleBodyForPublication(rawArticleHTML, generatedImageAlt);
         const quillDelta = quill ? quill.getContents() : { ops: [] };
         const ogPrompt = document.getElementById('ogImagePrompt').value.trim();
         const finalImage = imageUrl || STATIC_BUILD_CONFIG.defaultImage;
@@ -3557,6 +3575,7 @@ async function publishArticle() {
             title,
             desc: description,
             image: finalImage,
+            imageAlt: generatedImageAlt,
             url: articleUrl,
             tag: contentType || 'News',
             meta: category,
@@ -3609,7 +3628,8 @@ async function publishArticle() {
                 focusKeyword: articleObject.focusKeyword,
                 keywords: articleObject.keywords,
                 sourceUrl: articleObject.sourceUrl,
-                modified: articleObject.modified
+                modified: articleObject.modified,
+                imageAlt: generatedImageAlt
             }
         );
 
@@ -3644,32 +3664,17 @@ async function publishArticle() {
          * Never generate a new Tech homepage from the editor.
          * Read the production homepage and update only its publishing markers.
          */
-        const existingTechIndex = await fetchGitHubText(
-            config,
-            'tech/index.html',
-            { optional: true }
-        );
-
-        if (!existingTechIndex || !hasDyveTechTemplateMarkers(existingTechIndex)) {
-            throw new Error(
-                'Tech homepage is not installed or is missing its publishing markers. Open tech-editor/update-system.html and run the homepage update first.'
-            );
-        }
-
-        const sectionOutputs = buildAllSectionIndexes(
-            config.siteUrl,
-            normalized,
-            { 'tech/index.html': existingTechIndex }
-        );
-
-        Object.entries(sectionOutputs).forEach(([path, content]) => {
-            files.push({ path, content });
-        });
+        logBuild('Homepage safety lock active: tech/index.html will NOT be modified by article publication.', 'ok');
 
         files.push({
             path: STATIC_BUILD_CONFIG.techSitemapPath,
             content: buildSitemapXML(config.siteUrl, normalized)
         });
+
+        if (STATIC_BUILD_CONFIG.generateRss) {
+            files.push({ path: STATIC_BUILD_CONFIG.techRssPath, content: buildRssXML(config.siteUrl, normalized) });
+            logBuild('Generated tech/rss.xml.', 'ok');
+        }
 
         if (isUpdate && editingOriginalSlug && editingOriginalSlug !== slug) {
             files.push({
@@ -3725,7 +3730,7 @@ function generateTechArticleHTML(siteUrl, title, desc, image, tag, category, slu
     const safeDesc = escapeAttr(desc);
     const safeImage = escapeAttr(image);
     const safeTag = escapeHtml(tag);
-    const safeImageAlt = escapeAttr(seoMeta.imageAlt || truncate(desc, 100));
+    const safeImageAlt = escapeAttr(seoMeta.imageAlt || deriveImageAltText(title, desc, articleHTML, category));
 
     const dObj = new Date(date);
     const formattedDate = isNaN(dObj)
@@ -3750,9 +3755,11 @@ function generateTechArticleHTML(siteUrl, title, desc, image, tag, category, slu
 
     const schema = {
         '@context': 'https://schema.org',
-        '@type': 'TechArticle',
+        '@type': tag.toLowerCase() === 'news' ? 'NewsArticle' : 'TechArticle',
         headline: title,
         description: desc,
+        url: canonicalUrl,
+        inLanguage: 'en',
         image: [image],
         author: { '@type': 'Organization', name: STATIC_BUILD_CONFIG.publisherName, url: `${siteUrl}/tech/`, parentOrganization: { '@type': 'Organization', '@id': `${siteUrl}/#organization`, name: 'Dyve' } },
         publisher: {
@@ -3863,6 +3870,7 @@ function generateTechArticleHTML(siteUrl, title, desc, image, tag, category, slu
 <meta name="description" content="${safeDesc}">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <link rel="canonical" href="${escapeAttr(canonicalUrl)}">
+<link rel="alternate" type="application/rss+xml" title="Dyve Tech RSS" href="${escapeAttr(`${siteUrl}/${STATIC_BUILD_CONFIG.techRssPath}`)}">
 
 <meta property="og:type" content="article">
 <meta property="og:title" content="${safeTitle}">
