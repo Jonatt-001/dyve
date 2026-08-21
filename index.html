@@ -4966,6 +4966,8 @@ button:focus-visible {
 
 }
 
+
+
 </style>
 </head>
 
@@ -5522,114 +5524,132 @@ button:focus-visible {
     </section>
 
     <!-- ========================================================
-         INTELLIGENCE BRAND
-    ========================================================= -->
+     INTELLIGENCE BRAND
+======================================================== -->
 
-    <section
-      class="intel-announcement reveal"
-      aria-labelledby="engineHeading"
+<section
+  class="intel-announcement reveal"
+  aria-labelledby="engineHeading"
+>
+
+  <div class="intel-card">
+
+    <div
+      class="intel-visual"
+      aria-hidden="true"
     >
 
-      <div class="intel-card">
+      <img
+        src="assets/signals.png"
+        alt=""
+        loading="lazy"
+        decoding="async"
+      >
 
-        <div
-          class="intel-visual"
-          aria-hidden="true"
-        ></div>
+    </div>
 
-        <div class="intel-content">
+    <div class="intel-content">
 
-          <span class="section-eyebrow">
-            Dyve Intelligence
-          </span>
+      <span class="section-eyebrow">
+        Dyve Intelligence
+      </span>
 
-          <h2
-            class="intel-title"
-            id="engineHeading"
-          >
-            Turning cyber events into intelligence.
-          </h2>
+      <h2
+        class="intel-title"
+        id="engineHeading"
+      >
+        Turning cyber events into intelligence.
+      </h2>
 
-          <p class="intel-desc">
-            Dyve HackaX organizes cybersecurity developments into
-            structured coverage across threats, incidents, actors,
-            vulnerabilities and emerging technology.
-          </p>
+      <p class="intel-desc">
+        Dyve HackaX organizes cybersecurity developments into
+        structured coverage across threats, incidents, actors,
+        vulnerabilities and emerging technology.
+      </p>
 
-          <a
-            href="/signals/"
-            class="intel-btn"
-          >
-            Explore Threat Signals →
-          </a>
+      <a
+        href="/signals/"
+        class="intel-btn"
+      >
+        Explore Threat Signals →
+      </a>
 
-        </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ========================================================
+     INTELLIGENCE EXPLAINER
+======================================================== -->
+
+<section
+  class="intel-light reveal"
+  aria-labelledby="monitorHeading"
+>
+
+  <div class="intel-light-card">
+
+    <div
+      class="intel-light-img"
+      aria-hidden="true"
+    >
+
+      <img
+        src="assets/analysis.png"
+        alt=""
+        loading="lazy"
+        decoding="async"
+      >
+
+    </div>
+
+    <div class="intel-light-content">
+
+      <div class="intel-eyebrow">
+        Threat Signals • Breaches • Dark Web • Analysis
+      </div>
+
+      <h2
+        class="intel-light-title"
+        id="monitorHeading"
+      >
+        Follow the signal, understand the event.
+      </h2>
+
+      <div class="intel-divider"></div>
+
+      <p class="intel-light-desc">
+        Explore the context behind cybersecurity incidents instead
+        of treating every headline as an isolated event. Dyve HackaX
+        connects reporting across threat actors, attack patterns,
+        vulnerabilities and affected sectors.
+      </p>
+
+      <div class="intel-actions">
+
+        <a
+          href="/analysis/"
+          class="btn-primary"
+        >
+          Read Analysis →
+        </a>
+
+        <a
+          href="/about-us/"
+          class="btn-secondary"
+        >
+          How Dyve Works →
+        </a>
 
       </div>
 
-    </section>
+    </div>
 
-    <!-- ========================================================
-         INTELLIGENCE EXPLAINER
-    ========================================================= -->
+  </div>
 
-    <section
-      class="intel-light reveal"
-      aria-labelledby="monitorHeading"
-    >
-
-      <div class="intel-light-card">
-
-        <div
-          class="intel-light-img"
-          aria-hidden="true"
-        ></div>
-
-        <div class="intel-light-content">
-
-          <div class="intel-eyebrow">
-            Threat Signals • Breaches • Dark Web • Analysis
-          </div>
-
-          <h2
-            class="intel-light-title"
-            id="monitorHeading"
-          >
-            Follow the signal, understand the event.
-          </h2>
-
-          <div class="intel-divider"></div>
-
-          <p class="intel-light-desc">
-            Explore the context behind cybersecurity incidents instead
-            of treating every headline as an isolated event. Dyve HackaX
-            connects reporting across threat actors, attack patterns,
-            vulnerabilities and affected sectors.
-          </p>
-
-          <div class="intel-actions">
-
-            <a
-              href="/analysis/"
-              class="btn-primary"
-            >
-              Read Analysis →
-            </a>
-
-            <a
-              href="/about-us/"
-              class="btn-secondary"
-            >
-              How Dyve Works →
-            </a>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
+</section>
 
     <!-- ========================================================
          CYBER BRAND BLOCK
@@ -6229,8 +6249,87 @@ let refreshTimer = null;
 
 let feedFingerprint = "";
 
+
+"use strict";
+
 /* ============================================================
-   DRAWER REFERENCES
+   ROBUST DYVE DRAWER CONTROLLER
+============================================================ */
+
+/*
+   ui.js injects the actual header/drawer dynamically.
+
+   Therefore we deliberately DO NOT cache the drawer elements
+   permanently. Every interaction resolves the current DOM.
+
+   This prevents the classic failure where:
+   1. this script loads
+   2. #drawer does not exist yet
+   3. ui.js injects it later
+   4. the old controller never attaches correctly
+*/
+
+const DYVE_DRAWER_SELECTORS = {
+
+  drawer: [
+    "#drawer",
+    ".drawer",
+    "[data-drawer]"
+  ],
+
+  backdrop: [
+    "#drawerBackdrop",
+    ".drawer-backdrop",
+    "[data-drawer-backdrop]"
+  ],
+
+  toggle: [
+    "#menuToggle",
+    ".menu-icon",
+    ".menu-toggle",
+    "[data-menu-toggle]",
+    "[data-drawer-toggle]"
+  ],
+
+  close: [
+    "#drawerClose",
+    ".drawer-close",
+    "[data-drawer-close]"
+  ]
+
+};
+
+/* ============================================================
+   SELECTOR RESOLVER
+============================================================ */
+
+function findFirstElement(
+  selectors
+) {
+
+  for (
+    const selector of selectors
+  ) {
+
+    const element =
+      document.querySelector(
+        selector
+      );
+
+    if (element) {
+
+      return element;
+
+    }
+
+  }
+
+  return null;
+
+}
+
+/* ============================================================
+   GET LIVE DRAWER ELEMENTS
 ============================================================ */
 
 function getDrawerElements() {
@@ -6238,23 +6337,23 @@ function getDrawerElements() {
   return {
 
     drawer:
-      document.getElementById(
-        "drawer"
+      findFirstElement(
+        DYVE_DRAWER_SELECTORS.drawer
       ),
 
     backdrop:
-      document.getElementById(
-        "drawerBackdrop"
+      findFirstElement(
+        DYVE_DRAWER_SELECTORS.backdrop
       ),
 
     toggle:
-      document.getElementById(
-        "menuToggle"
+      findFirstElement(
+        DYVE_DRAWER_SELECTORS.toggle
       ),
 
     closeBtn:
-      document.getElementById(
-        "drawerClose"
+      findFirstElement(
+        DYVE_DRAWER_SELECTORS.close
       )
 
   };
@@ -6262,10 +6361,44 @@ function getDrawerElements() {
 }
 
 /* ============================================================
-   DRAWER ACCESSIBILITY
+   DRAWER OPEN STATE
 ============================================================ */
 
-function setDrawerState(open) {
+function isDrawerOpen() {
+
+  const {
+    drawer
+  } =
+    getDrawerElements();
+
+  if (!drawer) {
+
+    return false;
+
+  }
+
+  return (
+    drawer.classList.contains(
+      "active"
+    ) ||
+    drawer.getAttribute(
+      "data-open"
+    ) === "true" ||
+    document.body.classList.contains(
+      "drawer-open"
+    )
+  );
+
+}
+
+/* ============================================================
+   SET DRAWER STATE
+============================================================ */
+
+function setDrawerState(
+  open,
+  restoreFocus = true
+) {
 
   const {
     drawer,
@@ -6275,11 +6408,12 @@ function setDrawerState(open) {
   } =
     getDrawerElements();
 
-  if (
-    !drawer ||
-    !backdrop ||
-    !toggle
-  ) {
+  /*
+     If ui.js has not injected the drawer yet, do not fail.
+     The MutationObserver below will pick it up once available.
+  */
+
+  if (!drawer) {
 
     return;
 
@@ -6290,9 +6424,9 @@ function setDrawerState(open) {
     open
   );
 
-  backdrop.classList.toggle(
-    "active",
-    open
+  drawer.setAttribute(
+    "data-open",
+    String(open)
   );
 
   drawer.setAttribute(
@@ -6300,9 +6434,38 @@ function setDrawerState(open) {
     String(!open)
   );
 
-  toggle.setAttribute(
-    "aria-expanded",
-    String(open)
+  if (backdrop) {
+
+    backdrop.classList.toggle(
+      "active",
+      open
+    );
+
+    backdrop.setAttribute(
+      "aria-hidden",
+      String(!open)
+    );
+
+  }
+
+  if (toggle) {
+
+    toggle.setAttribute(
+      "aria-expanded",
+      String(open)
+    );
+
+    toggle.setAttribute(
+      "aria-controls",
+      drawer.id ||
+      "drawer"
+    );
+
+  }
+
+  document.documentElement.classList.toggle(
+    "drawer-open",
+    open
   );
 
   document.body.classList.toggle(
@@ -6310,31 +6473,158 @@ function setDrawerState(open) {
     open
   );
 
-  if (open) {
+  /*
+     Prevent the drawer from remaining focused while closed.
+  */
 
-    closeBtn?.focus();
+  if (!open) {
 
-  } else {
+    if (
+      document.activeElement &&
+      drawer.contains(
+        document.activeElement
+      )
+    ) {
 
-    toggle.focus();
+      document.activeElement.blur();
+
+    }
+
+    if (
+      restoreFocus &&
+      toggle &&
+      typeof toggle.focus ===
+        "function"
+    ) {
+
+      window.setTimeout(
+        () => {
+
+          try {
+
+            toggle.focus({
+              preventScroll:
+                true
+            });
+
+          } catch {
+
+            toggle.focus();
+
+          }
+
+        },
+        30
+      );
+
+    }
+
+    return;
+
+  }
+
+  /*
+     Move focus into the drawer after opening.
+  */
+
+  const focusTarget =
+    closeBtn ||
+    drawer.querySelector(
+      "a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])"
+    );
+
+  if (
+    focusTarget &&
+    typeof focusTarget.focus ===
+      "function"
+  ) {
+
+    window.setTimeout(
+      () => {
+
+        try {
+
+          focusTarget.focus({
+            preventScroll:
+              true
+          });
+
+        } catch {
+
+          focusTarget.focus();
+
+        }
+
+      },
+      60
+    );
 
   }
 
 }
 
-function closeDrawer() {
+/* ============================================================
+   OPEN
+============================================================ */
 
-  setDrawerState(false);
+function openDrawer() {
+
+  setDrawerState(
+    true
+  );
 
 }
 
 /* ============================================================
-   DRAWER EVENTS
+   CLOSE
 ============================================================ */
+
+function closeDrawer() {
+
+  setDrawerState(
+    false
+  );
+
+}
+
+/* ============================================================
+   TOGGLE
+============================================================ */
+
+function toggleDrawer() {
+
+  setDrawerState(
+    !isDrawerOpen()
+  );
+
+}
+
+/* ============================================================
+   CLICK DELEGATION
+============================================================ */
+
+/*
+   IMPORTANT:
+
+   This listener is attached to document, not the dynamically
+   injected button. Therefore it continues working even when
+   ui.js creates/replaces the header later.
+*/
 
 document.addEventListener(
   "click",
   event => {
+
+    const target =
+      event.target;
+
+    if (
+      !(target instanceof Element)
+    ) {
+
+      return;
+
+    }
 
     const {
       drawer,
@@ -6342,33 +6632,81 @@ document.addEventListener(
       toggle,
       closeBtn
     } =
-      getDrawerElements();
+    getDrawerElements();
 
-    const target =
-      event.target;
+    /*
+       MENU TOGGLE
+    */
 
     if (
-      target === toggle ||
-      toggle?.contains(target)
+      toggle &&
+      (
+        target === toggle ||
+        toggle.contains(target)
+      )
     ) {
 
-      const isOpen =
-        drawer?.classList.contains(
-          "active"
-        );
+      event.preventDefault();
+      event.stopPropagation();
 
-      setDrawerState(
-        !isOpen
+      toggleDrawer();
+
+      return;
+
+    }
+
+    /*
+       CLOSE BUTTON
+    */
+
+    if (
+      closeBtn &&
+      (
+        target === closeBtn ||
+        closeBtn.contains(target)
+      )
+    ) {
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      closeDrawer();
+
+      return;
+
+    }
+
+    /*
+       BACKDROP
+    */
+
+    if (
+      backdrop &&
+      (
+        target === backdrop
+      )
+    ) {
+
+      event.preventDefault();
+
+      closeDrawer();
+
+      return;
+
+    }
+
+    /*
+       ANY ELEMENT MARKED AS A DRAWER CLOSE CONTROL
+    */
+
+    const closeTrigger =
+      target.closest(
+        "[data-drawer-close]"
       );
 
-      return;
+    if (closeTrigger) {
 
-    }
-
-    if (
-      target === closeBtn ||
-      closeBtn?.contains(target)
-    ) {
+      event.preventDefault();
 
       closeDrawer();
 
@@ -6376,28 +6714,42 @@ document.addEventListener(
 
     }
 
-    if (
-      target === backdrop
-    ) {
-
-      closeDrawer();
-
-      return;
-
-    }
+    /*
+       CLOSE AFTER CLICKING A DRAWER NAVIGATION LINK.
+    */
 
     if (
-      drawer?.classList.contains(
+      drawer &&
+      drawer.classList.contains(
         "active"
-      ) &&
-      target.closest(".drawer a")
+      )
     ) {
 
-      closeDrawer();
+      const drawerLink =
+        target.closest(
+          "a"
+        );
+
+      if (
+        drawerLink &&
+        drawer.contains(
+          drawerLink
+        )
+      ) {
+
+        /*
+           Allow normal navigation to happen.
+           Close immediately before navigation.
+        */
+
+        closeDrawer();
+
+      }
 
     }
 
-  }
+  },
+  true
 );
 
 /* ============================================================
@@ -6408,19 +6760,124 @@ document.addEventListener(
   "keydown",
   event => {
 
+    if (
+      event.key !==
+      "Escape"
+    ) {
+
+      return;
+
+    }
+
+    if (
+      isDrawerOpen()
+    ) {
+
+      event.preventDefault();
+
+      closeDrawer();
+
+    }
+
+  }
+);
+
+/* ============================================================
+   KEYBOARD FOCUS TRAP
+============================================================ */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key !==
+      "Tab"
+    ) {
+
+      return;
+
+    }
+
     const {
       drawer
     } =
-      getDrawerElements();
+    getDrawerElements();
 
     if (
-      event.key === "Escape" &&
-      drawer?.classList.contains(
+      !drawer ||
+      !drawer.classList.contains(
         "active"
       )
     ) {
 
-      closeDrawer();
+      return;
+
+    }
+
+    const focusable =
+      Array.from(
+        drawer.querySelectorAll(
+          [
+            "a[href]",
+            "button:not([disabled])",
+            "input:not([disabled])",
+            "select:not([disabled])",
+            "textarea:not([disabled])",
+            "[tabindex]:not([tabindex='-1'])"
+          ].join(",")
+        )
+      )
+      .filter(
+        element => {
+
+          return (
+            element.offsetParent !==
+              null
+          );
+
+        }
+      );
+
+    if (
+      !focusable.length
+    ) {
+
+      return;
+
+    }
+
+    const first =
+      focusable[0];
+
+    const last =
+      focusable[
+        focusable.length - 1
+      ];
+
+    if (
+      event.shiftKey &&
+      document.activeElement ===
+        first
+    ) {
+
+      event.preventDefault();
+
+      last.focus();
+
+      return;
+
+    }
+
+    if (
+      !event.shiftKey &&
+      document.activeElement ===
+        last
+    ) {
+
+      event.preventDefault();
+
+      first.focus();
 
     }
 
@@ -6431,33 +6888,49 @@ document.addEventListener(
    SWIPE TO CLOSE
 ============================================================ */
 
-let drawerStartX = 0;
+let drawerStartX =
+  0;
+
+let drawerStartY =
+  0;
+
+let drawerSwipeActive =
+  false;
 
 document.addEventListener(
   "touchstart",
   event => {
 
-    const {
-      drawer
-    } =
-      getDrawerElements();
-
     if (
-      !drawer?.classList.contains(
-        "active"
-      )
+      !isDrawerOpen()
     ) {
 
       return;
 
     }
 
+    const touch =
+      event.touches[0];
+
+    if (!touch) {
+
+      return;
+
+    }
+
     drawerStartX =
-      event.touches[0].clientX;
+      touch.clientX;
+
+    drawerStartY =
+      touch.clientY;
+
+    drawerSwipeActive =
+      true;
 
   },
   {
-    passive: true
+    passive:
+      true
   }
 );
 
@@ -6465,31 +6938,46 @@ document.addEventListener(
   "touchmove",
   event => {
 
-    const {
-      drawer
-    } =
-      getDrawerElements();
-
     if (
-      !drawer?.classList.contains(
-        "active"
-      )
+      !drawerSwipeActive ||
+      !isDrawerOpen()
     ) {
 
       return;
 
     }
 
-    const currentX =
-      event.touches[0].clientX;
+    const touch =
+      event.touches[0];
 
-    const difference =
-      currentX -
+    if (!touch) {
+
+      return;
+
+    }
+
+    const deltaX =
+      touch.clientX -
       drawerStartX;
 
+    const deltaY =
+      touch.clientY -
+      drawerStartY;
+
+    /*
+       Only treat it as a horizontal drawer gesture if
+       horizontal movement clearly dominates.
+    */
+
     if (
-      difference < -70
+      Math.abs(deltaX) >
+        Math.abs(deltaY) &&
+      deltaX <
+        -70
     ) {
+
+      drawerSwipeActive =
+        false;
 
       closeDrawer();
 
@@ -6497,9 +6985,236 @@ document.addEventListener(
 
   },
   {
-    passive: true
+    passive:
+      true
   }
 );
+
+document.addEventListener(
+  "touchend",
+  () => {
+
+    drawerSwipeActive =
+      false;
+
+  },
+  {
+    passive:
+      true
+  }
+);
+
+/* ============================================================
+   DYNAMIC UI WATCHER
+============================================================ */
+
+/*
+   ui.js may inject or replace #global-header and
+   #global-drawer after this script has already executed.
+
+   We therefore watch those containers and normalize the drawer
+   as soon as it appears.
+*/
+
+function normalizeDrawerUI() {
+
+  const {
+    drawer,
+    backdrop,
+    toggle,
+    closeBtn
+  } =
+  getDrawerElements();
+
+  if (!drawer) {
+
+    return;
+
+  }
+
+  /*
+     Ensure the drawer has the required accessibility state.
+  */
+
+  if (
+    !drawer.hasAttribute(
+      "aria-hidden"
+    )
+  ) {
+
+    drawer.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+  }
+
+  /*
+     Ensure the toggle knows which drawer it controls.
+  */
+
+  if (
+    toggle
+  ) {
+
+    toggle.setAttribute(
+      "aria-controls",
+      drawer.id ||
+      "drawer"
+    );
+
+    toggle.setAttribute(
+      "aria-expanded",
+      String(
+        drawer.classList.contains(
+          "active"
+        )
+      )
+    );
+
+  }
+
+  if (
+    backdrop
+  ) {
+
+    backdrop.setAttribute(
+      "aria-hidden",
+      String(
+        !drawer.classList.contains(
+          "active"
+        )
+      )
+    );
+
+  }
+
+  /*
+     If ui.js accidentally renders an old active state,
+     synchronize the body state with it.
+  */
+
+  const open =
+    drawer.classList.contains(
+      "active"
+    ) ||
+    drawer.getAttribute(
+      "data-open"
+    ) === "true";
+
+  document.body.classList.toggle(
+    "drawer-open",
+    open
+  );
+
+  document.documentElement.classList.toggle(
+    "drawer-open",
+    open
+  );
+
+}
+
+/* ============================================================
+   OBSERVE GLOBAL UI
+============================================================ */
+
+function initializeDrawerObserver() {
+
+  const header =
+    document.getElementById(
+      "global-header"
+    );
+
+  const drawerHost =
+    document.getElementById(
+      "global-drawer"
+    );
+
+  if (
+    header
+  ) {
+
+    const headerObserver =
+      new MutationObserver(
+        () => {
+
+          normalizeDrawerUI();
+
+        }
+      );
+
+    headerObserver.observe(
+      header,
+      {
+        childList:
+          true,
+
+        subtree:
+          true
+      }
+    );
+
+  }
+
+  if (
+    drawerHost
+  ) {
+
+    const drawerObserver =
+      new MutationObserver(
+        () => {
+
+          normalizeDrawerUI();
+
+        }
+      );
+
+    drawerObserver.observe(
+      drawerHost,
+      {
+        childList:
+          true,
+
+        subtree:
+          true
+      }
+    );
+
+  }
+
+  /*
+     Run once immediately in case ui.js has already injected
+     everything.
+  */
+
+  normalizeDrawerUI();
+
+}
+
+/* ============================================================
+   INITIALIZE DRAWER
+============================================================ */
+
+if (
+  document.readyState ===
+  "loading"
+) {
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializeDrawerObserver,
+    {
+      once:
+        true
+    }
+  );
+
+} else {
+
+  initializeDrawerObserver();
+
+}
+
 
 /* ============================================================
    SAFE TEXT
