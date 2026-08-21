@@ -3385,25 +3385,73 @@ function getCloudinaryPublicId(title, kind = 'featured') {
 }
 async function uploadImageToCloudinary(file, title, kind, contextLabel) {
     const brandedFile = await prepareImageForCloudinary(file, contextLabel || 'image');
-    const renamedFile = renameImageFile(brandedFile, `${title || file.name.replace(/\.[^.]+$/, '')}-${kind}`);
-    const upload = async (includePublicId) => {
-        const formData = new FormData();
-        formData.append('file', renamedFile);
-        formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
-        formData.append('use_filename', 'true');
-        formData.append('unique_filename', 'false');
-        if (includePublicId) formData.append('public_id', getCloudinaryPublicId(title, kind));
-        formData.append('tags', `dyve-tech,dyve-watermarked,${kind}`);
-        const response = await fetch(CLOUDINARY_CONFIG.endpoint, { method: 'POST', body: formData });
-        const data = await response.json();
-        return { response, data };
-    };
-    let result = await upload(true);
-    if (!result.response.ok && result.data?.error?.message && /public.?id|not allowed|unsigned/i.test(result.data.error.message)) {
-        result = await upload(false);
+    const safeBaseName = `${title || file.name.replace(/\.[^.]+$/, '')}-${kind}`;
+    const renamedFile = renameImageFile(brandedFile, safeBaseName);
+    const requestedPublicId = getCloudinaryPublicId(title, kind);
+
+    /*
+       IMPORTANT: geefox_unsigned is an unsigned Cloudinary preset.
+       Cloudinary deliberately rejects parameters such as use_filename and
+       unique_filename when they are sent directly from an unsigned browser
+       upload. Those settings belong in the upload preset.
+
+       The previous implementation sent those parameters from the browser,
+       which is why Cloudinary returned the long "...public_id_prefix..."
+       unsupported-parameter error shown in the editor.
+
+       The unsigned API does allow public_id, tags and filename_override.
+       We therefore keep the SEO-friendly filename locally and request the
+       deterministic public ID directly.
+    */
+    const formData = new FormData();
+    formData.append('file', renamedFile, renamedFile.name);
+    formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
+    formData.append('public_id', requestedPublicId);
+    formData.append('filename_override', renamedFile.name);
+    formData.append('tags', `dyve-tech,dyve-watermarked,${kind}`);
+
+    let response;
+    let data;
+
+    try {
+        response = await fetch(CLOUDINARY_CONFIG.endpoint, {
+            method: 'POST',
+            body: formData
+        });
+    } catch (networkError) {
+        throw new Error(`Cloudinary could not be reached. Check your connection and try again. ${networkError.message || ''}`.trim());
     }
-    if (!result.response.ok || !result.data.secure_url) throw new Error(result.data.error?.message || 'Image upload failed.');
-    return { url: result.data.secure_url, filename: renamedFile.name, publicId: result.data.public_id || '' };
+
+    try {
+        data = await response.json();
+    } catch (parseError) {
+        const raw = await response.text().catch(() => '');
+        throw new Error(`Cloudinary returned an invalid response (${response.status}). ${raw.slice(0, 180)}`.trim());
+    }
+
+    if (!response.ok || !data?.secure_url) {
+        const message = String(data?.error?.message || data?.error?.code || '').trim();
+
+        if (/public.?id.*(not allowed|disallow)|disallow.*public.?id/i.test(message)) {
+            throw new Error(
+                `Cloudinary upload preset "${CLOUDINARY_CONFIG.uploadPreset}" is configured to disallow custom public IDs. Enable public_id/custom public IDs for this unsigned preset, then try again.`
+            );
+        }
+
+        if (/not allowed|unsupported parameter|unsigned/i.test(message)) {
+            throw new Error(
+                `Cloudinary rejected an upload parameter. The editor now sends only parameters supported by unsigned uploads. If this persists, check the "${CLOUDINARY_CONFIG.uploadPreset}" preset configuration. ${message}`.trim()
+            );
+        }
+
+        throw new Error(message || `Cloudinary image upload failed (${response.status}).`);
+    }
+
+    return {
+        url: data.secure_url,
+        filename: renamedFile.name,
+        publicId: data.public_id || requestedPublicId
+    };
 }
 
 function sanitizeArticleBodyForPublication(articleHTML, fallbackAlt) {
