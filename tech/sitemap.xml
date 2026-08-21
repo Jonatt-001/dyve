@@ -1,115 +1,259 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     <url>
         <loc>https://dyve.online/tech/</loc>
-        <lastmod>2026-08-20</lastmod>
+        <lastmod>2026-08-21</lastmod>
+    </url>
+    <url>
+        <loc>https://dyve.online/tech/openai-slows-down-training-after-its-ai-carried-out-hack.html</loc>
+        <lastmod>2026-08-21</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787280429/dyve-tech/openai-slows-down-training-after-its-ai-carried-out-hack-featured.png</image:loc>
+            <image:title>OpenAI slows down training after its AI carried out hack</image:title>
+            <image:caption>&#39;Unprecedented&#39; cyber-attack</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/google-unveils-12-month-free-ai-offer-for-nigerian-students.html</loc>
         <lastmod>2026-08-20</lastmod>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&amp;w=1200&amp;auto=format&amp;fit=crop</image:loc>
+            <image:title>Google unveils 12-month free AI offer for Nigerian students</image:title>
+            <image:caption>Google unveils 12-month free AI offer for Nigerian students: Google has launched a new initiative offering eligible students in Nigerian higher institutions...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/hacker-claims-36-million-azure-account-records-stolen-from-major-companies.html</loc>
         <lastmod>2026-08-19</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787151668/c3wrt9zftkohqo8vtz7r.jpg</image:loc>
+            <image:title>Hacker claims 3.6 million Azure account records stolen from major companies</image:title>
+            <image:caption>Hacker claims 3.6 million Azure account records stolen from major companies: threat actor is selling employee databases allegedly stolen from the Microsoft A...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/finally-github-restores-services-after-nearly-8hrs.html</loc>
         <lastmod>2026-08-18</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787062157/a7ip8gv8it7jtamvzk9v.jpg</image:loc>
+            <image:title>FINALLY : GitHub restores services after nearly 8hrs</image:title>
+            <image:caption>GitHub restores services after nearly 8-hour outage disrupts Actions, APIs, PRs and Copilot: GitHub has restored services after a nearly eight-hour outage di...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/gemini-37-flash-vs-36-flash-whats-new-for-developers.html</loc>
         <lastmod>2026-08-16</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786924315/afux9p3nrvq9pvp1weg4.png</image:loc>
+            <image:title>Gemini 3.7 Flash vs 3.6 Flash: What’s New for Developers</image:title>
+            <image:caption>Gemini 3.7 Flash vs 3.6 Flash: What’s New for Developers: Google has officially released Gemini 3</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/5-developer-tools-i-use-every-day-and-none-of-them-write-code.html</loc>
         <lastmod>2026-08-16</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786915870/ec6oetcgsqkhzmbl8o13.jpg</image:loc>
+            <image:title>5 developer tools I use every day, and none of them write code</image:title>
+            <image:caption>5 developer tools I use every day, and none of them write code: I spend a lot of time around code, but writing code is only one part of my workflow</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/openais-65-billion-bet.html</loc>
         <lastmod>2026-08-16</lastmod>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&amp;w=1200&amp;auto=format&amp;fit=crop</image:loc>
+            <image:title>OpenAI’s $6.5 Billion Bet</image:title>
+            <image:caption>OpenAI’s $6.5 Billion Bet : 5 Billion Bet on Jony Ive Reveals the Skill Technology Can’t ReplaceSilicon Valley’s new obsession with “taste” reveals something...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/why-your-ai-coding-agent-keeps-breaking-production-and-how-git-blame-can-stop-it.html</loc>
         <lastmod>2026-08-15</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786811791/iddjpaoixudtfpnuaubs.jpg</image:loc>
+            <image:title>Why Your AI Coding Agent Keeps Breaking Production (And How  git blame Can Stop It)</image:title>
+            <image:caption>Why Your AI Coding Agent Keeps Breaking Production (And How git blame Can Stop It): AI coding agents are getting remarkably good at writing software</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/why-ai-agents-ml-workflows-need-a-durable-ai-runtime.html</loc>
         <lastmod>2026-08-15</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786753557/tc76tip1can8j3tzrlly.jpg</image:loc>
+            <image:title>Why AI Agents &amp; ML Workflows Need a Durable AI Runtime</image:title>
+            <image:caption>Tech Article: The Death of the Static Pipeline: Why AI Agents and ML Workflows Need a Durable AI Runtime Works in the notebook, dies in the pipeline</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/apple-submits-proposal-for-commissions-on-external-links.html</loc>
         <lastmod>2026-08-14</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786741066/u3vplwortiv8wmtbbsup.jpg</image:loc>
+            <image:title>Apple Submits Proposal for Commissions on External Links</image:title>
+            <image:caption>Apple  submits proposal for commissions on external links. Apple has finally submitted its proposal for the commissions it wants to charg...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/commerzbank-cybercrime-30-million-stolen.html</loc>
         <lastmod>2026-08-14</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786736939/nehidqhs7i5p1scbjopd.jpg</image:loc>
+            <image:title>Commerzbank Cybercrime: €30 Million Stolen</image:title>
+            <image:caption>Latest on commerzbank cybercrime: €30 million stolen. A recent cybercrime operation has led to the arrest of four individuals in Brazil and the ch...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/facebooks-creator-studio-app-ai-powered-tools-for-content-creators.html</loc>
         <lastmod>2026-08-13</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786639583/yoo4yb4qbwoertvc2bmm.jpg</image:loc>
+            <image:title>Facebook&#39;s Creator Studio App: AI-Powered Tools for Content Creators</image:title>
+            <image:caption>Facebook launches Creator Studio app with AI-powered tools for creators</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/how-to-effectively-deploy-code-with-claude-code.html</loc>
         <lastmod>2026-08-12</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786529481/zeql3nxn0mabbkctlrly.png</image:loc>
+            <image:title>How to Effectively Deploy Code With Claude Code</image:title>
+            <image:caption>Now that we have coding agents writing most, if not all, of the code that is used for different applications, the bottle. Dyve Tech intelligence on that, hav...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/article-credential-stuffing.html</loc>
         <lastmod>2026-08-12</lastmod>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&amp;w=800</image:loc>
+            <image:title>Credential Stuffing Attacks Explained</image:title>
+            <image:caption>How hackers turn leaked passwords into large-scale account takeovers.</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/article-data-breach-response.html</loc>
         <lastmod>2026-08-12</lastmod>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&amp;w=800</image:loc>
+            <image:title>Data Breach Response Playbook (2026)</image:title>
+            <image:caption>Step-by-step incident response strategy for modern cyber attacks.</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/elon-musk-says-starship-flight-13-recovery-not-looking-good-despite-successful-splashdown.html</loc>
         <lastmod>2026-08-08</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786220839/cl40hnujcxcdehgiwv58.jpg</image:loc>
+            <image:title>Elon Musk says Starship Flight 13 recovery ‘not looking good’ despite successful splashdown</image:title>
+            <image:caption>SpaceX&#39;s attempt to recover its Flight 13 Starship from the Indian Ocean is facing fresh challenges, with CEO Elon Musk . Dyve Tech intelligence on spacex, a...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/api-server-explained-like-never-before-episode-4.html</loc>
         <lastmod>2026-08-08</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786206637/p3zqylprgx2iwquqnvni.webp</image:loc>
+            <image:title>API Server: Explained like Never Before (Episode 4)</image:title>
+            <image:caption>Discover insights on api server: explained like never before (episode 4). Welcome to Episode 4 of K8s-With-Pravesh. Learn more with Dyve Tech.</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/cloudflare-wallets-will-let-ai-agents-pay-for-apis-safely-online.html</loc>
         <lastmod>2026-08-08</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786191899/gpjmiw8mectub3vgbd0f.png</image:loc>
+            <image:title>Cloudflare Wallets Will Let AI Agents Pay for APIs Safely Online</image:title>
+            <image:caption>Cloudflare is building programmable wallets that let AI agents pay for APIs, data and online content without asking a human to approve every small transaction.</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/cloudflare-launches-kitesurf-a-browser-built-for-ai-agents.html</loc>
         <lastmod>2026-08-07</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786138831/j7wxjxy6ehbnczjijhme.jpg</image:loc>
+            <image:title>Cloudflare launches Kitesurf, a browser built for AI agents</image:title>
+            <image:caption>Discover insights on cloudflare launches kitesurf, a browser built for ai agents. Cloudflare is the latest company to join the race to build a new web browse...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/improving-gpt56-sol-in-chatgptand-expanding-access-to-gpt56-luna-for-free-users.html</loc>
         <lastmod>2026-08-07</lastmod>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&amp;w=800</image:loc>
+            <image:title>Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT‑5.6 Luna for free users</image:title>
+            <image:caption>Discover insights on improving gpt‑5.6 sol in chatgpt—and expanding access to gpt‑5.6 luna for free users. Our mission is to ensure that artificial general i...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/responding-to-the-next-frontier-of-critical-cyber-capabilities.html</loc>
         <lastmod>2026-08-07</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786136661/qzkutmnr9rc7te5zdvna.jpg</image:loc>
+            <image:title>Responding to the next frontier of critical cyber capabilities</image:title>
+            <image:caption>Cybersecurity is rapidly changing as models become more capable in ways that can both strengthen cyberdefenses and enabl. Dyve Tech intelligence on cybersecu...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/cloudflare-open-sources-vibe-coding-platform-for-people-who-arent-coders.html</loc>
         <lastmod>2026-08-07</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786130124/pcyiqib92li3ydz0kesa.jpg</image:loc>
+            <image:title>Cloudflare open-sources vibe-coding platform for people who aren’t coders</image:title>
+            <image:caption>Discover insights on cloudflare open-sources vibe-coding platform for people who aren’t coders. Cloudflare has open-sourced its Cloudflare OS platform, which...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/europe-finalizes-ambitious-plans-for-iris-the-eus-sovereign-starlink-competitor.html</loc>
         <lastmod>2026-08-07</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786125072/gut9xkzmflzeqles1z8a.jpg</image:loc>
+            <image:title>Europe Finalizes Ambitious Plans for IRIS²: The EU’s ‘Sovereign’ Starlink Competitor</image:title>
+            <image:caption>Are we about to witness a new space race for global internet supremacy? The European Union has officially moved past the planning stage for IRIS², its highly anticipated low Earth orbit (LEO) satellite broadband network.</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/quantum-breakthrough-how-new-quantum-neural-networks-are-smashing-processing-speed-records.html</loc>
         <lastmod>2026-08-04</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1785805246/uljfwbqzukr66bwd2vfd.jpg</image:loc>
+            <image:title>Quantum Breakthrough: How New Quantum Neural Networks Are Smashing Processing Speed Records</image:title>
+            <image:caption>Discover insights on quantum breakthrough: how new quantum neural networks are smashing processing speed records. The tech world is no stranger to the phrase...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/teads-files-suit-against-google-seeks-financial-compensation-after-antitrust-ruling.html</loc>
         <lastmod>2026-08-03</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1785799406/tfzwmct1r3xjdioqosv1.jpg</image:loc>
+            <image:title>Teads files suit against Google; seeks financial compensation after antitrust ruling</image:title>
+            <image:caption>Discover insights on teads files suit against google; seeks financial compensation after antitrust ruling. Teads Holding (TEAD) has filed a suit against Goog...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/the-agentic-ai-revolution.html</loc>
         <lastmod>2026-08-03</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1785796034/hjnseprht7mxyaxcoum8.png</image:loc>
+            <image:title>The Agentic AI Revolution</image:title>
+            <image:caption>For years, artificial intelligence in the enterprise has felt like a brilliant but stubbornly reactive assistant. Dyve Tech intelligence on years, artificial...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/claude-opus-5-became-downright-ruthless-when-tasked-with-running-a-vending-machine.html</loc>
         <lastmod>2026-08-03</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1785795767/l7uujccjfwplnsjcym5j.jpg</image:loc>
+            <image:title>Claude Opus 5 became downright ruthless when tasked with running a vending machine</image:title>
+            <image:caption>For a year now, the AI safety testing firm Andon Labs has given frontier models various real-world tasks to determine ho. Dyve Tech intelligence on year, saf...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/claude.html</loc>
         <lastmod>2026-08-03</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1785794861/xb9s9y9msq1nyflinnvs.jpg</image:loc>
+            <image:title>Claude</image:title>
+            <image:caption>Discover insights on claude. For a year now, the AI safety testing firm Andon Labs has given frontier models various real-world t. Learn more with Dyve Tech.</image:caption>
+        </image:image>
     </url>
 </urlset>
