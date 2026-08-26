@@ -5,38 +5,14 @@ xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
 
 
 <url>
-<loc>https://dyve.online/article/microsoft-turns-the-tables-on-macsync-stealer-by-hunting-its-behavior-not-its-domains.html</loc>
+<loc>https://dyve.online/article/iran-linked-hackers-reportedly-took-a-uk-power-generator-offline-for-four-days-heres-why-it-matters.html</loc>
 <news:news>
 <news:publication>
 <news:name>Dyve HackaX</news:name>
 <news:language>en</news:language>
 </news:publication>
-<news:publication_date>2026-08-20T00:00:00.000Z</news:publication_date>
-<news:title>Microsoft Turns the Tables on MacSync Stealer by Hunting Its Behavior, Not Its Domains</news:title>
-</news:news>
-</url>
-
-<url>
-<loc>https://dyve.online/article/ransomware/cisa-how-medusa-ransomware-attacked-500-critical-companies.html</loc>
-<news:news>
-<news:publication>
-<news:name>Dyve HackaX</news:name>
-<news:language>en</news:language>
-</news:publication>
-<news:publication_date>2026-08-20T00:00:00.000Z</news:publication_date>
-<news:title>CISA: How Medusa Ransomware Attacked 500+ Critical Companies</news:title>
-</news:news>
-</url>
-
-<url>
-<loc>https://dyve.online/article/ransomware/us-bank-investigates-lockbits-claims-as-ransomware-crims-set-pay-or-leak-deadline.html</loc>
-<news:news>
-<news:publication>
-<news:name>Dyve HackaX</news:name>
-<news:language>en</news:language>
-</news:publication>
-<news:publication_date>2026-08-20T00:00:00.000Z</news:publication_date>
-<news:title>US Bank investigates LockBit&#039;s claims as ransomware crims set pay-or-leak deadline</news:title>
+<news:publication_date>2026-08-26T00:00:00.000Z</news:publication_date>
+<news:title>Iran-Linked Hackers Reportedly Took a UK Power Generator Offline for Four Days. Here’s Why It Matters</news:title>
 </news:news>
 </url>
 
