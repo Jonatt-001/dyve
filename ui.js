@@ -109,6 +109,48 @@ const drawerHTML = `
           </a>
 
 
+          <a href="/intelligence/index.html">
+
+            <svg
+              class="nav-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              aria-hidden="true"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+              ></circle>
+
+              <path
+                d="M12 7v5l3 2"
+              ></path>
+
+              <path
+                d="M8.5 3.8A9 9 0 0118.2 5"
+              ></path>
+
+              <path
+                d="M5.8 6.2A9 9 0 003 12"
+              ></path>
+
+              <path
+                d="M5.8 17.8A9 9 0 0012 21"
+              ></path>
+
+              <path
+                d="M18.2 17.8A9 9 0 0021 12"
+              ></path>
+            </svg>
+
+            <span>Intelligence Hub</span>
+
+          </a>
+
+
           <a href="/breaches/index.html">
 
             <svg
