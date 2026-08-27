@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
 <url>
+            <loc>https://dyve.online/threat-actors/gocaracal-malware-uses-ethereum-smart-contracts-to-keep-c2-infrastructure-alive.html</loc>
+
+            <news:news>
+
+                <news:publication>
+
+                    <news:name>
+                        Dyve HackaX
+                    </news:name>
+
+                    <news:language>
+                        en
+                    </news:language>
+
+                </news:publication>
+
+                <news:publication_date>
+                    2026-08-27T00:00:00.000Z
+                </news:publication_date>
+
+                <news:title>
+                    GoCaracal Malware Uses Ethereum Smart Contracts to Keep C2 Infrastructure Alive
+                </news:title>
+
+            </news:news>
+
+        </url>
+<url>
             <loc>https://dyve.online/advisories/how-to-fix-a-leaked-api-key-a-developers-guide-to-git-security.html</loc>
 
             <news:news>
