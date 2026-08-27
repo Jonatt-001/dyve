@@ -1,151 +1,343 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 <url>
-<loc>https://dyve.online/article/iran-linked-hackers-reportedly-took-a-uk-power-generator-offline-for-four-days-heres-why-it-matters.html</loc>
-<image:image>
-<image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787752375/hackax/hackax/iran-linked-hackers-reportedly-took-a-uk-power-generator-offline-for-four-days-heres-why-it-matters-featured-1787752371897.jpg</image:loc>
-<image:title>Iran-Linked Hackers Reportedly Took a UK Power Generator Offline for Four Days. Here’s Why It Matters | Dyve HackaX</image:title>
-<image:caption>Iran-Linked Hackers Reportedly Took a UK Power Generator Offline for Four Days. Here’s Why It Matters — Data Breach | CRITICAL | Dyve HackaX</image:caption>
-</image:image>
-</url>
+                        <loc>https://dyve.online/advisories/how-to-fix-a-leaked-api-key-a-developers-guide-to-git-security.html</loc>
 
+                        <image:image>
+
+                            <image:loc>
+                                https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787801214/zzbga1y6z7v79qyabwzv.png
+                            </image:loc>
+
+                            <image:title>
+                                How to Fix a Leaked API Key: A Developer’s Guide to Git Security | General Updates
+                            </image:title>
+
+                            <image:caption>
+                                How to Fix a Leaked API Key: A Developer’s Guide to Git Security - General Updates featured image
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
 <url>
-<loc>https://dyve.online/article/microsoft-turns-the-tables-on-macsync-stealer-by-hunting-its-behavior-not-its-domains.html</loc>
-<image:image>
-<image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787267098/hackax/hackax/microsoft-turns-the-tables-on-macsync-stealer-by-hunting-its-behavior-not-its-domains-featured-1787267096420.jpg</image:loc>
-<image:title>Microsoft Turns the Tables on MacSync Stealer by Hunting Its Behavior, Not Its Domains | Dyve HackaX</image:title>
-<image:caption>Microsoft Turns the Tables on MacSync Stealer by Hunting Its Behavior, Not Its Domains — Threat Analysis | LIVE INTEL | Dyve HackaX</image:caption>
-</image:image>
-</url>
+                        <loc>https://dyve.online/article/iran-linked-hackers-reportedly-took-a-uk-power-generator-offline-for-four-days-heres-why-it-matters.html</loc>
 
+                        <image:image>
+
+                            <image:loc>
+                                https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787752375/hackax/hackax/iran-linked-hackers-reportedly-took-a-uk-power-generator-offline-for-four-days-heres-why-it-matters-featured-1787752371897.jpg
+                            </image:loc>
+
+                            <image:title>
+                                Iran-Linked Hackers Reportedly Took a UK Power Generator Offline for Four Days. Here’s Why It Matters | Dyve HackaX
+                            </image:title>
+
+                            <image:caption>
+                                Iran-Linked Hackers Reportedly Took a UK Power Generator Offline for Four Days. Here’s Why It Matters — Data Breach | CRITICAL | Dyve HackaX
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
 <url>
-<loc>https://dyve.online/article/ransomware/cisa-how-medusa-ransomware-attacked-500-critical-companies.html</loc>
-<image:image>
-<image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787258753/hackax/hackax/cisa-how-medusa-ransomware-attacked-500-critical-companies-featured-1787258748267.jpg</image:loc>
-<image:title>CISA: How Medusa Ransomware Attacked 500+ Critical Companies | Dyve HackaX</image:title>
-<image:caption>CISA: How Medusa Ransomware Attacked 500+ Critical Companies — Ransomware Intelligence | RANSOMWARE | Dyve HackaX</image:caption>
-</image:image>
-</url>
+                        <loc>https://dyve.online/article/microsoft-turns-the-tables-on-macsync-stealer-by-hunting-its-behavior-not-its-domains.html</loc>
 
+                        <image:image>
+
+                            <image:loc>
+                                https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787267098/hackax/hackax/microsoft-turns-the-tables-on-macsync-stealer-by-hunting-its-behavior-not-its-domains-featured-1787267096420.jpg
+                            </image:loc>
+
+                            <image:title>
+                                Microsoft Turns the Tables on MacSync Stealer by Hunting Its Behavior, Not Its Domains | Dyve HackaX
+                            </image:title>
+
+                            <image:caption>
+                                Microsoft Turns the Tables on MacSync Stealer by Hunting Its Behavior, Not Its Domains — Threat Analysis | LIVE INTEL | Dyve HackaX
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
 <url>
-<loc>https://dyve.online/article/ransomware/us-bank-investigates-lockbits-claims-as-ransomware-crims-set-pay-or-leak-deadline.html</loc>
-<image:image>
-<image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787254969/hackax/hackax/us-bank-investigates-lockbits-claims-as-ransomware-crims-set-pay-or-leak-deadline-featured-1787254960943.jpg</image:loc>
-<image:title>US Bank investigates LockBit&#039;s claims as ransomware crims set pay-or-leak deadline | Dyve HackaX</image:title>
-<image:caption>US Bank investigates LockBit&#039;s claims as ransomware crims set pay-or-leak deadline — Data Breach | Dyve HackaX</image:caption>
-</image:image>
-</url>
+                        <loc>https://dyve.online/article/ransomware/cisa-how-medusa-ransomware-attacked-500-critical-companies.html</loc>
 
+                        <image:image>
+
+                            <image:loc>
+                                https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787258753/hackax/hackax/cisa-how-medusa-ransomware-attacked-500-critical-companies-featured-1787258748267.jpg
+                            </image:loc>
+
+                            <image:title>
+                                CISA: How Medusa Ransomware Attacked 500+ Critical Companies | Dyve HackaX
+                            </image:title>
+
+                            <image:caption>
+                                CISA: How Medusa Ransomware Attacked 500+ Critical Companies — Ransomware Intelligence | RANSOMWARE | Dyve HackaX
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
 <url>
-<loc>https://dyve.online/dark-web/what-is-the-dark-web-how-it-works-what-happens-there-and-the-real-cybersecurity-risks.html</loc>
-<image:image>
-<image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786842081/dk6wyezjj9jtjxdskunl.jpg</image:loc>
-<image:title>What Is the Dark Web? How It Works, What Happens There, and the Real Cybersecurity Risks</image:title>
-<image:caption>Expert analysis of dark and services. How It Works, What Happens There, and the Real Cybersecurity Risks
-The dark web  Get actionable insights today.</image:caption>
-</image:image>
-</url>
+                        <loc>https://dyve.online/article/ransomware/us-bank-investigates-lockbits-claims-as-ransomware-crims-set-pay-or-leak-deadline.html</loc>
 
+                        <image:image>
+
+                            <image:loc>
+                                https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787254969/hackax/hackax/us-bank-investigates-lockbits-claims-as-ransomware-crims-set-pay-or-leak-deadline-featured-1787254960943.jpg
+                            </image:loc>
+
+                            <image:title>
+                                US Bank investigates LockBit&#39;s claims as ransomware crims set pay-or-leak deadline | Dyve HackaX
+                            </image:title>
+
+                            <image:caption>
+                                US Bank investigates LockBit&#39;s claims as ransomware crims set pay-or-leak deadline — Data Breach | Dyve HackaX
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
 <url>
-<loc>https://dyve.online/tech/article-credential-leak.html</loc>
-<image:image>
-<image:loc>https://tungstensecure.com/wp-content/uploads/2025/05/Cyber-Threat-Intelligence-Pakistan.jpg</image:loc>
-<image:title>Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets</image:title>
-<image:caption>A coordinated breach operation has surfaced millions of credentials across underground forums.</image:caption>
-</image:image>
-</url>
+                        <loc>https://dyve.online/dark-web/what-is-the-dark-web-how-it-works-what-happens-there-and-the-real-cybersecurity-risks.html</loc>
 
+                        <image:image>
+
+                            <image:loc>
+                                https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786842081/dk6wyezjj9jtjxdskunl.jpg
+                            </image:loc>
+
+                            <image:title>
+                                What Is the Dark Web? How It Works, What Happens There, and the Real Cybersecurity Risks
+                            </image:title>
+
+                            <image:caption>
+                                What Is the Dark Web? How It Works, What Happens There, and the Real Cybersecurity Risks
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
 <url>
-<loc>https://dyve.online/tech/article-zero-day.html</loc>
-<image:image>
-<image:loc>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRELGUPLZGzdyHRJARBf-lP9gTRhjhkJZRzfzgaletP7QP14L0qBEoYzajU&amp;s=10</image:loc>
-<image:title>Zero-Day Vulnerability Discovered in Authentication API</image:title>
-<image:caption>A critical zero-day flaw enables authentication bypass and session hijacking.</image:caption>
-</image:image>
-</url>
+                        <loc>https://dyve.online/tech/article-credential-leak.html</loc>
 
+                        <image:image>
+
+                            <image:loc>
+                                https://tungstensecure.com/wp-content/uploads/2025/05/Cyber-Threat-Intelligence-Pakistan.jpg
+                            </image:loc>
+
+                            <image:title>
+                                Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets
+                            </image:title>
+
+                            <image:caption>
+                                Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
 <url>
-<loc>https://dyve.online/tech/article-exfiltration.html</loc>
-<image:image>
-<image:loc>https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&amp;w=800</image:loc>
-<image:title>Encrypted Messaging Platform Exploited for Data Exfiltration</image:title>
-<image:caption>Threat actors leverage encrypted channels for covert data movement.</image:caption>
-</image:image>
-</url>
+                        <loc>https://dyve.online/tech/article-zero-day.html</loc>
 
+                        <image:image>
+
+                            <image:loc>
+                                https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRELGUPLZGzdyHRJARBf-lP9gTRhjhkJZRzfzgaletP7QP14L0qBEoYzajU&amp;s=10
+                            </image:loc>
+
+                            <image:title>
+                                Zero-Day Vulnerability Discovered in Authentication API
+                            </image:title>
+
+                            <image:caption>
+                                Zero-Day Vulnerability Discovered in Authentication API
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
 <url>
-<loc>https://dyve.online/tech/dark-web.html</loc>
-<image:image>
-<image:loc>https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&amp;w=1200</image:loc>
-<image:title>Dark Web Secrets: What Really Happens Beyond the Surface Web</image:title>
-<image:caption>Inside the hidden internet: marketplaces, threat actors, and cyber intelligence systems.</image:caption>
-</image:image>
-</url>
+                        <loc>https://dyve.online/tech/article-exfiltration.html</loc>
 
+                        <image:image>
+
+                            <image:loc>
+                                https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&amp;w=800
+                            </image:loc>
+
+                            <image:title>
+                                Encrypted Messaging Platform Exploited for Data Exfiltration
+                            </image:title>
+
+                            <image:caption>
+                                Encrypted Messaging Platform Exploited for Data Exfiltration
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
 <url>
-<loc>https://dyve.online/tech/dark-web-how-it-works.html</loc>
-<image:image>
-<image:loc>https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&amp;w=800</image:loc>
-<image:title>How the Dark Web Actually Works (Tor, Onion Routing, Encryption)</image:title>
-<image:caption>Technical breakdown of Tor, hidden services, and layered encryption systems.</image:caption>
-</image:image>
-</url>
+                        <loc>https://dyve.online/tech/dark-web.html</loc>
 
+                        <image:image>
+
+                            <image:loc>
+                                https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&amp;w=1200
+                            </image:loc>
+
+                            <image:title>
+                                Dark Web Secrets: What Really Happens Beyond the Surface Web
+                            </image:title>
+
+                            <image:caption>
+                                Dark Web Secrets: What Really Happens Beyond the Surface Web
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
 <url>
-<loc>https://dyve.online/tech/dark-web-marketplaces.html</loc>
-<image:image>
-<image:loc>https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&amp;w=800</image:loc>
-<image:title>Dark Web Marketplaces Explained (Vendors, Escrow, Trade Systems)</image:title>
-<image:caption>How underground marketplaces operate, including trust systems and transactions.</image:caption>
-</image:image>
-</url>
+                        <loc>https://dyve.online/tech/dark-web-how-it-works.html</loc>
 
+                        <image:image>
+
+                            <image:loc>
+                                https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&amp;w=800
+                            </image:loc>
+
+                            <image:title>
+                                How the Dark Web Actually Works (Tor, Onion Routing, Encryption)
+                            </image:title>
+
+                            <image:caption>
+                                How the Dark Web Actually Works (Tor, Onion Routing, Encryption)
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
 <url>
-<loc>https://dyve.online/tech/dark-web-hacker-economy.html</loc>
-<image:image>
-<image:loc>https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&amp;w=800</image:loc>
-<image:title>What Hackers Buy on the Dark Web (Access, Exploits, Data)</image:title>
-<image:caption>Inside the hacker economy: credentials, exploits, and access trading.</image:caption>
-</image:image>
-</url>
+                        <loc>https://dyve.online/tech/dark-web-marketplaces.html</loc>
 
+                        <image:image>
+
+                            <image:loc>
+                                https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&amp;w=800
+                            </image:loc>
+
+                            <image:title>
+                                Dark Web Marketplaces Explained (Vendors, Escrow, Trade Systems)
+                            </image:title>
+
+                            <image:caption>
+                                Dark Web Marketplaces Explained (Vendors, Escrow, Trade Systems)
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
 <url>
-<loc>https://dyve.online/tech/dark-web-monitoring.html</loc>
-<image:image>
-<image:loc>https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&amp;w=800</image:loc>
-<image:title>Dark Web Monitoring Systems (How Organizations Track Threats)</image:title>
-<image:caption>How companies detect leaks, threats, and attack planning in real time.</image:caption>
-</image:image>
-</url>
+                        <loc>https://dyve.online/tech/dark-web-hacker-economy.html</loc>
 
+                        <image:image>
+
+                            <image:loc>
+                                https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&amp;w=800
+                            </image:loc>
+
+                            <image:title>
+                                What Hackers Buy on the Dark Web (Access, Exploits, Data)
+                            </image:title>
+
+                            <image:caption>
+                                What Hackers Buy on the Dark Web (Access, Exploits, Data)
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
 <url>
-<loc>https://dyve.online/tech/dark-web-risks.html</loc>
-<image:image>
-<image:loc>https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&amp;w=800</image:loc>
-<image:title>Is the Dark Web Dangerous? Risks, Myths &amp; Reality</image:title>
-<image:caption>Separating myths from reality and understanding actual risks.</image:caption>
-</image:image>
-</url>
+                        <loc>https://dyve.online/tech/dark-web-monitoring.html</loc>
 
+                        <image:image>
+
+                            <image:loc>
+                                https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&amp;w=800
+                            </image:loc>
+
+                            <image:title>
+                                Dark Web Monitoring Systems (How Organizations Track Threats)
+                            </image:title>
+
+                            <image:caption>
+                                Dark Web Monitoring Systems (How Organizations Track Threats)
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
 <url>
-<loc>https://dyve.online/tech/nigeria-records-4975-weekly-cyberattacks-as-ransomware-victims-surge-87.html</loc>
-<image:image>
-<image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786838418/tdmnkqpbxqoff37uakym.jpg</image:loc>
-<image:title>Nigeria Records 4,975 Weekly Cyberattacks as Ransomware Victims Surge 87%</image:title>
-<image:caption>Nigeria Records 4,975 Weekly Cyberattacks as Ransomware Victims Surge 87%: Nigeria recorded an average of 4,975 cyberattacks per organisation every week in J...</image:caption>
-</image:image>
-</url>
+                        <loc>https://dyve.online/tech/dark-web-risks.html</loc>
 
+                        <image:image>
+
+                            <image:loc>
+                                https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&amp;w=800
+                            </image:loc>
+
+                            <image:title>
+                                Is the Dark Web Dangerous? Risks, Myths &amp; Reality
+                            </image:title>
+
+                            <image:caption>
+                                Is the Dark Web Dangerous? Risks, Myths &amp; Reality
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
 <url>
-<loc>https://dyve.online/tech/ransomware-attacks-surge-20-in-july-what-you-need-to-know.html</loc>
-<image:image>
-<image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786218048/l594nfnpgsmyn5vo0clk.jpg</image:loc>
-<image:title>Ransomware Attacks Surge 20% in July: What You Need to Know</image:title>
-<image:caption>Ransomware attacks have seen a significant surge, with a nearly 20 percent increase in July, according to a report by UK. Dyve Tech intelligence on ransomwar...</image:caption>
-</image:image>
-</url>
+                        <loc>https://dyve.online/tech/nigeria-records-4975-weekly-cyberattacks-as-ransomware-victims-surge-87.html</loc>
 
+                        <image:image>
+
+                            <image:loc>
+                                https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786838418/tdmnkqpbxqoff37uakym.jpg
+                            </image:loc>
+
+                            <image:title>
+                                Nigeria Records 4,975 Weekly Cyberattacks as Ransomware Victims Surge 87%
+                            </image:title>
+
+                            <image:caption>
+                                Nigeria Records 4,975 Weekly Cyberattacks as Ransomware Victims Surge 87%
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
+<url>
+                        <loc>https://dyve.online/tech/ransomware-attacks-surge-20-in-july-what-you-need-to-know.html</loc>
+
+                        <image:image>
+
+                            <image:loc>
+                                https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786218048/l594nfnpgsmyn5vo0clk.jpg
+                            </image:loc>
+
+                            <image:title>
+                                Ransomware Attacks Surge 20% in July: What You Need to Know
+                            </image:title>
+
+                            <image:caption>
+                                Ransomware Attacks Surge 20% in July: What You Need to Know
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
 </urlset>
