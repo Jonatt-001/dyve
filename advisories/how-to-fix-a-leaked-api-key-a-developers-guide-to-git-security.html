@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1.0"
+>
+
+<title>
+    How to Fix a Leaked API Key: A Developer’s Guide to Git Security | Dyve HackaX
+</title>
+
+<meta
+    name="description"
+    content="Let&#39;s start with what an API key actually is before we get to the most important part: what to do right now after a key is exposed. An API key is a..."
+>
+
+<meta
+    name="keywords"
+    content="GENERAL UPDATE, Security Advisory, leaked, developer, guide, security, start, part, exposed, credential, allows, application, communicate, service, example, access, weather, payment, provider, mapping, artificial, intelligence, cloud, platform, database, email, private, company, look, something, like, const, Dyve HackaX, cyber threat intelligence"
+>
+
+<meta
+    name="robots"
+    content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
+>
+
+<link
+    rel="canonical"
+    href="https://dyve.online/advisories/how-to-fix-a-leaked-api-key-a-developers-guide-to-git-security.html"
+>
+
+<link
+    rel="author"
+    href="https://dyve.online/about-us/"
+>
+
+<meta
+    property="og:type"
+    content="article"
+>
+
+<meta
+    property="og:site_name"
+    content="Dyve HackaX"
+>
+
+<meta
+    property="og:title"
+    content="How to Fix a Leaked API Key: A Developer’s Guide to Git Security"
+>
+
+<meta
+    property="og:description"
+    content="Let&#39;s start with what an API key actually is before we get to the most important part: what to do right now after a key is exposed. An API key is a..."
+>
+
+<meta
+    property="og:url"
+    content="https://dyve.online/advisories/how-to-fix-a-leaked-api-key-a-developers-guide-to-git-security.html"
+>
+
+<meta
+    property="og:image"
+    content="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787801214/zzbga1y6z7v79qyabwzv.png"
+>
+
+<meta
+    property="og:image:alt"
+    content="How to Fix a Leaked API Key: A Developer’s Guide to Git Security - General Updates featured image"
+>
+
+<meta
+    property="og:image:type"
+    content="image/webp"
+>
+
+<meta
+    property="article:published_time"
+    content="2026-08-27"
+>
+
+<meta
+    property="article:modified_time"
+    content="2026-08-27T03:32:45.579Z"
+>
+
+<meta
+    property="article:author"
+    content="Dyve HackaX Intelligence Unit"
+>
+
+<meta
+    property="article:section"
+    content="Security Advisory"
+>
+
+<meta
+    property="article:tag"
+    content="GENERAL UPDATE"
+>
+
+<meta
+    name="twitter:card"
+    content="summary_large_image"
+>
+
+<meta
+    name="twitter:title"
+    content="How to Fix a Leaked API Key: A Developer’s Guide to Git Security"
+>
+
+<meta
+    name="twitter:description"
+    content="Let&#39;s start with what an API key actually is before we get to the most important part: what to do right now after a key is exposed. An API key is a..."
+>
+
+<meta
+    name="twitter:image"
+    content="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787801214/zzbga1y6z7v79qyabwzv.png"
+>
+
+<meta
+    name="twitter:image:alt"
+    content="How to Fix a Leaked API Key: A Developer’s Guide to Git Security - General Updates featured image"
+>
+
+<meta
+    name="theme-color"
+    content="#020403"
+>
+
+<link
+    rel="icon"
+    href="https://dyve.online/favicon.ico"
+>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+>
+
+<link
+    rel="stylesheet"
+    href="../article.css"
+>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"How to Fix a Leaked API Key: A Developer’s Guide to Git Security","description":"Let's start with what an API key actually is before we get to the most important part: what to do right now after a key is exposed. An API key is a...","image":["https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787801214/zzbga1y6z7v79qyabwzv.png"],"datePublished":"2026-08-27","dateModified":"2026-08-27T03:32:45.579Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://dyve.online/advisories/how-to-fix-a-leaked-api-key-a-developers-guide-to-git-security.html"},"author":{"@type":"Organization","name":"Dyve HackaX Intelligence Unit","url":"https://dyve.online/"},"publisher":{"@type":"Organization","name":"Dyve HackaX","url":"https://dyve.online/"},"articleSection":"Security Advisory","keywords":["leaked","developer","guide","security","start","part","exposed","credential","allows","application","communicate","service","example","access","weather","payment","provider","mapping","artificial","intelligence","cloud","platform","database","email","private","company","look","something","like","const"]}</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"HackaX","item":"https://dyve.online/"},{"@type":"ListItem","position":2,"name":"Security Advisory","item":"https://dyve.online/advisories/"},{"@type":"ListItem","position":3,"name":"How to Fix a Leaked API Key: A Developer’s Guide to Git Security","item":"https://dyve.online/advisories/how-to-fix-a-leaked-api-key-a-developers-guide-to-git-security.html"}]}</script>
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="header-inner">
+
+        <button
+            class="back-btn"
+            onclick="goBack()"
+            aria-label="Back"
+        >
+            ←
+        </button>
+
+        <a
+            class="logo"
+            href="../"
+        >
+            DYVE // HACKAX
+        </a>
+
+        <nav>
+            <a href="../">
+                Intel
+            </a>
+
+            <a href="../dark-web/">
+                Dark Web
+            </a>
+
+            <a href="../signals/">
+                Signals
+            </a>
+        </nav>
+
+    </div>
+
+</header>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="intel-box">
+
+            <div class="intel-title">
+                HACKAX INTELLIGENCE
+            </div>
+
+            <div class="intel-item">
+                <div class="intel-label">
+                    Classification
+                </div>
+
+                <div class="intel-value">
+                    Security Advisory
+                </div>
+            </div>
+
+            <div class="intel-item">
+                <div class="intel-label">
+                    Threat Type
+                </div>
+
+                <div class="intel-value">
+                    GENERAL UPDATE
+                </div>
+            </div>
+
+            <div class="intel-item">
+                <div class="intel-label">
+                    Status
+                </div>
+
+                <div class="intel-value">
+                    Routine Update
+                </div>
+            </div>
+
+            <div class="intel-item">
+                <div class="intel-label">
+                    Severity
+                </div>
+
+                <div class="intel-value">
+                    High
+                </div>
+            </div>
+
+            <div class="intel-item">
+                <div class="intel-label">
+                    Scope
+                </div>
+
+                <div class="intel-value">
+                    Global
+                </div>
+            </div>
+
+        </div>
+
+    </aside>
+
+    <main
+        class="article"
+        itemscope
+        itemtype="https://schema.org/NewsArticle"
+    >
+
+        <meta
+            itemprop="headline"
+            content="How to Fix a Leaked API Key: A Developer’s Guide to Git Security"
+        >
+
+        <meta
+            itemprop="description"
+            content="Let&#39;s start with what an API key actually is before we get to the most important part: what to do right now after a key is exposed. An API key is a..."
+        >
+
+        <meta
+            itemprop="image"
+            content="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787801214/zzbga1y6z7v79qyabwzv.png"
+        >
+
+        <meta
+            itemprop="datePublished"
+            content="2026-08-27"
+        >
+
+        <meta
+            itemprop="dateModified"
+            content="2026-08-27T03:32:45.579Z"
+        >
+
+        <div class="breadcrumb">
+            [ HACKAX INTEL FEED ] /
+            SECURITY ADVISORY /
+            GENERAL UPDATE
+        </div>
+
+        <h1 itemprop="name">
+            How to Fix a Leaked API Key: A Developer’s Guide to Git Security
+        </h1>
+
+        <div
+            class="subhead"
+            itemprop="description"
+        >
+            Let&#39;s start with what an API key actually is before we get to the most important part: what to do right now after a key is exposed. An API key is a...
+        </div>
+
+        <div class="meta">
+            Dyve HackaX Intelligence Unit
+            •
+            <time
+                datetime="2026-08-27"
+            >
+                2026-08-27
+            </time>
+            •
+            Routine Update
+        </div>
+
+        
+                <figure class="hero">
+                    <img
+                        src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787801214/zzbga1y6z7v79qyabwzv.png"
+                        alt="How to Fix a Leaked API Key: A Developer’s Guide to Git Security - General Updates featured image"
+                        title="How to Fix a Leaked API Key: A Developer’s Guide to Git Security | General Updates"
+                        width="1200"
+                        height="675"
+                        loading="eager"
+                        decoding="async"
+                        fetchpriority="high"
+                        itemprop="image"
+                    >
+
+                    <figcaption>
+                        General Updates coverage: How to Fix a Leaked API Key: A Developer’s Guide to Git Security (GENERAL UPDATE).
+                    </figcaption>
+                </figure>
+            
+
+        <div class="share">
+
+            <button onclick="copyLink()">
+                Copy
+            </button>
+
+            <button onclick="shareX()">
+                Share
+            </button>
+
+            <button onclick="shareLinkedIn()">
+                LinkedIn
+            </button>
+
+        </div>
+
+        <div
+            class="content"
+            itemprop="articleBody"
+        >
+            <p>Let's start with what an API key actually is before we get to the most important part: what to do&nbsp;<strong>right now</strong>&nbsp;after a key is exposed.</p><h2><strong>What Is an API Key?</strong></h2><p>An API key is a credential that allows an application to communicate with another service.</p><p>For example, an application might use an API key to access:</p><ul><li>A weather service</li><li>A payment provider</li><li>A mapping service</li><li>An artificial intelligence API</li><li>A cloud platform</li><li>A database</li><li>An email provider</li><li>A private company API</li></ul><p>A key might look something like this:</p><pre class="ql-syntax" spellcheck="false">const apiKey = "your-real-api-key";
+</pre><p>Or it might appear in a configuration file:</p><pre class="ql-syntax" spellcheck="false">{
+  "apiKey": "your-real-api-key",
+  "databasePassword": "your-real-password"
+}
+</pre><p>API keys are often called&nbsp;<strong>secrets</strong>&nbsp;because possessing one may allow someone to make requests, access data, create resources, or generate charges on your account.</p><p>Not every API key is equally sensitive. Some services provide browser keys that are intentionally visible to users. Those keys should still have appropriate restrictions, quotas, and permissions.</p><p>As a general rule:</p><blockquote><strong><em>If a credential can access private data, create resources, modify records, or generate charges, it shouldn't be stored directly in your source code.</em></strong></blockquote><h2><strong>The Emergency Response: What to Do First</strong></h2><p>When you discover a leaked credential, a common reaction is to delete the key from the file and push another commit.</p><p>Don't start there.</p><p>Your first priority is to&nbsp;<strong>make the leaked credential useless</strong>.</p><p>Use this order of operations:</p><pre class="ql-syntax" spellcheck="false">1. Invalidate the leaked credential
+2. Investigate suspicious activity
+3. Remove the secret from your code
+4. Replace it with a new credential
+5. Clean the Git history if necessary
+6. Verify the cleanup
+7. Add protections against future leaks
+</pre><p>Think of an API key like a house key that was dropped in a crowded street.</p><p>Deleting a picture of the key doesn't matter if someone already picked up the physical key.</p><p><strong>Change the lock first.</strong></p><h2><strong>Step 1: Revoke or Rotate the Leaked Key</strong></h2><p>Go to the dashboard of the service that issued the credential.</p><p>Depending on the provider, you may see options such as:</p><ul><li>Revoke</li><li>Delete</li><li>Disable</li><li>Rotate</li><li>Regenerate</li><li>Create new key</li></ul><p>If the provider supports key rotation, create a replacement credential before disabling the old one if possible. This can reduce application downtime while you update your configuration.</p><p>The important thing is that the original credential must no longer be usable.</p><p><strong>Do not reuse the leaked key.</strong>&nbsp;Don't rename it. Don't encode it. Don't move it to another file and assume it is safe. Don't assume nobody saw it.</p><p>Treat it as compromised.</p><h2><strong>Step 2: Investigate Suspicious Activity</strong></h2><p>After disabling the credential, check the provider's usage dashboard and logs.</p><p>Look for things such as:</p><ul><li>Sudden spikes in requests</li><li>Requests from unfamiliar locations</li><li>Unexpected database queries</li><li>New cloud resources</li><li>Changes to permissions</li><li>Unexpected downloads</li><li>Unusual payment activity</li><li>New deployments</li><li>Requests at times when your application was inactive</li></ul><p>If the credential had broad permissions, assume that anything within its permission scope&nbsp;<strong>MAY have been accessed or modified</strong>.</p><p>For example, if a cloud credential could create virtual machines, check whether unexpected machines were created.</p><p>If a credential could access a database, review:</p><ul><li>Authentication logs</li><li>Read operations</li><li>Write operations</li><li>Deleted records</li><li>Exported data</li><li>Newly created accounts</li><li>Permission changes</li></ul><p>Also check your billing information if the credential could generate usage-based charges.</p><p>Write down what you discover. A simple timeline can help:</p><pre class="ql-syntax" spellcheck="false">10:15 - API key committed
+10:23 - Repository pushed publicly
+10:41 - Unusual usage detected
+10:45 - Key revoked
+11:00 - Logs reviewed
+11:30 - Replacement key deployed
+12:00 - Git history cleaned
+</pre><p>This can be especially useful if you need to report the incident to a team or service provider.</p><h2><strong>Step 3: Remove the Secret From Your Current Code</strong></h2><p>Once the original credential has been disabled, remove it from your working files.</p><p>This is unsafe:</p><pre class="ql-syntax" spellcheck="false">const apiKey = "your-real-api-key";
+</pre><p>Instead, load the credential from the environment:</p><pre class="ql-syntax" spellcheck="false">const apiKey = process.env.API_KEY;
+
+if (!apiKey) {
+  throw new Error("API_KEY is not configured");
+}
+</pre><p>In Python:</p><pre class="ql-syntax" spellcheck="false">import os
+
+api_key = os.environ.get("API_KEY")
+
+if not api_key:
+    raise RuntimeError("API_KEY is not configured")
+</pre><p>The important idea is simple:</p><pre class="ql-syntax" spellcheck="false">Source code → environment variable → secret value
+</pre><p>instead of:</p><pre class="ql-syntax" spellcheck="false">Source code → hardcoded secret
+</pre><p>Environment variables aren't the only way to manage secrets, but they are a common and practical solution for local development and many deployment environments.</p><h2><strong>Step 4: Use a&nbsp;</strong><code><strong>.env</strong></code><strong>&nbsp;File for Local Development</strong></h2><p>For local development, you can store environment variables in a&nbsp;<code>.env</code>&nbsp;file.</p><p>For example:</p><pre class="ql-syntax" spellcheck="false">API_KEY=your-local-development-key
+DATABASE_URL=your-local-database-url
+</pre><p>A Node.js project can load these values with a package such as&nbsp;<code>dotenv</code>.</p><p>Install it with:</p><pre class="ql-syntax" spellcheck="false">npm install dotenv
+</pre><p>Then:</p><pre class="ql-syntax" spellcheck="false">import "dotenv/config";
+
+const apiKey = process.env.API_KEY;
+</pre><p>The important part is that the&nbsp;<code>.env</code>&nbsp;file normally&nbsp;<strong>should not be committed to Git</strong>.</p><p>Add it to&nbsp;<code>.gitignore</code>:</p><pre class="ql-syntax" spellcheck="false"># Environment files
+.env
+.env.*
+!.env.example
+
+# Credential files
+*.pem
+*.key
+credentials.json
+service-account.json
+
+# Local development files
+.DS_Store
+</pre><p>But there's an important detail here: the&nbsp;<code>.gitignore</code>&nbsp;<strong>does NOT remove files that Git is already tracking.</strong></p><p><strong>If&nbsp;</strong><code>.env</code>&nbsp;has already been committed, adding it to&nbsp;<code>.gitignore</code>&nbsp;won't erase it from Git.</p><p>You can stop tracking the file while keeping it on your computer:</p><pre class="ql-syntax" spellcheck="false">git rm --cached .env
+</pre><p>Then commit the&nbsp;<code>.gitignore</code>&nbsp;change:</p><pre class="ql-syntax" spellcheck="false">git add .gitignore
+git commit -m "Ignore local environment files"
+</pre><p>But remember: this only removes the file from future commits. It does&nbsp;<strong>not</strong>&nbsp;remove the secret from previous commits.</p><p>That's where Git history comes in.</p><h1><br></h1><p><br></p>
+        </div>
+
+        <div class="article-tags">
+
+            <span>
+                GENERAL UPDATE
+            </span>
+
+            <span>
+                Security Advisory
+            </span>
+
+            <span>
+                Dyve HackaX
+            </span>
+
+        </div>
+
+    </main>
+
+</div>
+
+<section class="hx-cta">
+
+    <div class="hx-cta-card">
+
+        <h2>
+            Stay ahead of active threats
+        </h2>
+
+        <p>
+            Track breach signals, threat actors,
+            ransomware activity and underground
+            intelligence with Dyve HackaX.
+        </p>
+
+        <a
+            href="../"
+            class="hx-cta-btn"
+        >
+            Explore HackaX Intelligence →
+        </a>
+
+    </div>
+
+</section>
+
+<footer class="hx-footer">
+
+    <div class="hx-footer-logo">
+        DYVE // HACKAX
+    </div>
+
+    <div class="hx-legal">
+
+        <span>
+            © 2026 Dyve
+        </span>
+
+        <a
+            href="../privacy-policy/index.html"
+        >
+            Privacy
+        </a>
+
+        <a
+            href="../terms-of-service/index.html"
+        >
+            Terms
+        </a>
+
+    </div>
+
+</footer>
+
+<script>
+
+function copyLink(){
+    if(navigator.clipboard){
+        navigator.clipboard.writeText(
+            location.href
+        );
+    }
+
+    alert("Link copied");
+}
+
+function shareX(){
+    window.open(
+        "https://twitter.com/intent/tweet?url=" +
+        encodeURIComponent(location.href) +
+        "&text=" +
+        encodeURIComponent(document.title),
+        "_blank"
+    );
+}
+
+function shareLinkedIn(){
+    window.open(
+        "https://www.linkedin.com/sharing/share-offsite/?url=" +
+        encodeURIComponent(location.href),
+        "_blank"
+    );
+}
+
+function goBack(){
+    history.length > 1
+        ? history.back()
+        : location.href="../";
+}
+
+</script>
+
+</body>
+</html>
