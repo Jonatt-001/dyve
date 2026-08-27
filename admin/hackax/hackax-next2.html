@@ -3,98 +3,1660 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+
 <title>Dyve | HackaX Publisher — Media</title>
+
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#020403">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="HackaX Publisher">
+<meta name="mobile-web-app-capable" content="yes">
+
 <link rel="manifest" href="../manifest.json">
+
 <script src="https://cdn.tailwindcss.com"></script>
 
 <script>
-tailwind.config={
-    theme:{extend:{colors:{dyve:{bg:"#020403",card:"#07100d",accent:"#00ffaa",accentHover:"#00cc88",text:"#e8f0ee",muted:"rgba(255,255,255,.6)"}}}}
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                dyve: {
+                    bg: "#020403",
+                    card: "#07100d",
+                    accent: "#00ffaa",
+                    accentHover: "#00cc88",
+                    text: "#e8f0ee",
+                    muted: "rgba(255,255,255,.6)"
+                }
+            }
+        }
+    }
 };
 </script>
+
 <link rel="stylesheet" href="hackax-onboarding.css">
+
+<style>
+/* ==========================================================
+   HACKAX STAGE 02
+   STANDALONE NATIVE APP LAYER
+   ========================================================== */
+
+:root {
+    --hax-bg: #f4f7f6;
+    --hax-surface: #ffffff;
+    --hax-surface-2: #eef3f1;
+    --hax-border: rgba(10, 25, 20, .10);
+    --hax-border-strong: rgba(10, 25, 20, .16);
+    --hax-text: #0c1420;
+    --hax-muted: #647184;
+    --hax-soft: #8b96a5;
+    --hax-green: #00b879;
+    --hax-green-dark: #008d60;
+    --hax-green-soft: #e8faf3;
+    --hax-black: #020403;
+    --hax-danger: #dc3545;
+    --hax-danger-soft: #fff0f1;
+    --hax-warning: #b87900;
+    --hax-warning-soft: #fff8e8;
+
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-left: env(safe-area-inset-left, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
+
+    --app-header-height: 178px;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+}
+
+html {
+    background: var(--hax-black);
+    overscroll-behavior-y: none;
+}
+
+body {
+    margin: 0;
+    min-height: 100dvh;
+    background:
+        radial-gradient(
+            circle at 15% 0%,
+            rgba(0, 255, 170, .055),
+            transparent 30%
+        ),
+        var(--hax-bg);
+    color: var(--hax-text);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overscroll-behavior-y: none;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button {
+    touch-action: manipulation;
+}
+
+img {
+    max-width: 100%;
+}
+
+a {
+    -webkit-touch-callout: none;
+}
+
+/* ==========================================================
+   NATIVE APP HEADER
+   ========================================================== */
+
+.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background:
+        linear-gradient(
+            180deg,
+            #020403 0%,
+            #030604 100%
+        );
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,.09);
+    padding-top: var(--safe-top);
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.18);
+}
+
+.app-header-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding:
+        13px
+        max(16px, var(--safe-right))
+        0
+        max(16px, var(--safe-left));
+}
+
+.app-topbar {
+    min-height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.brand-lockup {
+    min-width: 0;
+}
+
+.brand-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+    line-height: 1;
+    font-weight: 950;
+    letter-spacing: -.045em;
+}
+
+.brand-link span {
+    color: var(--hax-green);
+}
+
+.brand-subtitle {
+    margin-top: 7px;
+    color: rgba(255,255,255,.42);
+    font-size: 9px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.save-indicator {
+    min-width: 54px;
+    text-align: right;
+    color: rgba(255,255,255,.42);
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.native-header-button {
+    min-height: 42px;
+    border-radius: 13px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.055);
+    color: rgba(255,255,255,.86);
+    padding: 0 13px;
+    font-size: 11px;
+    font-weight: 850;
+    white-space: nowrap;
+    transition:
+        transform .15s ease,
+        background .15s ease;
+}
+
+.native-header-button:active {
+    transform: scale(.97);
+    background: rgba(255,255,255,.10);
+}
+
+.native-header-button.primary {
+    background: #fff;
+    color: #070b0a;
+    border-color: #fff;
+}
+
+/* ==========================================================
+   STEP NAVIGATION
+   ========================================================== */
+
+.stepper-shell {
+    margin-top: 11px;
+    margin-left: -1px;
+    margin-right: -1px;
+    overflow: hidden;
+}
+
+.stepper {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: max-content;
+    max-width: none;
+    overflow: visible;
+    padding:
+        5px
+        5px
+        14px;
+}
+
+.step {
+    flex: 0 0 auto;
+    min-width: 145px;
+    height: 54px;
+    padding: 0 15px;
+    border-radius: 17px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.025);
+    color: rgba(255,255,255,.43);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    transition:
+        background .2s ease,
+        color .2s ease,
+        border-color .2s ease,
+        transform .15s ease;
+}
+
+.step-number {
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,.07);
+    color: rgba(255,255,255,.45);
+    font-size: 12px;
+    font-weight: 950;
+    letter-spacing: 0;
+}
+
+.step.active,
+.step[data-stage="2"] {
+    color: var(--hax-green);
+    border-color: rgba(0,255,170,.25);
+    background: rgba(0,255,170,.045);
+}
+
+.step.active .step-number,
+.step[data-stage="2"] .step-number {
+    color: #001b11;
+    background: var(--hax-green);
+}
+
+.step.completed {
+    color: rgba(255,255,255,.78);
+}
+
+.step.completed .step-number {
+    background: rgba(0,255,170,.18);
+    color: var(--hax-green);
+}
+
+.step:active {
+    transform: scale(.985);
+}
+
+/* ==========================================================
+   STATUS STRIP
+   ========================================================== */
+
+.status-strip-wrap {
+    position: relative;
+    z-index: 20;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding:
+        13px
+        max(16px, var(--safe-right))
+        0
+        max(16px, var(--safe-left));
+}
+
+.status-strip {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 1px;
+}
+
+.status-strip::-webkit-scrollbar {
+    display: none;
+}
+
+.status-pill {
+    flex: 0 0 auto;
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 13px;
+    padding: 0 12px;
+    border: 1px solid var(--hax-border);
+    background: rgba(255,255,255,.82);
+    box-shadow:
+        0 3px 14px rgba(10,25,20,.035);
+    color: var(--hax-text);
+    font-size: 10px;
+    font-weight: 850;
+    white-space: nowrap;
+}
+
+.status-pill.dark {
+    background: #050706;
+    border-color: rgba(255,255,255,.12);
+    color: #fff;
+}
+
+.status-pill.green {
+    color: #087451;
+    background: var(--hax-green-soft);
+    border-color: rgba(0,184,121,.20);
+}
+
+.status-pill.stage {
+    color: #344055;
+    background: #f4f6fb;
+    border-color: #dfe4ee;
+}
+
+.status-dot {
+    width: 9px;
+    height: 9px;
+    flex: 0 0 9px;
+    border-radius: 50%;
+    background: var(--hax-green);
+    box-shadow: 0 0 0 4px rgba(0,184,121,.10);
+}
+
+.status-dot.offline {
+    background: #d98a00;
+    box-shadow: 0 0 0 4px rgba(217,138,0,.10);
+}
+
+.status-refresh {
+    border: 0;
+    background: transparent;
+    color: rgba(255,255,255,.52);
+    padding: 2px;
+    font-size: 20px;
+    line-height: 1;
+}
+
+/* ==========================================================
+   APP CONTENT
+   ========================================================== */
+
+.app-main {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding:
+        25px
+        max(16px, var(--safe-right))
+        calc(115px + var(--safe-bottom))
+        max(16px, var(--safe-left));
+}
+
+.hero-copy {
+    max-width: 780px;
+    margin-bottom: 22px;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: #07845f;
+    font-size: 10px;
+    font-weight: 950;
+    letter-spacing: .24em;
+    line-height: 1.2;
+}
+
+.eyebrow::before {
+    content: "";
+    width: 38px;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--hax-green);
+}
+
+.page-title {
+    margin: 12px 0 0;
+    color: #0b1321;
+    font-size: clamp(36px, 7vw, 64px);
+    line-height: .94;
+    font-weight: 950;
+    letter-spacing: -.065em;
+}
+
+.page-subtitle {
+    max-width: 760px;
+    margin: 17px 0 0;
+    color: #667386;
+    font-size: 15px;
+    line-height: 1.7;
+    font-weight: 600;
+}
+
+/* ==========================================================
+   STAGE GRID
+   ========================================================== */
+
+.stage-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+}
+
+.stage-main,
+.stage-side {
+    min-width: 0;
+}
+
+.onboarding-card {
+    position: relative;
+    border: 1px solid var(--hax-border);
+    border-radius: 25px;
+    background: rgba(255,255,255,.91);
+    box-shadow:
+        0 14px 45px rgba(20,35,30,.055);
+    padding: 18px;
+    backdrop-filter: blur(14px);
+}
+
+.section-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.section-title {
+    color: #0b1321;
+    font-size: 20px;
+    line-height: 1.1;
+    font-weight: 950;
+    letter-spacing: -.035em;
+}
+
+.section-note {
+    color: #707d8e;
+    font-size: 12px;
+    line-height: 1.6;
+    font-weight: 600;
+}
+
+.tag {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: #12c58d;
+    color: #002218;
+    font-size: 9px;
+    font-weight: 950;
+    letter-spacing: .17em;
+}
+
+/* ==========================================================
+   STANDARD MEDIA UPLOADER
+   ========================================================== */
+
+.media-uploader {
+    margin-top: 17px;
+}
+
+.media-drop {
+    position: relative;
+    min-height: 205px;
+    border: 2px dashed #42bd95;
+    border-radius: 22px;
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(0,184,121,.10),
+            transparent 58%
+        ),
+        #f8fffc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 28px 18px;
+    cursor: pointer;
+    transition:
+        border-color .2s ease,
+        background .2s ease,
+        transform .15s ease;
+}
+
+.media-drop:hover {
+    border-color: var(--hax-green);
+    background: #f2fff9;
+}
+
+.media-drop:active {
+    transform: scale(.992);
+}
+
+.media-drop.dragover {
+    border-color: var(--hax-green);
+    background: #e8fff6;
+}
+
+.media-drop input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.media-icon {
+    width: 64px;
+    height: 64px;
+    display: grid;
+    place-items: center;
+    border-radius: 20px;
+    background: #020403;
+    color: var(--hax-green);
+    font-size: 32px;
+    font-weight: 500;
+    box-shadow:
+        0 12px 25px rgba(0,0,0,.14);
+}
+
+.media-drop-title {
+    margin-top: 17px;
+    color: #101927;
+    font-size: 19px;
+    line-height: 1.1;
+    font-weight: 950;
+    letter-spacing: -.035em;
+}
+
+.media-drop-note {
+    max-width: 370px;
+    margin-top: 9px;
+    color: #6e7b8c;
+    font-size: 11px;
+    line-height: 1.55;
+    font-weight: 600;
+}
+
+.media-file-hint {
+    margin-top: 10px;
+    color: #9aa4b1;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .04em;
+}
+
+/* ==========================================================
+   PROCESSING STATUS
+   ========================================================== */
+
+.processing-status {
+    display: none;
+    margin-top: 12px;
+    border-radius: 15px;
+    border: 1px solid rgba(0,184,121,.16);
+    background: #effbf6;
+    padding: 12px;
+}
+
+.processing-status.visible {
+    display: block;
+}
+
+.processing-status-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.processing-spinner {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    border-radius: 50%;
+    border: 2px solid rgba(0,184,121,.18);
+    border-top-color: var(--hax-green);
+    animation: hax-spin .75s linear infinite;
+}
+
+@keyframes hax-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.processing-status-title {
+    color: #087451;
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.processing-status-detail {
+    margin-top: 3px;
+    color: #718091;
+    font-size: 10px;
+    line-height: 1.45;
+    font-weight: 600;
+}
+
+/* ==========================================================
+   LOCAL REVIEW CARD
+   ========================================================== */
+
+.pending-card {
+    position: relative;
+    margin-top: 14px;
+    border: 1px solid rgba(0,184,121,.24);
+    border-radius: 22px;
+    background:
+        linear-gradient(
+            145deg,
+            #f0fff9,
+            #f9fffc
+        );
+    padding: 15px;
+    overflow: hidden;
+}
+
+.pending-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.pending-heading {
+    min-width: 0;
+}
+
+.pending-title {
+    color: #0b1321;
+    font-size: 15px;
+    line-height: 1.15;
+    font-weight: 950;
+}
+
+.pending-filename {
+    margin-top: 6px;
+    color: #728091;
+    font-size: 10px;
+    line-height: 1.45;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.pending-status {
+    flex: 0 0 auto;
+    color: #087451;
+    font-size: 9px;
+    line-height: 1;
+    font-weight: 950;
+    letter-spacing: .18em;
+}
+
+.media-preview-frame {
+    position: relative;
+    margin-top: 14px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    border-radius: 18px;
+    background: #050607;
+    border: 1px solid rgba(0,0,0,.10);
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.12);
+}
+
+.media-preview-frame img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center center;
+}
+
+.preview-badge {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    min-height: 29px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 9px;
+    border-radius: 9px;
+    background: rgba(0,0,0,.72);
+    color: #fff;
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: .14em;
+    backdrop-filter: blur(8px);
+}
+
+.preview-badge span {
+    width: 6px;
+    height: 6px;
+    margin-right: 6px;
+    border-radius: 50%;
+    background: var(--hax-green);
+}
+
+/* ==========================================================
+   FACTS
+   ========================================================== */
+
+.image-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 7px;
+    margin-top: 10px;
+}
+
+.fact {
+    min-width: 0;
+    border-radius: 13px;
+    background: rgba(255,255,255,.94);
+    border: 1px solid rgba(10,25,20,.08);
+    padding: 10px;
+}
+
+.fact-label {
+    color: #98a2af;
+    font-size: 8px;
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+
+.fact-value {
+    margin-top: 6px;
+    color: #111a28;
+    font-size: 11px;
+    line-height: 1.2;
+    font-weight: 950;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ==========================================================
+   COMMITTED ASSET
+   ========================================================== */
+
+.committed-card {
+    position: relative;
+    margin-top: 14px;
+    border: 1px solid rgba(0,184,121,.20);
+    border-radius: 22px;
+    background: #fff;
+    padding: 15px;
+}
+
+.committed-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.committed-label {
+    color: #0b1321;
+    font-size: 15px;
+    font-weight: 950;
+    line-height: 1.15;
+}
+
+.committed-note {
+    margin-top: 5px;
+    color: #758193;
+    font-size: 10px;
+    line-height: 1.45;
+    font-weight: 600;
+}
+
+.committed-state {
+    flex: 0 0 auto;
+    color: #07845f;
+    font-size: 8px;
+    font-weight: 950;
+    letter-spacing: .17em;
+}
+
+.committed-preview {
+    position: relative;
+    margin-top: 13px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    border-radius: 18px;
+    background: #050607;
+}
+
+.committed-preview img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+}
+
+.delete-image-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 5;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255,255,255,.28);
+    border-radius: 50%;
+    background: rgba(0,0,0,.72);
+    color: #fff;
+    font-size: 23px;
+    line-height: 1;
+    font-weight: 400;
+    backdrop-filter: blur(10px);
+    box-shadow:
+        0 8px 22px rgba(0,0,0,.25);
+}
+
+.delete-image-button:active {
+    transform: scale(.92);
+}
+
+.committed-facts {
+    margin-top: 10px;
+    color: #768292;
+    font-size: 10px;
+    line-height: 1.55;
+    font-weight: 700;
+}
+
+/* ==========================================================
+   METADATA
+   ========================================================== */
+
+.image-meta-grid {
+    display: grid;
+    grid-template-columns: minmax(0,1fr);
+    gap: 13px;
+    margin-top: 17px;
+}
+
+.field-label {
+    display: block;
+    margin-bottom: 7px;
+    color: #4e5c6e;
+    font-size: 9px;
+    line-height: 1;
+    font-weight: 950;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+}
+
+.field {
+    width: 100%;
+    min-height: 47px;
+    border: 1px solid #dbe1e7;
+    border-radius: 13px;
+    outline: none;
+    background: #fbfcfd;
+    color: #101927;
+    padding: 12px 13px;
+    font-size: 13px;
+    line-height: 1.45;
+    font-weight: 650;
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease,
+        background .18s ease;
+}
+
+textarea.field {
+    min-height: 96px;
+    resize: vertical;
+}
+
+.field:focus {
+    border-color: rgba(0,184,121,.58);
+    background: #fff;
+    box-shadow:
+        0 0 0 4px rgba(0,184,121,.08);
+}
+
+.metadata-state {
+    margin-top: 10px;
+    color: #788494;
+    font-size: 10px;
+    line-height: 1.55;
+    font-weight: 600;
+}
+
+/* ==========================================================
+   DARK PIPELINE
+   ========================================================== */
+
+.dark-panel {
+    border-radius: 22px;
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(0,255,170,.08),
+            transparent 35%
+        ),
+        #050807;
+    border: 1px solid rgba(255,255,255,.08);
+    color: #fff;
+    padding: 18px;
+    box-shadow:
+        0 18px 45px rgba(0,0,0,.15);
+}
+
+.pipeline-list {
+    margin-top: 15px;
+    display: grid;
+    gap: 10px;
+}
+
+.pipeline-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: rgba(255,255,255,.57);
+    font-size: 10px;
+    line-height: 1.3;
+    font-weight: 700;
+}
+
+.pipeline-icon {
+    width: 18px;
+    text-align: center;
+    color: rgba(255,255,255,.32);
+    font-size: 13px;
+    font-weight: 950;
+}
+
+.pipeline-row.done {
+    color: rgba(255,255,255,.82);
+}
+
+.pipeline-row.done .pipeline-icon {
+    color: var(--hax-green);
+}
+
+.pipeline-row.active .pipeline-icon {
+    color: var(--hax-green);
+    animation: hax-pulse 1.1s ease-in-out infinite;
+}
+
+.pipeline-row.error {
+    color: #ff8d97;
+}
+
+.pipeline-row.error .pipeline-icon {
+    color: #ff5865;
+}
+
+@keyframes hax-pulse {
+    0%,100% {
+        opacity: .45;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.pipeline-message {
+    margin-top: 15px;
+    border-radius: 13px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.045);
+    padding: 11px;
+    color: rgba(255,255,255,.52);
+    font-size: 9px;
+    line-height: 1.55;
+    font-weight: 650;
+}
+
+.pipeline-message.success {
+    color: #72efc1;
+}
+
+.pipeline-message.warning {
+    color: #ffd277;
+}
+
+.pipeline-message.error {
+    color: #ff8e98;
+}
+
+/* ==========================================================
+   POLICY CARDS
+   ========================================================== */
+
+.policy-card {
+    margin-top: 14px;
+}
+
+.warning-strip {
+    border: 1px solid #f0d89a;
+    border-radius: 13px;
+    background: var(--hax-warning-soft);
+    color: #8b6208;
+    padding: 11px;
+    font-size: 10px;
+    line-height: 1.55;
+    font-weight: 700;
+}
+
+/* ==========================================================
+   ACTION BAR
+   ========================================================== */
+
+.stage-actions {
+    position: fixed;
+    z-index: 90;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    gap: 9px;
+    padding:
+        10px
+        max(16px, var(--safe-right))
+        calc(10px + var(--safe-bottom))
+        max(16px, var(--safe-left));
+    background:
+        linear-gradient(
+            180deg,
+            rgba(244,247,246,0),
+            rgba(244,247,246,.96) 30%
+        );
+    pointer-events: none;
+}
+
+.stage-actions-inner {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    gap: 9px;
+    pointer-events: auto;
+}
+
+.action-btn {
+    min-height: 51px;
+    border: 1px solid #d8dfe5;
+    border-radius: 15px;
+    background: rgba(255,255,255,.96);
+    color: #344052;
+    padding: 0 17px;
+    font-size: 11px;
+    font-weight: 900;
+    box-shadow:
+        0 8px 24px rgba(10,25,20,.08);
+    transition:
+        transform .15s ease,
+        background .15s ease,
+        opacity .15s ease;
+}
+
+.action-btn:active {
+    transform: scale(.98);
+}
+
+.action-btn.primary {
+    background: #07100d;
+    color: #fff;
+    border-color: #07100d;
+}
+
+.action-btn.primary:disabled,
+.action-btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.action-btn.primary:not(:disabled) {
+    box-shadow:
+        0 10px 28px rgba(0,0,0,.18);
+}
+
+/* ==========================================================
+   TOAST
+   ========================================================== */
+
+.toast {
+    position: fixed;
+    z-index: 300;
+    left: 50%;
+    bottom: calc(82px + var(--safe-bottom));
+    width: min(calc(100vw - 30px), 420px);
+    transform: translateX(-50%) translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+    border-radius: 15px;
+    padding: 13px 15px;
+    background: #050807;
+    color: #fff;
+    box-shadow:
+        0 18px 45px rgba(0,0,0,.25);
+    font-size: 11px;
+    line-height: 1.45;
+    font-weight: 750;
+    transition:
+        opacity .2s ease,
+        transform .2s ease;
+}
+
+.toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast.success {
+    border: 1px solid rgba(0,255,170,.22);
+}
+
+.toast.error {
+    border: 1px solid rgba(255,80,95,.25);
+}
+
+.toast.info {
+    border: 1px solid rgba(255,255,255,.12);
+}
+
+/* ==========================================================
+   CONFIRM MODAL
+   ========================================================== */
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    padding:
+        16px
+        max(16px, var(--safe-right))
+        calc(16px + var(--safe-bottom))
+        max(16px, var(--safe-left));
+    background: rgba(0,0,0,.58);
+    backdrop-filter: blur(8px);
+}
+
+.modal-backdrop.visible {
+    display: flex;
+}
+
+.modal {
+    width: min(100%, 470px);
+    border-radius: 24px;
+    background: #fff;
+    padding: 19px;
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.28);
+    animation: hax-modal-in .2s ease;
+}
+
+@keyframes hax-modal-in {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-title {
+    color: #0c1420;
+    font-size: 19px;
+    font-weight: 950;
+    letter-spacing: -.035em;
+}
+
+.modal-text {
+    margin-top: 8px;
+    color: #697586;
+    font-size: 11px;
+    line-height: 1.6;
+    font-weight: 650;
+}
+
+.modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 17px;
+}
+
+.modal-btn {
+    min-height: 47px;
+    border-radius: 13px;
+    border: 1px solid #dce1e6;
+    background: #f8f9fa;
+    color: #334052;
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.modal-btn.danger {
+    border-color: #dc3545;
+    background: #dc3545;
+    color: #fff;
+}
+
+/* ==========================================================
+   VALIDATION
+   ========================================================== */
+
+.validation {
+    margin-top: 14px;
+    border-radius: 15px;
+    border: 1px solid rgba(220,53,69,.18);
+    background: var(--hax-danger-soft);
+    color: #a62937;
+    padding: 12px;
+    font-size: 10px;
+    line-height: 1.55;
+    font-weight: 750;
+}
+
+.validation ul {
+    margin: 7px 0 0 18px;
+    padding: 0;
+}
+
+/* ==========================================================
+   MOBILE OPTIMIZATION
+   ========================================================== */
+
+@media (max-width: 767px) {
+
+    .app-header-inner {
+        padding-top: 8px;
+    }
+
+    .brand-link {
+        font-size: 19px;
+    }
+
+    .brand-subtitle {
+        font-size: 8px;
+        letter-spacing: .20em;
+    }
+
+    .save-indicator {
+        display: none;
+    }
+
+    .native-header-button {
+        min-height: 40px;
+        padding: 0 11px;
+    }
+
+    .stepper-shell {
+        margin-top: 9px;
+        margin-left: -16px;
+        margin-right: -16px;
+        padding-left: 11px;
+        padding-right: 11px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .stepper-shell::-webkit-scrollbar {
+        display: none;
+    }
+
+    .step {
+        min-width: 142px;
+        height: 52px;
+    }
+
+    .status-strip-wrap {
+        padding-top: 11px;
+    }
+
+    .app-main {
+        padding-top: 22px;
+    }
+
+    .page-title {
+        font-size: 40px;
+    }
+
+    .page-subtitle {
+        font-size: 13px;
+        line-height: 1.65;
+    }
+
+    .onboarding-card {
+        border-radius: 22px;
+        padding: 15px;
+    }
+
+    .section-title {
+        font-size: 18px;
+    }
+
+    .media-drop {
+        min-height: 194px;
+    }
+
+    .stage-actions {
+        padding-top: 17px;
+    }
+}
+
+@media (min-width: 768px) {
+
+    .stage-layout {
+        grid-template-columns: minmax(0, 1fr) 310px;
+        align-items: start;
+    }
+
+    .stage-side {
+        position: sticky;
+        top: 198px;
+    }
+
+    .image-meta-grid {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+    }
+
+    .image-facts {
+        grid-template-columns: repeat(4, minmax(0,1fr));
+    }
+
+    .modal-backdrop {
+        align-items: center;
+    }
+}
+
+/* ==========================================================
+   REDUCED MOTION
+   ========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+    }
+}
+</style>
 </head>
-<body data-stage="2" class="min-h-screen">
 
-<header class="bg-dyve-bg border-b border-white/10 sticky top-0 z-50">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-<div class="flex justify-between items-center gap-4">
-<div>
-<a href="index.html" class="text-xl font-extrabold text-white tracking-wide">DYVE<span class="text-dyve-accent">|</span>HACKAX</a>
-<p class="text-[10px] text-white/45 uppercase tracking-[.22em]">Cyber Intelligence Publisher</p>
-</div>
-<div class="flex items-center gap-2">
-<span id="saveState" class="hidden text-[10px] text-white/40">Saved</span>
-<a href="settings.html" class="hidden sm:inline-block px-3 py-2 text-xs font-semibold text-white/70 bg-white/5 border border-white/10 rounded-lg">Settings</a>
-<button id="saveDraftBtn" type="button" class="px-3 py-2 text-xs font-semibold text-white/70 bg-white/5 border border-white/10 rounded-lg">Save Draft</button>
-</div>
+<body data-stage="2">
+
+<!-- ==========================================================
+     NATIVE APP HEADER
+     ========================================================== -->
+
+<header class="app-header">
+
+<div class="app-header-inner">
+
+<div class="app-topbar">
+
+<div class="brand-lockup">
+
+<a href="index.html" class="brand-link">
+DYVE<span>|</span>HACKAX
+</a>
+
+<div class="brand-subtitle">
+Cyber Intelligence Publisher
 </div>
 
-<div class="mt-4 stepper">
-<button type="button" class="step" data-stage="1" data-stage-link="1"><span class="step-number">1</span><span>Article</span></button>
-<button type="button" class="step" data-stage="2" data-stage-link="2"><span class="step-number">2</span><span>Media</span></button>
-<button type="button" class="step" data-stage="3" data-stage-link="3"><span class="step-number">3</span><span>Classification</span></button>
-<button type="button" class="step" data-stage="4" data-stage-link="4"><span class="step-number">4</span><span>Intelligence</span></button>
-<button type="button" class="step" data-stage="5" data-stage-link="5"><span class="step-number">5</span><span>SEO</span></button>
-<button type="button" class="step" data-stage="6" data-stage-link="6"><span class="step-number">6</span><span>Internal Linking</span></button>
-<button type="button" class="step" data-stage="7" data-stage-link="7"><span class="step-number">7</span><span>Technical</span></button>
-<button type="button" class="step" data-stage="8" data-stage-link="8"><span class="step-number">8</span><span>Review</span></button>
 </div>
+
+<div class="header-actions">
+
+<div id="saveState" class="save-indicator">
+Saved
 </div>
+
+<a
+    href="settings.html"
+    class="native-header-button"
+>
+Settings
+</a>
+
+<button
+    id="saveDraftBtn"
+    type="button"
+    class="native-header-button primary"
+>
+Save Draft
+</button>
+
+</div>
+
+</div>
+
+<div class="stepper-shell">
+
+<div class="stepper" id="stageStepper">
+
+<button
+    type="button"
+    class="step completed"
+    data-stage="1"
+    data-stage-link="1"
+>
+<span class="step-number">1</span>
+<span>Article</span>
+</button>
+
+<button
+    type="button"
+    class="step active"
+    data-stage="2"
+    data-stage-link="2"
+>
+<span class="step-number">2</span>
+<span>Media</span>
+</button>
+
+<button
+    type="button"
+    class="step"
+    data-stage="3"
+    data-stage-link="3"
+>
+<span class="step-number">3</span>
+<span>Classification</span>
+</button>
+
+<button
+    type="button"
+    class="step"
+    data-stage="4"
+    data-stage-link="4"
+>
+<span class="step-number">4</span>
+<span>Intelligence</span>
+</button>
+
+<button
+    type="button"
+    class="step"
+    data-stage="5"
+    data-stage-link="5"
+>
+<span class="step-number">5</span>
+<span>SEO</span>
+</button>
+
+<button
+    type="button"
+    class="step"
+    data-stage="6"
+    data-stage-link="6"
+>
+<span class="step-number">6</span>
+<span>Internal Linking</span>
+</button>
+
+<button
+    type="button"
+    class="step"
+    data-stage="7"
+    data-stage-link="7"
+>
+<span class="step-number">7</span>
+<span>Technical</span>
+</button>
+
+<button
+    type="button"
+    class="step"
+    data-stage="8"
+    data-stage-link="8"
+>
+<span class="step-number">8</span>
+<span>Review</span>
+</button>
+
+</div>
+
+</div>
+
+</div>
+
 </header>
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-<div class="flex flex-wrap items-center gap-2">
+<!-- ==========================================================
+     STATUS
+     ========================================================== -->
 
-<div class="flex items-center gap-2 px-3 py-2 bg-dyve-bg text-white border border-white/10 rounded-lg">
+<div class="status-strip-wrap">
+
+<div class="status-strip">
+
+<div class="status-pill dark">
+
 <span id="statusDot" class="status-dot"></span>
-<span id="statusText" class="text-xs">Checking...</span>
-<button id="refreshStatusBtn" type="button" class="text-white/50 hover:text-white" title="Check connection">↻</button>
+
+<span id="statusText">
+Checking...
+</span>
+
+<button
+    id="refreshStatusBtn"
+    type="button"
+    class="status-refresh"
+    title="Check connection"
+    aria-label="Check connection"
+>
+↻
+</button>
+
 </div>
 
-<div class="px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-semibold text-emerald-800">
+<div class="status-pill green">
 HackaX only
 </div>
 
-<div class="px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700">
-<span id="stageCounter">STEP 2 OF 8</span> · <span id="stageTitle">Media</span>
+<div class="status-pill stage">
+
+<span id="stageCounter">
+STEP 2 OF 8
+</span>
+
+<span>·</span>
+
+<span id="stageTitle">
+Media
+</span>
+
 </div>
 
 </div>
+
 </div>
 
-<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+<!-- ==========================================================
+     MAIN
+     ========================================================== -->
 
-<div class="mb-6">
-<div class="eyebrow">STAGE 02 / MEDIA</div>
+<main class="app-main">
+
+<section class="hero-copy">
+
+<div class="eyebrow">
+STAGE 02 / MEDIA
+</div>
 
 <h1 class="page-title">
-Process every image properly.
+Build a homepage-ready image.
 </h1>
 
 <p class="page-subtitle">
-Select the source image, process it locally, inspect the exact WebP/watermarked result, complete its metadata, and explicitly commit the approved asset to Cloudinary. Nothing is uploaded until you approve the processed image.
+Choose an image, process it locally, embed the HackaX watermark, convert it to optimized WebP, review the exact output, then explicitly commit it to Cloudinary. The publisher state remains connected to the rest of the HackaX workflow without loading the global publisher engine.
 </p>
-</div>
+
+</section>
 
 <div class="stage-layout">
 
-<div class="stage-main space-y-5">
+<!-- ========================================================
+     MAIN COLUMN
+     ======================================================== -->
+
+<div class="stage-main">
 
 <section class="onboarding-card">
 
 <div class="section-head">
 
 <div>
+
 <div class="section-title">
 Featured image
 </div>
 
-<div class="section-note">
-Recommended editorial ratio: 16:9. Maximum processing width: 1800px.
+<div class="section-note mt-2">
+Homepage-safe 16:9 presentation · Maximum processing width: 1800px.
 </div>
+
 </div>
 
 <span class="tag">
@@ -102,6 +1664,10 @@ WEBP
 </span>
 
 </div>
+
+<!-- STANDARD UPLOADER -->
+
+<div class="media-uploader">
 
 <div
     id="mediaDrop"
@@ -127,119 +1693,172 @@ WEBP
 
 <div
     id="mediaDropTitle"
-    class="font-black text-lg"
+    class="media-drop-title"
 >
 Choose featured image
 </div>
 
 <div
     id="mediaDropNote"
-    class="text-xs text-slate-500 mt-2"
+    class="media-drop-note"
 >
-Tap to select from your device. The image is processed locally before any upload.
+Tap to select from your device. Your source image stays local while it is processed.
+</div>
+
+<div class="media-file-hint">
+JPG · PNG · WEBP · GIF · AVIF · MAX 25 MB
 </div>
 
 </div>
+
+</div>
+
+<!-- PROCESSING STATUS -->
 
 <div
     id="imageProcessingStatus"
-    class="mt-3"
+    class="processing-status"
     aria-live="polite"
-></div>
+>
+
+<div class="processing-status-row">
+
+<div class="processing-spinner"></div>
+
+<div>
+
+<div
+    id="processingStatusTitle"
+    class="processing-status-title"
+>
+Processing image
+</div>
+
+<div
+    id="processingStatusDetail"
+    class="processing-status-detail"
+>
+Preparing local image pipeline...
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- LOCAL REVIEW -->
 
 <div
     id="pendingImagePanel"
-    class="hidden mt-4"
+    class="hidden"
 >
 
-<div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4">
+<div class="pending-card">
 
-<div class="flex flex-wrap items-center justify-between gap-3">
+<div class="pending-head">
 
-<div>
-<div class="text-sm font-black text-slate-900">
+<div class="pending-heading">
+
+<div class="pending-title">
 Processed image ready for review
 </div>
 
 <div
     id="pendingImageFilename"
-    class="text-xs text-slate-500 mt-1 break-all"
+    class="pending-filename"
 >
 </div>
+
 </div>
 
 <div
     id="pendingImageStatus"
-    class="text-[10px] uppercase tracking-[.18em] font-black text-emerald-700"
+    class="pending-status"
 >
 LOCAL ONLY
 </div>
 
 </div>
 
-<div
-    id="pendingPreview"
-    class="mt-4 rounded-2xl overflow-hidden bg-black border border-black/10"
->
+<div class="media-preview-frame">
+
 <img
     id="pendingPreviewImg"
     src=""
     alt="Processed HackaX featured image preview"
-    class="w-full block"
 >
+
+<div class="preview-badge">
+<span></span>
+EXACT UPLOAD OUTPUT
+</div>
+
 </div>
 
 <div
     id="pendingImageFacts"
-    class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2"
+    class="image-facts"
 >
 
-<div class="rounded-xl bg-white border border-slate-200 p-3">
-<div class="text-[9px] uppercase tracking-[.15em] text-slate-400 font-bold">
+<div class="fact">
+
+<div class="fact-label">
 Dimensions
 </div>
+
 <div
     id="pendingDimensions"
-    class="text-xs font-black text-slate-900 mt-1"
+    class="fact-value"
 >
 —
 </div>
+
 </div>
 
-<div class="rounded-xl bg-white border border-slate-200 p-3">
-<div class="text-[9px] uppercase tracking-[.15em] text-slate-400 font-bold">
+<div class="fact">
+
+<div class="fact-label">
 Format
 </div>
+
 <div
     id="pendingFormat"
-    class="text-xs font-black text-slate-900 mt-1"
+    class="fact-value"
 >
 WEBP
 </div>
+
 </div>
 
-<div class="rounded-xl bg-white border border-slate-200 p-3">
-<div class="text-[9px] uppercase tracking-[.15em] text-slate-400 font-bold">
-Output size
+<div class="fact">
+
+<div class="fact-label">
+Output
 </div>
+
 <div
     id="pendingSize"
-    class="text-xs font-black text-slate-900 mt-1"
+    class="fact-value"
 >
 —
 </div>
+
 </div>
 
-<div class="rounded-xl bg-white border border-slate-200 p-3">
-<div class="text-[9px] uppercase tracking-[.15em] text-slate-400 font-bold">
-Upload state
+<div class="fact">
+
+<div class="fact-label">
+State
 </div>
+
 <div
     id="pendingUploadState"
-    class="text-xs font-black text-amber-700 mt-1"
+    class="fact-value"
 >
 Not uploaded
 </div>
+
 </div>
 
 </div>
@@ -265,61 +1884,66 @@ Discard
 
 </div>
 
-<div class="mt-3 text-[11px] leading-5 text-slate-500">
-The processed image above is the exact asset that will be uploaded. Review it before committing. Selecting a replacement does not remove the currently committed asset.
+<div class="mt-3 text-[10px] leading-5 text-slate-500">
+The image above is the exact WebP asset that will be uploaded. Selecting another image never deletes the currently committed asset.
 </div>
 
 </div>
 
 </div>
 
-<div
-    id="featuredPreview"
-    class="media-preview hidden"
->
-<img
-    id="previewImg"
-    alt="HackaX featured image preview"
->
-</div>
+<!-- COMMITTED IMAGE -->
 
 <div
     id="committedImagePanel"
-    class="hidden mt-4"
+    class="hidden"
 >
 
-<div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+<div class="committed-card">
 
-<div class="flex items-center justify-between gap-3">
+<div class="committed-head">
 
 <div>
-<div class="text-sm font-black text-slate-900">
+
+<div class="committed-label">
 Committed featured asset
 </div>
 
-<div class="text-xs text-slate-500 mt-1">
-This asset is already stored in the current publisher state.
-</div>
+<div class="committed-note">
+This image is currently connected to the HackaX publisher state.
 </div>
 
-<div class="text-[10px] uppercase tracking-[.18em] font-black text-emerald-700">
+</div>
+
+<div class="committed-state">
 COMMITTED
 </div>
 
 </div>
 
-<div class="mt-4 rounded-2xl overflow-hidden bg-black">
+<div class="committed-preview">
+
 <img
     id="committedPreviewImg"
     src=""
     alt="Committed HackaX featured image"
-    class="w-full block"
 >
+
+<button
+    id="deleteCommittedImageBtn"
+    type="button"
+    class="delete-image-button"
+    title="Delete uploaded image"
+    aria-label="Delete uploaded image"
+>
+×
+</button>
+
 </div>
 
 <div
     id="committedImageFacts"
-    class="mt-3 text-xs text-slate-500"
+    class="committed-facts"
 ></div>
 
 </div>
@@ -328,18 +1952,24 @@ COMMITTED
 
 </section>
 
-<section class="onboarding-card">
+<!-- ========================================================
+     IMAGE SEO
+     ======================================================== -->
+
+<section class="onboarding-card mt-5">
 
 <div class="section-head">
 
 <div>
+
 <div class="section-title">
 Image SEO metadata
 </div>
 
-<div class="section-note">
-Generated from the current article context. Metadata may be edited before the processed asset is committed.
+<div class="section-note mt-2">
+Generated from the current article context. Edit before committing if required.
 </div>
+
 </div>
 
 </div>
@@ -347,6 +1977,7 @@ Generated from the current article context. Metadata may be edited before the pr
 <div class="image-meta-grid">
 
 <div>
+
 <label
     class="field-label"
     for="imageAltInput"
@@ -359,10 +1990,13 @@ SEO alt text
     class="field"
     autocomplete="off"
     maxlength="180"
+    placeholder="Describe the image accurately"
 >
+
 </div>
 
 <div>
+
 <label
     class="field-label"
     for="imageTitleInput"
@@ -375,12 +2009,14 @@ Image title
     class="field"
     autocomplete="off"
     maxlength="180"
+    placeholder="Image title"
 >
-</div>
 
 </div>
 
-<div class="mt-3">
+</div>
+
+<div class="mt-4">
 
 <label
     class="field-label"
@@ -394,13 +2030,14 @@ Caption
     class="field"
     rows="3"
     maxlength="300"
+    placeholder="Optional editorial caption"
 ></textarea>
 
 </div>
 
 <div
     id="metadataState"
-    class="mt-3 text-xs text-slate-500"
+    class="metadata-state"
 >
 Metadata will be committed with the approved image.
 </div>
@@ -409,7 +2046,11 @@ Metadata will be committed with the approved image.
 
 </div>
 
-<aside class="stage-side space-y-5">
+<!-- ========================================================
+     SIDE COLUMN
+     ======================================================== -->
+
+<aside class="stage-side">
 
 <section class="dark-panel">
 
@@ -417,45 +2058,109 @@ Metadata will be committed with the approved image.
 MEDIA PIPELINE
 </div>
 
-<div class="mt-4 space-y-3 text-xs text-white/65">
+<div class="pipeline-list">
 
-<div>
-<span id="pipelineStepValidate">○</span>
+<div
+    id="pipelineRowValidate"
+    class="pipeline-row"
+>
+<span
+    id="pipelineStepValidate"
+    class="pipeline-icon"
+>
+○
+</span>
 Validate source
 </div>
 
-<div>
-<span id="pipelineStepResize">○</span>
+<div
+    id="pipelineRowResize"
+    class="pipeline-row"
+>
+<span
+    id="pipelineStepResize"
+    class="pipeline-icon"
+>
+○
+</span>
 Resize / normalize
 </div>
 
-<div>
-<span id="pipelineStepWebp">○</span>
+<div
+    id="pipelineRowWebp"
+    class="pipeline-row"
+>
+<span
+    id="pipelineStepWebp"
+    class="pipeline-icon"
+>
+○
+</span>
 Convert to WebP
 </div>
 
-<div>
-<span id="pipelineStepWatermark">○</span>
+<div
+    id="pipelineRowWatermark"
+    class="pipeline-row"
+>
+<span
+    id="pipelineStepWatermark"
+    class="pipeline-icon"
+>
+○
+</span>
 Embed HackaX watermark
 </div>
 
-<div>
-<span id="pipelineStepPreview">○</span>
-Generate local review asset
+<div
+    id="pipelineRowPreview"
+    class="pipeline-row"
+>
+<span
+    id="pipelineStepPreview"
+    class="pipeline-icon"
+>
+○
+</span>
+Generate review asset
 </div>
 
-<div>
-<span id="pipelineStepMetadata">○</span>
+<div
+    id="pipelineRowMetadata"
+    class="pipeline-row"
+>
+<span
+    id="pipelineStepMetadata"
+    class="pipeline-icon"
+>
+○
+</span>
 Generate contextual metadata
 </div>
 
-<div>
-<span id="pipelineStepUpload">○</span>
+<div
+    id="pipelineRowUpload"
+    class="pipeline-row"
+>
+<span
+    id="pipelineStepUpload"
+    class="pipeline-icon"
+>
+○
+</span>
 Cloudinary upload
 </div>
 
-<div>
-<span id="pipelineStepVerify">○</span>
+<div
+    id="pipelineRowVerify"
+    class="pipeline-row"
+>
+<span
+    id="pipelineStepVerify"
+    class="pipeline-icon"
+>
+○
+</span>
 Verify remote asset
 </div>
 
@@ -463,30 +2168,82 @@ Verify remote asset
 
 <div
     id="pipelineMessage"
-    class="mt-5 rounded-xl border border-white/10 bg-white/5 p-3 text-[11px] leading-5 text-white/55"
+    class="pipeline-message"
 >
 Waiting for an image.
 </div>
 
 </section>
 
-<section class="onboarding-card">
+<section class="onboarding-card policy-card">
+
+<div class="section-title">
+Homepage presentation
+</div>
+
+<p class="section-note mt-2">
+The committed media record includes a homepage-safe 16:9 presentation contract. Homepage cards should render the image with cover behavior so different source dimensions remain visually consistent.
+</p>
+
+<div class="mt-4 space-y-2 text-xs">
+
+<div class="flex justify-between gap-4">
+
+<span class="text-slate-500">
+Ratio
+</span>
+
+<strong class="text-slate-900">
+16:9
+</strong>
+
+</div>
+
+<div class="flex justify-between gap-4">
+
+<span class="text-slate-500">
+Fit
+</span>
+
+<strong class="text-slate-900">
+Cover
+</strong>
+
+</div>
+
+<div class="flex justify-between gap-4">
+
+<span class="text-slate-500">
+Position
+</span>
+
+<strong class="text-slate-900">
+Center
+</strong>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="onboarding-card policy-card">
 
 <div class="section-title">
 Watermark policy
 </div>
 
 <p class="section-note mt-2">
-The watermark is rendered into the pixels before upload. It is not a CSS overlay, so the published image retains it permanently.
+The HackaX watermark is rendered directly into the image pixels before the WebP is created. It is not a CSS overlay.
 </p>
 
 <div class="warning-strip mt-4">
-If assets/dyve-hackax.png is missing from the deployment, processing stops instead of silently publishing an unwatermarked image.
+If assets/dyve-hackax.png cannot be loaded, processing stops. An unwatermarked asset is never silently published.
 </div>
 
 </section>
 
-<section class="onboarding-card">
+<section class="onboarding-card policy-card">
 
 <div class="section-title">
 Upload policy
@@ -499,18 +2256,30 @@ Selecting a file never uploads it. Cloudinary is contacted only after the proces
 <div class="mt-4 space-y-2 text-xs">
 
 <div class="flex justify-between gap-4">
-<span class="text-slate-500">Source</span>
-<strong class="text-slate-900">Local device</strong>
+<span class="text-slate-500">
+Source
+</span>
+<strong class="text-slate-900">
+Local device
+</strong>
 </div>
 
 <div class="flex justify-between gap-4">
-<span class="text-slate-500">Processing</span>
-<strong class="text-slate-900">Browser</strong>
+<span class="text-slate-500">
+Processing
+</span>
+<strong class="text-slate-900">
+Browser
+</strong>
 </div>
 
 <div class="flex justify-between gap-4">
-<span class="text-slate-500">Remote upload</span>
-<strong class="text-slate-900">Explicit confirmation</strong>
+<span class="text-slate-500">
+Remote upload
+</span>
+<strong class="text-slate-900">
+Explicit confirmation
+</strong>
 </div>
 
 </div>
@@ -526,102 +2295,378 @@ Selecting a file never uploads it. Cloudinary is contacted only after the proces
     class="validation hidden"
 ></div>
 
+</main>
+
+<!-- ==========================================================
+     NATIVE BOTTOM ACTION BAR
+     ========================================================== -->
+
 <div class="stage-actions">
 
+<div class="stage-actions-inner">
+
 <button
+    id="backBtn"
     type="button"
     class="action-btn"
-    data-back
 >
 Back
 </button>
 
 <button
+    id="nextBtn"
     type="button"
     class="action-btn primary flex-1"
-    data-next
 >
 Continue
 </button>
 
 </div>
 
-<div
-    id="toast"
-    class="toast hidden"
-></div>
-
-</main>
+</div>
 
 <!-- ==========================================================
-     STAGE 02 INLINE MEDIA CONTROLLER
-     ==========================================================
-     This controller owns the Stage 02 image-selection workflow.
+     TOAST
+     ========================================================== -->
 
-     The shared hackax-publisher.js remains loaded below and
-     continues to own the global publisher state, navigation,
-     persistence and publishing engine.
+<div
+    id="toast"
+    class="toast"
+    role="status"
+    aria-live="polite"
+></div>
 
-     The capture-phase change handler below intentionally
-     intercepts the featured image input before the legacy
-     Stage 02 listener inside hackax-publisher.js can perform
-     an immediate upload.
-========================================================== -->
+<!-- ==========================================================
+     DELETE CONFIRMATION
+     ========================================================== -->
+
+<div
+    id="deleteModal"
+    class="modal-backdrop"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="deleteModalTitle"
+>
+
+<div class="modal">
+
+<div
+    id="deleteModalTitle"
+    class="modal-title"
+>
+Delete featured image?
+</div>
+
+<div
+    id="deleteModalText"
+    class="modal-text"
+>
+This will remove the featured image from the current HackaX publisher state.
+</div>
+
+<div class="modal-actions">
+
+<button
+    id="cancelDeleteBtn"
+    type="button"
+    class="modal-btn"
+>
+Cancel
+</button>
+
+<button
+    id="confirmDeleteBtn"
+    type="button"
+    class="modal-btn danger"
+>
+Delete Image
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ==========================================================
+     STAGE 02 STANDALONE CONTROLLER
+     ========================================================== -->
 
 <script>
 (function(){
 "use strict";
 
-const MAX_SOURCE_BYTES = 25 * 1024 * 1024;
-const MAX_WIDTH = 1800;
-const WEBP_QUALITY = 0.82;
+/* ==========================================================
+   CONSTANTS
+   ========================================================== */
+
+const STORAGE_KEY =
+    "dyve-hackax-publisher-v2";
+
+const SETTINGS_KEY =
+    "dyve-hackax-settings";
+
+const MAX_SOURCE_BYTES =
+    25 * 1024 * 1024;
+
+const MAX_WIDTH =
+    1800;
+
+const WEBP_QUALITY =
+    0.82;
+
+const HOMEPAGE_RATIO =
+    16 / 9;
+
+const PIPELINE_VERSION =
+    "stage2-standalone-native-v2";
+
+/*
+   Cloudinary's upload API returns a delete_token for
+   uploads in configurations where token deletion is enabled.
+   That token is short-lived. We preserve it in state so the
+   X button can attempt remote deletion while it remains valid.
+*/
+
+const DELETE_TOKEN_ENDPOINT =
+    "https://api.cloudinary.com/v1_1/dxdbn6xwy/delete_by_token";
+
+/* ==========================================================
+   LOCAL RUNTIME STATE
+   ========================================================== */
+
+let publisherState = null;
 
 let pendingImage = null;
+
 let pendingObjectUrl = "";
+
 let processing = false;
+
 let uploadInProgress = false;
 
-function getPublisherState(){
-    if(
-        window.HackaX &&
-        typeof window.HackaX.state === "function"
-    ){
-        return window.HackaX.state();
-    }
+let deleteInProgress = false;
 
-    return null;
+let toastTimer = null;
+
+/* ==========================================================
+   DOM
+   ========================================================== */
+
+const $ = id =>
+    document.getElementById(id);
+
+/* ==========================================================
+   STATE HELPERS
+   ========================================================== */
+
+function deepClone(value){
+    try{
+        return JSON.parse(
+            JSON.stringify(value)
+        );
+    }catch(error){
+        return value;
+    }
 }
 
+function defaultPublisherState(){
+
+    return {
+        article: {
+            title: "",
+            slug: "",
+            content: "",
+            author: "",
+            category: "",
+            publishDate: ""
+        },
+
+        media: {
+            featured: null,
+            body: []
+        },
+
+        classification: {},
+
+        intelligence: {},
+
+        seo: {},
+
+        linking: {},
+
+        technical: {},
+
+        workflow: {
+            currentStage: 2,
+            completed: [],
+            updatedAt: ""
+        }
+    };
+}
+
+function normalizeState(state){
+
+    const base =
+        defaultPublisherState();
+
+    if(
+        !state ||
+        typeof state !== "object"
+    ){
+        return base;
+    }
+
+    const normalized = {
+        ...base,
+        ...state
+    };
+
+    normalized.article = {
+        ...base.article,
+        ...(state.article || {})
+    };
+
+    normalized.media = {
+        ...base.media,
+        ...(state.media || {})
+    };
+
+    normalized.workflow = {
+        ...base.workflow,
+        ...(state.workflow || {})
+    };
+
+    if(
+        !Array.isArray(
+            normalized.workflow.completed
+        )
+    ){
+        normalized.workflow.completed = [];
+    }
+
+    return normalized;
+}
+
+function loadPublisherState(){
+
+    let parsed = null;
+
+    try{
+        const raw =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+        if(raw){
+            parsed =
+                JSON.parse(raw);
+        }
+    }catch(error){
+        console.error(
+            "HackaX state read failed:",
+            error
+        );
+    }
+
+    publisherState =
+        normalizeState(parsed);
+
+    return publisherState;
+}
+
+function persistPublisherState(){
+
+    if(!publisherState){
+        return false;
+    }
+
+    publisherState.workflow =
+        publisherState.workflow ||
+        {};
+
+    publisherState.workflow.updatedAt =
+        new Date().toISOString();
+
+    try{
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(
+                publisherState
+            )
+        );
+
+        updateSaveIndicator(
+            "Saved"
+        );
+
+        return true;
+
+    }catch(error){
+
+        console.error(
+            "HackaX state save failed:",
+            error
+        );
+
+        showToast(
+            "Could not save publisher state on this device.",
+            "error"
+        );
+
+        return false;
+    }
+}
+
+/* ==========================================================
+   SETTINGS
+   ========================================================== */
+
 function getConfig(){
+
     const defaults = {
-        cloudName: "dxdbn6xwy",
-        uploadPreset: "geefox_unsigned",
-        cloudEndpoint: "https://api.cloudinary.com/v1_1/dxdbn6xwy/image/upload"
+        cloudName:
+            "dxdbn6xwy",
+
+        uploadPreset:
+            "geefox_unsigned",
+
+        cloudEndpoint:
+            "https://api.cloudinary.com/v1_1/dxdbn6xwy/image/upload"
     };
 
     let saved = {};
 
     try{
-        saved = JSON.parse(
-            localStorage.getItem(
-                "dyve-hackax-settings"
-            ) || "{}"
-        );
-    }catch(e){
+
+        saved =
+            JSON.parse(
+                localStorage.getItem(
+                    SETTINGS_KEY
+                ) || "{}"
+            );
+
+    }catch(error){
+
         saved = {};
     }
 
-    const merged = {
+    return {
         ...defaults,
-        ...(saved && typeof saved === "object"
+        ...(saved &&
+        typeof saved === "object"
             ? saved
             : {})
     };
-
-    return merged;
 }
 
+/* ==========================================================
+   TEXT
+   ========================================================== */
+
 function cleanText(value){
+
     return String(value || "")
         .replace(/<[^>]*>/g," ")
         .replace(/&nbsp;/gi," ")
@@ -630,62 +2675,134 @@ function cleanText(value){
 }
 
 function slugify(value){
+
     return String(value || "")
         .normalize("NFKD")
-        .replace(/[\u0300-\u036f]/g,"")
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
         .toLowerCase()
         .trim()
-        .replace(/[^a-z0-9\s-]/g,"")
-        .replace(/\s+/g,"-")
-        .replace(/-+/g,"-")
-        .replace(/^-|-$/g,"")
-        .slice(0,120);
-}
-
-function meaningfulTokens(value){
-    const stopwords = new Set(
-        (
-            "a an and are as at be been being by can could did do does for from had has have he her here hers him his how i if in into is it its just me more most my no not of on or our ours she should so than that the their theirs them then there these they this those through to under up us was we were what when where which who why will with would you your yours about above after again against all also among any because before below between both but during each few further itself once other over own same some such too very according across actually almost already although another around away back became become becoming behind beside besides beyond certain clearly despite down especially even ever every everything first following four found general generally given going good great however important including instead known last later less likely many maybe might much near nearly never new next often only otherwise particular perhaps possible probably recent really right several since still sure taken than though together toward towards usually using various well while within without"
-        ).split(/\s+/)
-    );
-
-    const tokens = cleanText(value)
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g," ")
-        .split(/\s+/)
-        .filter(Boolean)
-        .filter(
-            x =>
-                x.length >= 4 &&
-                !stopwords.has(x) &&
-                !/^\d+$/.test(x)
+        .replace(
+            /[^a-z0-9\s-]/g,
+            ""
+        )
+        .replace(
+            /\s+/g,
+            "-"
+        )
+        .replace(
+            /-+/g,
+            "-"
+        )
+        .replace(
+            /^-|-$/g,
+            ""
+        )
+        .slice(
+            0,
+            120
         );
-
-    return [...new Set(tokens)];
 }
+
+/* ==========================================================
+   CATEGORY
+   ========================================================== */
 
 function categoryLabel(state){
+
     const categories = {
-        general: "General Updates",
-        breach: "Data Breach",
-        "dark-web": "Dark Web Intelligence",
-        ransomware: "Ransomware Intelligence",
-        "threat-actors": "Threat Actors",
-        signals: "Threat Signals",
-        analysis: "Threat Analysis",
-        vulnerability: "Vulnerability Intelligence",
-        malware: "Malware Intelligence",
-        advisory: "Security Advisory",
-        research: "Research & Investigation",
-        explainer: "Security Explainer"
+
+        general:
+            "General Updates",
+
+        breach:
+            "Data Breach",
+
+        "dark-web":
+            "Dark Web Intelligence",
+
+        ransomware:
+            "Ransomware Intelligence",
+
+        "threat-actors":
+            "Threat Actors",
+
+        signals:
+            "Threat Signals",
+
+        analysis:
+            "Threat Analysis",
+
+        vulnerability:
+            "Vulnerability Intelligence",
+
+        malware:
+            "Malware Intelligence",
+
+        advisory:
+            "Security Advisory",
+
+        research:
+            "Research & Investigation",
+
+        explainer:
+            "Security Explainer"
     };
 
     return categories[
         state?.classification?.category
-    ] || "Cyber Threat Intelligence";
+    ] ||
+        cleanText(
+            state?.article?.category
+        ) ||
+        "Cyber Threat Intelligence";
 }
 
-function generateBaseName(state, context){
+/* ==========================================================
+   STOP WORDS
+   ========================================================== */
+
+function meaningfulTokens(value){
+
+    const stopwords =
+        new Set(
+            (
+                "a an and are as at be been being by can could did do does for from had has have he her here hers him his how i if in into is it its just me more most my no not of on or our ours she should so than that the their theirs them then there these they this those through to under up us was we were what when where which who why will with would you your yours about above after again against all also among any because before below between both but during each few further itself once other over own same some such too very according across actually almost already although another around away back became become becoming behind beside besides beyond certain clearly despite down especially even ever every everything first following four found general generally given going good great however important including instead known last later less likely many maybe might much near nearly never new next often only otherwise particular perhaps possible probably recent really right several since still sure taken than though together toward towards usually using various well while within without"
+            ).split(/\s+/)
+        );
+
+    const tokens =
+        cleanText(value)
+            .toLowerCase()
+            .replace(
+                /[^a-z0-9\s-]/g,
+                " "
+            )
+            .split(/\s+/)
+            .filter(Boolean)
+            .filter(
+                token =>
+                    token.length >= 4 &&
+                    !stopwords.has(token) &&
+                    !/^\d+$/.test(token)
+            );
+
+    return [
+        ...new Set(tokens)
+    ];
+}
+
+/* ==========================================================
+   MEDIA NAMING
+   ========================================================== */
+
+function generateBaseName(
+    state,
+    context
+){
+
     const title =
         state?.article?.title ||
         "HackaX intelligence";
@@ -704,43 +2821,52 @@ function generateBaseName(state, context){
         ...meaningfulTokens(tag)
     ];
 
-    const unique = [...new Set(tokens)];
-
     return slugify(
-        unique
+        [
+            ...new Set(tokens)
+        ]
             .slice(0,12)
             .join("-")
-    ) || "hackax-intelligence";
+    ) ||
+        "hackax-intelligence";
 }
 
+/* ==========================================================
+   METADATA
+   ========================================================== */
+
 function generateAlt(state){
+
     const title =
         cleanText(
             state?.article?.title ||
             "HackaX intelligence"
         );
 
-    const category =
-        categoryLabel(state);
-
-    return `${title} - ${category} featured image`
+    return (
+        `${title} - ${categoryLabel(state)} featured image`
+    )
         .replace(/\s+/g," ")
         .trim()
         .slice(0,180);
 }
 
 function generateTitle(state){
+
     const title =
         cleanText(
             state?.article?.title ||
             "HackaX Intelligence"
         );
 
-    return `${title} | ${categoryLabel(state)}`
+    return (
+        `${title} | ${categoryLabel(state)}`
+    )
         .slice(0,180);
 }
 
 function generateCaption(state){
+
     const title =
         cleanText(
             state?.article?.title ||
@@ -756,15 +2882,26 @@ function generateCaption(state){
             ""
         );
 
-    return `${category} coverage: ${title}${
-        tag
-            ? " (" + tag + ")"
-            : ""
-    }.`;
+    return (
+        `${category} coverage: ${title}` +
+        (
+            tag
+                ? ` (${tag})`
+                : ""
+        ) +
+        "."
+    );
 }
 
+/* ==========================================================
+   BYTE FORMAT
+   ========================================================== */
+
 function formatBytes(bytes){
-    if(!Number.isFinite(bytes)){
+
+    if(
+        !Number.isFinite(bytes)
+    ){
         return "—";
     }
 
@@ -773,23 +2910,41 @@ function formatBytes(bytes){
     }
 
     if(bytes < 1024 * 1024){
-        return `${(bytes / 1024).toFixed(1)} KB`;
+        return `${(
+            bytes / 1024
+        ).toFixed(1)} KB`;
     }
 
-    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+    return `${(
+        bytes /
+        (1024 * 1024)
+    ).toFixed(2)} MB`;
 }
 
-function setPipelineStep(name, state){
-    const el =
-        document.getElementById(
+/* ==========================================================
+   PIPELINE UI
+   ========================================================== */
+
+function setPipelineStep(
+    name,
+    state
+){
+
+    const icon =
+        $(
             `pipelineStep${name}`
         );
 
-    if(!el){
+    const row =
+        $(
+            `pipelineRow${name}`
+        );
+
+    if(!icon){
         return;
     }
 
-    el.textContent =
+    icon.textContent =
         state === "done"
             ? "✓"
             : state === "active"
@@ -797,150 +2952,44 @@ function setPipelineStep(name, state){
                 : state === "error"
                     ? "×"
                     : "○";
-}
 
-function setPipelineMessage(message, type){
-    const el =
-        document.getElementById(
-            "pipelineMessage"
+    if(row){
+
+        row.classList.remove(
+            "done",
+            "active",
+            "error"
         );
 
-    if(!el){
-        return;
-    }
-
-    el.textContent = message;
-
-    el.classList.remove(
-        "text-white/55",
-        "text-emerald-300",
-        "text-amber-300",
-        "text-red-300"
-    );
-
-    el.classList.add(
-        type === "success"
-            ? "text-emerald-300"
-            : type === "error"
-                ? "text-red-300"
-                : type === "warning"
-                    ? "text-amber-300"
-                    : "text-white/55"
-    );
-}
-
-function showToast(message, type){
-    if(
-        window.HackaX &&
-        typeof window.HackaX.toast === "function"
-    ){
-        window.HackaX.toast(
-            message,
-            type
-        );
-
-        return;
-    }
-
-    const el =
-        document.getElementById("toast");
-
-    if(!el){
-        return;
-    }
-
-    el.textContent = message;
-
-    el.classList.remove(
-        "hidden",
-        "toast-success",
-        "toast-error",
-        "toast-info"
-    );
-
-    el.classList.add(
-        type === "error"
-            ? "toast-error"
-            : type === "success"
-                ? "toast-success"
-                : "toast-info"
-    );
-}
-
-function setBusy(value){
-    processing = value;
-
-    const input =
-        document.getElementById(
-            "featuredImageInput"
-        );
-
-    const upload =
-        document.getElementById(
-            "uploadProcessedImageBtn"
-        );
-
-    const discard =
-        document.getElementById(
-            "discardProcessedImageBtn"
-        );
-
-    if(input){
-        input.disabled =
-            value || uploadInProgress;
-    }
-
-    if(upload){
-        upload.disabled =
-            value ||
-            uploadInProgress ||
-            !pendingImage;
-    }
-
-    if(discard){
-        discard.disabled =
-            value ||
-            uploadInProgress ||
-            !pendingImage;
+        if(
+            state === "done" ||
+            state === "active" ||
+            state === "error"
+        ){
+            row.classList.add(
+                state
+            );
+        }
     }
 }
 
-function revokePendingUrl(){
-    if(pendingObjectUrl){
-        URL.revokeObjectURL(
-            pendingObjectUrl
-        );
+function resetPipeline(){
 
-        pendingObjectUrl = "";
-    }
-}
-
-function clearPendingImage(){
-    revokePendingUrl();
-
-    pendingImage = null;
-
-    const panel =
-        document.getElementById(
-            "pendingImagePanel"
-        );
-
-    if(panel){
-        panel.classList.add("hidden");
-    }
-
-    const upload =
-        document.getElementById(
-            "uploadProcessedImageBtn"
-        );
-
-    if(upload){
-        upload.disabled = true;
-    }
-
-    setPipelineStep(
+    [
+        "Validate",
+        "Resize",
+        "Webp",
+        "Watermark",
         "Preview",
-        "pending"
+        "Metadata",
+        "Upload",
+        "Verify"
+    ].forEach(
+        name =>
+            setPipelineStep(
+                name,
+                "pending"
+            )
     );
 
     setPipelineMessage(
@@ -948,10 +2997,152 @@ function clearPendingImage(){
     );
 }
 
+function setPipelineMessage(
+    message,
+    type
+){
+
+    const element =
+        $("pipelineMessage");
+
+    if(!element){
+        return;
+    }
+
+    element.textContent =
+        message;
+
+    element.classList.remove(
+        "success",
+        "warning",
+        "error"
+    );
+
+    if(type){
+        element.classList.add(
+            type
+        );
+    }
+}
+
+/* ==========================================================
+   TOAST
+   ========================================================== */
+
+function showToast(
+    message,
+    type = "info"
+){
+
+    const element =
+        $("toast");
+
+    if(!element){
+        return;
+    }
+
+    clearTimeout(
+        toastTimer
+    );
+
+    element.textContent =
+        message;
+
+    element.classList.remove(
+        "success",
+        "error",
+        "info",
+        "visible"
+    );
+
+    element.classList.add(
+        type
+    );
+
+    requestAnimationFrame(
+        () =>
+            element.classList.add(
+                "visible"
+            )
+    );
+
+    toastTimer =
+        setTimeout(
+            () =>
+                element.classList.remove(
+                    "visible"
+                ),
+            3500
+        );
+}
+
+/* ==========================================================
+   SAVE INDICATOR
+   ========================================================== */
+
+function updateSaveIndicator(
+    text
+){
+
+    const element =
+        $("saveState");
+
+    if(element){
+        element.textContent =
+            text;
+    }
+}
+
+/* ==========================================================
+   STATUS
+   ========================================================== */
+
+function updateConnectionStatus(){
+
+    const dot =
+        $("statusDot");
+
+    const text =
+        $("statusText");
+
+    if(!publisherState){
+
+        if(dot){
+            dot.classList.add(
+                "offline"
+            );
+        }
+
+        if(text){
+            text.textContent =
+                "State unavailable";
+        }
+
+        return;
+    }
+
+    if(dot){
+        dot.classList.remove(
+            "offline"
+        );
+    }
+
+    if(text){
+        text.textContent =
+            "Connected";
+    }
+}
+
+/* ==========================================================
+   WATERMARK
+   ========================================================== */
+
 function getWatermarkUrls(){
+
     const urls = [];
 
     try{
+
         urls.push(
             new URL(
                 "/assets/dyve-hackax.png",
@@ -972,31 +3163,41 @@ function getWatermarkUrls(){
                 document.baseURI
             ).href
         );
-    }catch(e){}
 
-    return [...new Set(urls)];
+    }catch(error){}
+
+    return [
+        ...new Set(urls)
+    ];
 }
 
+let watermarkPromise = null;
+
 async function loadWatermark(){
-    if(
-        window.__hackaxStage2WatermarkPromise
-    ){
-        return window.__hackaxStage2WatermarkPromise;
+
+    if(watermarkPromise){
+        return watermarkPromise;
     }
 
-    window.__hackaxStage2WatermarkPromise =
+    watermarkPromise =
         new Promise(
-            (resolve,reject) => {
+            (
+                resolve,
+                reject
+            ) => {
+
                 const paths =
                     getWatermarkUrls();
 
                 let index = 0;
 
                 function tryNext(){
+
                     if(
                         index >= paths.length
                     ){
-                        window.__hackaxStage2WatermarkPromise =
+
+                        watermarkPromise =
                             null;
 
                         reject(
@@ -1011,30 +3212,34 @@ async function loadWatermark(){
                     const src =
                         paths[index++];
 
-                    const img =
+                    const image =
                         new Image();
 
-                    img.decoding =
+                    image.decoding =
                         "async";
 
-                    img.onload = () => {
-                        if(
-                            img.naturalWidth <= 0 ||
-                            img.naturalHeight <= 0
-                        ){
-                            tryNext();
-                            return;
-                        }
-
-                        resolve(img);
-                    };
-
-                    img.onerror =
+                    image.onload =
                         () => {
-                            tryNext();
+
+                            if(
+                                image.naturalWidth <= 0 ||
+                                image.naturalHeight <= 0
+                            ){
+
+                                tryNext();
+
+                                return;
+                            }
+
+                            resolve(
+                                image
+                            );
                         };
 
-                    img.src =
+                    image.onerror =
+                        tryNext;
+
+                    image.src =
                         src +
                         (
                             src.includes("?")
@@ -1048,47 +3253,75 @@ async function loadWatermark(){
             }
         );
 
-    return window.__hackaxStage2WatermarkPromise;
+    return watermarkPromise;
 }
 
+/* ==========================================================
+   IMAGE DECODING
+   ========================================================== */
+
 async function decodeSource(file){
+
     if(
         "createImageBitmap" in window
     ){
+
         try{
+
             const bitmap =
-                await createImageBitmap(file);
+                await createImageBitmap(
+                    file
+                );
 
             return {
+
                 bitmap,
-                width: bitmap.width,
-                height: bitmap.height,
+
+                width:
+                    bitmap.width,
+
+                height:
+                    bitmap.height,
+
                 close(){
+
                     if(
                         typeof bitmap.close ===
                         "function"
                     ){
+
                         bitmap.close();
                     }
                 }
             };
-        }catch(e){}
+
+        }catch(error){}
     }
 
     const url =
-        URL.createObjectURL(file);
+        URL.createObjectURL(
+            file
+        );
 
     try{
-        const img =
+
+        const image =
             await new Promise(
-                (resolve,reject) => {
-                    const image =
+                (
+                    resolve,
+                    reject
+                ) => {
+
+                    const img =
                         new Image();
 
-                    image.onload =
-                        () => resolve(image);
+                    img.onload =
+                        () =>
+                            resolve(
+                                img
+                            );
 
-                    image.onerror =
+                    img.onerror =
                         () =>
                             reject(
                                 new Error(
@@ -1096,28 +3329,123 @@ async function decodeSource(file){
                                 )
                             );
 
-                    image.src =
+                    img.src =
                         url;
                 }
             );
 
         return {
-            bitmap: img,
-            width: img.naturalWidth,
-            height: img.naturalHeight,
+
+            bitmap:
+                image,
+
+            width:
+                image.naturalWidth,
+
+            height:
+                image.naturalHeight,
+
             close(){}
         };
+
     }finally{
-        URL.revokeObjectURL(url);
+
+        URL.revokeObjectURL(
+            url
+        );
     }
 }
 
-async function processLocally(file){
+/* ==========================================================
+   HOMEPAGE-SAFE CANVAS
+   ========================================================== */
+
+function calculateHomepageCrop(
+    sourceWidth,
+    sourceHeight
+){
+
+    const sourceRatio =
+        sourceWidth /
+        sourceHeight;
+
+    if(
+        Math.abs(
+            sourceRatio -
+            HOMEPAGE_RATIO
+        ) < .01
+    ){
+
+        return {
+
+            sx: 0,
+            sy: 0,
+            sw: sourceWidth,
+            sh: sourceHeight
+        };
+    }
+
+    if(
+        sourceRatio >
+        HOMEPAGE_RATIO
+    ){
+
+        const cropWidth =
+            sourceHeight *
+            HOMEPAGE_RATIO;
+
+        return {
+
+            sx:
+                (sourceWidth -
+                cropWidth) / 2,
+
+            sy: 0,
+
+            sw:
+                cropWidth,
+
+            sh:
+                sourceHeight
+        };
+    }
+
+    const cropHeight =
+        sourceWidth /
+        HOMEPAGE_RATIO;
+
+    return {
+
+        sx: 0,
+
+        sy:
+            (sourceHeight -
+            cropHeight) / 2,
+
+        sw:
+            sourceWidth,
+
+        sh:
+            cropHeight
+    };
+}
+
+/* ==========================================================
+   LOCAL IMAGE PROCESSING
+   ========================================================== */
+
+async function processLocally(
+    file
+){
+
     if(
         !file ||
         !file.type ||
-        !file.type.startsWith("image/")
+        !file.type.startsWith(
+            "image/"
+        )
     ){
+
         throw new Error(
             "Please choose a valid image file."
         );
@@ -1128,10 +3456,16 @@ async function processLocally(file){
         "active"
     );
 
+    setProcessingStatus(
+        "Validating image",
+        "Checking source type and file size..."
+    );
+
     if(
         file.size >
         MAX_SOURCE_BYTES
     ){
+
         throw new Error(
             "Image is larger than the 25 MB processing limit."
         );
@@ -1147,19 +3481,33 @@ async function processLocally(file){
         "active"
     );
 
+    setProcessingStatus(
+        "Preparing homepage-safe image",
+        "Normalizing the source into a consistent 16:9 editorial frame..."
+    );
+
     const source =
-        await decodeSource(file);
+        await decodeSource(
+            file
+        );
 
     let width =
-        source.width;
+        Math.min(
+            MAX_WIDTH,
+            1800
+        );
 
     let height =
-        source.height;
+        Math.round(
+            width /
+            HOMEPAGE_RATIO
+        );
 
     if(
-        !width ||
-        !height
+        width <= 0 ||
+        height <= 0
     ){
+
         source.close();
 
         throw new Error(
@@ -1167,17 +3515,11 @@ async function processLocally(file){
         );
     }
 
-    if(width > MAX_WIDTH){
-        height =
-            Math.round(
-                height *
-                MAX_WIDTH /
-                width
-            );
-
-        width =
-            MAX_WIDTH;
-    }
+    const crop =
+        calculateHomepageCrop(
+            source.width,
+            source.height
+        );
 
     const canvas =
         document.createElement(
@@ -1194,11 +3536,12 @@ async function processLocally(file){
         canvas.getContext(
             "2d",
             {
-                alpha:false
+                alpha: false
             }
         );
 
     if(!ctx){
+
         source.close();
 
         throw new Error(
@@ -1216,8 +3559,18 @@ async function processLocally(file){
         height
     );
 
+    ctx.imageSmoothingEnabled =
+        true;
+
+    ctx.imageSmoothingQuality =
+        "high";
+
     ctx.drawImage(
         source.bitmap,
+        crop.sx,
+        crop.sy,
+        crop.sw,
+        crop.sh,
         0,
         0,
         width,
@@ -1236,6 +3589,11 @@ async function processLocally(file){
         "active"
     );
 
+    setProcessingStatus(
+        "Converting to WebP",
+        "Optimizing the homepage-ready image..."
+    );
+
     const watermark =
         await loadWatermark();
 
@@ -1249,11 +3607,16 @@ async function processLocally(file){
         "active"
     );
 
+    setProcessingStatus(
+        "Embedding HackaX watermark",
+        "Rendering the watermark directly into the image pixels..."
+    );
+
     const wmWidth =
         Math.max(
             110,
             Math.round(
-                width * 0.18
+                width * .18
             )
         );
 
@@ -1268,7 +3631,7 @@ async function processLocally(file){
         Math.max(
             18,
             Math.round(
-                width * 0.018
+                width * .018
             )
         );
 
@@ -1285,7 +3648,7 @@ async function processLocally(file){
     ctx.save();
 
     ctx.globalAlpha =
-        0.82;
+        .82;
 
     ctx.shadowColor =
         "rgba(0,0,0,.38)";
@@ -1318,13 +3681,25 @@ async function processLocally(file){
         "active"
     );
 
+    setProcessingStatus(
+        "Generating review asset",
+        "Creating the exact WebP file that will be uploaded..."
+    );
+
     const blob =
         await new Promise(
-            (resolve,reject) => {
+            (
+                resolve,
+                reject
+            ) => {
+
                 canvas.toBlob(
                     result => {
+
                         if(result){
-                            resolve(result);
+                            resolve(
+                                result
+                            );
                         }else{
                             reject(
                                 new Error(
@@ -1332,6 +3707,7 @@ async function processLocally(file){
                                 )
                             );
                         }
+
                     },
                     "image/webp",
                     WEBP_QUALITY
@@ -1340,13 +3716,14 @@ async function processLocally(file){
         );
 
     if(!blob){
+
         throw new Error(
             "Unable to create optimized WebP image."
         );
     }
 
     const state =
-        getPublisherState();
+        publisherState;
 
     const base =
         generateBaseName(
@@ -1362,7 +3739,8 @@ async function processLocally(file){
             [blob],
             filename,
             {
-                type:"image/webp"
+                type:
+                    "image/webp"
             }
         );
 
@@ -1376,7 +3754,13 @@ async function processLocally(file){
         "active"
     );
 
+    setProcessingStatus(
+        "Generating metadata",
+        "Building contextual image SEO from the current article..."
+    );
+
     const metadata = {
+
         alt:
             generateAlt(
                 state
@@ -1399,24 +3783,202 @@ async function processLocally(file){
     );
 
     return {
-        file: output,
+
+        file:
+            output,
+
         width,
+
         height,
+
+        sourceWidth:
+            source?.width ||
+            0,
+
+        sourceHeight:
+            source?.height ||
+            0,
+
         metadata,
-        seoName: base,
-        sourceName: file.name,
-        sourceType: file.type,
-        sourceSize: file.size,
-        processedSize: output.size,
-        processedFormat: "webp",
-        watermarked: true,
-        processed: true,
-        compressed: true,
-        webp: true
+
+        seoName:
+            base,
+
+        sourceName:
+            file.name,
+
+        sourceType:
+            file.type,
+
+        sourceSize:
+            file.size,
+
+        processedSize:
+            output.size,
+
+        processedFormat:
+            "webp",
+
+        homepageRatio:
+            "16:9",
+
+        homepageFit:
+            "cover",
+
+        homepagePosition:
+            "50% 50%",
+
+        watermarked:
+            true,
+
+        processed:
+            true,
+
+        compressed:
+            true,
+
+        webp:
+            true,
+
+        pipelineVersion:
+            PIPELINE_VERSION
     };
 }
 
-function renderPending(result){
+/* ==========================================================
+   PROCESSING STATUS UI
+   ========================================================== */
+
+function setProcessingStatus(
+    title,
+    detail
+){
+
+    const wrapper =
+        $("imageProcessingStatus");
+
+    const titleEl =
+        $("processingStatusTitle");
+
+    const detailEl =
+        $("processingStatusDetail");
+
+    if(wrapper){
+        wrapper.classList.add(
+            "visible"
+        );
+    }
+
+    if(titleEl){
+        titleEl.textContent =
+            title;
+    }
+
+    if(detailEl){
+        detailEl.textContent =
+            detail;
+    }
+}
+
+function hideProcessingStatus(){
+
+    const wrapper =
+        $("imageProcessingStatus");
+
+    if(wrapper){
+        wrapper.classList.remove(
+            "visible"
+        );
+    }
+}
+
+/* ==========================================================
+   URL MANAGEMENT
+   ========================================================== */
+
+function revokePendingUrl(){
+
+    if(pendingObjectUrl){
+
+        URL.revokeObjectURL(
+            pendingObjectUrl
+        );
+
+        pendingObjectUrl =
+            "";
+    }
+}
+
+/* ==========================================================
+   PENDING IMAGE
+   ========================================================== */
+
+function clearPendingImage(){
+
+    revokePendingUrl();
+
+    pendingImage =
+        null;
+
+    const panel =
+        $("pendingImagePanel");
+
+    if(panel){
+        panel.classList.add(
+            "hidden"
+        );
+    }
+
+    const upload =
+        $("uploadProcessedImageBtn");
+
+    if(upload){
+        upload.disabled =
+            true;
+    }
+
+    setPipelineStep(
+        "Preview",
+        "pending"
+    );
+}
+
+function setInputValue(
+    id,
+    value
+){
+
+    const element =
+        $(id);
+
+    if(element){
+        element.value =
+            value == null
+                ? ""
+                : value;
+    }
+}
+
+function getInputValue(
+    id
+){
+
+    const element =
+        $(id);
+
+    return element
+        ? element.value
+        : "";
+}
+
+/* ==========================================================
+   RENDER LOCAL REVIEW
+   ========================================================== */
+
+function renderPending(
+    result
+){
+
     revokePendingUrl();
 
     pendingImage =
@@ -1428,41 +3990,28 @@ function renderPending(result){
         );
 
     const panel =
-        document.getElementById(
-            "pendingImagePanel"
-        );
+        $("pendingImagePanel");
 
     const image =
-        document.getElementById(
-            "pendingPreviewImg"
-        );
+        $("pendingPreviewImg");
 
     const filename =
-        document.getElementById(
-            "pendingImageFilename"
-        );
+        $("pendingImageFilename");
 
     const dimensions =
-        document.getElementById(
-            "pendingDimensions"
-        );
+        $("pendingDimensions");
 
     const format =
-        document.getElementById(
-            "pendingFormat"
-        );
+        $("pendingFormat");
 
     const size =
-        document.getElementById(
-            "pendingSize"
-        );
+        $("pendingSize");
 
     const uploadState =
-        document.getElementById(
-            "pendingUploadState"
-        );
+        $("pendingUploadState");
 
     if(image){
+
         image.src =
             pendingObjectUrl;
 
@@ -1477,6 +4026,7 @@ function renderPending(result){
     }
 
     if(dimensions){
+
         dimensions.textContent =
             `${result.width} × ${result.height}`;
     }
@@ -1487,6 +4037,7 @@ function renderPending(result){
     }
 
     if(size){
+
         size.textContent =
             formatBytes(
                 result.processedSize
@@ -1494,11 +4045,12 @@ function renderPending(result){
     }
 
     if(uploadState){
+
         uploadState.textContent =
             "Not uploaded";
 
-        uploadState.className =
-            "text-xs font-black text-amber-700 mt-1";
+        uploadState.style.color =
+            "#b87900";
     }
 
     if(panel){
@@ -1507,35 +4059,32 @@ function renderPending(result){
         );
     }
 
-    setValue(
+    setInputValue(
         "imageAltInput",
         result.metadata.alt
     );
 
-    setValue(
+    setInputValue(
         "imageTitleInput",
         result.metadata.title
     );
 
-    setValue(
+    setInputValue(
         "imageCaptionInput",
         result.metadata.caption
     );
 
     const metadataState =
-        document.getElementById(
-            "metadataState"
-        );
+        $("metadataState");
 
     if(metadataState){
+
         metadataState.textContent =
-            "Metadata is generated from the current article context. Changes will be committed when this processed image is uploaded.";
+            "Metadata is generated from the current article context. Changes will be committed with this asset.";
     }
 
     const upload =
-        document.getElementById(
-            "uploadProcessedImageBtn"
-        );
+        $("uploadProcessedImageBtn");
 
     if(upload){
         upload.disabled =
@@ -1543,48 +4092,69 @@ function renderPending(result){
     }
 
     setPipelineMessage(
-        "Local processing complete. Review the processed image and metadata before committing it to Cloudinary.",
+        "Local processing complete. Review the exact WebP output before committing it to Cloudinary.",
         "success"
     );
+
+    hideProcessingStatus();
 }
 
-function setValue(id,value){
-    const el =
-        document.getElementById(id);
+/* ==========================================================
+   METADATA SYNC
+   ========================================================== */
 
-    if(el){
-        el.value =
-            value == null
-                ? ""
-                : value;
+function syncMetadataToPending(){
+
+    if(!pendingImage){
+        return;
+    }
+
+    pendingImage.metadata.alt =
+        getInputValue(
+            "imageAltInput"
+        ).trim() ||
+        pendingImage.metadata.alt;
+
+    pendingImage.metadata.title =
+        getInputValue(
+            "imageTitleInput"
+        ).trim() ||
+        pendingImage.metadata.title;
+
+    pendingImage.metadata.caption =
+        getInputValue(
+            "imageCaptionInput"
+        ).trim() ||
+        pendingImage.metadata.caption;
+
+    const image =
+        $("pendingPreviewImg");
+
+    if(image){
+
+        image.alt =
+            pendingImage.metadata.alt ||
+            "Processed HackaX featured image";
     }
 }
 
-function getValue(id){
-    const el =
-        document.getElementById(id);
-
-    return el
-        ? el.value
-        : "";
-}
+/* ==========================================================
+   COMMITTED ASSET RENDER
+   ========================================================== */
 
 function renderCommittedAsset(){
-    const state =
-        getPublisherState();
 
     const media =
-        state?.media?.featured;
+        publisherState?.media?.featured;
 
     const panel =
-        document.getElementById(
-            "committedImagePanel"
-        );
+        $("committedImagePanel");
 
     if(
         !media ||
         !media.url
     ){
+
         if(panel){
             panel.classList.add(
                 "hidden"
@@ -1595,11 +4165,10 @@ function renderCommittedAsset(){
     }
 
     const image =
-        document.getElementById(
-            "committedPreviewImg"
-        );
+        $("committedPreviewImg");
 
     if(image){
+
         image.src =
             media.url;
 
@@ -1609,11 +4178,10 @@ function renderCommittedAsset(){
     }
 
     const facts =
-        document.getElementById(
-            "committedImageFacts"
-        );
+        $("committedImageFacts");
 
     if(facts){
+
         const dimensions =
             media.width &&
             media.height
@@ -1628,10 +4196,12 @@ function renderCommittedAsset(){
                 : "Size unavailable";
 
         facts.textContent =
-            `${dimensions} · ${(
-                media.format ||
-                "webp"
-            ).toUpperCase()} · ${size}`;
+            `${dimensions} · ${
+                String(
+                    media.format ||
+                    "webp"
+                ).toUpperCase()
+            } · ${size} · Homepage 16:9`;
     }
 
     if(panel){
@@ -1649,48 +4219,191 @@ function renderCommittedAsset(){
         "Verify",
         "done"
     );
+
+    setPipelineMessage(
+        "A committed featured asset is connected to the current HackaX publisher state.",
+        "success"
+    );
 }
 
-function syncMetadataToPending(){
-    if(!pendingImage){
+/* ==========================================================
+   UPLOAD BUTTON STATE
+   ========================================================== */
+
+function updateButtonState(){
+
+    const upload =
+        $("uploadProcessedImageBtn");
+
+    const discard =
+        $("discardProcessedImageBtn");
+
+    const next =
+        $("nextBtn");
+
+    const input =
+        $("featuredImageInput");
+
+    if(input){
+
+        input.disabled =
+            processing ||
+            uploadInProgress ||
+            deleteInProgress;
+    }
+
+    if(upload){
+
+        upload.disabled =
+            processing ||
+            uploadInProgress ||
+            deleteInProgress ||
+            !pendingImage;
+    }
+
+    if(discard){
+
+        discard.disabled =
+            processing ||
+            uploadInProgress ||
+            deleteInProgress ||
+            !pendingImage;
+    }
+
+    if(next){
+
+        next.disabled =
+            processing ||
+            uploadInProgress ||
+            deleteInProgress;
+    }
+}
+
+/* ==========================================================
+   IMAGE SELECTION
+   ========================================================== */
+
+async function handleImageSelection(
+    file
+){
+
+    if(
+        !file ||
+        processing ||
+        uploadInProgress ||
+        deleteInProgress
+    ){
         return;
     }
 
-    pendingImage.metadata.alt =
-        getValue(
-            "imageAltInput"
-        ).trim() ||
-        pendingImage.metadata.alt;
+    clearPendingImage();
 
-    pendingImage.metadata.title =
-        getValue(
-            "imageTitleInput"
-        ).trim() ||
-        pendingImage.metadata.title;
+    resetPipeline();
 
-    pendingImage.metadata.caption =
-        getValue(
-            "imageCaptionInput"
-        ).trim() ||
-        pendingImage.metadata.caption;
+    processing =
+        true;
 
-    const image =
-        document.getElementById(
-            "pendingPreviewImg"
+    updateButtonState();
+
+    setPipelineStep(
+        "Validate",
+        "active"
+    );
+
+    setPipelineMessage(
+        "Validating and processing the selected source image..."
+    );
+
+    showToast(
+        "Processing image locally..."
+    );
+
+    try{
+
+        const result =
+            await processLocally(
+                file
+            );
+
+        renderPending(
+            result
         );
 
-    if(image){
-        image.alt =
-            pendingImage.metadata.alt ||
-            "Processed HackaX featured image";
+        showToast(
+            "Image processed. Review it before uploading.",
+            "success"
+        );
+
+    }catch(error){
+
+        console.error(
+            "HackaX Stage 02 processing failed:",
+            error
+        );
+
+        [
+            "Validate",
+            "Resize",
+            "Webp",
+            "Watermark",
+            "Preview",
+            "Metadata",
+            "Upload",
+            "Verify"
+        ].forEach(
+            name =>
+                setPipelineStep(
+                    name,
+                    "pending"
+                )
+        );
+
+        setPipelineStep(
+            "Validate",
+            "error"
+        );
+
+        setPipelineMessage(
+            error?.message ||
+            "The image could not be processed.",
+            "error"
+        );
+
+        showToast(
+            error?.message ||
+            "Image processing failed.",
+            "error"
+        );
+
+        hideProcessingStatus();
+
+    }finally{
+
+        processing =
+            false;
+
+        updateButtonState();
+
+        const input =
+            $("featuredImageInput");
+
+        if(input){
+            input.value = "";
+        }
     }
 }
 
+/* ==========================================================
+   CLOUDINARY UPLOAD
+   ========================================================== */
+
 async function uploadProcessedImage(){
+
     if(
         !pendingImage ||
         !pendingImage.file
     ){
+
         showToast(
             "Process an image before uploading.",
             "error"
@@ -1699,16 +4412,18 @@ async function uploadProcessedImage(){
         return;
     }
 
-    if(uploadInProgress){
+    if(
+        uploadInProgress ||
+        processing ||
+        deleteInProgress
+    ){
         return;
     }
 
-    const state =
-        getPublisherState();
+    if(!publisherState){
 
-    if(!state){
         showToast(
-            "Publisher state is not ready. Please wait and try again.",
+            "Publisher state is not available.",
             "error"
         );
 
@@ -1724,6 +4439,7 @@ async function uploadProcessedImage(){
         !config.cloudName ||
         !config.uploadPreset
     ){
+
         showToast(
             "Cloudinary media settings are not configured.",
             "error"
@@ -1732,26 +4448,26 @@ async function uploadProcessedImage(){
         return;
     }
 
-    uploadInProgress = true;
+    uploadInProgress =
+        true;
 
-    const uploadBtn =
-        document.getElementById(
-            "uploadProcessedImageBtn"
-        );
+    updateButtonState();
 
-    const discardBtn =
-        document.getElementById(
-            "discardProcessedImageBtn"
-        );
+    const uploadButton =
+        $("uploadProcessedImageBtn");
 
-    if(uploadBtn){
-        uploadBtn.disabled = true;
-        uploadBtn.textContent =
+    const discardButton =
+        $("discardProcessedImageBtn");
+
+    if(uploadButton){
+
+        uploadButton.textContent =
             "Uploading...";
     }
 
-    if(discardBtn){
-        discardBtn.disabled = true;
+    if(discardButton){
+        discardButton.disabled =
+            true;
     }
 
     setPipelineStep(
@@ -1765,14 +4481,15 @@ async function uploadProcessedImage(){
     );
 
     showToast(
-        "Uploading approved image to Cloudinary..."
+        "Uploading approved image..."
     );
 
     try{
+
         const base =
             pendingImage.seoName ||
             generateBaseName(
-                state,
+                publisherState,
                 "featured"
             );
 
@@ -1803,12 +4520,30 @@ async function uploadProcessedImage(){
             publicId
         );
 
+        /*
+           Explicitly request the homepage-safe WebP format
+           where Cloudinary's unsigned preset permits format
+           selection. The browser already produces WebP, so
+           this primarily documents the intended asset contract.
+        */
+
+        form.append(
+            "context",
+            [
+                `alt=${pendingImage.metadata.alt}`,
+                `caption=${pendingImage.metadata.caption}`,
+                `title=${pendingImage.metadata.title}`
+            ].join("|")
+        );
+
         let response =
             await fetch(
                 endpoint,
                 {
-                    method:"POST",
-                    body:form
+                    method:
+                        "POST",
+                    body:
+                        form
                 }
             );
 
@@ -1820,13 +4555,6 @@ async function uploadProcessedImage(){
                 );
 
         if(!response.ok){
-            /*
-               Only retry when Cloudinary explicitly rejects
-               the custom public_id. The retry is deliberately
-               NOT used for network failures, because a network
-               failure after server acceptance can otherwise
-               create duplicate assets.
-            */
 
             const message =
                 String(
@@ -1835,12 +4563,21 @@ async function uploadProcessedImage(){
                 ).toLowerCase();
 
             const publicIdRejected =
-                message.includes("public_id") ||
-                message.includes("public id") ||
-                message.includes("not allowed") ||
-                message.includes("unsigned");
+                message.includes(
+                    "public_id"
+                ) ||
+                message.includes(
+                    "public id"
+                ) ||
+                message.includes(
+                    "not allowed"
+                ) ||
+                message.includes(
+                    "unsigned"
+                );
 
             if(!publicIdRejected){
+
                 throw new Error(
                     data?.error?.message ||
                     `Cloudinary upload failed (${response.status}).`
@@ -1865,12 +4602,23 @@ async function uploadProcessedImage(){
                 config.uploadPreset
             );
 
+            retryForm.append(
+                "context",
+                [
+                    `alt=${pendingImage.metadata.alt}`,
+                    `caption=${pendingImage.metadata.caption}`,
+                    `title=${pendingImage.metadata.title}`
+                ].join("|")
+            );
+
             response =
                 await fetch(
                     endpoint,
                     {
-                        method:"POST",
-                        body:retryForm
+                        method:
+                            "POST",
+                        body:
+                            retryForm
                     }
                 );
 
@@ -1882,6 +4630,7 @@ async function uploadProcessedImage(){
                     );
 
             if(!response.ok){
+
                 throw new Error(
                     data?.error?.message ||
                     `Cloudinary upload failed (${response.status}).`
@@ -1893,6 +4642,7 @@ async function uploadProcessedImage(){
             !data ||
             !data.secure_url
         ){
+
             throw new Error(
                 "Cloudinary returned no usable image URL."
             );
@@ -1913,11 +4663,6 @@ async function uploadProcessedImage(){
             "warning"
         );
 
-        /*
-           Verify the response itself before committing the
-           asset into HackaX publisher state.
-        */
-
         const verifiedUrl =
             /^https:\/\//i.test(
                 String(
@@ -1925,26 +4670,33 @@ async function uploadProcessedImage(){
                 )
             );
 
+        const verifiedDimensions =
+            Number(
+                data.width
+            ) > 0 &&
+            Number(
+                data.height
+            ) > 0;
+
         const verifiedFormat =
             String(
                 data.format ||
                 ""
-            ).toLowerCase() === "webp";
-
-        const verifiedDimensions =
-            Number(data.width) > 0 &&
-            Number(data.height) > 0;
+            ).toLowerCase() ===
+            "webp";
 
         if(
             !verifiedUrl ||
             !verifiedDimensions
         ){
+
             throw new Error(
                 "Cloudinary returned an incomplete media record."
             );
         }
 
         if(!verifiedFormat){
+
             throw new Error(
                 "Cloudinary did not confirm the committed asset as WebP."
             );
@@ -1953,21 +4705,28 @@ async function uploadProcessedImage(){
         const metadata =
             pendingImage.metadata;
 
-        state.media.featured = {
+        const committedMedia = {
+
             url:
                 data.secure_url,
 
             width:
-                Number(data.width) ||
+                Number(
+                    data.width
+                ) ||
                 pendingImage.width,
 
             height:
-                Number(data.height) ||
+                Number(
+                    data.height
+                ) ||
                 pendingImage.height,
 
             format:
-                data.format ||
-                "webp",
+                String(
+                    data.format ||
+                    "webp"
+                ).toLowerCase(),
 
             publicId:
                 data.public_id ||
@@ -2021,22 +4780,84 @@ async function uploadProcessedImage(){
                 new Date().toISOString(),
 
             pipelineVersion:
-                "stage2-local-confirmed-v1"
+                PIPELINE_VERSION,
+
+            /*
+               Homepage rendering contract.
+            */
+
+            homepage: {
+
+                ratio:
+                    "16:9",
+
+                fit:
+                    "cover",
+
+                position:
+                    "50% 50%",
+
+                aspectRatio:
+                    16 / 9
+            },
+
+            /*
+               Cloudinary delete token is intentionally preserved
+               when returned. It can be used by the X delete
+               action while the token remains valid.
+            */
+
+            deleteToken:
+                data.delete_token ||
+                null,
+
+            deleteTokenReceivedAt:
+                data.delete_token
+                    ? new Date().toISOString()
+                    : null
         };
 
-        /*
-           Persist through the shared publisher engine.
-        */
+        publisherState.media =
+            publisherState.media ||
+            {};
+
+        publisherState.media.featured =
+            committedMedia;
+
+        publisherState.workflow =
+            publisherState.workflow ||
+            {};
+
+        publisherState.workflow.currentStage =
+            2;
 
         if(
-            window.HackaX &&
-            typeof window.HackaX.save === "function"
+            !Array.isArray(
+                publisherState.workflow.completed
+            )
         ){
-            window.HackaX.save();
-        }else{
-            localStorage.setItem(
-                "dyve-hackax-publisher-v2",
-                JSON.stringify(state)
+
+            publisherState.workflow.completed =
+                [];
+        }
+
+        if(
+            !publisherState.workflow.completed.includes(
+                2
+            )
+        ){
+
+            publisherState.workflow.completed.push(
+                2
+            );
+        }
+
+        if(
+            !persistPublisherState()
+        ){
+
+            throw new Error(
+                "Image uploaded, but the local publisher state could not be saved. The remote asset remains unchanged."
             );
         }
 
@@ -2046,16 +4867,15 @@ async function uploadProcessedImage(){
         );
 
         const uploadState =
-            document.getElementById(
-                "pendingUploadState"
-            );
+            $("pendingUploadState");
 
         if(uploadState){
+
             uploadState.textContent =
                 "Committed";
 
-            uploadState.className =
-                "text-xs font-black text-emerald-700 mt-1";
+            uploadState.style.color =
+                "#087451";
         }
 
         setPipelineMessage(
@@ -2064,7 +4884,7 @@ async function uploadProcessedImage(){
         );
 
         showToast(
-            "Featured image uploaded and committed successfully.",
+            "Featured image committed successfully.",
             "success"
         );
 
@@ -2073,17 +4893,16 @@ async function uploadProcessedImage(){
         renderCommittedAsset();
 
         const input =
-            document.getElementById(
-                "featuredImageInput"
-            );
+            $("featuredImageInput");
 
         if(input){
             input.value = "";
         }
 
     }catch(error){
+
         console.error(
-            "HackaX Stage 02 media upload failed:",
+            "HackaX Stage 02 upload failed:",
             error
         );
 
@@ -2098,314 +4917,945 @@ async function uploadProcessedImage(){
         );
 
         setPipelineMessage(
-            error.message ||
-            "The image could not be committed. Your current committed asset remains unchanged.",
+            error?.message ||
+            "The image could not be committed. Your existing committed image remains unchanged.",
             "error"
         );
 
         showToast(
-            error.message ||
+            error?.message ||
             "Image upload failed.",
             "error"
         );
 
     }finally{
-        uploadInProgress = false;
 
-        if(uploadBtn){
-            uploadBtn.disabled =
-                !pendingImage;
+        uploadInProgress =
+            false;
 
-            uploadBtn.textContent =
+        if(uploadButton){
+
+            uploadButton.textContent =
                 "Upload & Commit Image";
         }
 
-        if(discardBtn){
-            discardBtn.disabled =
-                !pendingImage;
-        }
+        updateButtonState();
     }
 }
 
-async function handleImageSelection(file){
+/* ==========================================================
+   CLOUDINARY DELETE
+   ========================================================== */
+
+async function deleteRemoteWithToken(
+    token
+){
+
+    if(!token){
+        return {
+            deleted: false,
+            reason: "missing-token"
+        };
+    }
+
+    try{
+
+        const form =
+            new FormData();
+
+        form.append(
+            "token",
+            token
+        );
+
+        const response =
+            await fetch(
+                DELETE_TOKEN_ENDPOINT,
+                {
+                    method:
+                        "POST",
+                    body:
+                        form
+                }
+            );
+
+        const data =
+            await response
+                .json()
+                .catch(
+                    () => ({})
+                );
+
+        if(
+            response.ok &&
+            (
+                data.result === "ok" ||
+                data.result === "deleted"
+            )
+        ){
+
+            return {
+                deleted: true
+            };
+        }
+
+        return {
+            deleted: false,
+            reason:
+                data?.error?.message ||
+                data?.result ||
+                `HTTP ${response.status}`
+        };
+
+    }catch(error){
+
+        return {
+            deleted: false,
+            reason:
+                error?.message ||
+                "Network error"
+        };
+    }
+}
+
+/* ==========================================================
+   DELETE CONFIRMATION
+   ========================================================== */
+
+function openDeleteModal(){
+
+    const modal =
+        $("deleteModal");
+
+    if(!modal){
+        return;
+    }
+
+    const media =
+        publisherState?.media?.featured;
+
+    const text =
+        $("deleteModalText");
+
+    if(text){
+
+        if(
+            media?.deleteToken
+        ){
+
+            text.textContent =
+                "This will remove the featured image from the current HackaX state and attempt to delete the Cloudinary asset using its active deletion token.";
+
+        }else{
+
+            text.textContent =
+                "This will remove the featured image from the current HackaX publisher state. The remote Cloudinary asset may require server-side deletion if its deletion token has expired.";
+        }
+    }
+
+    modal.classList.add(
+        "visible"
+    );
+}
+
+function closeDeleteModal(){
+
+    const modal =
+        $("deleteModal");
+
+    if(modal){
+        modal.classList.remove(
+            "visible"
+        );
+    }
+}
+
+async function deleteCommittedImage(){
+
     if(
-        !file ||
+        deleteInProgress ||
+        uploadInProgress ||
+        processing
+    ){
+        return;
+    }
+
+    const media =
+        publisherState?.media?.featured;
+
+    if(
+        !media ||
+        !media.url
+    ){
+
+        closeDeleteModal();
+
+        return;
+    }
+
+    deleteInProgress =
+        true;
+
+    updateButtonState();
+
+    const confirmButton =
+        $("confirmDeleteBtn");
+
+    if(confirmButton){
+
+        confirmButton.disabled =
+            true;
+
+        confirmButton.textContent =
+            "Deleting...";
+    }
+
+    try{
+
+        setPipelineStep(
+            "Upload",
+            "active"
+        );
+
+        setPipelineMessage(
+            "Removing the committed featured asset...",
+            "warning"
+        );
+
+        /*
+           Attempt remote deletion first when the short-lived
+           Cloudinary token is available.
+        */
+
+        let remoteResult = {
+            deleted: false,
+            reason: "missing-token"
+        };
+
+        if(
+            media.deleteToken
+        ){
+
+            remoteResult =
+                await deleteRemoteWithToken(
+                    media.deleteToken
+                );
+        }
+
+        /*
+           Local state is cleared only after the deletion
+           operation has been attempted. This prevents the
+           UI from claiming success while silently doing
+           nothing.
+        */
+
+        publisherState.media =
+            publisherState.media ||
+            {};
+
+        publisherState.media.featured =
+            null;
+
+        if(
+            Array.isArray(
+                publisherState.workflow?.completed
+            )
+        ){
+
+            publisherState.workflow.completed =
+                publisherState.workflow.completed.filter(
+                    stage =>
+                        stage !== 2
+                );
+        }
+
+        publisherState.workflow.currentStage =
+            2;
+
+        const saved =
+            persistPublisherState();
+
+        if(!saved){
+
+            throw new Error(
+                "The image could not be removed from the local publisher state."
+            );
+        }
+
+        renderCommittedAsset();
+
+        resetPipeline();
+
+        closeDeleteModal();
+
+        if(
+            remoteResult.deleted
+        ){
+
+            showToast(
+                "Featured image deleted from Cloudinary and publisher state.",
+                "success"
+            );
+
+            setPipelineMessage(
+                "Featured asset deleted from Cloudinary and removed from the HackaX publisher state.",
+                "success"
+            );
+
+        }else{
+
+            showToast(
+                "Image removed from publisher state. Remote deletion requires an active Cloudinary deletion token or server-side deletion.",
+                "info"
+            );
+
+            setPipelineMessage(
+                "Featured asset removed from local publisher state. The remote Cloudinary asset could not be deleted with the available token.",
+                "warning"
+            );
+        }
+
+    }catch(error){
+
+        console.error(
+            "HackaX image deletion failed:",
+            error
+        );
+
+        showToast(
+            error?.message ||
+            "Image deletion failed.",
+            "error"
+        );
+
+    }finally{
+
+        deleteInProgress =
+            false;
+
+        if(confirmButton){
+
+            confirmButton.disabled =
+                false;
+
+            confirmButton.textContent =
+                "Delete Image";
+        }
+
+        updateButtonState();
+    }
+}
+
+/* ==========================================================
+   DISCARD LOCAL IMAGE
+   ========================================================== */
+
+function discardPendingImage(){
+
+    if(
+        !pendingImage ||
         processing ||
-        uploadInProgress
+        uploadInProgress ||
+        deleteInProgress
     ){
         return;
     }
 
     clearPendingImage();
 
-    setBusy(true);
-
-    setPipelineStep(
-        "Validate",
-        "active"
-    );
+    resetPipeline();
 
     setPipelineMessage(
-        "Validating the selected source image..."
+        "Processed image discarded. The previously committed asset remains unchanged."
     );
 
     showToast(
-        "Validating and processing image..."
+        "Processed image discarded.",
+        "info"
     );
 
-    try{
-        const result =
-            await processLocally(
-                file
-            );
+    [
+        "imageAltInput",
+        "imageTitleInput",
+        "imageCaptionInput"
+    ].forEach(
+        id =>
+            setInputValue(
+                id,
+                ""
+            )
+    );
 
-        renderPending(
-            result
+    const input =
+        $("featuredImageInput");
+
+    if(input){
+        input.value = "";
+    }
+
+    updateButtonState();
+}
+
+/* ==========================================================
+   VALIDATION
+   ========================================================== */
+
+function validateStage(){
+
+    const errors = [];
+
+    const media =
+        publisherState?.media?.featured;
+
+    if(
+        !media ||
+        !media.url
+    ){
+
+        errors.push(
+            "A committed featured image is required."
+        );
+    }
+
+    if(
+        media &&
+        String(
+            media.format ||
+            ""
+        ).toLowerCase() !==
+        "webp"
+    ){
+
+        errors.push(
+            "The committed featured asset must be WebP."
+        );
+    }
+
+    if(
+        media &&
+        (
+            !media.width ||
+            !media.height
+        )
+    ){
+
+        errors.push(
+            "The committed image dimensions are incomplete."
+        );
+    }
+
+    if(
+        media &&
+        media.watermarked !== true
+    ){
+
+        errors.push(
+            "The committed image must contain the HackaX watermark."
+        );
+    }
+
+    return errors;
+}
+
+function showValidation(
+    errors
+){
+
+    const element =
+        $("validation");
+
+    if(!element){
+        return;
+    }
+
+    if(!errors.length){
+
+        element.classList.add(
+            "hidden"
+        );
+
+        element.innerHTML =
+            "";
+
+        return;
+    }
+
+    element.innerHTML =
+        `
+            <strong>Stage 02 cannot continue yet.</strong>
+            <ul>
+                ${errors
+                    .map(
+                        error =>
+                            `<li>${escapeHtml(error)}</li>`
+                    )
+                    .join("")}
+            </ul>
+        `;
+
+    element.classList.remove(
+        "hidden"
+    );
+
+    element.scrollIntoView({
+        behavior:
+            "smooth",
+        block:
+            "center"
+    });
+}
+
+/* ==========================================================
+   ESCAPE HTML
+   ========================================================== */
+
+function escapeHtml(
+    value
+){
+
+    return String(value || "")
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+}
+
+/* ==========================================================
+   STAGE COMPLETION
+   ========================================================== */
+
+function completeStage(){
+
+    publisherState.workflow =
+        publisherState.workflow ||
+        {};
+
+    if(
+        !Array.isArray(
+            publisherState.workflow.completed
+        )
+    ){
+
+        publisherState.workflow.completed =
+            [];
+    }
+
+    if(
+        !publisherState.workflow.completed.includes(
+            2
+        )
+    ){
+
+        publisherState.workflow.completed.push(
+            2
+        );
+    }
+
+    publisherState.workflow.currentStage =
+        2;
+
+    persistPublisherState();
+}
+
+/* ==========================================================
+   NAVIGATION
+   ========================================================== */
+
+const stageRoutes = {
+
+    1:
+        "hackax-next1.html",
+
+    2:
+        "hackax-next2.html",
+
+    3:
+        "hackax-next3.html",
+
+    4:
+        "hackax-next4.html",
+
+    5:
+        "hackax-next5.html",
+
+    6:
+        "hackax-next6.html",
+
+    7:
+        "hackax-next7.html",
+
+    8:
+        "hackax-next8.html"
+};
+
+function navigateStage(
+    stage
+){
+
+    const route =
+        stageRoutes[stage];
+
+    if(!route){
+        return;
+    }
+
+    window.location.href =
+        route;
+}
+
+function goBack(){
+
+    if(
+        processing ||
+        uploadInProgress ||
+        deleteInProgress
+    ){
+
+        showToast(
+            "Please wait for the current media operation to finish.",
+            "info"
+        );
+
+        return;
+    }
+
+    navigateStage(
+        1
+    );
+}
+
+function goNext(){
+
+    if(
+        processing ||
+        uploadInProgress ||
+        deleteInProgress
+    ){
+
+        showToast(
+            "Please wait for the current media operation to finish.",
+            "info"
+        );
+
+        return;
+    }
+
+    const errors =
+        validateStage();
+
+    showValidation(
+        errors
+    );
+
+    if(errors.length){
+
+        showToast(
+            "Complete the featured image step before continuing.",
+            "error"
+        );
+
+        return;
+    }
+
+    completeStage();
+
+    navigateStage(
+        3
+    );
+}
+
+/* ==========================================================
+   SAVE DRAFT
+   ========================================================== */
+
+function saveDraft(){
+
+    syncMetadataToPending();
+
+    if(
+        pendingImage
+    ){
+
+        /*
+           Local File objects cannot safely be persisted to
+           localStorage. We therefore persist metadata only
+           until the user commits the image.
+        */
+
+        updateSaveIndicator(
+            "Draft ready"
         );
 
         showToast(
-            "Image processed locally. Review it before uploading.",
+            "Draft state is ready. Commit the processed image to persist the media asset.",
+            "info"
+        );
+
+        return;
+    }
+
+    if(
+        persistPublisherState()
+    ){
+
+        updateSaveIndicator(
+            "Saved"
+        );
+
+        showToast(
+            "HackaX draft saved.",
             "success"
         );
-
-    }catch(error){
-        console.error(
-            "HackaX Stage 02 local processing failed:",
-            error
-        );
-
-        setPipelineStep(
-            "Validate",
-            "error"
-        );
-
-        setPipelineStep(
-            "Resize",
-            "pending"
-        );
-
-        setPipelineStep(
-            "Webp",
-            "pending"
-        );
-
-        setPipelineStep(
-            "Watermark",
-            "pending"
-        );
-
-        setPipelineStep(
-            "Preview",
-            "pending"
-        );
-
-        setPipelineStep(
-            "Metadata",
-            "pending"
-        );
-
-        setPipelineStep(
-            "Upload",
-            "pending"
-        );
-
-        setPipelineStep(
-            "Verify",
-            "pending"
-        );
-
-        setPipelineMessage(
-            error.message ||
-            "The image could not be processed.",
-            "error"
-        );
-
-        showToast(
-            error.message ||
-            "Image processing failed.",
-            "error"
-        );
-
-    }finally{
-        setBusy(false);
-
-        const input =
-            document.getElementById(
-                "featuredImageInput"
-            );
-
-        if(input){
-            input.value = "";
-        }
     }
 }
 
-function bindStage2Controller(){
-    const input =
-        document.getElementById(
-            "featuredImageInput"
+/* ==========================================================
+   STEPPER NAVIGATION
+   ========================================================== */
+
+function bindStepper(){
+
+    document
+        .querySelectorAll(
+            "[data-stage-link]"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        const stage =
+                            Number(
+                                button.dataset.stageLink
+                            );
+
+                        if(
+                            !stage ||
+                            stage === 2
+                        ){
+                            return;
+                        }
+
+                        /*
+                           Do not allow skipping ahead without
+                           preserving the same workflow semantics.
+                        */
+
+                        if(
+                            stage > 2
+                        ){
+
+                            const errors =
+                                validateStage();
+
+                            if(
+                                errors.length
+                            ){
+
+                                showValidation(
+                                    errors
+                                );
+
+                                showToast(
+                                    "Complete Stage 02 before moving forward.",
+                                    "error"
+                                );
+
+                                return;
+                            }
+                        }
+
+                        navigateStage(
+                            stage
+                        );
+                    }
+                );
+            }
         );
+}
+
+/* ==========================================================
+   UPLOADER EVENTS
+   ========================================================== */
+
+function bindUploader(){
+
+    const input =
+        $("featuredImageInput");
 
     const drop =
-        document.getElementById(
-            "mediaDrop"
-        );
+        $("mediaDrop");
 
-    const upload =
-        document.getElementById(
-            "uploadProcessedImageBtn"
-        );
-
-    const discard =
-        document.getElementById(
-            "discardProcessedImageBtn"
-        );
-
-    /*
-       CAPTURE PHASE IS INTENTIONAL.
-
-       hackax-publisher.js currently registers its legacy
-       Stage 02 change handler during DOMContentLoaded.
-
-       This listener runs during the capture phase first and
-       stops that legacy handler from immediately uploading the
-       selected source image.
-    */
-
-    if(input){
-        input.addEventListener(
-            "change",
-            event => {
-                event.stopImmediatePropagation();
-
-                const file =
-                    event.target.files?.[0];
-
-                if(file){
-                    handleImageSelection(
-                        file
-                    );
-                }
-            },
-            true
-        );
+    if(
+        !input ||
+        !drop
+    ){
+        return;
     }
 
-    if(drop && input){
-        drop.addEventListener(
-            "click",
-            event => {
-                if(
-                    event.target === input
-                ){
-                    return;
-                }
+    drop.addEventListener(
+        "click",
+        event => {
+
+            if(
+                event.target === input
+            ){
+                return;
+            }
+
+            if(
+                processing ||
+                uploadInProgress ||
+                deleteInProgress
+            ){
+                return;
+            }
+
+            input.click();
+        }
+    );
+
+    drop.addEventListener(
+        "keydown",
+        event => {
+
+            if(
+                event.key === "Enter" ||
+                event.key === " "
+            ){
+
+                event.preventDefault();
 
                 if(
                     processing ||
-                    uploadInProgress
+                    uploadInProgress ||
+                    deleteInProgress
                 ){
                     return;
                 }
 
                 input.click();
             }
-        );
+        }
+    );
 
-        drop.addEventListener(
-            "keydown",
-            event => {
-                if(
-                    event.key === "Enter" ||
-                    event.key === " "
-                ){
+    input.addEventListener(
+        "change",
+        event => {
+
+            const file =
+                event.target.files?.[0];
+
+            if(file){
+
+                handleImageSelection(
+                    file
+                );
+            }
+        }
+    );
+
+    /*
+       Desktop drag/drop.
+    */
+
+    [
+        "dragenter",
+        "dragover"
+    ].forEach(
+        eventName => {
+
+            drop.addEventListener(
+                eventName,
+                event => {
+
                     event.preventDefault();
+                    event.stopPropagation();
 
                     if(
-                        processing ||
-                        uploadInProgress
+                        !processing &&
+                        !uploadInProgress &&
+                        !deleteInProgress
                     ){
-                        return;
+
+                        drop.classList.add(
+                            "dragover"
+                        );
                     }
-
-                    input.click();
                 }
+            );
+        }
+    );
+
+    [
+        "dragleave",
+        "drop"
+    ].forEach(
+        eventName => {
+
+            drop.addEventListener(
+                eventName,
+                event => {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    drop.classList.remove(
+                        "dragover"
+                    );
+                }
+            );
+        }
+    );
+
+    drop.addEventListener(
+        "drop",
+        event => {
+
+            if(
+                processing ||
+                uploadInProgress ||
+                deleteInProgress
+            ){
+                return;
             }
-        );
-    }
 
-    if(upload){
-        upload.addEventListener(
-            "click",
-            uploadProcessedImage
-        );
-    }
+            const file =
+                event.dataTransfer?.files?.[0];
 
-    if(discard){
-        discard.addEventListener(
-            "click",
-            () => {
-                if(
-                    !pendingImage ||
-                    processing ||
-                    uploadInProgress
-                ){
-                    return;
-                }
+            if(file){
 
-                clearPendingImage();
-
-                setPipelineStep(
-                    "Validate",
-                    "pending"
-                );
-
-                setPipelineStep(
-                    "Resize",
-                    "pending"
-                );
-
-                setPipelineStep(
-                    "Webp",
-                    "pending"
-                );
-
-                setPipelineStep(
-                    "Watermark",
-                    "pending"
-                );
-
-                setPipelineStep(
-                    "Preview",
-                    "pending"
-                );
-
-                setPipelineStep(
-                    "Metadata",
-                    "pending"
-                );
-
-                setPipelineStep(
-                    "Upload",
-                    "pending"
-                );
-
-                setPipelineStep(
-                    "Verify",
-                    "pending"
-                );
-
-                setPipelineMessage(
-                    "Processed image discarded. The previously committed asset, if any, remains unchanged."
-                );
-
-                showToast(
-                    "Processed image discarded.",
-                    "info"
+                handleImageSelection(
+                    file
                 );
             }
-        );
-    }
+        }
+    );
+}
+
+/* ==========================================================
+   METADATA EVENTS
+   ========================================================== */
+
+function bindMetadata(){
 
     [
         "imageAltInput",
@@ -2413,77 +5863,322 @@ function bindStage2Controller(){
         "imageCaptionInput"
     ].forEach(
         id => {
-            document
-                .getElementById(id)
-                ?.addEventListener(
-                    "input",
-                    () => {
-                        syncMetadataToPending();
 
-                        if(
-                            pendingImage
-                        ){
-                            const state =
-                                getPublisherState();
+            const element =
+                $(id);
 
-                            if(
-                                state &&
-                                window.HackaX &&
-                                typeof window.HackaX.save ===
-                                    "function"
-                            ){
-                                /*
-                                   Metadata is intentionally not
-                                   written into state.media.featured
-                                   until the image is committed.
-                                */
-                            }
+            if(!element){
+                return;
+            }
+
+            element.addEventListener(
+                "input",
+                () => {
+
+                    syncMetadataToPending();
+
+                    if(
+                        pendingImage
+                    ){
+
+                        const state =
+                            $("metadataState");
+
+                        if(state){
+
+                            state.textContent =
+                                "Metadata changes are attached to the local review asset and will be committed with it.";
                         }
                     }
-                );
+                }
+            );
         }
-    );
-
-    renderCommittedAsset();
-
-    setPipelineMessage(
-        "Waiting for an image."
     );
 }
 
-function bootStage2Controller(){
+/* ==========================================================
+   MODAL EVENTS
+   ========================================================== */
+
+function bindModal(){
+
+    $("deleteCommittedImageBtn")
+        ?.addEventListener(
+            "click",
+            openDeleteModal
+        );
+
+    $("cancelDeleteBtn")
+        ?.addEventListener(
+            "click",
+            closeDeleteModal
+        );
+
+    $("confirmDeleteBtn")
+        ?.addEventListener(
+            "click",
+            deleteCommittedImage
+        );
+
+    $("deleteModal")
+        ?.addEventListener(
+            "click",
+            event => {
+
+                if(
+                    event.target ===
+                    $("deleteModal")
+                ){
+
+                    closeDeleteModal();
+                }
+            }
+        );
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if(
+                event.key === "Escape"
+            ){
+
+                closeDeleteModal();
+            }
+        }
+    );
+}
+
+/* ==========================================================
+   BUTTON EVENTS
+   ========================================================== */
+
+function bindButtons(){
+
+    $("uploadProcessedImageBtn")
+        ?.addEventListener(
+            "click",
+            uploadProcessedImage
+        );
+
+    $("discardProcessedImageBtn")
+        ?.addEventListener(
+            "click",
+            discardPendingImage
+        );
+
+    $("saveDraftBtn")
+        ?.addEventListener(
+            "click",
+            saveDraft
+        );
+
+    $("backBtn")
+        ?.addEventListener(
+            "click",
+            goBack
+        );
+
+    $("nextBtn")
+        ?.addEventListener(
+            "click",
+            goNext
+        );
+
+    $("refreshStatusBtn")
+        ?.addEventListener(
+            "click",
+            () => {
+
+                loadPublisherState();
+
+                updateConnectionStatus();
+
+                renderCommittedAsset();
+
+                showToast(
+                    "HackaX publisher state refreshed.",
+                    "success"
+                );
+            }
+        );
+}
+
+/* ==========================================================
+   CROSS-TAB STATE SYNC
+   ========================================================== */
+
+function bindStorageSync(){
+
+    window.addEventListener(
+        "storage",
+        event => {
+
+            if(
+                event.key !==
+                STORAGE_KEY
+            ){
+                return;
+            }
+
+            loadPublisherState();
+
+            updateConnectionStatus();
+
+            renderCommittedAsset();
+
+            showToast(
+                "Publisher state updated from another HackaX screen.",
+                "info"
+            );
+        }
+    );
+}
+
+/* ==========================================================
+   VISIBILITY SYNC
+   ========================================================== */
+
+function bindVisibilitySync(){
+
+    document.addEventListener(
+        "visibilitychange",
+        () => {
+
+            if(
+                document.visibilityState ===
+                "visible"
+            ){
+
+                loadPublisherState();
+
+                updateConnectionStatus();
+
+                renderCommittedAsset();
+            }
+        }
+    );
+}
+
+/* ==========================================================
+   PREVENT ACCIDENTAL EXIT DURING UPLOAD
+   ========================================================== */
+
+window.addEventListener(
+    "beforeunload",
+    event => {
+
+        if(
+            processing ||
+            uploadInProgress ||
+            deleteInProgress
+        ){
+
+            event.preventDefault();
+
+            event.returnValue =
+                "";
+        }
+    }
+);
+
+/* ==========================================================
+   INITIALIZE
+   ========================================================== */
+
+function initialize(){
+
+    loadPublisherState();
+
+    updateConnectionStatus();
+
+    resetPipeline();
+
+    renderCommittedAsset();
+
+    bindUploader();
+
+    bindMetadata();
+
+    bindModal();
+
+    bindButtons();
+
+    bindStepper();
+
+    bindStorageSync();
+
+    bindVisibilitySync();
+
+    updateButtonState();
+
     /*
-       The shared publisher engine is loaded after this script.
-       Its DOMContentLoaded handler initializes HackaX.state().
-       Defer our controller by one task so the global engine has
-       established the shared publisher state first.
+       If Stage 02 was previously completed, reflect that in
+       the stepper without relying on hackax-publisher.js.
     */
 
-    setTimeout(
-        bindStage2Controller,
-        0
+    const completed =
+        publisherState?.workflow?.completed ||
+        [];
+
+    document
+        .querySelectorAll(
+            ".step[data-stage]"
+        )
+        .forEach(
+            step => {
+
+                const stage =
+                    Number(
+                        step.dataset.stage
+                    );
+
+                if(
+                    stage < 2 &&
+                    completed.includes(stage)
+                ){
+
+                    step.classList.add(
+                        "completed"
+                    );
+                }
+
+                if(
+                    stage === 2
+                ){
+
+                    step.classList.add(
+                        "active"
+                    );
+                }
+            }
+        );
+
+    updateSaveIndicator(
+        "Saved"
     );
 }
 
 if(
-    document.readyState === "loading"
+    document.readyState ===
+    "loading"
 ){
+
     document.addEventListener(
         "DOMContentLoaded",
-        bootStage2Controller,
+        initialize,
         {
-            once:true
+            once: true
         }
     );
+
 }else{
-    bootStage2Controller();
+
+    initialize();
 }
 
 })();
 </script>
-
-<!-- Shared global publisher engine -->
-<script src="hackax-publisher.js"></script>
 
 </body>
 </html>
