@@ -2164,17 +2164,23 @@ section {
         font-size: 16px;
     }
 
-    /*
-       HERO MOBILE REBALANCE
-       The previous mobile composition allowed the headline
-       to dominate almost the entire image. The image now gets
-       significantly more visual territory.
-    */
+    /* ======================================================
+       MOBILE HERO
+       
+       Rebalanced to:
+       - Keep the visual/image area dominant
+       - Push content lower
+       - Keep headline compact
+       - Maximum 3 headline lines
+       - Prevent long database headlines from expanding hero
+    ====================================================== */
 
     .hero {
-        min-height: 535px;
-        height: auto;
-        max-height: none;
+        min-height: 650px;
+        height: 650px;
+        max-height: 650px;
+        display: flex;
+        align-items: flex-end;
         background-position: 68% center;
     }
 
@@ -2182,31 +2188,31 @@ section {
         background:
             linear-gradient(
                 90deg,
-                rgba(3,5,9,.88) 0%,
-                rgba(3,5,9,.62) 35%,
-                rgba(3,5,9,.25) 66%,
-                rgba(3,5,9,.03) 100%
+                rgba(3,5,9,.90) 0%,
+                rgba(3,5,9,.63) 38%,
+                rgba(3,5,9,.27) 68%,
+                rgba(3,5,9,.04) 100%
             ),
             linear-gradient(
                 0deg,
-                rgba(3,5,9,.92) 0%,
-                rgba(3,5,9,.58) 18%,
-                rgba(3,5,9,.08) 56%,
-                rgba(3,5,9,.22) 100%
+                rgba(3,5,9,.97) 0%,
+                rgba(3,5,9,.70) 21%,
+                rgba(3,5,9,.16) 55%,
+                rgba(3,5,9,.20) 100%
             );
     }
 
     .hero:after {
         background:
             radial-gradient(
-                circle at 76% 32%,
-                rgba(77,124,255,.10),
-                transparent 25%
+                circle at 76% 30%,
+                rgba(77,124,255,.11),
+                transparent 27%
             ),
             radial-gradient(
                 circle at 84% 66%,
                 rgba(0,217,149,.07),
-                transparent 24%
+                transparent 25%
             ),
             linear-gradient(
                 115deg,
@@ -2218,17 +2224,24 @@ section {
 
     .hero-inner {
         width: calc(100% - 32px);
-        padding: 58px 0 23px;
+        margin-inline: auto;
+
+        /*
+         * No large top padding.
+         * Flex alignment pushes the entire content block
+         * naturally toward the bottom of the hero.
+         */
+        padding: 0 0 29px;
     }
 
     .hero-label {
-        gap: 9px;
-        margin-bottom: 15px;
+        gap: 8px;
+        margin-bottom: 13px;
     }
 
     .hero-label i {
-        width: 28px;
-        flex-basis: 28px;
+        width: 27px;
+        flex: 0 0 27px;
     }
 
     .hero-label span {
@@ -2236,47 +2249,105 @@ section {
         letter-spacing: .17em;
     }
 
+    /*
+     * HERO HEADLINE
+     *
+     * Smaller than the previous version.
+     * Maximum 3 lines.
+     * Long CMS headlines are automatically clipped.
+     */
     .hero h1 {
-        max-width: 310px;
-        font-size: clamp(42px, 11.5vw, 50px);
-        line-height: .9;
-        letter-spacing: -.02em;
+        width: 100%;
+        max-width: 330px;
+
+        margin: 0;
+
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(37px, 10.4vw, 47px);
+        line-height: .91;
+        letter-spacing: -.012em;
+        font-weight: 800;
+
+        text-transform: uppercase;
+        text-wrap: balance;
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+
+        max-height: calc(3 * .91em);
     }
 
     .hero-copy {
+        width: 100%;
         max-width: 300px;
-        margin-top: 16px;
-        color: rgba(255,255,255,.64);
-        font-size: 9.5px;
+
+        margin-top: 14px;
+
+        color: rgba(255,255,255,.63);
+        font-size: 9px;
         line-height: 1.68;
+        letter-spacing: .002em;
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
     }
 
     .hero-actions {
         gap: 7px;
-        margin-top: 18px;
+        margin-top: 17px;
     }
 
     .button {
-        min-height: 39px;
-        padding: 0 13px;
-        font-size: 6.5px;
+        min-height: 38px;
+        padding: 0 12px;
+        font-size: 6px;
+        letter-spacing: .105em;
     }
 
     .hero-index {
-        max-width: 315px;
-        margin-top: 24px;
-        padding-top: 11px;
+        width: 100%;
+        max-width: 320px;
+
+        margin-top: 22px;
+        padding-top: 10px;
+
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 7px;
+
+        border-top: 1px solid rgba(255,255,255,.12);
     }
 
     .hero-index-item {
-        padding-right: 3px;
+        padding-right: 2px;
+    }
+
+    .hero-index-item:before {
+        top: -11px;
+    }
+
+    .hero-index-item span {
+        font-size: 4.6px;
+        letter-spacing: .12em;
     }
 
     .hero-index-item strong {
-        font-size: 9.5px;
+        margin-top: 4px;
+        font-size: 8.5px;
         line-height: .98;
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
     }
+
+    /* ======================================================
+       FEATURED INTELLIGENCE
+    ====================================================== */
 
     .section {
         padding: 54px 0;
@@ -2325,6 +2396,12 @@ section {
 
     .featured-primary h3 {
         font-size: 35px;
+        line-height: .89;
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
     }
 
     .featured-side {
@@ -2345,7 +2422,17 @@ section {
 
     .story-card h3 {
         font-size: 20px;
+        line-height: .92;
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
     }
+
+    /* ======================================================
+       CINEMATIC
+    ====================================================== */
 
     .cinematic {
         min-height: 575px;
@@ -2357,11 +2444,25 @@ section {
 
     .cinematic h2 {
         font-size: clamp(48px, 13.5vw, 72px);
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        overflow: hidden;
     }
 
     .cinematic p {
         font-size: 10px;
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        overflow: hidden;
     }
+
+    /* ======================================================
+       INTELLIGENCE BRIEF
+    ====================================================== */
 
     .brief-grid {
         gap: 27px;
@@ -2369,15 +2470,29 @@ section {
 
     .brief-copy h2 {
         font-size: 47px;
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        overflow: hidden;
     }
 
     .brief-copy p {
         font-size: 10px;
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        overflow: hidden;
     }
 
     .brief-image {
         aspect-ratio: 1.08 / 1;
     }
+
+    /* ======================================================
+       LATEST INTELLIGENCE
+    ====================================================== */
 
     .release-content {
         padding: 12px;
@@ -2385,11 +2500,25 @@ section {
 
     .release h3 {
         font-size: 20px;
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
     }
 
     .release p {
         font-size: 7.5px;
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
     }
+
+    /* ======================================================
+       SIGNAL
+    ====================================================== */
 
     .signal {
         min-height: 510px;
@@ -2401,11 +2530,25 @@ section {
 
     .signal h2 {
         font-size: 51px;
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        overflow: hidden;
     }
 
     .signal p {
         font-size: 10px;
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        overflow: hidden;
     }
+
+    /* ======================================================
+       TOPICS
+    ====================================================== */
 
     .topic {
         min-height: 202px;
@@ -2417,7 +2560,16 @@ section {
 
     .topic h3 {
         font-size: 22px;
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
     }
+
+    /* ======================================================
+       FOOTER
+    ====================================================== */
 
     .footer {
         padding-top: 49px;
@@ -2444,43 +2596,56 @@ section {
 @media (max-width: 390px) {
 
     .hero {
-        min-height: 515px;
+        min-height: 620px;
+        height: 620px;
+        max-height: 620px;
         background-position: 70% center;
     }
 
     .hero-inner {
         width: calc(100% - 30px);
-        padding-top: 52px;
-        padding-bottom: 21px;
+        padding: 0 0 25px;
+    }
+
+    .hero-label {
+        margin-bottom: 12px;
     }
 
     .hero h1 {
-        max-width: 292px;
-        font-size: 41px;
-        line-height: .91;
+        max-width: 300px;
+
+        font-size: 36px;
+        line-height: .92;
+        letter-spacing: -.01em;
+
+        -webkit-line-clamp: 3;
+        max-height: calc(3 * .92em);
     }
 
     .hero-copy {
-        max-width: 285px;
-        font-size: 9px;
+        max-width: 280px;
+        margin-top: 13px;
+        font-size: 8.8px;
+        line-height: 1.65;
     }
 
     .hero-actions {
-        margin-top: 17px;
+        margin-top: 16px;
     }
 
     .button {
-        min-height: 38px;
+        min-height: 37px;
         padding-inline: 11px;
+        font-size: 5.8px;
     }
 
     .hero-index {
-        max-width: 295px;
-        margin-top: 22px;
+        max-width: 290px;
+        margin-top: 20px;
     }
 
     .hero-index-item strong {
-        font-size: 9px;
+        font-size: 8px;
     }
 
     .section-title {
@@ -2526,29 +2691,88 @@ section {
 
 @media (max-width: 699px) and (max-height: 700px) {
 
+    /*
+     * Keep the hero visually tall even on short iPhones.
+     * Content remains anchored near the bottom instead of
+     * being pushed upward by excessive top padding.
+     */
     .hero {
-        min-height: 505px;
+        min-height: 600px;
+        height: 600px;
+        max-height: 600px;
     }
 
     .hero-inner {
-        padding-top: 46px;
+        padding-top: 0;
+        padding-bottom: 22px;
+    }
+
+    .hero h1 {
+        font-size: clamp(36px, 10vw, 44px);
+        line-height: .92;
+
+        -webkit-line-clamp: 3;
+        max-height: calc(3 * .92em);
+    }
+
+    .hero-copy {
+        margin-top: 13px;
+    }
+
+    .hero-actions {
+        margin-top: 16px;
+    }
+
+    .hero-index {
+        margin-top: 19px;
+    }
+}
+
+/* ==========================================================
+   EXTRA-SMALL DEVICES
+========================================================== */
+
+@media (max-width: 360px) {
+
+    .hero {
+        min-height: 585px;
+        height: 585px;
+        max-height: 585px;
+    }
+
+    .hero-inner {
+        width: calc(100% - 28px);
         padding-bottom: 20px;
     }
 
     .hero h1 {
-        font-size: clamp(40px, 10.8vw, 47px);
+        max-width: 285px;
+        font-size: 34px;
+        line-height: .93;
     }
 
     .hero-copy {
-        margin-top: 14px;
+        max-width: 270px;
+        font-size: 8.5px;
     }
 
     .hero-actions {
-        margin-top: 17px;
+        gap: 6px;
+    }
+
+    .button {
+        min-height: 36px;
+        padding-inline: 10px;
+        font-size: 5.5px;
     }
 
     .hero-index {
-        margin-top: 21px;
+        max-width: 280px;
+        margin-top: 18px;
+    }
+
+    .hero-index-item strong {
+        font-size: 7.7px;
     }
 }
 
