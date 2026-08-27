@@ -7,65 +7,5786 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#020403">
 <link rel="manifest" href="../manifest.json">
+
 <script src="https://cdn.tailwindcss.com"></script>
 
 <script>
 tailwind.config={
-    theme:{extend:{colors:{dyve:{bg:"#020403",card:"#07100d",accent:"#00ffaa",accentHover:"#00cc88",text:"#e8f0ee",muted:"rgba(255,255,255,.6)"}}}}
+    theme:{
+        extend:{
+            colors:{
+                dyve:{
+                    bg:"#020403",
+                    card:"#07100d",
+                    accent:"#00ffaa",
+                    accentHover:"#00cc88",
+                    text:"#e8f0ee",
+                    muted:"rgba(255,255,255,.6)"
+                }
+            }
+        }
+    }
 };
 </script>
+
 <link rel="stylesheet" href="hackax-onboarding.css">
 </head>
+
 <body data-stage="6" class="min-h-screen">
 
 <header class="bg-dyve-bg border-b border-white/10 sticky top-0 z-50">
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+
 <div class="flex justify-between items-center gap-4">
+
 <div>
-<a href="index.html" class="text-xl font-extrabold text-white tracking-wide">DYVE<span class="text-dyve-accent">|</span>HACKAX</a>
-<p class="text-[10px] text-white/45 uppercase tracking-[.22em]">Cyber Intelligence Publisher</p>
+<a
+    href="index.html"
+    class="text-xl font-extrabold text-white tracking-wide"
+>
+    DYVE<span class="text-dyve-accent">|</span>HACKAX
+</a>
+
+<p class="text-[10px] text-white/45 uppercase tracking-[.22em]">
+    Cyber Intelligence Publisher
+</p>
 </div>
+
 <div class="flex items-center gap-2">
-<span id="saveState" class="hidden text-[10px] text-white/40">Saved</span>
-<a href="settings.html" class="hidden sm:inline-block px-3 py-2 text-xs font-semibold text-white/70 bg-white/5 border border-white/10 rounded-lg">Settings</a>
-<button id="saveDraftBtn" type="button" class="px-3 py-2 text-xs font-semibold text-white/70 bg-white/5 border border-white/10 rounded-lg">Save Draft</button>
+
+<span
+    id="saveState"
+    class="hidden text-[10px] text-white/40"
+>
+    Saved
+</span>
+
+<a
+    href="settings.html"
+    class="hidden sm:inline-block px-3 py-2 text-xs font-semibold text-white/70 bg-white/5 border border-white/10 rounded-lg"
+>
+    Settings
+</a>
+
+<button
+    id="saveDraftBtn"
+    type="button"
+    class="px-3 py-2 text-xs font-semibold text-white/70 bg-white/5 border border-white/10 rounded-lg"
+>
+    Save Draft
+</button>
+
 </div>
 </div>
-<div class="mt-4 stepper"><button type="button" class="step" data-stage="1" data-stage-link="1"><span class="step-number">1</span><span>Article</span></button><button type="button" class="step" data-stage="2" data-stage-link="2"><span class="step-number">2</span><span>Media</span></button><button type="button" class="step" data-stage="3" data-stage-link="3"><span class="step-number">3</span><span>Classification</span></button><button type="button" class="step" data-stage="4" data-stage-link="4"><span class="step-number">4</span><span>Intelligence</span></button><button type="button" class="step" data-stage="5" data-stage-link="5"><span class="step-number">5</span><span>SEO</span></button><button type="button" class="step" data-stage="6" data-stage-link="6"><span class="step-number">6</span><span>Internal Linking</span></button><button type="button" class="step" data-stage="7" data-stage-link="7"><span class="step-number">7</span><span>Technical</span></button><button type="button" class="step" data-stage="8" data-stage-link="8"><span class="step-number">8</span><span>Review</span></button></div>
+
+<div class="mt-4 stepper">
+
+<button type="button" class="step" data-stage="1" data-stage-link="1">
+    <span class="step-number">1</span>
+    <span>Article</span>
+</button>
+
+<button type="button" class="step" data-stage="2" data-stage-link="2">
+    <span class="step-number">2</span>
+    <span>Media</span>
+</button>
+
+<button type="button" class="step" data-stage="3" data-stage-link="3">
+    <span class="step-number">3</span>
+    <span>Classification</span>
+</button>
+
+<button type="button" class="step" data-stage="4" data-stage-link="4">
+    <span class="step-number">4</span>
+    <span>Intelligence</span>
+</button>
+
+<button type="button" class="step" data-stage="5" data-stage-link="5">
+    <span class="step-number">5</span>
+    <span>SEO</span>
+</button>
+
+<button
+    type="button"
+    class="step"
+    data-stage="6"
+    data-stage-link="6"
+>
+    <span class="step-number">6</span>
+    <span>Internal Linking</span>
+</button>
+
+<button type="button" class="step" data-stage="7" data-stage-link="7">
+    <span class="step-number">7</span>
+    <span>Technical</span>
+</button>
+
+<button type="button" class="step" data-stage="8" data-stage-link="8">
+    <span class="step-number">8</span>
+    <span>Review</span>
+</button>
+
+</div>
 </div>
 </header>
+
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+
 <div class="flex flex-wrap items-center gap-2">
+
 <div class="flex items-center gap-2 px-3 py-2 bg-dyve-bg text-white border border-white/10 rounded-lg">
-<span id="statusDot" class="status-dot"></span><span id="statusText" class="text-xs">Checking...</span>
-<button id="refreshStatusBtn" type="button" class="text-white/50 hover:text-white" title="Check connection">↻</button>
+
+<span
+    id="statusDot"
+    class="status-dot"
+></span>
+
+<span
+    id="statusText"
+    class="text-xs"
+>
+    Checking...
+</span>
+
+<button
+    id="refreshStatusBtn"
+    type="button"
+    class="text-white/50 hover:text-white"
+    title="Check connection"
+>
+    ↻
+</button>
+
 </div>
-<div class="px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-semibold text-emerald-800">HackaX only</div>
-<div class="px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700"><span id="stageCounter">STEP 6 OF 8</span> · <span id="stageTitle">Internal Linking</span></div>
+
+
+<div class="px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-semibold text-emerald-800">
+    HackaX only
+</div>
+
+
+<div class="px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700">
+
+<span id="stageCounter">
+    STEP 6 OF 8
+</span>
+
+·
+
+<span id="stageTitle">
+    Internal Linking
+</span>
+
+</div>
+
 </div>
 </div>
+
 
 <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-<div class="mb-6"><div class="eyebrow">STAGE 06 / INTERNAL LINKING</div><h1 class="page-title">Connect the intelligence graph.</h1><p class="page-subtitle">The engine compares the current report against the live HackaX article corpus. It suggests contextual relationships and refuses to manufacture irrelevant links.</p></div>
+
+
+<div class="mb-6">
+
+<div class="eyebrow">
+    STAGE 06 / INTERNAL LINKING
+</div>
+
+<h1 class="page-title">
+    Connect the intelligence graph.
+</h1>
+
+<p class="page-subtitle">
+    The engine compares the current report against the live HackaX article corpus, identifies contextual relationships, finds safe anchor opportunities inside the actual article body, and writes approved internal links directly into publisher state.
+</p>
+
+</div>
+
+
 <div class="metric-grid mb-5">
-<div class="metric"><div class="metric-label">Candidates</div><div id="candidateCount" class="metric-value">0</div></div>
-<div class="metric"><div class="metric-label">High match</div><div id="highMatchCount" class="metric-value">0</div></div>
-<div class="metric"><div class="metric-label">Applied links</div><div id="appliedLinkCount" class="metric-value">0</div></div>
+
+<div class="metric">
+
+<div class="metric-label">
+    Candidates
 </div>
+
+<div
+    id="candidateCount"
+    class="metric-value"
+>
+    0
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="metric-label">
+    High match
+</div>
+
+<div
+    id="highMatchCount"
+    class="metric-value"
+>
+    0
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="metric-label">
+    Applied links
+</div>
+
+<div
+    id="appliedLinkCount"
+    class="metric-value"
+>
+    0
+</div>
+
+</div>
+
+</div>
+
+
 <section class="onboarding-card">
-<div class="section-head"><div><div class="section-title">Live relationship candidates</div><div class="section-note">Select safe relationships or let the engine apply the strongest contextual anchors directly into the article body.</div></div><button id="refreshLinksBtn" type="button" class="action-btn">Refresh Corpus</button></div>
-<div id="linkSuggestions" class="space-y-2"></div>
-<div class="mt-4"><button id="autoLinksBtn" type="button" class="action-btn dark w-full">Auto-Link Strong Matches</button></div>
-</section>
-<section class="onboarding-card mt-5"><div class="info-strip">Internal links are applied to the actual article HTML and are carried into the final static page. The system does not rely on client-side link injection after publication.</div></section>
 
-<div id="validation" class="validation hidden"></div>
-<div class="stage-actions">
-<button type="button" class="action-btn" data-back >Back</button>
-<button type="button" class="action-btn primary flex-1" data-next >Continue</button>
+<div class="section-head">
+
+<div>
+
+<div class="section-title">
+    Smart Internal Linking
+</div>
+
+<div class="section-note">
+    Candidate relationships are calculated from the current article and live HackaX corpus. Only relationships with a verified destination and an actual contextual anchor opportunity are eligible for application.
+</div>
 
 </div>
-<div id="toast" class="toast hidden"></div>
-<script src="hackax-publisher.js"></script>
-</body></html>
+
+<button
+    id="refreshLinksBtn"
+    type="button"
+    class="action-btn"
+>
+    Refresh Corpus
+</button>
+
+</div>
+
+
+<div id="linkSuggestions" class="space-y-2"></div>
+
+
+<div class="mt-4">
+
+<button
+    id="autoLinksBtn"
+    type="button"
+    class="action-btn dark w-full"
+>
+    Auto-Link Strong Matches
+</button>
+
+</div>
+
+</section>
+
+
+<section class="onboarding-card mt-5">
+
+<div class="section-head">
+
+<div>
+
+<div class="section-title">
+    Related Content Engine
+</div>
+
+<div class="section-note">
+    These relationships are ranked independently from the actual link insertion process so editorial relevance can be reviewed before changing the article.
+</div>
+
+</div>
+
+</div>
+
+<div
+    id="relatedContent"
+    class="space-y-2"
+></div>
+
+</section>
+
+
+<section class="onboarding-card mt-5">
+
+<div class="section-head">
+
+<div>
+
+<div class="section-title">
+    Article Health
+</div>
+
+<div class="section-note">
+    Health signals are calculated from the actual article HTML, existing anchors, destination integrity, and the corpus currently available to this screen.
+</div>
+
+</div>
+
+<span
+    id="healthBadge"
+    class="tag"
+>
+    CHECKING
+</span>
+
+</div>
+
+
+<div id="articleHealth"></div>
+
+</section>
+
+
+<section class="onboarding-card mt-5">
+
+<div class="section-head">
+
+<div>
+
+<div class="section-title">
+    Editorial Knowledge Graph
+</div>
+
+<div class="section-note">
+    The graph represents the current article and verified contextual relationships discovered from the loaded HackaX corpus.
+</div>
+
+</div>
+
+</div>
+
+
+<div
+    id="knowledgeGraph"
+    class="empty-state"
+>
+    Loading editorial graph...
+</div>
+
+</section>
+
+
+<section class="onboarding-card mt-5">
+
+<div class="section-head">
+
+<div>
+
+<div class="section-title">
+    Current article
+</div>
+
+<div class="section-note">
+    This is the article currently stored in the shared HackaX publisher state. The rendered body below is the same HTML analyzed by the linking engine.
+</div>
+
+</div>
+
+<span
+    id="articleStateBadge"
+    class="tag"
+>
+    CHECKING
+</span>
+
+</div>
+
+
+<div
+    id="articleRoute"
+    class="route-box"
+>
+    ARTICLE / Loading publisher state...
+</div>
+
+
+<div
+    id="articleTitle"
+    class="mt-5 text-2xl sm:text-3xl font-black tracking-tight"
+>
+    Loading article...
+</div>
+
+
+<div
+    id="articleDescription"
+    class="mt-3 text-sm text-slate-500"
+></div>
+
+
+<div
+    id="articleMeta"
+    class="mt-4 flex flex-wrap gap-2"
+></div>
+
+
+<div
+    id="articleBody"
+    class="editor-card mt-5"
+></div>
+
+</section>
+
+
+<div
+    id="validation"
+    class="validation hidden"
+></div>
+
+
+<div class="stage-actions">
+
+<button
+    type="button"
+    class="action-btn"
+    data-back
+>
+    Back
+</button>
+
+<button
+    type="button"
+    class="action-btn primary flex-1"
+    data-next
+>
+    Continue
+</button>
+
+</div>
+
+
+<div
+    id="toast"
+    class="toast hidden"
+></div>
+
+
 </main>
+
+
+<script>
+(function(){
+
+    "use strict";
+
+
+    /* ==========================================================
+       CORE CONFIGURATION
+    ========================================================== */
+
+    const STORAGE_KEY = "dyve-hackax-publisher-v2";
+    const SETTINGS_KEY = "dyve-hackax-settings";
+
+    const STAGE = 6;
+    const WORKFLOW_TOTAL = 8;
+
+    const STATE_POLL_INTERVAL = 1500;
+    const CORPUS_REFRESH_INTERVAL = 15000;
+
+    const MIN_RELATIONSHIP_SCORE = 0.18;
+    const STRONG_RELATIONSHIP_SCORE = 0.42;
+
+    const MAX_CANDIDATES = 12;
+    const MAX_AUTO_LINKS = 8;
+
+
+    /* ==========================================================
+       DOM
+    ========================================================== */
+
+    const $ = id => document.getElementById(id);
+
+
+    const els = {
+
+        statusDot:$("statusDot"),
+        statusText:$("statusText"),
+        refreshStatusBtn:$("refreshStatusBtn"),
+
+        saveState:$("saveState"),
+        saveDraftBtn:$("saveDraftBtn"),
+
+        refreshLinksBtn:$("refreshLinksBtn"),
+        autoLinksBtn:$("autoLinksBtn"),
+
+        linkSuggestions:$("linkSuggestions"),
+        relatedContent:$("relatedContent"),
+
+        articleHealth:$("articleHealth"),
+        healthBadge:$("healthBadge"),
+
+        knowledgeGraph:$("knowledgeGraph"),
+
+        articleStateBadge:$("articleStateBadge"),
+        articleRoute:$("articleRoute"),
+        articleTitle:$("articleTitle"),
+        articleDescription:$("articleDescription"),
+        articleMeta:$("articleMeta"),
+        articleBody:$("articleBody"),
+
+        candidateCount:$("candidateCount"),
+        highMatchCount:$("highMatchCount"),
+        appliedLinkCount:$("appliedLinkCount"),
+
+        validation:$("validation"),
+        toast:$("toast")
+
+    };
+
+
+    /* ==========================================================
+       RUNTIME
+    ========================================================== */
+
+    const runtime = {
+
+        rawState:null,
+        stateFingerprint:"",
+
+        settings:null,
+
+        cloudinary:null,
+
+        article:null,
+        articlePath:null,
+        articleHtmlKey:null,
+        articleHtml:"",
+
+        corpus:[],
+        corpusSources:[],
+
+        candidates:[],
+
+        appliedLinks:[],
+
+        lastCorpusRefresh:0,
+
+        busy:false
+
+    };
+
+
+    /* ==========================================================
+       JSON / STORAGE
+    ========================================================== */
+
+    function parseJson(value){
+
+        if(
+            value === null ||
+            value === undefined ||
+            value === ""
+        ){
+            return null;
+        }
+
+        if(
+            typeof value === "object"
+        ){
+            return value;
+        }
+
+        try{
+
+            return JSON.parse(value);
+
+        }catch(_){
+
+            return null;
+
+        }
+
+    }
+
+
+    function readStorage(key){
+
+        try{
+
+            return parseJson(
+                localStorage.getItem(key)
+            );
+
+        }catch(_){
+
+            return null;
+
+        }
+
+    }
+
+
+    function stableStringify(value){
+
+        const seen = new WeakSet();
+
+
+        function normalize(v){
+
+            if(
+                v === null ||
+                typeof v !== "object"
+            ){
+                return v;
+            }
+
+
+            if(
+                seen.has(v)
+            ){
+                return "[Circular]";
+            }
+
+
+            seen.add(v);
+
+
+            if(
+                Array.isArray(v)
+            ){
+
+                return v.map(
+                    normalize
+                );
+
+            }
+
+
+            const output = {};
+
+
+            Object.keys(v)
+                .sort()
+                .forEach(key => {
+
+                    output[key] =
+                        normalize(v[key]);
+
+                });
+
+
+            return output;
+
+        }
+
+
+        try{
+
+            return JSON.stringify(
+                normalize(value)
+            );
+
+        }catch(_){
+
+            return "";
+
+        }
+
+    }
+
+
+    function fingerprint(value){
+
+        const input =
+            stableStringify(value);
+
+
+        let hash = 2166136261;
+
+
+        for(
+            let i=0;
+            i<input.length;
+            i++
+        ){
+
+            hash ^= input.charCodeAt(i);
+
+            hash +=
+                (hash << 1) +
+                (hash << 4) +
+                (hash << 7) +
+                (hash << 8) +
+                (hash << 24);
+
+        }
+
+
+        return (
+            hash >>> 0
+        ).toString(16);
+
+    }
+
+
+    function isObject(value){
+
+        return Boolean(
+            value &&
+            typeof value === "object" &&
+            !Array.isArray(value)
+        );
+
+    }
+
+
+    function isString(value){
+
+        return (
+            typeof value === "string" &&
+            value.trim() !== ""
+        );
+
+    }
+
+
+    function getByPath(root,path){
+
+        let node = root;
+
+
+        for(
+            const key of path
+        ){
+
+            if(
+                node === null ||
+                node === undefined
+            ){
+
+                return null;
+
+            }
+
+
+            node = node[key];
+
+        }
+
+
+        return node;
+
+    }
+
+
+    function walkObjects(
+        root,
+        callback,
+        path=[],
+        seen=new WeakSet(),
+        depth=0
+    ){
+
+        if(
+            depth > 12 ||
+            root === null ||
+            root === undefined
+        ){
+
+            return;
+
+        }
+
+
+        if(
+            typeof root !== "object"
+        ){
+
+            return;
+
+        }
+
+
+        if(
+            seen.has(root)
+        ){
+
+            return;
+
+        }
+
+
+        seen.add(root);
+
+
+        callback(
+            root,
+            path
+        );
+
+
+        if(
+            Array.isArray(root)
+        ){
+
+            root.forEach(
+                (value,index) => {
+
+                    walkObjects(
+                        value,
+                        callback,
+                        path.concat(index),
+                        seen,
+                        depth + 1
+                    );
+
+                }
+            );
+
+            return;
+
+        }
+
+
+        Object.keys(root)
+            .forEach(key => {
+
+                walkObjects(
+                    root[key],
+                    callback,
+                    path.concat(key),
+                    seen,
+                    depth + 1
+                );
+
+            });
+
+    }
+
+
+    /* ==========================================================
+       ARTICLE FIELD RESOLUTION
+    ========================================================== */
+
+    const TITLE_KEYS = [
+        "title",
+        "headline",
+        "name",
+        "seoTitle"
+    ];
+
+
+    const DESCRIPTION_KEYS = [
+        "description",
+        "excerpt",
+        "summary",
+        "dek",
+        "seoDescription"
+    ];
+
+
+    const HTML_KEYS = [
+        "articleContent",
+        "contentHtml",
+        "bodyHtml",
+        "html",
+        "content",
+        "body",
+        "articleBody"
+    ];
+
+
+    const SLUG_KEYS = [
+        "slug",
+        "route",
+        "url",
+        "path",
+        "permalink",
+        "canonical"
+    ];
+
+
+    const CATEGORY_KEYS = [
+        "category",
+        "section",
+        "vertical",
+        "channel",
+        "type"
+    ];
+
+
+    const KEYWORD_KEYS = [
+        "keywords",
+        "tags",
+        "topics",
+        "entities"
+    ];
+
+
+    const ID_KEYS = [
+        "id",
+        "articleId",
+        "postId",
+        "uid"
+    ];
+
+
+    function firstString(
+        object,
+        keys
+    ){
+
+        for(
+            const key of keys
+        ){
+
+            if(
+                isString(
+                    object &&
+                    object[key]
+                )
+            ){
+
+                return object[key]
+                    .trim();
+
+            }
+
+        }
+
+
+        return "";
+
+    }
+
+
+    function firstArray(
+        object,
+        keys
+    ){
+
+        for(
+            const key of keys
+        ){
+
+            const value =
+                object &&
+                object[key];
+
+
+            if(
+                Array.isArray(value)
+            ){
+
+                return value
+                    .map(
+                        item =>
+                            typeof item === "string"
+                                ? item.trim()
+                                : String(item)
+                    )
+                    .filter(Boolean);
+
+            }
+
+
+            if(
+                isString(value)
+            ){
+
+                return value
+                    .split(/[|,]/)
+                    .map(
+                        item =>
+                            item.trim()
+                    )
+                    .filter(Boolean);
+
+            }
+
+        }
+
+
+        return [];
+
+    }
+
+
+    function looksLikeArticle(
+        object
+    ){
+
+        if(
+            !isObject(object)
+        ){
+
+            return false;
+
+        }
+
+
+        const title =
+            firstString(
+                object,
+                TITLE_KEYS
+            );
+
+
+        const html =
+            firstString(
+                object,
+                HTML_KEYS
+            );
+
+
+        const slug =
+            firstString(
+                object,
+                SLUG_KEYS
+            );
+
+
+        const description =
+            firstString(
+                object,
+                DESCRIPTION_KEYS
+            );
+
+
+        return Boolean(
+
+            (
+                title &&
+                (
+                    html ||
+                    description ||
+                    slug
+                )
+            )
+
+            ||
+
+            (
+                html &&
+                slug
+            )
+
+        );
+
+    }
+
+
+    function findHtmlKey(
+        article
+    ){
+
+        for(
+            const key of HTML_KEYS
+        ){
+
+            if(
+                isString(
+                    article &&
+                    article[key]
+                )
+            ){
+
+                return key;
+
+            }
+
+        }
+
+
+        return null;
+
+    }
+
+
+    function locateCurrentArticle(
+        state
+    ){
+
+        const preferredPaths = [
+
+            ["article"],
+            ["currentArticle"],
+            ["draft"],
+            ["current"],
+
+            ["publisher","article"],
+            ["publisher","currentArticle"],
+
+            ["data","article"],
+
+            ["editor","article"],
+
+            ["articleData"],
+            ["draftArticle"]
+
+        ];
+
+
+        for(
+            const path of preferredPaths
+        ){
+
+            const value =
+                getByPath(
+                    state,
+                    path
+                );
+
+
+            if(
+                looksLikeArticle(value)
+            ){
+
+                return {
+                    value,
+                    path
+                };
+
+            }
+
+        }
+
+
+        if(
+            looksLikeArticle(state)
+        ){
+
+            return {
+                value:state,
+                path:[]
+            };
+
+        }
+
+
+        let result = null;
+
+
+        walkObjects(
+            state,
+            (object,path) => {
+
+                if(result){
+                    return;
+                }
+
+
+                if(
+                    looksLikeArticle(object)
+                ){
+
+                    result = {
+                        value:object,
+                        path
+                    };
+
+                }
+
+            }
+        );
+
+
+        return result;
+
+    }
+
+
+    function normalizeArticle(
+        object,
+        path,
+        source
+    ){
+
+        if(
+            !isObject(object)
+        ){
+
+            return null;
+
+        }
+
+
+        const htmlKey =
+            findHtmlKey(object);
+
+
+        return {
+
+            raw:object,
+
+            path,
+
+            source,
+
+            id:firstString(
+                object,
+                ID_KEYS
+            ),
+
+            title:
+                firstString(
+                    object,
+                    TITLE_KEYS
+                ) ||
+                "Untitled article",
+
+            description:
+                firstString(
+                    object,
+                    DESCRIPTION_KEYS
+                ),
+
+            html:
+                htmlKey
+                    ? String(object[htmlKey])
+                    : "",
+
+            htmlKey,
+
+            slug:
+                firstString(
+                    object,
+                    SLUG_KEYS
+                ),
+
+            category:
+                firstString(
+                    object,
+                    CATEGORY_KEYS
+                ),
+
+            keywords:
+                firstArray(
+                    object,
+                    KEYWORD_KEYS
+                )
+
+        };
+
+    }
+
+
+    /* ==========================================================
+       CORPUS DISCOVERY
+    ========================================================== */
+
+    function scoreCorpusKey(
+        key
+    ){
+
+        const value =
+            String(key)
+                .toLowerCase();
+
+
+        let score = 0;
+
+
+        if(
+            value.includes("article")
+        ){
+
+            score += 10;
+
+        }
+
+
+        if(
+            value.includes("corpus")
+        ){
+
+            score += 10;
+
+        }
+
+
+        if(
+            value.includes("posts")
+        ){
+
+            score += 7;
+
+        }
+
+
+        if(
+            value.includes("content")
+        ){
+
+            score += 5;
+
+        }
+
+
+        if(
+            value.includes("items")
+        ){
+
+            score += 2;
+
+        }
+
+
+        return score;
+
+    }
+
+
+    function collectArticleArrays(
+        root
+    ){
+
+        const found = [];
+
+
+        walkObjects(
+            root,
+            (object,path) => {
+
+                if(
+                    Array.isArray(object)
+                ){
+
+                    return;
+
+                }
+
+
+                Object.keys(object)
+                    .forEach(key => {
+
+                        const value =
+                            object[key];
+
+
+                        if(
+                            !Array.isArray(value) ||
+                            !value.length
+                        ){
+
+                            return;
+
+                        }
+
+
+                        const articles =
+                            value.filter(
+                                looksLikeArticle
+                            );
+
+
+                        if(
+                            articles.length
+                        ){
+
+                            found.push({
+
+                                items:articles,
+
+                                path:
+                                    path.concat(key),
+
+                                score:
+                                    scoreCorpusKey(key)
+
+                            });
+
+                        }
+
+                    });
+
+            }
+        );
+
+
+        return found.sort(
+            (a,b) =>
+                b.score -
+                a.score
+        );
+
+    }
+
+
+    function discoverCorpusFromState(
+        state
+    ){
+
+        const collections =
+            collectArticleArrays(
+                state
+            );
+
+
+        const unique =
+            new Map();
+
+
+        for(
+            const collection of collections
+        ){
+
+            for(
+                const item of collection.items
+            ){
+
+                const article =
+                    normalizeArticle(
+                        item,
+                        collection.path,
+                        "state-corpus"
+                    );
+
+
+                if(
+                    !article
+                ){
+
+                    continue;
+
+                }
+
+
+                const key =
+                    article.id ||
+                    article.slug ||
+                    article.title
+                        .toLowerCase();
+
+
+                if(
+                    !unique.has(key)
+                ){
+
+                    unique.set(
+                        key,
+                        article
+                    );
+
+                }
+
+            }
+
+        }
+
+
+        return [
+            ...unique.values()
+        ];
+
+    }
+
+
+    /* ==========================================================
+       CORPUS URL DISCOVERY
+    ========================================================== */
+
+    function discoverCorpusUrls(
+        state,
+        settings
+    ){
+
+        const urls = [];
+
+
+        const priorityKeys =
+            /(corpus|article.*(json|url)|content.*(json|url)|feed|manifest)/i;
+
+
+        function inspect(root){
+
+            if(
+                !root
+            ){
+
+                return;
+
+            }
+
+
+            walkObjects(
+                root,
+                object => {
+
+                    Object.keys(object)
+                        .forEach(key => {
+
+                            const value =
+                                object[key];
+
+
+                            if(
+                                !isString(value)
+                            ){
+
+                                return;
+
+                            }
+
+
+                            if(
+                                !priorityKeys.test(key)
+                            ){
+
+                                return;
+
+                            }
+
+
+                            const candidate =
+                                value.trim();
+
+
+                            const acceptable =
+                                /^https?:\/\//i.test(
+                                    candidate
+                                )
+
+                                ||
+
+                                /^\.{1,2}\//.test(
+                                    candidate
+                                )
+
+                                ||
+
+                                /^\//.test(
+                                    candidate
+                                )
+
+                                ||
+
+                                /\.json(?:[?#].*)?$/i.test(
+                                    candidate
+                                );
+
+
+                            if(
+                                !acceptable
+                            ){
+
+                                return;
+
+                            }
+
+
+                            urls.push(
+                                candidate
+                            );
+
+                        });
+
+                }
+            );
+
+        }
+
+
+        inspect(state);
+        inspect(settings);
+
+
+        return [
+            ...new Set(urls)
+        ].slice(
+            0,
+            8
+        );
+
+    }
+
+
+    async function fetchCorpusUrl(
+        url
+    ){
+
+        const separator =
+            url.includes("?")
+                ? "&"
+                : "?";
+
+
+        const response =
+            await fetch(
+                url +
+                separator +
+                "_hackax_ts=" +
+                Date.now(),
+                {
+                    method:"GET",
+
+                    cache:"no-store",
+
+                    credentials:"same-origin",
+
+                    headers:{
+                        "Accept":
+                            "application/json,text/plain,*/*"
+                    }
+                }
+            );
+
+
+        if(
+            !response.ok
+        ){
+
+            throw new Error(
+                "Corpus request failed: " +
+                response.status
+            );
+
+        }
+
+
+        const text =
+            await response.text();
+
+
+        const parsed =
+            parseJson(text);
+
+
+        if(
+            !parsed
+        ){
+
+            throw new Error(
+                "Corpus response is not valid JSON"
+            );
+
+        }
+
+
+        return parsed;
+
+    }
+
+
+    function normalizeFetchedCorpus(
+        payload,
+        source
+    ){
+
+        const result = [];
+
+
+        const add = value => {
+
+            if(
+                !isObject(value)
+            ){
+
+                return;
+
+            }
+
+
+            if(
+                looksLikeArticle(value)
+            ){
+
+                const article =
+                    normalizeArticle(
+                        value,
+                        [],
+                        source
+                    );
+
+
+                if(article){
+                    result.push(article);
+                }
+
+            }
+
+        };
+
+
+        if(
+            Array.isArray(payload)
+        ){
+
+            payload.forEach(add);
+
+        }
+
+
+        else if(
+            isObject(payload)
+        ){
+
+            if(
+                Array.isArray(
+                    payload.articles
+                )
+            ){
+
+                payload.articles.forEach(add);
+
+            }
+
+
+            if(
+                Array.isArray(
+                    payload.posts
+                )
+            ){
+
+                payload.posts.forEach(add);
+
+            }
+
+
+            if(
+                Array.isArray(
+                    payload.items
+                )
+            ){
+
+                payload.items.forEach(add);
+
+            }
+
+
+            if(
+                Array.isArray(
+                    payload.data
+                )
+            ){
+
+                payload.data.forEach(add);
+
+            }
+
+
+            if(
+                !result.length
+            ){
+
+                walkObjects(
+                    payload,
+                    object => {
+
+                        add(object);
+
+                    }
+                );
+
+            }
+
+        }
+
+
+        return result;
+
+    }
+
+
+    async function loadCorpus(
+        force
+    ){
+
+        const state =
+            readStorage(
+                STORAGE_KEY
+            );
+
+
+        const settings =
+            readStorage(
+                SETTINGS_KEY
+            );
+
+
+        runtime.settings =
+            settings;
+
+
+        runtime.cloudinary =
+            resolveCloudinaryConfig(
+                settings
+            );
+
+
+        const localCorpus =
+            state
+                ? discoverCorpusFromState(state)
+                : [];
+
+
+        const urls =
+            state
+                ? discoverCorpusUrls(
+                    state,
+                    settings
+                )
+                : [];
+
+
+        const merged =
+            new Map();
+
+
+        localCorpus.forEach(
+            article => {
+
+                const key =
+                    article.id ||
+                    article.slug ||
+                    article.title.toLowerCase();
+
+
+                if(
+                    !merged.has(key)
+                ){
+
+                    merged.set(
+                        key,
+                        article
+                    );
+
+                }
+
+            }
+        );
+
+
+        const sources = [];
+
+
+        if(
+            localCorpus.length
+        ){
+
+            sources.push(
+                "publisher state"
+            );
+
+        }
+
+
+        const shouldRefresh =
+            Boolean(force) ||
+
+            (
+                Date.now() -
+                runtime.lastCorpusRefresh
+            ) >=
+            CORPUS_REFRESH_INTERVAL ||
+
+            !runtime.corpus.length;
+
+
+        if(
+            shouldRefresh
+        ){
+
+            for(
+                const url of urls
+            ){
+
+                try{
+
+                    const payload =
+                        await fetchCorpusUrl(
+                            url
+                        );
+
+
+                    const fetched =
+                        normalizeFetchedCorpus(
+                            payload,
+                            url
+                        );
+
+
+                    fetched.forEach(
+                        article => {
+
+                            const key =
+                                article.id ||
+                                article.slug ||
+                                article.title
+                                    .toLowerCase();
+
+
+                            if(
+                                !merged.has(key)
+                            ){
+
+                                merged.set(
+                                    key,
+                                    article
+                                );
+
+                            }
+
+                        }
+                    );
+
+
+                    if(
+                        fetched.length
+                    ){
+
+                        sources.push(
+                            url
+                        );
+
+                    }
+
+                }catch(error){
+
+                    console.warn(
+                        "HackaX corpus source unavailable:",
+                        url,
+                        error
+                    );
+
+                }
+
+            }
+
+
+            runtime.lastCorpusRefresh =
+                Date.now();
+
+        }
+
+
+        runtime.corpus =
+            [
+                ...merged.values()
+            ];
+
+
+        runtime.corpusSources =
+            sources;
+
+
+        return runtime.corpus;
+
+    }
+
+
+    /* ==========================================================
+       CLOUDINARY SETTINGS
+       Read-only. This stage never invents or replaces the
+       configuration used by the publisher.
+    ========================================================== */
+
+    function resolveCloudinaryConfig(
+        settings
+    ){
+
+        if(
+            !settings
+        ){
+
+            return null;
+
+        }
+
+
+        let found = null;
+
+
+        walkObjects(
+            settings,
+            object => {
+
+                if(found){
+                    return;
+                }
+
+
+                const cloudName =
+                    firstString(
+                        object,
+                        [
+                            "cloudName",
+                            "cloud_name"
+                        ]
+                    );
+
+
+                const uploadPreset =
+                    firstString(
+                        object,
+                        [
+                            "uploadPreset",
+                            "upload_preset"
+                        ]
+                    );
+
+
+                const apiKey =
+                    firstString(
+                        object,
+                        [
+                            "apiKey",
+                            "api_key"
+                        ]
+                    );
+
+
+                if(
+                    cloudName ||
+                    uploadPreset ||
+                    apiKey
+                ){
+
+                    found = {
+
+                        cloudName,
+
+                        uploadPreset,
+
+                        apiKey
+
+                    };
+
+                }
+
+            }
+        );
+
+
+        return found;
+
+    }
+
+
+    /* ==========================================================
+       TEXT NORMALIZATION
+    ========================================================== */
+
+    const STOPWORDS =
+        new Set(
+            (
+                "a an and are as at be by for from has have in into is it its of on or that the their this to was were will with you your " +
+
+                "about after again against all also any because before between both but can could did do does doing down during each few " +
+
+                "further had he her here hers him his how i if im in itself just me more most my myself no nor not now off once only " +
+
+                "other our ours out over own same she should so some such than then there these they thing those through too under until " +
+
+                "up very we what when where which while who whom why would yet cyber security intelligence threat threats attack attacks " +
+
+                "actor actors malware ransomware phishing breach breaches vulnerability vulnerabilities exploit exploits credential credentials " +
+
+                "network networks data system systems application applications cloud endpoint endpoints incident incidents"
+
+            ).split(/\s+/)
+        );
+
+
+    function normalizeText(
+        text
+    ){
+
+        return String(
+            text || ""
+        )
+        .toLowerCase()
+        .normalize("NFKD")
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
+        .replace(
+            /https?:\/\/[^\s]+/g,
+            " "
+        )
+        .replace(
+            /[^a-z0-9\s-]/g,
+            " "
+        )
+        .replace(
+            /\s+/g,
+            " "
+        )
+        .trim();
+
+    }
+
+
+    function tokenize(
+        text
+    ){
+
+        return normalizeText(
+            text
+        )
+        .split(/\s+/)
+        .map(
+            token =>
+                token.replace(
+                    /^-+|-+$/g,
+                    ""
+                )
+        )
+        .filter(
+            token =>
+                token.length >= 3 &&
+                !STOPWORDS.has(token)
+        );
+
+    }
+
+
+    function stripHtml(
+        html
+    ){
+
+        if(
+            !isString(html)
+        ){
+
+            return "";
+
+        }
+
+
+        const document =
+            new DOMParser()
+                .parseFromString(
+                    html,
+                    "text/html"
+                );
+
+
+        document
+            .querySelectorAll(
+                "script,style,noscript,template"
+            )
+            .forEach(
+                node =>
+                    node.remove()
+            );
+
+
+        return document.body
+            ? document.body.textContent || ""
+            : "";
+
+    }
+
+
+    function meaningfulPhrases(
+        text
+    ){
+
+        const words =
+            normalizeText(text)
+                .split(/\s+/)
+                .filter(Boolean);
+
+
+        const phrases =
+            new Map();
+
+
+        for(
+            let length=3;
+            length>=2;
+            length--
+        ){
+
+            for(
+                let i=0;
+                i<=words.length-length;
+                i++
+            ){
+
+                const phrase =
+                    words
+                        .slice(
+                            i,
+                            i + length
+                        )
+                        .join(" ");
+
+
+                const useful =
+                    phrase
+                        .split(" ")
+                        .filter(
+                            word =>
+                                !STOPWORDS.has(word)
+                        );
+
+
+                if(
+                    useful.length <
+                    Math.min(
+                        2,
+                        length
+                    )
+                ){
+
+                    continue;
+
+                }
+
+
+                if(
+                    useful.some(
+                        word =>
+                            word.length < 3
+                    )
+                ){
+
+                    continue;
+
+                }
+
+
+                phrases.set(
+                    phrase,
+                    (
+                        phrases.get(
+                            phrase
+                        ) || 0
+                    ) + 1
+                );
+
+            }
+
+        }
+
+
+        return [
+            ...phrases.entries()
+        ]
+        .sort(
+            (a,b) =>
+                b[1] -
+                a[1]
+        )
+        .slice(
+            0,
+            40
+        )
+        .map(
+            item =>
+                item[0]
+        );
+
+    }
+
+
+    function articleCorpusText(
+        article
+    ){
+
+        return [
+
+            article.title,
+
+            article.description,
+
+            article.category,
+
+            (
+                article.keywords ||
+                []
+            ).join(" "),
+
+            stripHtml(
+                article.html
+            )
+
+        ].join(" ");
+
+    }
+
+
+    /* ==========================================================
+       ARTICLE PROFILES
+    ========================================================== */
+
+    function buildProfile(
+        article
+    ){
+
+        const titleTokens =
+            tokenize(
+                article.title
+            );
+
+
+        const bodyTokens =
+            tokenize(
+                stripHtml(
+                    article.html
+                )
+            );
+
+
+        const descriptionTokens =
+            tokenize(
+                article.description
+            );
+
+
+        const keywordTokens =
+            tokenize(
+                (
+                    article.keywords ||
+                    []
+                ).join(" ")
+            );
+
+
+        const all =
+            titleTokens.concat(
+                titleTokens,
+                descriptionTokens,
+                keywordTokens,
+                bodyTokens
+            );
+
+
+        return {
+
+            title:
+                new Set(
+                    titleTokens
+                ),
+
+            keywords:
+                new Set(
+                    keywordTokens
+                ),
+
+            body:
+                new Set(
+                    bodyTokens
+                ),
+
+            all:
+                new Set(
+                    all
+                )
+
+        };
+
+    }
+
+
+    function intersectionCount(
+        a,
+        b
+    ){
+
+        let count = 0;
+
+
+        for(
+            const value of a
+        ){
+
+            if(
+                b.has(value)
+            ){
+
+                count++;
+
+            }
+
+        }
+
+
+        return count;
+
+    }
+
+
+    /* ==========================================================
+       RELATIONSHIP SCORING
+    ========================================================== */
+
+    function similarityScore(
+        current,
+        target
+    ){
+
+        const currentProfile =
+            buildProfile(
+                current
+            );
+
+
+        const targetProfile =
+            buildProfile(
+                target
+            );
+
+
+        const titleOverlap =
+            intersectionCount(
+                currentProfile.title,
+                targetProfile.all
+            );
+
+
+        const keywordOverlap =
+            intersectionCount(
+                currentProfile.keywords,
+                targetProfile.all
+            );
+
+
+        const bodyOverlap =
+            intersectionCount(
+                currentProfile.body,
+                targetProfile.all
+            );
+
+
+        const reverseBodyOverlap =
+            intersectionCount(
+                targetProfile.body,
+                currentProfile.all
+            );
+
+
+        const currentSize =
+            Math.max(
+                currentProfile.all.size,
+                1
+            );
+
+
+        const targetSize =
+            Math.max(
+                targetProfile.all.size,
+                1
+            );
+
+
+        const unionSize =
+            new Set(
+                [
+                    ...currentProfile.all,
+                    ...targetProfile.all
+                ]
+            ).size;
+
+
+        const jaccard =
+            intersectionCount(
+                currentProfile.all,
+                targetProfile.all
+            ) /
+            Math.max(
+                unionSize,
+                1
+            );
+
+
+        const currentPhrases =
+            meaningfulPhrases(
+                articleCorpusText(
+                    current
+                )
+            );
+
+
+        const targetText =
+            normalizeText(
+                articleCorpusText(
+                    target
+                )
+            );
+
+
+        const phraseHits =
+            currentPhrases.filter(
+                phrase =>
+                    targetText.includes(
+                        phrase
+                    )
+            ).length;
+
+
+        const categoryMatch =
+            current.category &&
+            target.category &&
+            normalizeText(
+                current.category
+            ) ===
+            normalizeText(
+                target.category
+            )
+                ? 1
+                : 0;
+
+
+        const score =
+
+            (
+                titleOverlap /
+                Math.max(
+                    currentProfile.title.size,
+                    1
+                )
+            ) * 0.26
+
+            +
+
+            (
+                keywordOverlap /
+                Math.max(
+                    currentProfile.keywords.size,
+                    1
+                )
+            ) * 0.20
+
+            +
+
+            (
+                bodyOverlap /
+                currentSize
+            ) * 0.20
+
+            +
+
+            (
+                reverseBodyOverlap /
+                targetSize
+            ) * 0.08
+
+            +
+
+            jaccard * 0.14
+
+            +
+
+            Math.min(
+                phraseHits / 5,
+                1
+            ) * 0.09
+
+            +
+
+            categoryMatch * 0.03;
+
+
+        return Math.min(
+            1,
+            score
+        );
+
+    }
+
+
+    function isSameArticle(
+        current,
+        target
+    ){
+
+        const currentIds = [
+
+            current.id,
+
+            current.slug,
+
+            current.raw &&
+            current.raw.url,
+
+            current.raw &&
+            current.raw.path
+
+        ]
+        .filter(Boolean)
+        .map(String);
+
+
+        const targetIds = [
+
+            target.id,
+
+            target.slug,
+
+            target.raw &&
+            target.raw.url,
+
+            target.raw &&
+            target.raw.path
+
+        ]
+        .filter(Boolean)
+        .map(String);
+
+
+        if(
+            currentIds.some(
+                id =>
+                    targetIds.includes(id)
+            )
+        ){
+
+            return true;
+
+        }
+
+
+        return (
+            normalizeText(
+                current.title
+            ) ===
+            normalizeText(
+                target.title
+            )
+        );
+
+    }
+
+
+    /* ==========================================================
+       DESTINATION RESOLUTION
+    ========================================================== */
+
+    function resolveDestination(
+        article
+    ){
+
+        const raw =
+            article.raw ||
+            {};
+
+
+        const candidates = [
+
+            raw.canonical,
+
+            raw.canonicalUrl,
+
+            raw.permalink,
+
+            raw.url,
+
+            raw.route,
+
+            raw.path,
+
+            raw.href,
+
+            raw.articleUrl
+
+        ]
+        .filter(isString)
+        .map(
+            value =>
+                value.trim()
+        );
+
+
+        for(
+            const value of candidates
+        ){
+
+            if(
+                /^(javascript|data|vbscript):/i.test(
+                    value
+                )
+            ){
+
+                continue;
+
+            }
+
+
+            if(
+
+                /^https?:\/\//i.test(
+                    value
+                )
+
+                ||
+
+                value.startsWith("/")
+
+                ||
+
+                value.startsWith("./")
+
+                ||
+
+                value.startsWith("../")
+
+            ){
+
+                return value;
+
+            }
+
+        }
+
+
+        return "";
+
+    }
+
+
+    function normalizeDestination(
+        value
+    ){
+
+        try{
+
+            const url =
+                new URL(
+                    value,
+                    location.href
+                );
+
+
+            url.hash = "";
+
+
+            return url.href
+                .replace(
+                    /\/$/,
+                    ""
+                );
+
+        }catch(_){
+
+            return String(
+                value || ""
+            )
+            .trim()
+            .replace(
+                /\/$/,
+                ""
+            );
+
+        }
+
+    }
+
+
+    /* ==========================================================
+       SAFE HTML DOCUMENT
+    ========================================================== */
+
+    function sanitizeArticleDocument(
+        html
+    ){
+
+        const document =
+            new DOMParser()
+                .parseFromString(
+                    html || "",
+                    "text/html"
+                );
+
+
+        document
+            .querySelectorAll(
+                "script,iframe,object,embed,form,base,meta,link,style"
+            )
+            .forEach(
+                node =>
+                    node.remove()
+            );
+
+
+        document
+            .querySelectorAll("*")
+            .forEach(
+                node => {
+
+                    [
+                        ...node.attributes
+                    ].forEach(
+                        attribute => {
+
+                            if(
+
+                                /^on/i.test(
+                                    attribute.name
+                                )
+
+                                ||
+
+                                attribute.name.toLowerCase() ===
+                                "srcdoc"
+
+                            ){
+
+                                node.removeAttribute(
+                                    attribute.name
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+
+        return document;
+
+    }
+
+
+    /* ==========================================================
+       ANCHOR OPPORTUNITY ENGINE
+    ========================================================== */
+
+    function textNodes(
+        root
+    ){
+
+        const walker =
+            document.createTreeWalker(
+                root,
+                NodeFilter.SHOW_TEXT,
+                {
+
+                    acceptNode(node){
+
+                        const parent =
+                            node.parentElement;
+
+
+                        if(
+                            !parent
+                        ){
+
+                            return NodeFilter.FILTER_REJECT;
+
+                        }
+
+
+                        const tag =
+                            parent.tagName
+                                .toLowerCase();
+
+
+                        if(
+                            [
+                                "a",
+                                "script",
+                                "style",
+                                "code",
+                                "pre",
+                                "h1",
+                                "h2",
+                                "h3",
+                                "h4",
+                                "h5",
+                                "h6"
+                            ].includes(tag)
+                        ){
+
+                            return NodeFilter.FILTER_REJECT;
+
+                        }
+
+
+                        if(
+                            !node.nodeValue ||
+                            node.nodeValue.trim().length < 3
+                        ){
+
+                            return NodeFilter.FILTER_REJECT;
+
+                        }
+
+
+                        return NodeFilter.FILTER_ACCEPT;
+
+                    }
+
+                }
+            );
+
+
+        const result = [];
+
+
+        let node;
+
+
+        while(
+            (node = walker.nextNode())
+        ){
+
+            result.push(
+                node
+            );
+
+        }
+
+
+        return result;
+
+    }
+
+
+    function candidateAnchors(
+        article,
+        target
+    ){
+
+        const phrases = [];
+
+
+        const targetProfile =
+            buildProfile(
+                target
+            );
+
+
+        const targetPhrases =
+            meaningfulPhrases(
+                articleCorpusText(
+                    target
+                )
+            );
+
+
+        targetPhrases.forEach(
+            phrase =>
+                phrases.push(
+                    phrase
+                )
+        );
+
+
+        target.title
+            .split(/\s+/)
+            .filter(Boolean)
+            .forEach(
+                word => {
+
+                    const normalized =
+                        normalizeText(
+                            word
+                        );
+
+
+                    if(
+                        normalized.length >= 5 &&
+                        !STOPWORDS.has(normalized)
+                    ){
+
+                        phrases.push(
+                            normalized
+                        );
+
+                    }
+
+                }
+            );
+
+
+        const currentPhrases =
+            meaningfulPhrases(
+                stripHtml(
+                    article.html
+                )
+            );
+
+
+        const targetText =
+            normalizeText(
+                articleCorpusText(
+                    target
+                )
+            );
+
+
+        currentPhrases.forEach(
+            phrase => {
+
+                if(
+
+                    !phrases.includes(
+                        phrase
+                    )
+
+                    &&
+
+                    targetText.includes(
+                        phrase
+                    )
+
+                ){
+
+                    phrases.push(
+                        phrase
+                    );
+
+                }
+
+            }
+        );
+
+
+        return [
+            ...new Set(
+                phrases
+            )
+        ]
+        .filter(
+            phrase =>
+                phrase.length >= 5
+        )
+        .sort(
+            (a,b) =>
+                b.length -
+                a.length
+        )
+        .slice(
+            0,
+            80
+        );
+
+    }
+
+
+    function findBestAnchor(
+        document,
+        phrases
+    ){
+
+        const nodes =
+            textNodes(
+                document.body
+            );
+
+
+        let best = null;
+
+
+        for(
+            const node of nodes
+        ){
+
+            const original =
+                node.nodeValue ||
+                "";
+
+
+            const normalized =
+                normalizeText(
+                    original
+                );
+
+
+            for(
+                const phrase of phrases
+            ){
+
+                const index =
+                    normalized.indexOf(
+                        phrase
+                    );
+
+
+                if(
+                    index < 0
+                ){
+
+                    continue;
+
+                }
+
+
+                const length =
+                    phrase.length;
+
+
+                const score =
+
+                    (
+                        length /
+                        Math.max(
+                            normalized.length,
+                            1
+                        )
+                    )
+
+                    +
+
+                    Math.min(
+                        length / 80,
+                        1
+                    ) * 0.25;
+
+
+                if(
+                    !best ||
+                    score > best.score
+                ){
+
+                    best = {
+
+                        node,
+
+                        index,
+
+                        phrase,
+
+                        score
+
+                    };
+
+                }
+
+            }
+
+        }
+
+
+        return best;
+
+    }
+
+
+    function alreadyLinksTo(
+        document,
+        destination
+    ){
+
+        const links =
+            [
+                ...document.querySelectorAll(
+                    "a[href]"
+                )
+            ];
+
+
+        const normalized =
+            normalizeDestination(
+                destination
+            );
+
+
+        return links.some(
+            link =>
+                normalizeDestination(
+                    link.getAttribute(
+                        "href"
+                    )
+                ) === normalized
+        );
+
+    }
+
+
+    /* ==========================================================
+       ACTUAL LINK INSERTION
+    ========================================================== */
+
+    function applyOneLink(
+        html,
+        target
+    ){
+
+        const destination =
+            resolveDestination(
+                target
+            );
+
+
+        if(
+            !destination
+        ){
+
+            return {
+
+                ok:false,
+
+                reason:
+                    "Destination URL is not stored in the corpus record."
+
+            };
+
+        }
+
+
+        const document =
+            sanitizeArticleDocument(
+                html
+            );
+
+
+        if(
+            alreadyLinksTo(
+                document,
+                destination
+            )
+        ){
+
+            return {
+
+                ok:false,
+
+                reason:
+                    "This destination is already linked in the article."
+
+            };
+
+        }
+
+
+        const phrases =
+            candidateAnchors(
+                runtime.article,
+                target
+            );
+
+
+        const best =
+            findBestAnchor(
+                document,
+                phrases
+            );
+
+
+        if(
+            !best
+        ){
+
+            return {
+
+                ok:false,
+
+                reason:
+                    "No safe matching anchor text exists in the current article body."
+
+            };
+
+        }
+
+
+        const original =
+            best.node.nodeValue;
+
+
+        const anchorText =
+            original.slice(
+                best.index,
+                best.index +
+                best.phrase.length
+            );
+
+
+        const link =
+            document.createElement(
+                "a"
+            );
+
+
+        link.href =
+            destination;
+
+
+        link.textContent =
+            anchorText;
+
+
+        link.setAttribute(
+            "data-hackax-link",
+            "contextual"
+        );
+
+
+        link.setAttribute(
+            "data-hackax-target",
+            target.slug ||
+            target.id ||
+            target.title
+        );
+
+
+        link.setAttribute(
+            "rel",
+            "internal"
+        );
+
+
+        const fragment =
+            document.createDocumentFragment();
+
+
+        fragment.appendChild(
+            document.createTextNode(
+                original.slice(
+                    0,
+                    best.index
+                )
+            )
+        );
+
+
+        fragment.appendChild(
+            link
+        );
+
+
+        fragment.appendChild(
+            document.createTextNode(
+                original.slice(
+                    best.index +
+                    best.phrase.length
+                )
+            )
+        );
+
+
+        best.node.parentNode.replaceChild(
+            fragment,
+            best.node
+        );
+
+
+        return {
+
+            ok:true,
+
+            html:
+                document.body.innerHTML,
+
+            destination,
+
+            anchor:
+                anchorText,
+
+            target
+
+        };
+
+    }
+
+
+    function applyLinks(
+        html,
+        targets
+    ){
+
+        let working =
+            html;
+
+
+        const applied = [];
+        const rejected = [];
+
+
+        for(
+            const target of targets
+        ){
+
+            const result =
+                applyOneLink(
+                    working,
+                    target
+                );
+
+
+            if(
+                result.ok
+            ){
+
+                working =
+                    result.html;
+
+
+                applied.push(
+                    result
+                );
+
+            }else{
+
+                rejected.push({
+                    target,
+                    reason:
+                        result.reason
+                });
+
+            }
+
+        }
+
+
+        return {
+
+            html:working,
+
+            applied,
+
+            rejected
+
+        };
+
+    }
+
+
+    /* ==========================================================
+       CANDIDATE ENGINE
+    ========================================================== */
+
+    function buildCandidates(
+        article,
+        corpus
+    ){
+
+        if(
+
+            !article ||
+
+            !article.html ||
+
+            !corpus.length
+
+        ){
+
+            return [];
+
+        }
+
+
+        return corpus
+
+            .filter(
+                target =>
+                    !isSameArticle(
+                        article,
+                        target
+                    )
+            )
+
+            .map(
+                target => ({
+
+                    target,
+
+                    score:
+                        similarityScore(
+                            article,
+                            target
+                        ),
+
+                    destination:
+                        resolveDestination(
+                            target
+                        ),
+
+                    anchorAvailable:
+                        Boolean(
+                            candidateAnchors(
+                                article,
+                                target
+                            ).length
+                        )
+
+                })
+            )
+
+            .filter(
+                candidate =>
+                    candidate.score >=
+                    MIN_RELATIONSHIP_SCORE
+            )
+
+            .sort(
+                (a,b) =>
+                    b.score -
+                    a.score
+            )
+
+            .slice(
+                0,
+                MAX_CANDIDATES
+            );
+
+    }
+
+
+    /* ==========================================================
+       STATE WRITE
+    ========================================================== */
+
+    function locateWritableArticle(
+        state
+    ){
+
+        return locateCurrentArticle(
+            state
+        );
+
+    }
+
+
+    function updateArticleHtmlInState(
+        state,
+        html
+    ){
+
+        const located =
+            locateWritableArticle(
+                state
+            );
+
+
+        if(
+            located
+        ){
+
+            const article =
+                located.value;
+
+
+            const htmlKey =
+                findHtmlKey(
+                    article
+                );
+
+
+            if(
+                htmlKey
+            ){
+
+                article[htmlKey] =
+                    html;
+
+
+                return {
+
+                    ok:true,
+
+                    path:
+                        located.path,
+
+                    key:
+                        htmlKey
+
+                };
+
+            }
+
+        }
+
+
+        const topLevelKeys = [
+
+            "articleContent",
+            "contentHtml",
+            "bodyHtml",
+            "html",
+            "content",
+            "body",
+            "articleBody"
+
+        ];
+
+
+        for(
+            const key of topLevelKeys
+        ){
+
+            if(
+                isString(
+                    state[key]
+                )
+            ){
+
+                state[key] =
+                    html;
+
+
+                return {
+
+                    ok:true,
+
+                    path:[key],
+
+                    key
+
+                };
+
+            }
+
+        }
+
+
+        return {
+
+            ok:false
+
+        };
+
+    }
+
+
+    function writeState(
+        state,
+        reason
+    ){
+
+        try{
+
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(
+                    state
+                )
+            );
+
+
+            runtime.stateFingerprint =
+                fingerprint(
+                    state
+                );
+
+
+            window.dispatchEvent(
+                new CustomEvent(
+                    "hackax:publisher-state-change",
+                    {
+                        detail:{
+                            reason
+                        }
+                    }
+                )
+            );
+
+
+            return true;
+
+        }catch(error){
+
+            console.error(
+                "HackaX publisher state write failed:",
+                error
+            );
+
+
+            return false;
+
+        }
+
+    }
+
+
+    function saveCurrentArticle(
+        html,
+        reason
+    ){
+
+        const state =
+            readStorage(
+                STORAGE_KEY
+            );
+
+
+        if(
+            !state
+        ){
+
+            return {
+
+                ok:false,
+
+                reason:
+                    "Publisher state is unavailable."
+
+            };
+
+        }
+
+
+        const result =
+            updateArticleHtmlInState(
+                state,
+                html
+            );
+
+
+        if(
+            !result.ok
+        ){
+
+            return {
+
+                ok:false,
+
+                reason:
+                    "No writable article HTML field exists in the shared publisher state."
+
+            };
+
+        }
+
+
+        if(
+            !writeState(
+                state,
+                reason
+            )
+        ){
+
+            return {
+
+                ok:false,
+
+                reason:
+                    "The browser rejected the publisher-state write."
+
+            };
+
+        }
+
+
+        return {
+
+            ok:true,
+
+            state,
+
+            result
+
+        };
+
+    }
+
+
+    /* ==========================================================
+       HTML ESCAPE
+    ========================================================== */
+
+    function escapeHtml(
+        value
+    ){
+
+        return String(
+            value ?? ""
+        )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+    }
+
+
+    function scoreLabel(
+        score
+    ){
+
+        if(
+            score >= 0.65
+        ){
+
+            return "VERY STRONG";
+
+        }
+
+
+        if(
+            score >= STRONG_RELATIONSHIP_SCORE
+        ){
+
+            return "STRONG";
+
+        }
+
+
+        if(
+            score >= 0.30
+        ){
+
+            return "RELEVANT";
+
+        }
+
+
+        return "POSSIBLE";
+
+    }
+
+
+    /* ==========================================================
+       ARTICLE RENDER
+    ========================================================== */
+
+    function countAnchors(
+        html
+    ){
+
+        if(
+            !html
+        ){
+
+            return 0;
+
+        }
+
+
+        const document =
+            sanitizeArticleDocument(
+                html
+            );
+
+
+        return document.querySelectorAll(
+            "a[href]"
+        ).length;
+
+    }
+
+
+    function renderArticle(){
+
+        const article =
+            runtime.article;
+
+
+        if(
+            !article
+        ){
+
+            els.articleStateBadge.textContent =
+                "EMPTY";
+
+
+            els.articleRoute.textContent =
+                "ARTICLE / No article route stored";
+
+
+            els.articleTitle.textContent =
+                "Untitled article";
+
+
+            els.articleDescription.textContent =
+                "No article is currently stored in the shared publisher state.";
+
+
+            els.articleMeta.innerHTML =
+                "";
+
+
+            els.articleBody.innerHTML =
+                '<div class="empty-state">' +
+                'No usable article HTML is available in the shared publisher state.' +
+                '</div>';
+
+
+            return;
+
+        }
+
+
+        els.articleStateBadge.textContent =
+            article.html
+                ? "READY"
+                : "EMPTY";
+
+
+        els.articleRoute.innerHTML =
+            "<strong>ARTICLE</strong> / " +
+            escapeHtml(
+                article.slug ||
+                "No article route stored"
+            );
+
+
+        els.articleTitle.textContent =
+            article.title;
+
+
+        els.articleDescription.textContent =
+            article.description ||
+            "No article description is currently stored.";
+
+
+        const meta = [];
+
+
+        if(
+            article.category
+        ){
+
+            meta.push(
+                article.category
+            );
+
+        }
+
+
+        (
+            article.keywords ||
+            []
+        )
+        .slice(
+            0,
+            8
+        )
+        .forEach(
+            keyword =>
+                meta.push(
+                    keyword
+                )
+        );
+
+
+        meta.push(
+            countAnchors(
+                article.html
+            ) +
+            " internal links"
+        );
+
+
+        els.articleMeta.innerHTML =
+            meta
+            .map(
+                item =>
+                    '<span class="keyword-chip">' +
+                    escapeHtml(item) +
+                    '</span>'
+            )
+            .join("");
+
+
+        if(
+            !article.html
+        ){
+
+            els.articleBody.innerHTML =
+                '<div class="empty-state">' +
+                'No usable article HTML is available in the shared publisher state.' +
+                '</div>';
+
+
+            return;
+
+        }
+
+
+        const document =
+            sanitizeArticleDocument(
+                article.html
+            );
+
+
+        els.articleBody.innerHTML =
+            '<div class="ql-editor">' +
+            (
+                document.body.innerHTML ||
+                '<div class="empty-state">The stored article HTML contains no renderable body content.</div>'
+            ) +
+            '</div>';
+
+    }
+
+
+    /* ==========================================================
+       CANDIDATES
+    ========================================================== */
+
+    function renderCandidates(){
+
+        els.candidateCount.textContent =
+            String(
+                runtime.candidates.length
+            );
+
+
+        els.highMatchCount.textContent =
+            String(
+                runtime.candidates.filter(
+                    candidate =>
+                        candidate.score >=
+                        STRONG_RELATIONSHIP_SCORE &&
+
+                        candidate.destination &&
+
+                        candidate.anchorAvailable
+                ).length
+            );
+
+
+        els.appliedLinkCount.textContent =
+            String(
+                runtime.appliedLinks.length
+            );
+
+
+        if(
+            !runtime.article ||
+            !runtime.article.html
+        ){
+
+            els.linkSuggestions.innerHTML =
+                '<div class="info-strip">' +
+                'No usable article HTML is available in the shared publisher state. Internal linking is paused until the actual article body is present.' +
+                '</div>';
+
+
+            els.autoLinksBtn.disabled =
+                true;
+
+
+            return;
+
+        }
+
+
+        if(
+            !runtime.corpus.length
+        ){
+
+            els.linkSuggestions.innerHTML =
+                '<div class="empty-state">' +
+                'No live HackaX article corpus is currently available. The engine will not manufacture relationships without source records.' +
+                '</div>';
+
+
+            els.autoLinksBtn.disabled =
+                true;
+
+
+            return;
+
+        }
+
+
+        if(
+            !runtime.candidates.length
+        ){
+
+            els.linkSuggestions.innerHTML =
+                '<div class="empty-state">' +
+                'No sufficiently relevant internal relationships were found in the current corpus.' +
+                '</div>';
+
+
+            els.autoLinksBtn.disabled =
+                true;
+
+
+            return;
+
+        }
+
+
+        els.autoLinksBtn.disabled =
+            false;
+
+
+        els.linkSuggestions.innerHTML =
+            runtime.candidates
+            .map(
+                (
+                    candidate,
+                    index
+                ) => {
+
+                    const target =
+                        candidate.target;
+
+
+                    const score =
+                        Math.round(
+                            candidate.score *
+                            100
+                        );
+
+
+                    const destination =
+                        candidate.destination ||
+                        "No stored destination";
+
+
+                    const anchor =
+                        candidate.anchorAvailable
+                            ? "Anchor opportunity found"
+                            : "No anchor text found";
+
+
+                    return (
+
+                        '<label class="link-option">' +
+
+                            '<input ' +
+
+                                'type="checkbox" ' +
+
+                                'data-candidate-index="' +
+                                index +
+                                '" ' +
+
+                                (
+                                    !candidate.destination ||
+                                    !candidate.anchorAvailable
+                                        ? "disabled"
+                                        : ""
+                                ) +
+
+                            '>' +
+
+                            '<span class="link-option-body">' +
+
+                                '<span class="link-option-title">' +
+
+                                    escapeHtml(
+                                        target.title
+                                    ) +
+
+                                    ' <span class="keyword-chip">' +
+
+                                        escapeHtml(
+                                            scoreLabel(
+                                                candidate.score
+                                            )
+                                        ) +
+
+                                        " · " +
+
+                                        score +
+
+                                        "%</span>" +
+
+                                '</span>' +
+
+                                '<span class="link-option-meta">' +
+
+                                    escapeHtml(
+                                        target.description ||
+                                        anchor
+                                    ) +
+
+                                '</span>' +
+
+                                '<span class="link-option-meta">' +
+
+                                    escapeHtml(
+                                        destination
+                                    ) +
+
+                                    " · " +
+
+                                    escapeHtml(
+                                        anchor
+                                    ) +
+
+                                '</span>' +
+
+                            '</span>' +
+
+                        '</label>'
+
+                    );
+
+                }
+            )
+            .join("");
+
+    }
+
+
+    /* ==========================================================
+       RELATED CONTENT
+    ========================================================== */
+
+    function renderRelated(){
+
+        if(
+            !runtime.candidates.length
+        ){
+
+            els.relatedContent.innerHTML =
+                '<div class="empty-state">' +
+                'No related content is currently available from the loaded corpus.' +
+                '</div>';
+
+
+            return;
+
+        }
+
+
+        els.relatedContent.innerHTML =
+            runtime.candidates
+            .slice(
+                0,
+                6
+            )
+            .map(
+                candidate => {
+
+                    const score =
+                        Math.round(
+                            candidate.score *
+                            100
+                        );
+
+
+                    return (
+
+                        '<div class="link-option" style="cursor:default">' +
+
+                            '<div class="link-option-body">' +
+
+                                '<div class="link-option-title">' +
+
+                                    escapeHtml(
+                                        candidate.target.title
+                                    ) +
+
+                                '</div>' +
+
+                                '<div class="link-option-meta">' +
+
+                                    "Relevance " +
+
+                                    score +
+
+                                    "% · " +
+
+                                    escapeHtml(
+                                        candidate.target.category ||
+                                        "HackaX"
+                                    ) +
+
+                                '</div>' +
+
+                                '<div class="link-option-meta">' +
+
+                                    escapeHtml(
+                                        candidate.destination ||
+                                        "No stored internal route"
+                                    ) +
+
+                                '</div>' +
+
+                            '</div>' +
+
+                        '</div>'
+
+                    );
+
+                }
+            )
+            .join("");
+
+    }
+
+
+    /* ==========================================================
+       ARTICLE HEALTH
+    ========================================================== */
+
+    function renderHealth(){
+
+        const article =
+            runtime.article;
+
+
+        const checks = [];
+
+
+        if(
+            !article ||
+            !article.html
+        ){
+
+            checks.push({
+
+                type:"error",
+
+                title:
+                    "Article body unavailable",
+
+                text:
+                    "The shared publisher state does not currently contain usable article HTML."
+
+            });
+
+        }else{
+
+            const bodyText =
+                stripHtml(
+                    article.html
+                ).trim();
+
+
+            const anchors =
+                countAnchors(
+                    article.html
+                );
+
+
+            const verifiedDestinations =
+                runtime.candidates.filter(
+                    candidate =>
+                        Boolean(
+                            candidate.destination
+                        )
+                ).length;
+
+
+            checks.push(
+
+                bodyText.length >= 300
+
+                    ? {
+
+                        type:"success",
+
+                        title:
+                            "Article body loaded",
+
+                        text:
+                            bodyText.length.toLocaleString() +
+                            " characters are available to the linking engine."
+
+                    }
+
+                    : {
+
+                        type:"warning",
+
+                        title:
+                            "Article body is short",
+
+                        text:
+                            bodyText.length.toLocaleString() +
+                            " characters are currently available."
+
+                    }
+
+            );
+
+
+            checks.push({
+
+                type:"success",
+
+                title:
+                    "Existing internal anchors",
+
+                text:
+                    anchors +
+                    " link(s) detected in the actual article HTML."
+
+            });
+
+
+            checks.push(
+
+                verifiedDestinations > 0
+
+                    ? {
+
+                        type:"success",
+
+                        title:
+                            "Verified destinations",
+
+                        text:
+                            verifiedDestinations +
+                            " candidate destination(s) contain a stored route or URL."
+
+                    }
+
+                    : {
+
+                        type:"warning",
+
+                        title:
+                            "No verified destinations",
+
+                        text:
+                            "The loaded corpus has no usable stored destination for the current candidates."
+
+                    }
+
+            );
+
+
+            checks.push(
+
+                runtime.corpus.length > 0
+
+                    ? {
+
+                        type:"success",
+
+                        title:
+                            "Corpus loaded",
+
+                        text:
+                            runtime.corpus.length +
+                            " article record(s) are available for comparison."
+
+                    }
+
+                    : {
+
+                        type:"warning",
+
+                        title:
+                            "Corpus unavailable",
+
+                        text:
+                            "No corpus records are currently loaded."
+
+                    }
+
+            );
+
+        }
+
+
+        const errors =
+            checks.filter(
+                check =>
+                    check.type === "error"
+            ).length;
+
+
+        const warnings =
+            checks.filter(
+                check =>
+                    check.type === "warning"
+            ).length;
+
+
+        els.healthBadge.textContent =
+            errors
+                ? "ERROR"
+                : warnings
+                    ? "WARNING"
+                    : "READY";
+
+
+        els.articleHealth.innerHTML =
+            checks
+            .map(
+                check =>
+
+                    '<div class="seo-check ' +
+                    escapeHtml(
+                        check.type
+                    ) +
+                    ' mb-2">' +
+
+                        '<span>' +
+
+                            escapeHtml(
+                                check.title
+                            ) +
+
+                        '</span>' +
+
+                        '<span>' +
+
+                            escapeHtml(
+                                check.text
+                            ) +
+
+                        '</span>' +
+
+                    '</div>'
+            )
+            .join("");
+
+    }
+
+
+    /* ==========================================================
+       KNOWLEDGE GRAPH
+    ========================================================== */
+
+    function renderGraph(){
+
+        if(
+            !runtime.article
+        ){
+
+            els.knowledgeGraph.innerHTML =
+                "No current article is available.";
+
+
+            return;
+
+        }
+
+
+        if(
+            !runtime.candidates.length
+        ){
+
+            els.knowledgeGraph.innerHTML =
+                "No verified relationships are currently available from the loaded corpus.";
+
+
+            return;
+
+        }
+
+
+        const relationships =
+            runtime.candidates
+            .slice(
+                0,
+                6
+            );
+
+
+        els.knowledgeGraph.innerHTML =
+
+            '<div class="grid gap-2">' +
+
+                '<div class="dark-panel">' +
+
+                    '<div class="field-label">' +
+                        "CURRENT NODE" +
+                    '</div>' +
+
+                    '<div class="text-lg font-black mt-2">' +
+
+                        escapeHtml(
+                            runtime.article.title
+                        ) +
+
+                    '</div>' +
+
+                    '<div class="text-xs text-white/55 mt-2">' +
+
+                        runtime.candidates.length +
+
+                        " contextual relationship(s) currently ranked." +
+
+                    '</div>' +
+
+                '</div>' +
+
+                relationships
+                .map(
+                    candidate =>
+
+                        '<div class="link-option" style="cursor:default">' +
+
+                            '<div class="link-option-body">' +
+
+                                '<div class="link-option-title">' +
+
+                                    escapeHtml(
+                                        candidate.target.title
+                                    ) +
+
+                                '</div>' +
+
+                                '<div class="link-option-meta">' +
+
+                                    Math.round(
+                                        candidate.score *
+                                        100
+                                    ) +
+
+                                    "% relevance · verified corpus relationship" +
+
+                                '</div>' +
+
+                            '</div>' +
+
+                        '</div>'
+                )
+                .join("") +
+
+            '</div>';
+
+    }
+
+
+    /* ==========================================================
+       STATUS
+    ========================================================== */
+
+    function renderStatus(){
+
+        const hasState =
+            Boolean(
+                runtime.rawState
+            );
+
+
+        const hasArticle =
+            Boolean(
+                runtime.article
+            );
+
+
+        const hasHtml =
+            Boolean(
+                runtime.article &&
+                runtime.article.html
+            );
+
+
+        els.statusDot.className =
+            "status-dot " +
+            (
+                hasState
+                    ? "online"
+                    : "offline"
+            );
+
+
+        if(
+            !hasState
+        ){
+
+            els.statusText.textContent =
+                "Publisher state unavailable";
+
+            return;
+
+        }
+
+
+        if(
+            hasArticle &&
+            hasHtml
+        ){
+
+            els.statusText.textContent =
+                "State ready";
+
+            return;
+
+        }
+
+
+        els.statusText.textContent =
+            "State loaded · article body missing";
+
+    }
+
+
+    /* ==========================================================
+       COMPLETE RENDER
+    ========================================================== */
+
+    function renderAll(){
+
+        renderStatus();
+
+        renderArticle();
+
+        renderCandidates();
+
+        renderRelated();
+
+        renderHealth();
+
+        renderGraph();
+
+    }
+
+
+    /* ==========================================================
+       SYNCHRONIZATION
+    ========================================================== */
+
+    async function syncState(
+        forceCorpus
+    ){
+
+        if(
+            runtime.busy
+        ){
+
+            return;
+
+        }
+
+
+        runtime.busy =
+            true;
+
+
+        try{
+
+            const state =
+                readStorage(
+                    STORAGE_KEY
+                );
+
+
+            const settings =
+                readStorage(
+                    SETTINGS_KEY
+                );
+
+
+            runtime.settings =
+                settings;
+
+
+            runtime.cloudinary =
+                resolveCloudinaryConfig(
+                    settings
+                );
+
+
+            if(
+                !state
+            ){
+
+                runtime.rawState =
+                    null;
+
+                runtime.article =
+                    null;
+
+                runtime.corpus =
+                    [];
+
+                runtime.candidates =
+                    [];
+
+                renderAll();
+
+                return;
+
+            }
+
+
+            const stateFp =
+                fingerprint(
+                    state
+                );
+
+
+            const located =
+                locateCurrentArticle(
+                    state
+                );
+
+
+            const article =
+                located
+                    ? normalizeArticle(
+                        located.value,
+                        located.path,
+                        "publisher-state"
+                    )
+                    : null;
+
+
+            const currentArticleFingerprint =
+                fingerprint({
+
+                    title:
+                        article &&
+                        article.title,
+
+                    description:
+                        article &&
+                        article.description,
+
+                    html:
+                        article &&
+                        article.html,
+
+                    slug:
+                        article &&
+                        article.slug,
+
+                    keywords:
+                        article &&
+                        article.keywords
+
+                });
+
+
+            const previousArticleFingerprint =
+                fingerprint({
+
+                    title:
+                        runtime.article &&
+                        runtime.article.title,
+
+                    description:
+                        runtime.article &&
+                        runtime.article.description,
+
+                    html:
+                        runtime.article &&
+                        runtime.article.html,
+
+                    slug:
+                        runtime.article &&
+                        runtime.article.slug,
+
+                    keywords:
+                        runtime.article &&
+                        runtime.article.keywords
+
+                });
+
+
+            const articleChanged =
+                currentArticleFingerprint !==
+                previousArticleFingerprint;
+
+
+            runtime.rawState =
+                state;
+
+
+            runtime.stateFingerprint =
+                stateFp;
+
+
+            runtime.article =
+                article;
+
+
+            runtime.articlePath =
+                located
+                    ? located.path
+                    : null;
+
+
+            runtime.articleHtmlKey =
+                article
+                    ? article.htmlKey
+                    : null;
+
+
+            runtime.articleHtml =
+                article
+                    ? article.html
+                    : "";
+
+
+            await loadCorpus(
+                Boolean(
+                    forceCorpus ||
+                    articleChanged
+                )
+            );
+
+
+            runtime.candidates =
+                buildCandidates(
+                    runtime.article,
+                    runtime.corpus
+                );
+
+
+            renderAll();
+
+        }catch(error){
+
+            console.error(
+                "HackaX internal linking synchronization failed:",
+                error
+            );
+
+
+            showValidation(
+                error.message ||
+                "Internal linking synchronization failed.",
+                "error"
+            );
+
+        }finally{
+
+            runtime.busy =
+                false;
+
+        }
+
+    }
+
+
+    /* ==========================================================
+       REFRESH CORPUS
+    ========================================================== */
+
+    async function refreshCorpus(){
+
+        els.refreshLinksBtn.disabled =
+            true;
+
+
+        try{
+
+            await loadCorpus(
+                true
+            );
+
+
+            runtime.candidates =
+                buildCandidates(
+                    runtime.article,
+                    runtime.corpus
+                );
+
+
+            renderAll();
+
+
+            showToast(
+                "Live corpus refreshed.",
+                "success"
+            );
+
+        }catch(error){
+
+            showToast(
+                error.message ||
+                "Corpus refresh failed.",
+                "error"
+            );
+
+        }finally{
+
+            els.refreshLinksBtn.disabled =
+                false;
+
+        }
+
+    }
+
+
+    /* ==========================================================
+       SELECTED LINKS
+    ========================================================== */
+
+    async function applySelected(){
+
+        if(
+            !runtime.article ||
+            !runtime.article.html
+        ){
+
+            showToast(
+                "No usable article HTML is available.",
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+        const indexes = [
+
+            ...els.linkSuggestions
+                .querySelectorAll(
+                    "input[data-candidate-index]:checked"
+                )
+
+        ]
+        .map(
+            input =>
+                Number(
+                    input.dataset.candidateIndex
+                )
+        )
+        .filter(
+            Number.isInteger
+        );
+
+
+        if(
+            !indexes.length
+        ){
+
+            showToast(
+                "Select at least one verified relationship.",
+                "info"
+            );
+
+
+            return;
+
+        }
+
+
+        const targets =
+            indexes
+            .map(
+                index =>
+                    runtime.candidates[index]
+            )
+            .filter(Boolean)
+            .map(
+                candidate =>
+                    candidate.target
+            );
+
+
+        const result =
+            applyLinks(
+                runtime.article.html,
+                targets
+            );
+
+
+        if(
+            !result.applied.length
+        ){
+
+            showToast(
+                result.rejected[0]?.reason ||
+                "No safe anchors were found.",
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+        const saved =
+            saveCurrentArticle(
+                result.html,
+                "manual-internal-linking"
+            );
+
+
+        if(
+            !saved.ok
+        ){
+
+            showToast(
+                saved.reason,
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+        runtime.appliedLinks =
+            runtime.appliedLinks.concat(
+                result.applied
+            );
+
+
+        showValidation(
+
+            result.applied.length +
+
+            " internal link(s) applied to the actual publisher article HTML. The updated article was written to " +
+
+            STORAGE_KEY +
+
+            ".",
+
+            "ok"
+
+        );
+
+
+        showToast(
+            result.applied.length +
+            " internal link(s) applied.",
+            "success"
+        );
+
+
+        await syncState(
+            false
+        );
+
+    }
+
+
+    /* ==========================================================
+       AUTO LINK STRONG MATCHES
+    ========================================================== */
+
+    async function autoLinkStrong(){
+
+        if(
+            !runtime.article ||
+            !runtime.article.html
+        ){
+
+            showToast(
+                "No usable article HTML is available.",
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+        const targets =
+            runtime.candidates
+
+            .filter(
+                candidate =>
+
+                    candidate.score >=
+                    STRONG_RELATIONSHIP_SCORE
+
+                    &&
+
+                    candidate.destination
+
+                    &&
+
+                    candidate.anchorAvailable
+            )
+
+            .slice(
+                0,
+                MAX_AUTO_LINKS
+            )
+
+            .map(
+                candidate =>
+                    candidate.target
+            );
+
+
+        if(
+            !targets.length
+        ){
+
+            showToast(
+                "No strong matches with verified anchor opportunities are available.",
+                "info"
+            );
+
+
+            return;
+
+        }
+
+
+        const result =
+            applyLinks(
+                runtime.article.html,
+                targets
+            );
+
+
+        if(
+            !result.applied.length
+        ){
+
+            showToast(
+                result.rejected[0]?.reason ||
+                "No safe anchors were found.",
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+        const saved =
+            saveCurrentArticle(
+                result.html,
+                "auto-internal-linking"
+            );
+
+
+        if(
+            !saved.ok
+        ){
+
+            showToast(
+                saved.reason,
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+        runtime.appliedLinks =
+            runtime.appliedLinks.concat(
+                result.applied
+            );
+
+
+        showValidation(
+
+            result.applied.length +
+
+            " strong contextual link(s) were written into the real article body. " +
+
+            result.rejected.length +
+
+            " candidate(s) were rejected by safety checks.",
+
+            "ok"
+
+        );
+
+
+        showToast(
+            "Strong internal links applied.",
+            "success"
+        );
+
+
+        await syncState(
+            false
+        );
+
+    }
+
+
+    /* ==========================================================
+       SAVE DRAFT
+    ========================================================== */
+
+    function saveDraft(){
+
+        const state =
+            readStorage(
+                STORAGE_KEY
+            );
+
+
+        if(
+            !state
+        ){
+
+            showToast(
+                "Publisher state is unavailable.",
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+        if(
+            writeState(
+                state,
+                "stage-6-save-draft"
+            )
+        ){
+
+            els.saveState.textContent =
+                "Saved";
+
+
+            els.saveState.classList.remove(
+                "hidden"
+            );
+
+
+            showToast(
+                "Draft state saved.",
+                "success"
+            );
+
+
+            setTimeout(
+                () => {
+
+                    els.saveState.classList.add(
+                        "hidden"
+                    );
+
+                },
+                1800
+            );
+
+        }else{
+
+            showToast(
+                "Could not save publisher state.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    /* ==========================================================
+       WORKFLOW NAVIGATION
+    ========================================================== */
+
+    function navigateStage(
+        stage
+    ){
+
+        const number =
+            Number(stage);
+
+
+        if(
+            !Number.isInteger(number) ||
+            number < 1 ||
+            number > WORKFLOW_TOTAL
+        ){
+
+            return;
+
+        }
+
+
+        location.href =
+            "hackax-next" +
+            number +
+            ".html";
+
+    }
+
+
+    /* ==========================================================
+       VALIDATION / TOAST
+    ========================================================== */
+
+    function showValidation(
+        message,
+        type
+    ){
+
+        els.validation.className =
+            "validation " +
+            (
+                type === "ok"
+                    ? "validation-ok"
+                    : "validation-error"
+            );
+
+
+        els.validation.textContent =
+            message;
+
+
+        els.validation.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    let toastTimer =
+        null;
+
+
+    function showToast(
+        message,
+        type="info"
+    ){
+
+        clearTimeout(
+            toastTimer
+        );
+
+
+        els.toast.className =
+            "toast toast-" +
+            type;
+
+
+        els.toast.textContent =
+            message;
+
+
+        els.toast.classList.remove(
+            "hidden"
+        );
+
+
+        toastTimer =
+            setTimeout(
+                () => {
+
+                    els.toast.classList.add(
+                        "hidden"
+                    );
+
+                },
+                2600
+            );
+
+    }
+
+
+    /* ==========================================================
+       TRUE TOUCH-SCROLL STEPPER
+    ========================================================== */
+
+    function initStepper(){
+
+        const rail =
+            document.querySelector(
+                ".stepper"
+            );
+
+
+        if(
+            !rail
+        ){
+
+            return;
+
+        }
+
+
+        const current =
+            rail.querySelector(
+                '[data-stage="6"]'
+            );
+
+
+        if(
+            current
+        ){
+
+            current.classList.add(
+                "stage-current"
+            );
+
+
+            requestAnimationFrame(
+                () => {
+
+                    current.scrollIntoView({
+                        block:"nearest",
+                        inline:"center",
+                        behavior:"instant"
+                    });
+
+                }
+            );
+
+        }
+
+
+        rail
+            .querySelectorAll(
+                ".step"
+            )
+            .forEach(
+                button => {
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            navigateStage(
+                                button.dataset.stageLink ||
+                                button.dataset.stage
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* ==========================================================
+       EVENTS
+    ========================================================== */
+
+    els.refreshStatusBtn.addEventListener(
+        "click",
+        () =>
+            syncState(true)
+    );
+
+
+    els.refreshLinksBtn.addEventListener(
+        "click",
+        refreshCorpus
+    );
+
+
+    els.autoLinksBtn.addEventListener(
+        "click",
+        autoLinkStrong
+    );
+
+
+    els.saveDraftBtn.addEventListener(
+        "click",
+        saveDraft
+    );
+
+
+    document
+        .querySelector(
+            "[data-back]"
+        )
+        .addEventListener(
+            "click",
+            () =>
+                navigateStage(5)
+        );
+
+
+    document
+        .querySelector(
+            "[data-next]"
+        )
+        .addEventListener(
+            "click",
+            () =>
+                navigateStage(7)
+        );
+
+
+    els.linkSuggestions.addEventListener(
+        "change",
+        event => {
+
+            if(
+                !event.target.matches(
+                    "input[data-candidate-index]"
+                )
+            ){
+
+                return;
+
+            }
+
+
+            const selected =
+                els.linkSuggestions
+                    .querySelectorAll(
+                        "input[data-candidate-index]:checked"
+                    )
+                    .length;
+
+
+            els.autoLinksBtn.textContent =
+                selected
+                    ? "Apply Selected Links"
+                    : "Auto-Link Strong Matches";
+
+
+            els.autoLinksBtn.onclick =
+                selected
+                    ? applySelected
+                    : autoLinkStrong;
+
+        }
+    );
+
+
+    /* ==========================================================
+       CROSS-TAB REAL-TIME STATE
+    ========================================================== */
+
+    window.addEventListener(
+        "storage",
+        event => {
+
+            if(
+                event.key === STORAGE_KEY
+            ){
+
+                syncState(
+                    true
+                );
+
+                return;
+
+            }
+
+
+            if(
+                event.key === SETTINGS_KEY
+            ){
+
+                syncState(
+                    false
+                );
+
+            }
+
+        }
+    );
+
+
+    /* ==========================================================
+       SAME-TAB REAL-TIME STATE
+    ========================================================== */
+
+    window.addEventListener(
+        "hackax:publisher-state-change",
+        () =>
+            syncState(false)
+    );
+
+
+    window.addEventListener(
+        "online",
+        () =>
+            syncState(true)
+    );
+
+
+    document.addEventListener(
+        "visibilitychange",
+        () => {
+
+            if(
+                !document.hidden
+            ){
+
+                syncState(true);
+
+            }
+
+        }
+    );
+
+
+    /* ==========================================================
+       STATE POLLING
+       Required because localStorage does not emit "storage"
+       inside the same browser document that performed the write.
+    ========================================================== */
+
+    setInterval(
+        () => {
+
+            if(
+                document.hidden
+            ){
+
+                return;
+
+            }
+
+
+            const state =
+                readStorage(
+                    STORAGE_KEY
+                );
+
+
+            const currentFingerprint =
+                fingerprint(
+                    state
+                );
+
+
+            if(
+                currentFingerprint &&
+                currentFingerprint !==
+                runtime.stateFingerprint
+            ){
+
+                syncState(
+                    false
+                );
+
+            }
+
+        },
+        STATE_POLL_INTERVAL
+    );
+
+
+    /* ==========================================================
+       LIVE CORPUS REFRESH
+    ========================================================== */
+
+    setInterval(
+        () => {
+
+            if(
+                document.hidden ||
+                !runtime.article
+            ){
+
+                return;
+
+            }
+
+
+            refreshCorpus()
+                .catch(
+                    () => {}
+                );
+
+        },
+        CORPUS_REFRESH_INTERVAL
+    );
+
+
+    /* ==========================================================
+       BOOT
+    ========================================================== */
+
+    initStepper();
+
+    syncState(true);
+
+})();
+</script>
+
+</body>
+</html>
