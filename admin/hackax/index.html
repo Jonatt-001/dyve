@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Dyve | HackaX Editor — Intelligence Publisher</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+
+<title>Dyve | HackaX Publisher — Article</title>
+
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#020403">
+
 <link rel="manifest" href="../manifest.json">
 
 <script src="https://cdn.tailwindcss.com"></script>
+
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 
@@ -31,4017 +35,1442 @@ tailwind.config={
 };
 </script>
 
+<link rel="stylesheet" href="hackax-onboarding.css">
+
 <style>
-*{box-sizing:border-box}
-html,body{width:100%;max-width:100%;overflow-x:hidden}
-body{background:#f8fafc;min-width:0}
-main,.grid,section,aside,.bg-white,.bg-dyve-bg{min-width:0}
-.ql-editor{
-    min-height:420px;
-    font-size:16px;
-    line-height:1.8;
-    font-family:Inter,system-ui,sans-serif;
-}
-.ql-toolbar{
+/* ==========================================================
+   CLEAN HACKAX PUBLISHER HEADER
+========================================================== */
+
+.hx-header{
     position:sticky;
     top:0;
-    z-index:10;
-    background:#fff;
-    border-color:#e2e8f0!important;
-    overflow-x:auto;
+    z-index:80;
+    background:#020403;
+    border-bottom:1px solid rgba(255,255,255,.10);
+    box-shadow:0 8px 30px rgba(0,0,0,.18);
+}
+
+.hx-header-main{
+    max-width:1280px;
+    margin:0 auto;
+    padding:14px 16px;
+}
+
+.hx-brand-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    min-height:52px;
+}
+
+.hx-brand{
+    min-width:0;
+    text-decoration:none;
+}
+
+.hx-brand-name{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    color:#fff;
+    font-size:19px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-.04em;
     white-space:nowrap;
+}
+
+.hx-brand-divider{
+    color:#00ffaa;
+    font-weight:900;
+}
+
+.hx-brand-sub{
+    margin-top:7px;
+    color:rgba(255,255,255,.42);
+    font-size:8px;
+    line-height:1;
+    font-weight:700;
+    letter-spacing:.25em;
+    text-transform:uppercase;
+}
+
+.hx-header-actions{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-shrink:0;
+}
+
+.hx-save-state{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    min-width:54px;
+    color:rgba(255,255,255,.42);
+    font-size:9px;
+    line-height:1.3;
+    text-align:right;
+}
+
+.hx-save-state strong{
+    color:rgba(255,255,255,.72);
+    font-size:10px;
+    font-weight:700;
+}
+
+.hx-header-btn{
+    appearance:none;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.045);
+    color:rgba(255,255,255,.78);
+    min-height:42px;
+    padding:0 14px;
+    border-radius:11px;
+    font-size:11px;
+    font-weight:800;
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
+}
+
+.hx-header-btn:hover{
+    background:rgba(255,255,255,.08);
+    border-color:rgba(255,255,255,.20);
+}
+
+.hx-header-btn:active{
+    transform:scale(.97);
+}
+
+.hx-save-btn{
+    color:#020403;
+    background:#00ffaa;
+    border-color:#00ffaa;
+    box-shadow:0 5px 20px rgba(0,255,170,.12);
+}
+
+.hx-save-btn:hover{
+    background:#00cc88;
+    border-color:#00cc88;
+}
+
+.hx-menu-btn{
+    width:42px;
+    padding:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    line-height:1;
+}
+
+.hx-menu-icon{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.hx-menu-icon span{
+    display:block;
+    width:17px;
+    height:2px;
+    border-radius:4px;
+    background:#00ffaa;
+}
+
+/* ==========================================================
+   WORKFLOW RAIL
+========================================================== */
+
+.hx-workflow{
+    max-width:1280px;
+    margin:0 auto;
+    padding:0 16px 13px;
+}
+
+.hx-workflow-rail{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding:2px 1px 4px;
+    scrollbar-width:none;
     -webkit-overflow-scrolling:touch;
 }
-.ql-toolbar .ql-formats{
-    display:inline-flex;
-    vertical-align:middle;
-    float:none;
+
+.hx-workflow-rail::-webkit-scrollbar{
+    display:none;
 }
-.ql-container{
-    border-color:#e2e8f0!important;
-    border-radius:0 0 .5rem .5rem;
-    min-width:0;
+
+.hx-step{
+    position:relative;
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    min-height:38px;
+    padding:0 10px;
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:10px;
+    background:rgba(255,255,255,.035);
+    color:rgba(255,255,255,.42);
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.04em;
+    white-space:nowrap;
+    cursor:pointer;
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .2s ease;
 }
-.ql-editor{
-    overflow-wrap:anywhere;
-    word-break:break-word;
+
+.hx-step-number{
+    width:21px;
+    height:21px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+    color:rgba(255,255,255,.55);
+    font-size:9px;
+    font-weight:900;
 }
-.ql-editor img{
-    max-width:100%;
-    height:auto;
-    border-radius:.75rem;
+
+.hx-step:hover{
+    color:#fff;
+    border-color:rgba(255,255,255,.18);
+    background:rgba(255,255,255,.07);
 }
-.ql-editor pre,
-.ql-editor .ql-code-block-container{
-    max-width:100%;
-    overflow-x:auto;
+
+.hx-step:active{
+    transform:scale(.97);
 }
-.loading{
-    opacity:.55;
-    pointer-events:none;
-}
-.tag{
-    background:#00ffaa;
+
+.hx-step.is-active{
     color:#020403;
-    font-weight:700;
-    padding:.25rem .7rem;
-    border-radius:999px;
-    font-size:.75rem;
+    background:#00ffaa;
+    border-color:#00ffaa;
+    box-shadow:0 5px 18px rgba(0,255,170,.14);
 }
-.pulse{
-    animation:pulse-green 2s infinite;
+
+.hx-step.is-active .hx-step-number{
+    background:#020403;
+    color:#00ffaa;
 }
-@keyframes pulse-green{
-    0%{box-shadow:0 0 0 0 rgba(0,255,170,.55)}
-    70%{box-shadow:0 0 0 10px rgba(0,255,170,0)}
-    100%{box-shadow:0 0 0 0 rgba(0,255,170,0)}
+
+.hx-step.is-complete{
+    color:#b7d8cd;
+    border-color:rgba(0,255,170,.22);
+    background:rgba(0,255,170,.07);
 }
-#aiPanel.active{
-    transform:translateY(0);
-    opacity:1;
-    pointer-events:auto;
+
+.hx-step.is-complete .hx-step-number{
+    background:rgba(0,255,170,.18);
+    color:#00ffaa;
 }
-.ai-action:active{
-    transform:scale(.98);
+
+/* ==========================================================
+   DRAWER
+========================================================== */
+
+.hx-drawer-backdrop{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    background:rgba(0,0,0,.58);
+    backdrop-filter:blur(4px);
+    -webkit-backdrop-filter:blur(4px);
+    opacity:0;
+    visibility:hidden;
+    transition:
+        opacity .25s ease,
+        visibility .25s ease;
 }
-.desc-good{color:#059669}
-.desc-warn{color:#d97706}
-.desc-bad{color:#dc2626}
-#aiPanel{
-    max-height:min(560px,calc(100dvh - 150px));
+
+.hx-drawer{
+    position:absolute;
+    top:0;
+    right:0;
+    width:min(340px,88vw);
+    height:100%;
+    background:#07100d;
+    border-left:1px solid rgba(255,255,255,.10);
+    box-shadow:-20px 0 60px rgba(0,0,0,.35);
+    transform:translateX(100%);
+    transition:transform .28s cubic-bezier(.22,.8,.22,1);
     overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
 }
-#featuredPreview img{
-    max-width:100%;
-    height:auto;
+
+.hx-drawer-backdrop.open{
+    opacity:1;
+    visibility:visible;
 }
-#slideMenu{
-    max-height:calc(100dvh - 100px);
-    overflow:auto;
+
+.hx-drawer-backdrop.open .hx-drawer{
+    transform:translateX(0);
 }
-.seo-card{
-    border-radius:.75rem;
-    padding:.75rem;
-    border:1px solid;
-    font-size:.875rem;
+
+.hx-drawer-head{
+    position:sticky;
+    top:0;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:18px 18px 16px;
+    background:#07100d;
+    border-bottom:1px solid rgba(255,255,255,.09);
 }
-.seo-success{
-    background:#ecfdf5;
-    border-color:#a7f3d0;
-    color:#065f46;
+
+.hx-drawer-title{
+    color:#fff;
+    font-size:14px;
+    font-weight:900;
+    letter-spacing:-.01em;
 }
-.seo-warning{
-    background:#fffbeb;
-    border-color:#fde68a;
-    color:#92400e;
+
+.hx-drawer-kicker{
+    margin-top:5px;
+    color:rgba(255,255,255,.38);
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:.2em;
+    text-transform:uppercase;
 }
-.seo-error{
-    background:#fef2f2;
-    border-color:#fecaca;
-    color:#991b1b;
+
+.hx-drawer-close{
+    width:38px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:10px;
+    background:rgba(255,255,255,.04);
+    color:#fff;
+    font-size:21px;
 }
-.link-score{
+
+.hx-drawer-section{
+    padding:17px;
+}
+
+.hx-drawer-label{
+    margin-bottom:9px;
+    color:rgba(255,255,255,.34);
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+}
+
+.hx-drawer-item{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-height:54px;
+    padding:10px 11px;
+    margin-bottom:6px;
+    border:1px solid rgba(255,255,255,.07);
+    border-radius:11px;
+    background:rgba(255,255,255,.025);
+    color:rgba(255,255,255,.82);
+    text-decoration:none;
+    transition:
+        background .2s ease,
+        border-color .2s ease;
+}
+
+.hx-drawer-item:hover{
+    background:rgba(255,255,255,.07);
+    border-color:rgba(255,255,255,.13);
+}
+
+.hx-drawer-item-icon{
+    width:32px;
+    height:32px;
+    flex:0 0 32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:9px;
+    background:rgba(0,255,170,.08);
+    color:#00ffaa;
+    font-size:13px;
+    font-weight:900;
+}
+
+.hx-drawer-item-content{
+    min-width:0;
+    flex:1;
+}
+
+.hx-drawer-item-title{
+    font-size:11px;
+    font-weight:800;
+}
+
+.hx-drawer-item-note{
+    margin-top:3px;
+    color:rgba(255,255,255,.35);
+    font-size:8px;
+}
+
+.hx-drawer-arrow{
+    color:rgba(255,255,255,.25);
+    font-size:15px;
+}
+
+.hx-drawer-status{
+    margin:0 17px 17px;
+    padding:13px;
+    border:1px solid rgba(0,255,170,.14);
+    border-radius:12px;
+    background:rgba(0,255,170,.045);
+}
+
+.hx-drawer-status-top{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    color:#fff;
     font-size:10px;
     font-weight:800;
-    padding:2px 6px;
-    border-radius:999px;
-    background:#dcfce7;
-    color:#166534;
 }
-.keyword-chip{
-    display:inline-flex;
-    align-items:center;
-    gap:4px;
-    padding:4px 8px;
-    border-radius:999px;
-    background:#f1f5f9;
-    border:1px solid #e2e8f0;
-    color:#334155;
-    font-size:11px;
-    font-weight:700;
+
+.hx-drawer-status-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#00ffaa;
+    box-shadow:0 0 0 4px rgba(0,255,170,.08);
 }
-.image-seo-box{
-    background:#f8fafc;
-    border:1px solid #e2e8f0;
-    border-radius:.75rem;
-    padding:.75rem;
+
+.hx-drawer-status-note{
+    margin-top:6px;
+    color:rgba(255,255,255,.38);
+    font-size:8px;
+    line-height:1.5;
 }
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
 @media(max-width:640px){
-    .ql-editor{
-        min-height:360px;
-        font-size:15px;
+
+    .hx-header-main{
+        padding:12px 14px;
     }
-    .ql-toolbar{
-        padding:8px 6px!important;
+
+    .hx-brand-name{
+        font-size:18px;
     }
-    .ql-toolbar .ql-formats{
-        margin-right:8px!important;
+
+    .hx-brand-sub{
+        font-size:7px;
+        letter-spacing:.20em;
     }
-    #aiPanel{
-        right:8px!important;
-        bottom:80px!important;
-        width:min(360px,calc(100vw - 16px))!important;
+
+    .hx-save-state{
+        display:none;
     }
-    #aiBtn{
-        right:12px!important;
-        bottom:12px!important;
+
+    .hx-header-btn{
+        min-height:40px;
+        padding:0 11px;
+        font-size:10px;
     }
-    #menuToggle{
-        right:12px!important;
-        bottom:12px!important;
+
+    .hx-save-btn{
+        min-width:66px;
     }
-    #slideMenu{
-        right:0!important;
-        bottom:68px!important;
-        width:min(240px,calc(100vw - 24px));
+
+    .hx-workflow{
+        padding:0 14px 11px;
     }
+
+    .hx-step{
+        min-height:36px;
+        padding:0 8px;
+        font-size:8px;
+    }
+
+    .hx-step-number{
+        width:20px;
+        height:20px;
+    }
+}
+
+@media(min-width:641px){
+    .hx-workflow-rail{
+        gap:8px;
+    }
+
+    .hx-step{
+        flex:1 1 auto;
+        justify-content:center;
+    }
+}
+
+/* Prevent page scroll while drawer is open */
+html.hx-drawer-open,
+body.hx-drawer-open{
+    overflow:hidden;
 }
 </style>
 </head>
 
-<body class="min-h-screen text-gray-900">
+<body data-stage="1" class="min-h-screen">
 
-<header class="bg-dyve-bg border-b border-white/10 sticky top-0 z-50">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center gap-4">
-<div>
-<h1 class="text-xl font-extrabold text-white tracking-wide">DYVE<span class="text-dyve-accent">|</span>HACKAX</h1>
-<p class="text-[11px] text-white/50 uppercase tracking-[.22em]">Cyber Intelligence Publisher</p>
-</div>
+<!-- ==========================================================
+     CLEAN PUBLISHER HEADER
+========================================================== -->
 
-<div class="flex gap-2">
-<button id="saveDraftBtn" class="px-3 py-2 text-xs font-semibold text-white/70 bg-white/5 border border-white/10 rounded-lg">
-Save Draft
-</button>
+<header class="hx-header">
 
-<button id="publishBtn" class="px-4 py-2 text-xs font-extrabold text-dyve-bg bg-dyve-accent rounded-lg shadow-[0_0_18px_rgba(0,255,170,.22)]">
-Publish Intel
-</button>
-</div>
-</div>
+    <div class="hx-header-main">
+
+        <div class="hx-brand-row">
+
+            <a href="index.html" class="hx-brand" aria-label="HackaX Publisher Home">
+                <div class="hx-brand-name">
+                    DYVE
+                    <span class="hx-brand-divider">|</span>
+                    HACKAX
+                </div>
+
+                <div class="hx-brand-sub">
+                    Cyber Intelligence Publisher
+                </div>
+            </a>
+
+            <div class="hx-header-actions">
+
+                <div id="saveState" class="hx-save-state">
+                    <strong>Ready</strong>
+                    <span>Not saved</span>
+                </div>
+
+                <button
+                    id="saveDraftBtn"
+                    type="button"
+                    class="hx-header-btn hx-save-btn">
+                    Save Draft
+                </button>
+
+                <button
+                    id="drawerToggle"
+                    type="button"
+                    class="hx-header-btn hx-menu-btn"
+                    aria-label="Open publisher menu"
+                    aria-expanded="false">
+
+                    <span class="hx-menu-icon" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ======================================================
+         WORKFLOW NAVIGATION
+    ======================================================= -->
+
+    <div class="hx-workflow">
+
+        <nav
+            id="workflowRail"
+            class="hx-workflow-rail"
+            aria-label="Publication workflow">
+
+            <button
+                type="button"
+                class="hx-step is-active"
+                data-stage="1"
+                data-stage-link="1">
+
+                <span class="hx-step-number">1</span>
+                <span>Article</span>
+
+            </button>
+
+            <button
+                type="button"
+                class="hx-step"
+                data-stage="2"
+                data-stage-link="2">
+
+                <span class="hx-step-number">2</span>
+                <span>Media</span>
+
+            </button>
+
+            <button
+                type="button"
+                class="hx-step"
+                data-stage="3"
+                data-stage-link="3">
+
+                <span class="hx-step-number">3</span>
+                <span>Classification</span>
+
+            </button>
+
+            <button
+                type="button"
+                class="hx-step"
+                data-stage="4"
+                data-stage-link="4">
+
+                <span class="hx-step-number">4</span>
+                <span>Intelligence</span>
+
+            </button>
+
+            <button
+                type="button"
+                class="hx-step"
+                data-stage="5"
+                data-stage-link="5">
+
+                <span class="hx-step-number">5</span>
+                <span>SEO</span>
+
+            </button>
+
+            <button
+                type="button"
+                class="hx-step"
+                data-stage="6"
+                data-stage-link="6">
+
+                <span class="hx-step-number">6</span>
+                <span>Internal Linking</span>
+
+            </button>
+
+            <button
+                type="button"
+                class="hx-step"
+                data-stage="7"
+                data-stage-link="7">
+
+                <span class="hx-step-number">7</span>
+                <span>Technical</span>
+
+            </button>
+
+            <button
+                type="button"
+                class="hx-step"
+                data-stage="8"
+                data-stage-link="8">
+
+                <span class="hx-step-number">8</span>
+                <span>Review</span>
+
+            </button>
+
+        </nav>
+
+    </div>
+
 </header>
 
+
+<!-- ==========================================================
+     DRAWER
+========================================================== -->
+
+<div
+    id="publisherDrawer"
+    class="hx-drawer-backdrop"
+    aria-hidden="true">
+
+    <aside
+        class="hx-drawer"
+        role="dialog"
+        aria-modal="true"
+        aria-label="HackaX publisher menu">
+
+        <div class="hx-drawer-head">
+
+            <div>
+                <div class="hx-drawer-title">
+                    HackaX Publisher
+                </div>
+
+                <div class="hx-drawer-kicker">
+                    Publication control
+                </div>
+            </div>
+
+            <button
+                id="drawerClose"
+                type="button"
+                class="hx-drawer-close"
+                aria-label="Close menu">
+                ×
+            </button>
+
+        </div>
+
+        <div class="hx-drawer-section">
+
+            <div class="hx-drawer-label">
+                Workspace
+            </div>
+
+            <a href="index.html" class="hx-drawer-item">
+
+                <span class="hx-drawer-item-icon">+</span>
+
+                <span class="hx-drawer-item-content">
+                    <span class="hx-drawer-item-title">
+                        New Article
+                    </span>
+
+                    <span class="hx-drawer-item-note">
+                        Start a fresh HackaX report
+                    </span>
+                </span>
+
+                <span class="hx-drawer-arrow">›</span>
+
+            </a>
+
+            <a href="drafts.html" class="hx-drawer-item">
+
+                <span class="hx-drawer-item-icon">D</span>
+
+                <span class="hx-drawer-item-content">
+                    <span class="hx-drawer-item-title">
+                        Drafts
+                    </span>
+
+                    <span class="hx-drawer-item-note">
+                        Continue unpublished reports
+                    </span>
+                </span>
+
+                <span class="hx-drawer-arrow">›</span>
+
+            </a>
+
+            <a href="published.html" class="hx-drawer-item">
+
+                <span class="hx-drawer-item-icon">P</span>
+
+                <span class="hx-drawer-item-content">
+                    <span class="hx-drawer-item-title">
+                        Published Intel
+                    </span>
+
+                    <span class="hx-drawer-item-note">
+                        Manage published HackaX articles
+                    </span>
+                </span>
+
+                <span class="hx-drawer-arrow">›</span>
+
+            </a>
+
+            <a href="hackax-overview.html" class="hx-drawer-item">
+
+                <span class="hx-drawer-item-icon">R</span>
+
+                <span class="hx-drawer-item-content">
+                    <span class="hx-drawer-item-title">
+                        Publication Review
+                    </span>
+
+                    <span class="hx-drawer-item-note">
+                        Inspect the current article state
+                    </span>
+                </span>
+
+                <span class="hx-drawer-arrow">›</span>
+
+            </a>
+
+        </div>
+
+
+        <div class="hx-drawer-section">
+
+            <div class="hx-drawer-label">
+                Configuration
+            </div>
+
+            <a href="settings.html" class="hx-drawer-item">
+
+                <span class="hx-drawer-item-icon">S</span>
+
+                <span class="hx-drawer-item-content">
+                    <span class="hx-drawer-item-title">
+                        Publisher Settings
+                    </span>
+
+                    <span class="hx-drawer-item-note">
+                        GitHub, site and publishing configuration
+                    </span>
+                </span>
+
+                <span class="hx-drawer-arrow">›</span>
+
+            </a>
+
+        </div>
+
+
+        <div class="hx-drawer-status">
+
+            <div class="hx-drawer-status-top">
+                <span class="hx-drawer-status-dot"></span>
+                <span id="drawerConnectionText">
+                    Checking connection...
+                </span>
+            </div>
+
+            <div class="hx-drawer-status-note">
+                HackaX publishing scope is isolated from Dyve Tech.
+                This publisher writes only to the HackaX article system.
+            </div>
+
+        </div>
+
+    </aside>
+
+</div>
+
+
+<!-- ==========================================================
+     CONNECTION / STAGE STATUS
+========================================================== -->
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-<div class="flex flex-wrap items-center gap-3">
 
-<div id="githubStatus" class="flex items-center gap-2 px-3 py-2 bg-dyve-bg text-white border border-white/10 rounded-lg">
-<span id="statusDot" class="w-2 h-2 rounded-full bg-gray-500"></span>
-<span id="statusText" class="text-xs">Checking...</span>
-<button id="refreshStatusBtn" class="text-white/50 hover:text-white" title="Check connection">↻</button>
-</div>
+    <div class="flex flex-wrap items-center gap-2">
 
-<div class="px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-semibold text-emerald-800">
-Publishing scope: HackaX only
-</div>
+        <div class="flex items-center gap-2 px-3 py-2 bg-dyve-bg text-white border border-white/10 rounded-lg">
 
-<div class="px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700">
-Database: assets/articles.json
-</div>
+            <span id="statusDot" class="status-dot"></span>
 
-</div>
-</div>
+            <span id="statusText" class="text-xs">
+                Checking...
+            </span>
 
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <button
+                id="refreshStatusBtn"
+                type="button"
+                class="text-white/50 hover:text-white"
+                title="Check connection"
+                aria-label="Refresh connection status">
+                ↻
+            </button>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        </div>
 
-<section class="lg:col-span-2 space-y-6">
+        <div class="px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-semibold text-emerald-800">
+            HackaX only
+        </div>
 
-<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-<label class="block text-sm font-bold mb-2">Intel Title</label>
+        <div class="px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700">
 
-<input
-id="titleInput"
-type="text"
-placeholder="e.g. Credential Dataset Appears on Underground Forum"
-class="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dyve-accent text-gray-900"
->
+            <span id="stageCounter">
+                STEP 1 OF 8
+            </span>
 
-<div class="mt-2 text-xs text-gray-500">
-Slug:
-<code id="slugPreview" class="bg-gray-100 px-2 py-1 rounded text-dyve-bg">your-intel-slug</code>
-</div>
+            ·
 
-<div id="keywordPreview" class="flex flex-wrap gap-2 mt-3"></div>
-</div>
+            <span id="stageTitle">
+                Article
+            </span>
 
-<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden relative">
+        </div>
 
-<div id="editor"></div>
-
-<button
-id="aiBtn"
-class="absolute bottom-4 right-4 z-30 w-14 h-14 rounded-full bg-dyve-accent text-dyve-bg shadow-2xl font-black text-xl">
-AI
-</button>
-
-<div
-id="aiPanel"
-class="absolute bottom-24 right-4 z-40 w-[calc(100%-2rem)] max-w-sm bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden translate-y-4 opacity-0 pointer-events-none transition-all">
-
-<div class="bg-dyve-bg text-white p-4 flex justify-between">
-<b>HackaX AI Assistant</b>
-<button id="closeAi">×</button>
-</div>
-
-<div class="p-3 space-y-1">
-
-<button class="ai-action w-full text-left p-3 rounded-lg hover:bg-gray-50" data-action="grammar">
-Grammar check
-</button>
-
-<button class="ai-action w-full text-left p-3 rounded-lg hover:bg-gray-50" data-action="shorter">
-Make selected text shorter
-</button>
-
-<button class="ai-action w-full text-left p-3 rounded-lg hover:bg-gray-50" data-action="longer">
-Expand selected text
-</button>
-
-<button class="ai-action w-full text-left p-3 rounded-lg hover:bg-gray-50" data-action="seo">
-Generate SEO tags
-</button>
-
-<button class="ai-action w-full text-left p-3 rounded-lg hover:bg-gray-50" data-action="generate">
-Generate analysis section
-</button>
-
-<button class="ai-action w-full text-left p-3 rounded-lg hover:bg-gray-50" data-action="links">
-Analyze internal links
-</button>
+    </div>
 
 </div>
 
-<div class="border-t p-3 flex gap-2">
-<input
-id="aiPrompt"
-class="flex-1 border rounded-lg px-3 py-2 text-sm"
-placeholder="uppercase, summary, bold..."
->
-<button id="aiGo" class="bg-dyve-accent px-3 rounded-lg font-bold">
-Go
-</button>
-</div>
 
-</div>
-</div>
+<!-- ==========================================================
+     MAIN CONTENT
+========================================================== -->
 
-<div class="bg-white border-2 border-dashed border-dyve-accent rounded-lg p-6">
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
 
-<div class="flex justify-between items-center gap-3 mb-2">
-<h2 class="font-bold">Auto-SEO Engine</h2>
-<span class="tag">HACKAX</span>
-</div>
+    <div class="mb-6">
 
-<p class="text-xs text-gray-600 mb-4">
-Build metadata from the actual intelligence report. Nothing here publishes Tech content.
-</p>
+        <div class="eyebrow">
+            STAGE 01 / ARTICLE
+        </div>
 
-<button
-id="autoSeoBtn"
-class="pulse w-full bg-dyve-accent text-dyve-bg font-bold rounded-lg py-3 mb-4">
-Generate Smart SEO Metadata
-</button>
+        <h1 class="page-title">
+            Build the intelligence report.
+        </h1>
 
-<label class="text-xs font-bold">OpenGraph Image Prompt</label>
+        <p class="page-subtitle">
+            Start with the editorial substance. The publisher carries this article state through every subsequent stage, autosaves locally, and blocks incomplete publication at the final gate.
+        </p>
 
-<textarea
-id="ogPrompt"
-rows="3"
-class="mt-1 w-full border rounded-lg p-3 text-xs resize-none"
-placeholder="Cyber threat intelligence visual prompt..."
-></textarea>
+    </div>
 
-</div>
 
-<div class="bg-white rounded-lg shadow-sm border p-6">
+    <div class="stage-layout">
 
-<h2 class="font-bold mb-4">SEO & Schema Analysis</h2>
+        <div class="stage-main space-y-5">
 
-<div id="seoAnalysis" class="space-y-2">
-<p class="text-sm text-gray-500">Start writing to see analysis.</p>
-</div>
+            <section class="onboarding-card">
 
-<button
-id="analyzeBtn"
-class="mt-4 px-4 py-2 rounded-lg border border-dyve-accent bg-emerald-50 text-dyve-bg font-bold text-sm">
-Analyze SEO
-</button>
+                <div class="section-head">
 
-</div>
+                    <div>
 
-</section>
+                        <div class="section-title">
+                            Article identity
+                        </div>
 
-<aside class="space-y-6">
+                        <div class="section-note">
+                            The title becomes the primary H1, default slug and core search entity.
+                        </div>
 
-<div class="bg-white rounded-lg shadow-sm border p-6">
-
-<div class="flex justify-between items-center mb-2">
-<label class="text-sm font-bold">Meta Description</label>
-<button
-id="autoDescBtn"
-class="text-xs bg-dyve-accent px-2 py-1 rounded font-bold">
-Auto-Generate
-</button>
-</div>
-
-<textarea
-id="descriptionInput"
-rows="4"
-maxlength="160"
-class="w-full border rounded-lg p-3 text-sm resize-none"
-placeholder="Search result description, ideally 140–160 characters.">
-</textarea>
-
-<div class="flex justify-between mt-2 text-xs">
-<span id="descQuality">Waiting for input...</span>
-<span id="descCount">0/160</span>
-</div>
-
-</div>
-
-<div class="bg-white rounded-lg shadow-sm border p-6">
-
-<label class="block text-sm font-bold mb-2">Intel Category</label>
-
-<select id="categorySelect" class="w-full border rounded-lg px-3 py-3">
-<option value="breach">Live Breaches</option>
-<option value="dark-web">Dark Web Intelligence</option>
-<option value="ransomware">Ransomware Intelligence</option>
-<option value="threat-actors">Threat Actors</option>
-<option value="signals">Threat Signals</option>
-<option value="analysis">Threat Analysis</option>
-</select>
-
-</div>
-
-<div class="bg-dyve-bg rounded-lg border border-white/10 p-6 text-white">
-
-<h2 class="text-xs font-bold text-dyve-accent uppercase tracking-[.18em] mb-4">
-Threat Metadata
-</h2>
-
-<label class="block text-xs text-white/50 mb-2">Intel Tag</label>
-
-<select
-id="intelTagInput"
-class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 mb-4">
-
-<option value="">Select Intel Tag</option>
-<option>CRITICAL</option>
-<option>HIGH PRIORITY</option>
-<option>LIVE INTEL</option>
-<option>DARK WEB</option>
-<option>ACTIVE THREAT</option>
-<option>VERIFIED</option>
-<option>BREACH DATA</option>
-<option>RANSOMWARE</option>
-<option>APT GROUP</option>
-<option>ZERO-DAY</option>
-<option>IOCs</option>
-<option>TTPs</option>
-<option>THREAT ACTOR</option>
-<option>INFRASTRUCTURE</option>
-<option>MALWARE</option>
-<option>PHISHING</option>
-<option>EXPLOIT</option>
-<option>VULNERABILITY</option>
-
-</select>
-
-<label class="block text-xs text-white/50 mb-2">Meta Status</label>
-
-<select
-id="metaStatusInput"
-class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 mb-4">
-
-<option value="">Select status</option>
-<option>Active Threat</option>
-<option>Verified Intel</option>
-<option>Operational Guide</option>
-<option>Under Investigation</option>
-<option>Mitigated / Resolved</option>
-<option>Emerging Threat</option>
-<option>Critical Alert</option>
-<option>Historical Data</option>
-<option>Routine Update</option>
-
-</select>
-
-<label class="block text-xs text-white/50 mb-2">
-Featured Image
-</label>
-
-<input
-id="featuredImageInput"
-type="file"
-accept="image/*"
-class="w-full text-xs"
->
-
-<input id="imageUrlInput" type="hidden">
-<input id="imageAltInput" type="hidden">
-<input id="imageTitleInput" type="hidden">
-<input id="imageCaptionInput" type="hidden">
-
-<div id="featuredPreview" class="hidden mt-3">
-<img id="previewImg" class="w-full h-32 object-cover rounded-lg">
-<p id="previewAlt" class="text-[11px] text-white/50 mt-1"></p>
-</div>
-
-</div>
-
-<div class="bg-white rounded-lg shadow-sm border p-6">
-
-<label class="block text-sm font-bold mb-2">
-Publish Destination
-</label>
-
-<select id="pageSelect" class="w-full border rounded-lg px-3 py-3">
-
-<option value="homepage">
-HackaX Intelligence Homepage
-</option>
-
-<option value="breaches">
-Breach Surveillance
-</option>
-
-<option value="dark-web">
-Dark Web Intelligence
-</option>
-
-<option value="ransomware">
-Ransomware Intelligence
-</option>
-
-<option value="signals">
-Threat Signals
-</option>
-
-<option value="threat-actors">
-Threat Actors
-</option>
-
-<option value="analysis">
-Threat Analysis
-</option>
-
-</select>
-
-<p class="text-[11px] text-gray-500 mt-2">
-Tech is intentionally unavailable here. Tech publishing belongs to Dyve | Tech Editor.
-</p>
-
-</div>
-
-<div class="bg-white rounded-lg shadow-sm border p-6">
-
-<h2 class="font-bold mb-4">
-Internal Linking Intelligence
-</h2>
-
-<div class="text-[11px] text-gray-500 mb-3">
-The engine compares this article against the existing HackaX article corpus and looks for semantic relationships rather than simple word matches.
-</div>
-
-<div id="linkSuggestions" class="space-y-2 max-h-96 overflow-auto">
-<p class="text-sm text-gray-500">
-Load existing HackaX articles to find opportunities.
-</p>
-</div>
-
-<div class="grid grid-cols-2 gap-2 mt-4">
-
-<button
-id="linksBtn"
-class="border border-dyve-accent bg-emerald-50 py-2 rounded-lg text-sm font-bold">
-Find Opportunities
-</button>
-
-<button
-id="autoLinksBtn"
-class="bg-dyve-bg text-white py-2 rounded-lg text-sm font-bold">
-Auto-Link Article
-</button>
-
-</div>
-
-</div>
-
-<div class="bg-white rounded-lg shadow-sm border p-6">
-
-<h2 class="font-bold mb-4">
-Image SEO
-</h2>
-
-<div id="imageSeoStatus" class="text-sm text-gray-500">
-Upload a featured image to run image SEO analysis.
-</div>
-
-</div>
-
-</aside>
-
-</div>
-</main>
-
-<div
-id="toast"
-class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[100] hidden bg-dyve-bg text-white border border-dyve-accent/40 px-5 py-3 rounded-xl shadow-2xl text-sm">
-</div>
-
-<div class="fixed bottom-5 right-5 z-50">
-
-<button
-id="menuToggle"
-class="w-14 h-14 rounded-full bg-dyve-accent text-dyve-bg font-black shadow-lg">
-☰
-</button>
-
-<div
-id="slideMenu"
-class="hidden absolute bottom-16 right-0 w-56 bg-white border rounded-xl shadow-2xl overflow-hidden">
-
-<a href="settings.html" class="block px-4 py-3 hover:bg-gray-50 text-sm font-medium">
-Settings
-</a>
-
-<a href="drafts.html" class="block px-4 py-3 hover:bg-gray-50 text-sm font-medium">
-Drafts
-</a>
-
-<a href="published.html" class="block px-4 py-3 hover:bg-gray-50 text-sm font-medium">
-Published Intel
-</a>
-
-</div>
-
-</div>
-
-<script>
-
-const STORAGE={
-    settings:"dyve-hackax-settings",
-    drafts:"dyve-hackax-drafts",
-    edit:"dyve-hackax-edit-article"
-};
-
-const CLOUDINARY={
-    cloudName:"dxdbn6xwy",
-    uploadPreset:"geefox_unsigned",
-    endpoint:"https://api.cloudinary.com/v1_1/dxdbn6xwy/image/upload"
-};
-
-const ARTICLE_DB_PATH="assets/articles.json";
-const HACKAX_SITEMAP_PATH="hackax-sitemap.xml";
-const NEWS_SITEMAP_PATH="hackax-news-sitemap.xml";
-const IMAGE_SITEMAP_PATH="hackax-image-sitemap.xml";
-
-const CATEGORIES={
-    breach:"Data Breach",
-    "dark-web":"Dark Web Intelligence",
-    ransomware:"Ransomware Intelligence",
-    "threat-actors":"Threat Actors",
-    signals:"Threat Signals",
-    analysis:"Threat Analysis"
-};
-
-const CATEGORY_ROUTES={
-    breach:"breaches",
-    "dark-web":"dark-web",
-    ransomware:"ransomware",
-    "threat-actors":"threat-actors",
-    signals:"signals",
-    analysis:"analysis"
-};
-
-const STOPWORDS=new Set("a an and are as at be been being by can could did do does for from had has have he her here hers him his how i if in into is it its just me more most my no not of on or our ours she should so than that the their theirs them then there these they this those through to under up us was we were what when where which who why will with would you your yours about above after again against all also among any because before below between both but during each few further itself once other over own same some such too very according across actually almost already although another around away back became become becoming behind beside besides beyond both certain clearly despite down especially even ever every everything first following four found further general generally given going good great however important including instead known last later less likely many maybe might much near nearly never new next often only otherwise particular perhaps possible probably recent really right several since still sure taken than though together toward towards usually using various well while within without".split(/\s+/));
-
-let quill=null;
-let existingArticles=[];
-let currentImageMeta=null;
-
-function cfg(){
-    let s={};
-
-    try{
-        const raw=localStorage.getItem(STORAGE.settings);
-        if(raw){
-            const parsed=JSON.parse(raw);
-            if(parsed&&typeof parsed==="object")s=parsed;
-        }
-    }catch(e){
-        console.warn("HackaX settings could not be parsed. Using safe defaults.",e);
-    }
-
-    return{
-        token:s.githubToken||"",
-        repo:s.githubRepo||"",
-        branch:s.githubBranch||"main",
-        siteUrl:(s.siteUrl||"https://dyve.online").replace(/\/$/,"")
-    };
-}
-
-function toast(m){
-    const e=document.getElementById("toast");
-    e.textContent=m;
-    e.classList.remove("hidden");
-    clearTimeout(window.__toast);
-    window.__toast=setTimeout(()=>e.classList.add("hidden"),4200);
-}
-
-function slugify(s){
-    return String(s||"")
-        .toLowerCase()
-        .normalize("NFKD")
-        .replace(/[\u0300-\u036f]/g,"")
-        .replace(/[^a-z0-9\s-]/g,"")
-        .trim()
-        .replace(/\s+/g,"-")
-        .replace(/-+/g,"-")
-        .slice(0,110);
-}
-
-function safeJSON(raw,fallback){
-    try{
-        const value=JSON.parse(raw||"");
-        return value;
-    }catch(e){
-        return fallback;
-    }
-}
-
-function b64(s){
-    return btoa(unescape(encodeURIComponent(s)));
-}
-
-function unb64(s){
-    return decodeURIComponent(escape(atob(String(s).replace(/\n/g,""))));
-}
-
-function escapeHtml(s){
-    return String(s||"")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-}
-
-function escapeAttribute(s){
-    return escapeHtml(s).replace(/`/g,"&#096;");
-}
-
-function categoryRoute(category){
-    return CATEGORY_ROUTES[category]||"analysis";
-}
-
-function getArticlePath(category,slug,destination){
-    if(destination==="homepage"){
-        if(category==="dark-web"||category==="ransomware"){
-            return `article/${category}/${slug}.html`;
-        }
-
-        return `article/${slug}.html`;
-    }
-
-    return `${destination}/${slug}.html`;
-}
-
-function getCanonical(siteUrl,category,slug,destination){
-    return siteUrl+"/"+getArticlePath(category,slug,destination);
-}
-
-function cleanText(text){
-    return String(text||"")
-        .replace(/\s+/g," ")
-        .replace(/[^\S\r\n]+/g," ")
-        .trim();
-}
-
-function tokenize(text){
-    return cleanText(text)
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g," ")
-        .split(/\s+/)
-        .filter(Boolean);
-}
-
-function meaningfulTokens(text){
-    return tokenize(text)
-        .filter(w=>w.length>=3&&!STOPWORDS.has(w));
-}
-
-function unique(arr){
-    return [...new Set(arr)];
-}
-
-function getArticleTopicData(){
-    const title=document.getElementById("titleInput").value.trim();
-    const category=document.getElementById("categorySelect").value;
-    const tag=document.getElementById("intelTagInput").value.trim();
-    const description=document.getElementById("descriptionInput").value.trim();
-    const body=quill?quill.getText():"";
-
-    const all=`${title} ${category} ${CATEGORIES[category]||""} ${tag} ${description} ${body}`;
-
-    const counts={};
-
-    meaningfulTokens(all).forEach(word=>{
-        counts[word]=(counts[word]||0)+1;
-    });
-
-    const keywords=Object.entries(counts)
-        .sort((a,b)=>b[1]-a[1])
-        .map(x=>x[0])
-        .filter(w=>w.length>=4)
-        .slice(0,15);
-
-    return{
-        title,
-        category,
-        categoryLabel:CATEGORIES[category]||category,
-        tag,
-        description,
-        body,
-        keywords
-    };
-}
-
-function renderKeywordPreview(){
-    const el=document.getElementById("keywordPreview");
-    if(!el)return;
-
-    const data=getArticleTopicData();
-
-    el.innerHTML=data.keywords.slice(0,10).map(k=>
-        `<span class="keyword-chip">${escapeHtml(k)}</span>`
-    ).join("");
-}
-
-function sanitizeArticleHTML(html){
-    const template=document.createElement("template");
-    template.innerHTML=String(html||"");
-
-    template.content
-        .querySelectorAll("script,iframe,object,embed,form,style,link,meta")
-        .forEach(node=>node.remove());
-
-    template.content.querySelectorAll("*").forEach(node=>{
-        [...node.attributes].forEach(attr=>{
-            const name=attr.name.toLowerCase();
-            const value=attr.value||"";
-
-            if(name.startsWith("on")||name==="srcdoc"){
-                node.removeAttribute(attr.name);
-                return;
-            }
-
-            if(
-                (name==="href"||name==="src") &&
-                /^\s*(javascript:|data:text\/html)/i.test(value)
-            ){
-                node.removeAttribute(attr.name);
-            }
-        });
-    });
-
-    return template.innerHTML;
-}
-
-function imageBaseName(title,category,extra=""){
-    const topic=slugify(
-        `${title} ${extra||CATEGORIES[category]||"cyber-intelligence"}`
-    );
-
-    return topic
-        .replace(/-+/g,"-")
-        .replace(/^-|-$/g,"")
-        .slice(0,120)||"hackax-cyber-intelligence";
-}
-
-function generateImageAlt(title,category,tag,context="featured image"){
-    const categoryLabel=CATEGORIES[category]||"cyber threat intelligence";
-    const cleanTitle=cleanText(title);
-    const cleanTag=cleanText(tag);
-
-    if(context==="featured image"){
-        return `${cleanTitle} — ${categoryLabel}${cleanTag?` | ${cleanTag}`:""} | Dyve HackaX`;
-    }
-
-    return `${cleanTitle} — ${cleanText(context)} | Dyve HackaX`;
-}
-
-function generateImageTitle(title,category){
-    return `${cleanText(title)} | Dyve HackaX`;
-}
-
-function generateImageCaption(title,category,tag){
-    const categoryLabel=CATEGORIES[category]||"Cyber Threat Intelligence";
-    return `${cleanText(title)} — ${categoryLabel}${tag?` | ${cleanText(tag)}`:""}.`;
-}
-
-async function compressImage(file,maxWidth=1800,quality=.84){
-    return new Promise((resolve,reject)=>{
-        const reader=new FileReader();
-
-        reader.onerror=reject;
-
-        reader.onload=e=>{
-            const image=new Image();
-
-            image.onerror=reject;
-
-            image.onload=()=>{
-                let width=image.width;
-                let height=image.height;
-
-                if(width>maxWidth){
-                    height=Math.round(height*maxWidth/width);
-                    width=maxWidth;
-                }
-
-                const canvas=document.createElement("canvas");
-                canvas.width=width;
-                canvas.height=height;
-
-                const ctx=canvas.getContext("2d");
-
-                if(!ctx){
-                    reject(new Error("Canvas unavailable"));
-                    return;
-                }
-
-                ctx.drawImage(image,0,0,width,height);
-
-                canvas.toBlob(
-                    blob=>{
-                        if(!blob){
-                            reject(new Error("Image compression failed"));
-                            return;
-                        }
-
-                        const baseName=file.name.replace(/\.[^.]+$/,"");
-
-                        resolve(
-                            new File(
-                                [blob],
-                                `${slugify(baseName)||"hackax-image"}.jpg`,
-                                {type:"image/jpeg"}
-                            )
-                        );
-                    },
-                    "image/jpeg",
-                    quality
-                );
-            };
-
-            image.src=e.target.result;
-        };
-
-        reader.readAsDataURL(file);
-    });
-}
-
-async function cloudinaryUpload(file,options={}){
-    const fd=new FormData();
-
-    fd.append("file",file);
-    fd.append("upload_preset",CLOUDINARY.uploadPreset);
-    fd.append("tags","dyve-hackax,intelligence,seo");
-
-    if(options.publicId){
-        fd.append("public_id",options.publicId);
-    }
-
-    if(options.folder){
-        fd.append("folder",options.folder);
-    }
-
-    const response=await fetch(
-        CLOUDINARY.endpoint,
-        {
-            method:"POST",
-            body:fd
-        }
-    );
-
-    const data=await response.json();
-
-    if(!response.ok||!data.secure_url){
-        throw new Error(
-            data.error?.message||
-            "Cloudinary upload failed"
-        );
-    }
-
-    return data;
-}
-
-async function uploadImage(file,context="featured"){
-    const topic=getArticleTopicData();
-
-    if(!topic.title){
-        throw new Error("Add the article title before uploading an image.");
-    }
-
-    const base=imageBaseName(
-        topic.title,
-        topic.category,
-        context==="featured image"
-            ? topic.tag
-            : context
-    );
-
-    const timestamp=Date.now();
-
-    const publicId=`hackax/${base}-${timestamp}`;
-
-    let data=null;
-
-    try{
-        data=await cloudinaryUpload(
-            file,
-            {
-                publicId,
-                folder:"hackax"
-            }
-        );
-    }catch(firstError){
-        console.warn(
-            "Cloudinary rejected optional public_id/folder. Retrying standard unsigned upload.",
-            firstError
-        );
-
-        data=await cloudinaryUpload(file,{});
-    }
-
-    const alt=generateImageAlt(
-        topic.title,
-        topic.category,
-        topic.tag,
-        context==="featured"
-            ? "featured image"
-            : context
-    );
-
-    return{
-        url:data.secure_url,
-        width:data.width||null,
-        height:data.height||null,
-        format:data.format||"jpg",
-        publicId:data.public_id||"",
-        resourceType:data.resource_type||"image",
-        originalFilename:data.original_filename||file.name,
-        alt,
-        title:generateImageTitle(topic.title,topic.category),
-        caption:generateImageCaption(
-            topic.title,
-            topic.category,
-            topic.tag
-        ),
-        seoName:base
-    };
-}
-
-function applyImageAttributes(root){
-    const topic=getArticleTopicData();
-
-    root.querySelectorAll("img").forEach((img,index)=>{
-        const existingAlt=cleanText(img.getAttribute("alt")||"");
-
-        const alt=
-            existingAlt &&
-            existingAlt.length>12 &&
-            !/^image$/i.test(existingAlt)
-                ? existingAlt
-                : generateImageAlt(
-                    topic.title,
-                    topic.category,
-                    topic.tag,
-                    index===0
-                        ? "featured image"
-                        : `article image ${index+1}`
-                );
-
-        img.setAttribute("alt",alt);
-
-        if(!img.getAttribute("title")){
-            img.setAttribute(
-                "title",
-                generateImageTitle(
-                    topic.title,
-                    topic.category
-                )
-            );
-        }
-
-        if(!img.getAttribute("loading")){
-            img.setAttribute(
-                "loading",
-                index===0?"eager":"lazy"
-            );
-        }
-
-        img.setAttribute("decoding","async");
-
-        if(!img.getAttribute("width")){
-            img.setAttribute("width","1200");
-        }
-
-        if(!img.getAttribute("height")){
-            img.setAttribute("height","675");
-        }
-    });
-}
-
-function normalizeInternalHref(url,siteUrl){
-    if(!url)return"";
-
-    let href=String(url).trim();
-
-    if(href.startsWith("http://")||href.startsWith("https://")){
-        return href;
-    }
-
-    if(!href.startsWith("/")){
-        href="/"+href;
-    }
-
-    return siteUrl+href;
-}
-
-function getRecordUrl(article,siteUrl){
-    if(!article)return"";
-
-    if(article.url){
-        return normalizeInternalHref(article.url,siteUrl);
-    }
-
-    if(article.slug){
-        const category=article.category||"analysis";
-        const destination=article.page||"homepage";
-
-        return getCanonical(
-            siteUrl,
-            category,
-            article.slug,
-            destination
-        );
-    }
-
-    return"";
-}
-
-function articleKeywords(article){
-    const raw=[
-        article.title||"",
-        article.description||article.desc||"",
-        article.category||"",
-        CATEGORIES[article.category]||"",
-        article.tag||"",
-        article.tags||"",
-        article.keywords||"",
-        article.meta||""
-    ].join(" ");
-
-    return unique(
-        meaningfulTokens(raw)
-    );
-}
-
-function currentArticleIdentity(){
-    return{
-        id:window.editId||null,
-        slug:window.editSlug||null,
-        url:window.editSlug
-            ? getArticlePath(
-                document.getElementById("categorySelect").value,
-                window.editSlug,
-                document.getElementById("pageSelect").value
-            )
-            : null
-    };
-}
-
-function scoreArticleCandidate(article,topic){
-    const targetKeywords=unique([
-        ...topic.keywords,
-        ...meaningfulTokens(topic.title),
-        ...meaningfulTokens(topic.tag),
-        ...meaningfulTokens(topic.categoryLabel)
-    ]);
-
-    const candidateKeywords=articleKeywords(article);
-
-    if(!candidateKeywords.length){
-        return{
-            score:0,
-            reasons:[],
-            anchors:[]
-        };
-    }
-
-    const candidateSet=new Set(candidateKeywords);
-
-    let score=0;
-    const reasons=[];
-    const matched=[];
-
-    targetKeywords.forEach(keyword=>{
-        if(candidateSet.has(keyword)){
-            let weight=1;
-
-            if(
-                meaningfulTokens(article.title||"")
-                    .includes(keyword)
-            ){
-                weight+=5;
-            }
-
-            if(
-                meaningfulTokens(topic.title)
-                    .includes(keyword)
-            ){
-                weight+=3;
-            }
-
-            if(
-                keyword.length>=8
-            ){
-                weight+=1;
-            }
-
-            score+=weight;
-
-            if(!matched.includes(keyword)){
-                matched.push(keyword);
-            }
-        }
-    });
-
-    const titleWords=meaningfulTokens(article.title||"");
-    const currentTitleWords=meaningfulTokens(topic.title);
-
-    const titleOverlap=currentTitleWords.filter(
-        w=>titleWords.includes(w)
-    );
-
-    score+=titleOverlap.length*6;
-
-    if(
-        article.category &&
-        article.category===topic.category
-    ){
-        score+=5;
-        reasons.push("same intelligence category");
-    }
-
-    if(
-        article.tag &&
-        topic.tag &&
-        article.tag.toLowerCase()===topic.tag.toLowerCase()
-    ){
-        score+=7;
-        reasons.push("same threat classification");
-    }
-
-    if(titleOverlap.length){
-        reasons.push(
-            `${titleOverlap.length} shared topic term${titleOverlap.length===1?"":"s"}`
-        );
-    }
-
-    if(matched.length){
-        reasons.push(
-            `${matched.slice(0,4).join(", ")} overlap`
-        );
-    }
-
-    if(score>=10){
-        score+=Math.min(8,matched.length*1.5);
-    }
-
-    const anchors=[];
-
-    if(article.title){
-        anchors.push(cleanText(article.title));
-    }
-
-    titleOverlap
-        .sort((a,b)=>b.length-a.length)
-        .slice(0,3)
-        .forEach(word=>{
-            if(word.length>=6){
-                anchors.push(word);
-            }
-        });
-
-    matched
-        .filter(w=>w.length>=7)
-        .sort((a,b)=>b.length-a.length)
-        .slice(0,3)
-        .forEach(word=>{
-            anchors.push(word);
-        });
-
-    return{
-        score,
-        reasons,
-        matched,
-        anchors:unique(anchors)
-    };
-}
-
-function getSmartLinkCandidates(){
-    const topic=getArticleTopicData();
-    const current=currentArticleIdentity();
-    const c=cfg();
-
-    return existingArticles
-        .map(article=>{
-            const result=scoreArticleCandidate(
-                article,
-                topic
-            );
-
-            const url=getRecordUrl(article,c.siteUrl);
-
-            const sameId=
-                current.id &&
-                article.id &&
-                article.id===current.id;
-
-            const sameUrl=
-                current.url &&
-                article.url &&
-                String(article.url).replace(/^\/+/,"")===
-                String(current.url).replace(/^\/+/,"");
-
-            if(sameId||sameUrl){
-                result.score=-999;
-            }
-
-            return{
-                article,
-                url,
-                ...result
-            };
-        })
-        .filter(x=>x.url&&x.score>=8)
-        .sort((a,b)=>b.score-a.score);
-}
-
-function chooseAnchor(candidate){
-    const anchors=(candidate.anchors||[])
-        .filter(x=>x&&x.length>=4);
-
-    if(!anchors.length){
-        return cleanText(
-            candidate.article.title||"Related HackaX intelligence"
-        );
-    }
-
-    const title=cleanText(candidate.article.title||"");
-
-    if(title.length<=85){
-        return title;
-    }
-
-    return anchors
-        .sort((a,b)=>a.length-b.length)[0];
-}
-
-function renderLinkSuggestions(){
-    const el=document.getElementById("linkSuggestions");
-
-    const candidates=getSmartLinkCandidates();
-
-    if(!candidates.length){
-        el.innerHTML=`
-            <p class="text-sm text-gray-500">
-                No sufficiently strong contextual link matches were found.
-                This is intentional: weak matches are not automatically linked.
-            </p>
-        `;
-        return;
-    }
-
-    el.innerHTML=candidates
-        .slice(0,8)
-        .map((candidate,index)=>{
-            const article=candidate.article;
-            const anchor=chooseAnchor(candidate);
-
-            return`
-                <div class="border rounded-lg p-3">
-                    <div class="flex justify-between gap-2 items-start">
-                        <b class="text-sm">${escapeHtml(article.title||"Untitled Intel")}</b>
-                        <span class="link-score">${Math.round(candidate.score)} match</span>
                     </div>
 
-                    <div class="text-[11px] text-emerald-700 mt-1">
-                        ${escapeHtml(
-                            CATEGORIES[article.category]||
-                            article.category||
-                            article.tag||
-                            "HackaX Intel"
-                        )}
+                    <span class="tag">
+                        HACKAX
+                    </span>
+
+                </div>
+
+
+                <label class="field-label">
+                    Article title
+                </label>
+
+                <input
+                    id="titleInput"
+                    class="field text-lg font-bold"
+                    placeholder="e.g. Credential Dataset Appears on Underground Forum"
+                    autocomplete="off">
+
+
+                <div class="grid sm:grid-cols-2 gap-3 mt-4">
+
+                    <div>
+
+                        <label class="field-label">
+                            Canonical slug
+                        </label>
+
+                        <input
+                            id="slugInput"
+                            class="field"
+                            placeholder="credential-dataset-underground-forum"
+                            autocomplete="off">
+
                     </div>
 
-                    <div class="text-[11px] text-gray-500 mt-2">
-                        ${escapeHtml(
-                            candidate.reasons.slice(0,3).join(" • ")||
-                            "Strong semantic relationship"
-                        )}
+
+                    <div>
+
+                        <label class="field-label">
+                            Editorial summary
+                        </label>
+
+                        <input
+                            id="summaryInput"
+                            class="field"
+                            placeholder="One-sentence internal summary">
+
                     </div>
 
-                    <div class="text-[11px] mt-2 text-gray-700">
-                        Suggested anchor:
-                        <strong>${escapeHtml(anchor)}</strong>
+                </div>
+
+
+                <div class="route-box mt-4">
+
+                    Route preview:
+
+                    <strong id="routePreview">
+                        /article/your-intel-slug.html
+                    </strong>
+
+                </div>
+
+
+                <div
+                    id="keywordPreview"
+                    class="flex flex-wrap gap-2 mt-4">
+                </div>
+
+            </section>
+
+
+            <section class="editor-card overflow-hidden relative">
+
+                <div id="editor"></div>
+
+            </section>
+
+
+            <button
+                id="aiBtn"
+                type="button"
+                class="ai-fab"
+                aria-label="Open HackaX AI assistant">
+                AI
+            </button>
+
+
+            <div id="aiPanel" class="ai-panel">
+
+                <div class="bg-dyve-bg text-white p-4 flex justify-between items-center rounded-t-[18px]">
+
+                    <div>
+
+                        <b>
+                            HackaX Editorial Assistant
+                        </b>
+
+                        <div class="text-[9px] text-white/45 uppercase tracking-[.16em] mt-1">
+                            Local editorial tools
+                        </div>
+
                     </div>
 
                     <button
-                        class="insertLink mt-2 w-full bg-emerald-50 border border-dyve-accent rounded py-1 text-xs font-bold"
-                        data-url="${escapeAttribute(candidate.url)}"
-                        data-title="${escapeAttribute(anchor)}">
-                        Insert contextual link
+                        id="closeAi"
+                        type="button"
+                        class="text-white/60 text-xl">
+                        ×
                     </button>
+
                 </div>
-            `;
-        })
-        .join("");
 
-    el.querySelectorAll(".insertLink").forEach(button=>{
-        button.onclick=()=>{
-            insertInternalLink(
-                button.dataset.url,
-                button.dataset.title
-            );
-        };
-    });
-}
 
-function insertInternalLink(url,title){
-    const range=quill.getSelection(true);
+                <div class="p-3 space-y-1">
 
-    if(range&&range.length){
-        quill.formatText(
-            range.index,
-            range.length,
-            "link",
-            url
-        );
+                    <button
+                        class="ai-action w-full text-left p-3 rounded-lg hover:bg-gray-50 text-sm"
+                        data-action="grammar">
+                        Grammar check
+                    </button>
 
-        toast("Selected text linked");
-        return;
-    }
+                    <button
+                        class="ai-action w-full text-left p-3 rounded-lg hover:bg-gray-50 text-sm"
+                        data-action="shorter">
+                        Make selected text shorter
+                    </button>
 
-    const index=Math.max(0,quill.getLength()-1);
+                    <button
+                        class="ai-action w-full text-left p-3 rounded-lg hover:bg-gray-50 text-sm"
+                        data-action="longer">
+                        Expand selected text
+                    </button>
 
-    quill.insertText(
-        index,
-        title,
-        {
-            link:url
-        }
-    );
+                    <button
+                        class="ai-action w-full text-left p-3 rounded-lg hover:bg-gray-50 text-sm"
+                        data-action="seo">
+                        Generate SEO tags
+                    </button>
 
-    toast("Contextual internal link inserted");
-}
+                    <button
+                        class="ai-action w-full text-left p-3 rounded-lg hover:bg-gray-50 text-sm"
+                        data-action="generate">
+                        Generate analysis section
+                    </button>
 
-function textNodes(root){
-    const walker=document.createTreeWalker(
-        root,
-        NodeFilter.SHOW_TEXT
-    );
+                </div>
 
-    const nodes=[];
 
-    let node;
+                <div class="border-t p-3 flex gap-2">
 
-    while(node=walker.nextNode()){
-        const parent=node.parentElement;
+                    <input
+                        id="aiPrompt"
+                        class="field flex-1"
+                        placeholder="uppercase, summary, bold...">
 
-        if(!parent)continue;
+                    <button
+                        id="aiGo"
+                        type="button"
+                        class="action-btn primary">
+                        Go
+                    </button>
 
-        if(
-            parent.closest("a,code,pre,h1,h2,h3,h4,h5,h6,blockquote,script,style")
-        ){
-            continue;
-        }
+                </div>
 
-        if(!cleanText(node.nodeValue))continue;
-
-        nodes.push(node);
-    }
-
-    return nodes;
-}
-
-function findPhraseInTextNode(node,phrases){
-    const text=node.nodeValue||"";
-
-    const sorted=[...phrases]
-        .filter(Boolean)
-        .sort((a,b)=>b.length-a.length);
-
-    for(const phrase of sorted){
-        const escaped=phrase.replace(
-            /[.*+?^${}()|[\]\\]/g,
-            "\\$&"
-        );
-
-        const regex=new RegExp(
-            `\\b${escaped}\\b`,
-            "i"
-        );
-
-        const match=regex.exec(text);
-
-        if(match){
-            return{
-                phrase,
-                index:match.index,
-                length:match[0].length
-            };
-        }
-    }
-
-    return null;
-}
-
-function insertLinkIntoDOM(root,candidate,usedUrls){
-    const url=candidate.url;
-
-    if(
-        !url||
-        usedUrls.has(url)
-    ){
-        return false;
-    }
-
-    const articleTitle=cleanText(
-        candidate.article.title||""
-    );
-
-    const matched=[
-        ...candidate.matched||[],
-        ...meaningfulTokens(articleTitle)
-    ]
-        .filter(w=>w.length>=6)
-        .sort((a,b)=>b.length-a.length);
-
-    const phrases=[
-        articleTitle,
-        ...matched
-    ];
-
-    const nodes=textNodes(root);
-
-    for(const node of nodes){
-        const match=findPhraseInTextNode(
-            node,
-            phrases
-        );
-
-        if(!match)continue;
-
-        const value=node.nodeValue;
-
-        const before=value.slice(
-            0,
-            match.index
-        );
-
-        const matchedText=value.slice(
-            match.index,
-            match.index+match.length
-        );
-
-        const after=value.slice(
-            match.index+match.length
-        );
-
-        const fragment=document.createDocumentFragment();
-
-        if(before){
-            fragment.appendChild(
-                document.createTextNode(before)
-            );
-        }
-
-        const anchor=document.createElement("a");
-
-        anchor.href=url;
-        anchor.textContent=matchedText;
-        anchor.title=articleTitle;
-        anchor.setAttribute(
-            "data-hackax-auto-link",
-            "true"
-        );
-
-        fragment.appendChild(anchor);
-
-        if(after){
-            fragment.appendChild(
-                document.createTextNode(after)
-            );
-        }
-
-        node.parentNode.replaceChild(
-            fragment,
-            node
-        );
-
-        usedUrls.add(url);
-
-        return true;
-    }
-
-    return false;
-}
-
-function automaticallyLinkArticle(){
-    const root=document.createElement("div");
-
-    root.innerHTML=sanitizeArticleHTML(
-        quill.root.innerHTML
-    );
-
-    const candidates=getSmartLinkCandidates()
-        .slice(0,8);
-
-    if(!candidates.length){
-        toast("No sufficiently strong internal-link opportunities found");
-        return;
-    }
-
-    const usedUrls=new Set();
-
-    let inserted=0;
-
-    for(const candidate of candidates){
-        if(inserted>=5)break;
-
-        if(
-            insertLinkIntoDOM(
-                root,
-                candidate,
-                usedUrls
-            )
-        ){
-            inserted++;
-        }
-    }
-
-    if(!inserted){
-        toast(
-            "No natural anchor text was found. No links were forced."
-        );
-        return;
-    }
-
-    quill.clipboard.dangerouslyPasteHTML(
-        root.innerHTML
-    );
-
-    toast(
-        `${inserted} high-confidence internal link${inserted===1?"":"s"} added`
-    );
-
-    renderLinkSuggestions();
-}
-
-function countExistingInternalLinks(){
-    const root=document.createElement("div");
-
-    root.innerHTML=quill.root.innerHTML;
-
-    const c=cfg();
-
-    return[
-        ...root.querySelectorAll("a[href]")
-    ].filter(a=>{
-        const href=a.getAttribute("href")||"";
-
-        return(
-            href.startsWith("/")||
-            href.startsWith(c.siteUrl)
-        );
-    }).length;
-}
-
-function imageSEOAnalysis(){
-    const status=document.getElementById("imageSeoStatus");
-
-    if(!currentImageMeta){
-        status.innerHTML=`
-            <div class="seo-card seo-warning">
-                Upload a featured image to generate image SEO metadata.
             </div>
-        `;
-        return;
-    }
 
-    const checks=[
-        [
-            !!currentImageMeta.alt,
-            "Contextual alt text generated"
-        ],
-        [
-            !!currentImageMeta.seoName,
-            "SEO-oriented image name generated"
-        ],
-        [
-            !!currentImageMeta.width &&
-            !!currentImageMeta.height,
-            "Intrinsic image dimensions stored"
-        ],
-        [
-            /^https:\/\//i.test(currentImageMeta.url||""),
-            "HTTPS image URL"
-        ],
-        [
-            !!currentImageMeta.publicId,
-            "Cloudinary public ID retained"
-        ]
-    ];
 
-    status.innerHTML=checks.map(x=>`
-        <div class="seo-card ${x[0]?"seo-success":"seo-warning"}">
-            ${x[0]?"✓":"!"} ${escapeHtml(x[1])}
+            <section class="onboarding-card">
+
+                <div class="section-head">
+
+                    <div>
+
+                        <div class="section-title">
+                            Article tags
+                        </div>
+
+                        <div class="section-note">
+                            Use focused topical terms. Separate tags with commas.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <input
+                    id="tagsInput"
+                    class="field"
+                    placeholder="ransomware, credential theft, data breach">
+
+
+                <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
+
+                    <span>
+                        Current article depth
+                    </span>
+
+                    <strong>
+                        <span id="wordCount">0</span>
+                        words
+                    </strong>
+
+                </div>
+
+            </section>
+
         </div>
-    `).join("")+
-    `
-        <div class="image-seo-box mt-3">
-            <div class="text-[10px] uppercase tracking-wider text-gray-500 font-bold">
-                Image filename / identifier
-            </div>
-            <div class="text-xs font-semibold text-gray-800 mt-1 break-all">
-                ${escapeHtml(
-                    currentImageMeta.seoName||""
-                )}
-            </div>
-
-            <div class="text-[10px] uppercase tracking-wider text-gray-500 font-bold mt-3">
-                Alt text
-            </div>
-            <div class="text-xs text-gray-700 mt-1">
-                ${escapeHtml(
-                    currentImageMeta.alt||""
-                )}
-            </div>
-        </div>
-    `;
-}
-
-function analyzeSEO(){
-    const topic=getArticleTopicData();
-
-    const t=topic.title;
-    const d=topic.description;
-    const body=topic.body;
-
-    const words=body
-        .split(/\s+/)
-        .filter(Boolean)
-        .length;
-
-    const html=quill.root.innerHTML;
-
-    const headings=[
-        ...quill.root.querySelectorAll("h1,h2,h3")
-    ];
-
-    const h1Count=quill.root.querySelectorAll("h1").length;
-    const h2Count=quill.root.querySelectorAll("h2").length;
-
-    const internalLinks=countExistingInternalLinks();
-
-    const imageCount=quill.root.querySelectorAll("img").length;
-
-    const checks=[];
-
-    checks.push(
-        !t
-            ? ["error","Title is required."]
-            : t.length>=45&&t.length<=70
-                ? ["success",`Title length is strong (${t.length} characters).`]
-                : ["warning",`Title is ${t.length} characters. Aim for a concise, descriptive title.`]
-    );
-
-    checks.push(
-        !d
-            ? ["error","Meta description is required."]
-            : d.length>=140&&d.length<=160
-                ? ["success","Meta description is within the preferred working range."]
-                : ["warning",`Meta description is ${d.length} characters.`]
-    );
-
-    checks.push(
-        words>=800
-            ? ["success",`Article depth is strong (${words} words).`]
-            : words>=500
-                ? ["warning",`Article contains ${words} words. Consider deeper original analysis.`]
-                : ["error",`Article contains only ${words} words. Substantial intelligence reports need more depth.`]
-    );
-
-    checks.push(
-        h1Count<=1
-            ? ["success","Heading hierarchy does not contain multiple H1 elements."]
-            : ["error","Multiple H1 elements detected."]
-    );
-
-    checks.push(
-        h2Count>=2
-            ? ["success",`${h2Count} H2 sections detected.`]
-            : ["warning","Add meaningful H2 sections to structure the intelligence report."]
-    );
-
-    checks.push(
-        internalLinks>=2
-            ? ["success",`${internalLinks} internal links detected.`]
-            : ["warning",`Only ${internalLinks} internal link${internalLinks===1?"":"s"} detected. Run Smart Internal Linking.`]
-    );
-
-    checks.push(
-        imageCount===0
-            ? ["warning","No body images detected."]
-            : ["success",`${imageCount} article image${imageCount===1?"":"s"} detected.`]
-    );
-
-    checks.push(
-        currentImageMeta&&currentImageMeta.alt
-            ? ["success","Featured image has contextual alt text."]
-            : ["error","Featured image needs contextual alt text."]
-    );
-
-    checks.push(
-        topic.keywords.length>=5
-            ? ["success",`${topic.keywords.length} meaningful topic terms extracted.`]
-            : ["warning","Not enough strong topical terms detected."]
-    );
-
-    checks.push(
-        existingArticles.length
-            ? ["success",`${existingArticles.length} HackaX records available for internal-link analysis.`]
-            : ["warning","HackaX article index is empty or unavailable."]
-    );
-
-    checks.push(
-        html.includes("data-hackax-auto-link")
-            ? ["success","Automated contextual linking has been applied."]
-            : ["warning","No automated contextual links detected yet."]
-    );
-
-    document.getElementById("seoAnalysis").innerHTML=
-        checks.map(x=>`
-            <div class="seo-card ${
-                x[0]==="success"
-                    ?"seo-success"
-                    :x[0]==="warning"
-                        ?"seo-warning"
-                        :"seo-error"
-            }">
-                ${x[0]==="success"?"✓":x[0]==="warning"?"!":"×"}
-                ${escapeHtml(x[1])}
-            </div>
-        `).join("");
-
-    renderKeywordPreview();
-}
-
-function updateDesc(){
-    const d=document.getElementById("descriptionInput");
-    const n=d.value.length;
-    const c=document.getElementById("descCount");
-    const q=document.getElementById("descQuality");
-
-    c.textContent=`${n}/160`;
-
-    if(!n){
-        q.textContent="Waiting for input...";
-        q.className="text-gray-400";
-    }else if(n>=140&&n<=160){
-        q.textContent="Good search-result working length";
-        q.className="desc-good font-bold";
-    }else if(n<140){
-        q.textContent="Could be more descriptive";
-        q.className="desc-warn";
-    }else{
-        q.textContent="Too long";
-        q.className="desc-bad";
-    }
-}
-
-function autoDescription(){
-    const title=document.getElementById("titleInput").value.trim();
-
-    const text=quill
-        .getText()
-        .replace(/\s+/g," ")
-        .trim();
-
-    if(!title&&!text){
-        return toast(
-            "Add a title or article content first"
-        );
-    }
-
-    const sentences=text
-        .split(/[.!?]/)
-        .map(x=>x.trim())
-        .filter(x=>x.length>40);
-
-    let d=sentences[0]||text||title;
-
-    d=d.replace(/\s+/g," ").trim();
-
-    const category=document.getElementById("categorySelect").value;
-
-    const suffix=
-        ` — Dyve HackaX ${(
-            CATEGORIES[category]||
-            "cyber intelligence"
-        ).toLowerCase()}.`;
-
-    const max=160-suffix.length;
-
-    if(d.length>max){
-        d=d.slice(0,max).replace(/[ ,;:-]+$/,"");
-    }
-
-    d=d+suffix;
-
-    document.getElementById("descriptionInput").value=
-        d.slice(0,160).replace(/[ ,;:-]+$/,"")+".";
-
-    updateDesc();
-
-    toast("Contextual meta description generated");
-}
-
-function autoSEO(){
-    const topic=getArticleTopicData();
-
-    if(topic.body.length<80){
-        return toast(
-            "Write more content before generating SEO"
-        );
-    }
-
-    if(!topic.title){
-        return toast(
-            "Add the article title first"
-        );
-    }
-
-    autoDescription();
-
-    document.getElementById("slugPreview").textContent=
-        slugify(topic.title);
-
-    const topics=topic.keywords.slice(0,6);
-
-    document.getElementById("ogPrompt").value=
-        `Editorial cyber threat intelligence cover art about ${topics.join(", ")||"emerging cyber threats"}; dark black background, emerald green network glow, forensic interface details, realistic intelligence analysis aesthetic, high contrast, premium publication artwork, no text, no logos.`;
-
-    renderKeywordPreview();
-    renderLinkSuggestions();
-
-    toast(
-        "Smart HackaX SEO metadata generated"
-    );
-}
-
-function saveDraft(){
-    const draftsValue=safeJSON(
-        localStorage.getItem(STORAGE.drafts)||"[]",
-        []
-    );
-    const drafts=Array.isArray(draftsValue)?draftsValue:[];
-
-    const d=collectForm();
-
-    d.id=d.id||crypto.randomUUID();
-    d.updatedAt=new Date().toISOString();
-
-    const i=drafts.findIndex(
-        x=>x.id===d.id
-    );
-
-    if(i>=0){
-        drafts[i]=d;
-    }else{
-        drafts.unshift(d);
-    }
-
-    localStorage.setItem(
-        STORAGE.drafts,
-        JSON.stringify(drafts)
-    );
-
-    toast("Draft saved locally");
-}
-
-function collectForm(){
-    return{
-        id:window.editId||null,
-        title:document.getElementById("titleInput").value.trim(),
-        description:document.getElementById("descriptionInput").value.trim(),
-        category:document.getElementById("categorySelect").value,
-        intelTag:document.getElementById("intelTagInput").value,
-        metaStatus:document.getElementById("metaStatusInput").value,
-        image:document.getElementById("imageUrlInput").value,
-        imageAlt:document.getElementById("imageAltInput").value,
-        imageTitle:document.getElementById("imageTitleInput").value,
-        imageCaption:document.getElementById("imageCaptionInput").value,
-        imageMeta:currentImageMeta,
-        ogPrompt:document.getElementById("ogPrompt").value,
-        page:document.getElementById("pageSelect").value,
-        content:quill.getContents(),
-        updatedAt:new Date().toISOString()
-    };
-}
-
-function clearForm(){
-    quill.setContents([]);
-
-    [
-        "titleInput",
-        "descriptionInput",
-        "imageUrlInput",
-        "imageAltInput",
-        "imageTitleInput",
-        "imageCaptionInput",
-        "ogPrompt"
-    ].forEach(id=>{
-        document.getElementById(id).value="";
-    });
-
-    document.getElementById("categorySelect").value="breach";
-    document.getElementById("pageSelect").value="homepage";
-    document.getElementById("intelTagInput").value="";
-    document.getElementById("metaStatusInput").value="";
-    document.getElementById("slugPreview").textContent="your-intel-slug";
-
-    currentImageMeta=null;
-
-    document.getElementById("featuredPreview").classList.add("hidden");
-
-    updateDesc();
-    imageSEOAnalysis();
-
-    window.editId=null;
-    window.editMode=false;
-    window.editSlug=null;
-    window.editDate=null;
-}
-
-function loadDraftData(d){
-    document.getElementById("titleInput").value=d.title||"";
-    document.getElementById("descriptionInput").value=
-        d.description||d.desc||"";
-
-    document.getElementById("categorySelect").value=
-        d.category||"breach";
-
-    document.getElementById("intelTagInput").value=
-        d.intelTag||d.tag||"";
-
-    document.getElementById("metaStatusInput").value=
-        d.metaStatus||d.meta||"";
-
-    document.getElementById("imageUrlInput").value=
-        d.image||"";
-
-    document.getElementById("imageAltInput").value=
-        d.imageAlt||"";
-
-    document.getElementById("imageTitleInput").value=
-        d.imageTitle||"";
-
-    document.getElementById("imageCaptionInput").value=
-        d.imageCaption||"";
-
-    document.getElementById("ogPrompt").value=
-        d.ogPrompt||"";
-
-    document.getElementById("pageSelect").value=
-        d.page||"homepage";
-
-    if(d.imageMeta){
-        currentImageMeta=d.imageMeta;
-    }else if(d.image){
-        currentImageMeta={
-            url:d.image,
-            alt:d.imageAlt||"",
-            title:d.imageTitle||"",
-            caption:d.imageCaption||""
-        };
-    }
-
-    if(d.content){
-        try{
-            const parsedContent=
-                typeof d.content==="string"
-                    ?safeJSON(d.content,null)
-                    :d.content;
-
-            if(parsedContent){
-                quill.setContents(parsedContent);
-            }
-        }catch(e){
-            console.error(e);
-        }
-    }
-
-    document.getElementById("titleInput")
-        .dispatchEvent(new Event("input"));
-
-    updateDesc();
-    imageSEOAnalysis();
-    renderKeywordPreview();
-
-    if(d.image){
-        document.getElementById("previewImg").src=d.image;
-
-        document.getElementById("previewAlt").textContent=
-            d.imageAlt||
-            currentImageMeta?.alt||
-            "";
-
-        document
-            .getElementById("featuredPreview")
-            .classList.remove("hidden");
-    }
-
-    window.editId=d.id||null;
-}
-
-async function fetchGithub(path){
-    const c=cfg();
-
-    if(!c.token||!c.repo){
-        throw new Error(
-            "GitHub is not configured"
-        );
-    }
-
-    const r=await fetch(
-        `https://api.github.com/repos/${c.repo}/contents/${path}?ref=${encodeURIComponent(c.branch)}`,
-        {
-            headers:{
-                Authorization:`Bearer ${c.token}`,
-                Accept:"application/vnd.github+json"
-            }
-        }
-    );
-
-    if(r.status===404){
-        return null;
-    }
-
-    if(!r.ok){
-        throw new Error(
-            `GitHub ${r.status}`
-        );
-    }
-
-    return r.json();
-}
-
-async function loadArticles(){
-    try{
-        const d=await fetchGithub(
-            ARTICLE_DB_PATH
-        );
-
-        if(!d){
-            existingArticles=[];
-            return;
-        }
-
-        const parsed=JSON.parse(
-            unb64(d.content)
-        );
-
-        existingArticles=
-            Array.isArray(parsed)
-                ?parsed
-                :Array.isArray(parsed.articles)
-                    ?parsed.articles
-                    :[];
-
-        console.log(
-            `Loaded ${existingArticles.length} HackaX articles from ${ARTICLE_DB_PATH}`
-        );
-
-        renderLinkSuggestions();
-    }catch(e){
-        existingArticles=[];
-        console.warn(
-            "Unable to load HackaX article index",
-            e
-        );
-    }
-}
-
-function createArticleSchema({
-    title,
-    desc,
-    image,
-    date,
-    modified,
-    label,
-    tag,
-    canonical,
-    c
-}){
-    const schema={
-        "@context":"https://schema.org",
-        "@type":"NewsArticle",
-        "@id":`${canonical}#article`,
-        "url":canonical,
-        "headline":title,
-        "description":desc,
-        "image":image?[
-            {
-                "@type":"ImageObject",
-                "url":image,
-                "contentUrl":image,
-                "caption":desc,
-                "representativeOfPage":true
-            }
-        ]:[],
-        "datePublished":date,
-        "dateModified":modified||date,
-        "articleSection":label,
-        "keywords":[
-            tag,
-            label,
-            "HackaX",
-            "Dyve"
-        ].filter(Boolean),
-        "wordCount":quill
-            ?quill.getText().split(/\s+/).filter(Boolean).length
-            :undefined,
-        "inLanguage":"en",
-        "isAccessibleForFree":true,
-        "author":{
-            "@type":"Organization",
-            "name":"Dyve HackaX Intelligence Unit",
-            "url":`${c.siteUrl}/hackax/`
-        },
-        "publisher":{
-            "@type":"Organization",
-            "name":"Dyve",
-            "url":c.siteUrl,
-            "logo":{
-                "@type":"ImageObject",
-                "url":`${c.siteUrl}/logo.png`
-            }
-        },
-        "mainEntityOfPage":{
-            "@type":"WebPage",
-            "@id":canonical
-        }
-    };
-
-    if(schema.wordCount===undefined){
-        delete schema.wordCount;
-    }
-
-    return schema;
-}
-
-function createBreadcrumbSchema(
-    canonical,
-    label,
-    category,
-    c
-){
-    return{
-        "@context":"https://schema.org",
-        "@type":"BreadcrumbList",
-        "itemListElement":[
-            {
-                "@type":"ListItem",
-                "position":1,
-                "name":"HackaX",
-                "item":`${c.siteUrl}/`
-            },
-            {
-                "@type":"ListItem",
-                "position":2,
-                "name":label,
-                "item":`${c.siteUrl}/${categoryRoute(category)}/`
-            },
-            {
-                "@type":"ListItem",
-                "position":3,
-                "name":document.getElementById("titleInput").value.trim(),
-                "item":canonical
-            }
-        ]
-    };
-}
-
-function generateArticleHTML(
-    c,
-    title,
-    desc,
-    image,
-    imageAlt,
-    imageTitle,
-    imageCaption,
-    tag,
-    meta,
-    category,
-    slug,
-    date,
-    modified,
-    body,
-    ogPrompt,
-    destination
-){
-    const label=
-        CATEGORIES[category]||
-        "Cyber Threat Intelligence";
-
-    const canonical=
-        getCanonical(
-            c.siteUrl,
-            category,
-            slug,
-            destination
-        );
-
-    const safeT=escapeHtml(title);
-    const safeD=escapeHtml(desc);
-    const safeI=escapeHtml(image||"");
-    const safeImageAlt=
-        escapeHtml(
-            imageAlt||
-            generateImageAlt(
-                title,
-                category,
-                tag
-            )
-        );
-
-    const safeImageTitle=
-        escapeHtml(
-            imageTitle||
-            generateImageTitle(
-                title,
-                category
-            )
-        );
-
-    const safeImageCaption=
-        escapeHtml(
-            imageCaption||
-            generateImageCaption(
-                title,
-                category,
-                tag
-            )
-        );
-
-    const safeTag=escapeHtml(tag);
-    const safeMeta=escapeHtml(meta);
-
-    const pathDepth=
-        destination==="homepage"
-            ?(
-                category==="dark-web"||
-                category==="ransomware"
-                    ?"../.."
-                    :".."
-            )
-            :"..";
-
-    const schema=createArticleSchema({
-        title,
-        desc,
-        image,
-        date,
-        modified,
-        label,
-        tag,
-        canonical,
-        c
-    });
-
-    const breadcrumbSchema=
-        createBreadcrumbSchema(
-            canonical,
-            label,
-            category,
-            c
-        );
-
-    const root=document.createElement("div");
-
-    root.innerHTML=sanitizeArticleHTML(body);
-
-    applyImageAttributes(root);
-
-    const safeBody=root.innerHTML||
-        "<p><em>No content available.</em></p>";
-
-    return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>${safeT} | Dyve HackaX</title>
-
-<meta name="description" content="${safeD}">
-<meta name="keywords" content="${escapeAttribute([
-        tag,
-        label,
-        ...getArticleTopicData().keywords.slice(0,8),
-        "Dyve HackaX",
-        "cyber threat intelligence"
-    ].filter(Boolean).join(", "))}">
-
-<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-
-<link rel="canonical" href="${escapeAttribute(canonical)}">
-<link rel="author" href="${escapeAttribute(c.siteUrl)}/about-us/">
-
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="Dyve HackaX">
-<meta property="og:title" content="${safeT}">
-<meta property="og:description" content="${safeD}">
-<meta property="og:url" content="${escapeAttribute(canonical)}">
-<meta property="og:image" content="${safeI}">
-<meta property="og:image:alt" content="${safeImageAlt}">
-<meta property="og:image:title" content="${safeImageTitle}">
-<meta property="og:image:type" content="image/jpeg">
-
-<meta property="article:published_time" content="${date}">
-<meta property="article:modified_time" content="${modified||date}">
-<meta property="article:author" content="Dyve HackaX Intelligence Unit">
-<meta property="article:section" content="${escapeAttribute(label)}">
-<meta property="article:tag" content="${safeTag}">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${safeT}">
-<meta name="twitter:description" content="${safeD}">
-<meta name="twitter:image" content="${safeI}">
-<meta name="twitter:image:alt" content="${safeImageAlt}">
-
-<meta name="theme-color" content="#020403">
-
-<link rel="icon" href="${escapeAttribute(c.siteUrl)}/favicon.ico">
-
-<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="${escapeAttribute(pathDepth)}/article.css">
-
-<script type="application/ld+json">${JSON.stringify(schema)}<\/script>
-
-<script type="application/ld+json">${JSON.stringify(breadcrumbSchema)}<\/script>
-
-</head>
-
-<body>
-
-<header class="header">
-
-<div class="header-inner">
-
-<button
-class="back-btn"
-onclick="goBack()"
-aria-label="Back">
-←
-</button>
-
-<a class="logo" href="${escapeAttribute(pathDepth)}/">
-DYVE // HACKAX
-</a>
-
-<nav>
-<a href="${escapeAttribute(pathDepth)}/">Intel</a>
-<a href="${escapeAttribute(pathDepth)}/dark-web/">Dark Web</a>
-<a href="${escapeAttribute(pathDepth)}/signals/">Signals</a>
-</nav>
-
-</div>
-
-</header>
-
-<div class="layout">
-
-<aside class="sidebar">
-
-<div class="intel-box">
-
-<div class="intel-title">
-HACKAX INTELLIGENCE
-</div>
-
-<div class="intel-item">
-<div class="intel-label">Classification</div>
-<div class="intel-value">${escapeHtml(label)}</div>
-</div>
-
-<div class="intel-item">
-<div class="intel-label">Threat Type</div>
-<div class="intel-value">${safeTag}</div>
-</div>
-
-<div class="intel-item">
-<div class="intel-label">Status</div>
-<div class="intel-value">${safeMeta}</div>
-</div>
-
-<div class="intel-item">
-<div class="intel-label">Scope</div>
-<div class="intel-value">Global</div>
-</div>
-
-</div>
-
-</aside>
-
-<main
-class="article"
-itemscope
-itemtype="https://schema.org/NewsArticle">
-
-<meta itemprop="headline" content="${safeT}">
-<meta itemprop="description" content="${safeD}">
-<meta itemprop="image" content="${safeI}">
-<meta itemprop="datePublished" content="${date}">
-<meta itemprop="dateModified" content="${modified||date}">
-
-<div class="breadcrumb">
-[ HACKAX INTEL FEED ] /
-${escapeHtml(label).toUpperCase()} /
-${safeTag}
-</div>
-
-<h1 itemprop="name">${safeT}</h1>
-
-<div class="subhead" itemprop="description">
-${safeD}
-</div>
-
-<div class="meta">
-Dyve HackaX Intelligence Unit •
-<time datetime="${date}">${date}</time>
-• ${safeMeta}
-</div>
-
-${
-image
-?`
-<figure class="hero">
-
-<img
-src="${safeI}"
-alt="${safeImageAlt}"
-title="${safeImageTitle}"
-width="${currentImageMeta?.width||1200}"
-height="${currentImageMeta?.height||675}"
-loading="eager"
-decoding="async"
-fetchpriority="high"
-itemprop="image"
->
-
-<figcaption>
-${safeImageCaption}
-</figcaption>
-
-</figure>
-`
-:""
-}
-
-<div class="share">
-<button onclick="copyLink()">Copy</button>
-<button onclick="shareX()">Share</button>
-<button onclick="shareLinkedIn()">LinkedIn</button>
-</div>
-
-<div
-class="content"
-itemprop="articleBody">
-
-${safeBody}
-
-</div>
-
-<div class="article-tags">
-<span>${safeTag}</span>
-<span>${escapeHtml(label)}</span>
-<span>Dyve HackaX</span>
-</div>
+
+
+        <aside class="stage-side space-y-5">
+
+            <section class="onboarding-card">
+
+                <div class="section-head">
+
+                    <div>
+
+                        <div class="section-title">
+                            Editorial operating rules
+                        </div>
+
+                        <div class="section-note">
+                            Keep the report evidence-led and specific. Classification and intelligence enrichment happen in later stages.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="space-y-3 text-xs text-slate-600 leading-6">
+
+                    <div>
+                        01. Write the actual intelligence report.
+                    </div>
+
+                    <div>
+                        02. Do not stuff keywords into the body.
+                    </div>
+
+                    <div>
+                        03. Use meaningful H2 sections for analysis.
+                    </div>
+
+                    <div>
+                        04. Cite or preserve evidence where appropriate.
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section class="onboarding-card">
+
+                <div class="section-head">
+
+                    <div>
+
+                        <div class="section-title">
+                            Smart SEO
+                        </div>
+
+                        <div class="section-note">
+                            Generate metadata from the report itself.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="autoSeoBtn"
+                    type="button"
+                    class="action-btn primary w-full pulse">
+                    Generate Smart SEO
+                </button>
+
+
+                <button
+                    id="autoDescBtn"
+                    type="button"
+                    class="action-btn w-full mt-2">
+                    Generate Description
+                </button>
+
+
+                <button
+                    id="analyzeBtn"
+                    type="button"
+                    class="action-btn w-full mt-2">
+                    Analyze Draft
+                </button>
+
+            </section>
+
+
+            <section class="onboarding-card">
+
+                <div class="section-title">
+                    Workflow state
+                </div>
+
+                <p class="section-note mt-2">
+                    Your work is stored in this browser as a versioned publishing session. Continue on the next stage without rebuilding the article.
+                </p>
+
+                <div class="info-strip mt-4">
+                    Tip: use Save Draft or Cmd/Ctrl + S at any point.
+                </div>
+
+            </section>
+
+        </aside>
+
+    </div>
+
+
+    <div
+        id="validation"
+        class="validation hidden">
+    </div>
+
+
+    <div class="stage-actions">
+
+        <button
+            type="button"
+            class="action-btn"
+            data-back
+            disabled>
+            Back
+        </button>
+
+        <button
+            type="button"
+            class="action-btn primary flex-1"
+            data-next>
+            Continue
+        </button>
+
+    </div>
+
+
+    <div
+        id="toast"
+        class="toast hidden">
+    </div>
 
 </main>
 
-</div>
 
-<section class="hx-cta">
-
-<div class="hx-cta-card">
-
-<h2>
-Stay ahead of active threats
-</h2>
-
-<p>
-Track breach signals, threat actors, ransomware activity and underground intelligence with Dyve HackaX.
-</p>
-
-<a
-href="${escapeAttribute(pathDepth)}/"
-class="hx-cta-btn">
-Explore HackaX Intelligence →
-</a>
-
-</div>
-
-</section>
-
-<footer class="hx-footer">
-
-<div class="hx-footer-logo">
-DYVE // HACKAX
-</div>
-
-<div class="hx-legal">
-<span>© 2026 Dyve</span>
-<a href="${escapeAttribute(pathDepth)}/privacy-policy/index.html">Privacy</a>
-<a href="${escapeAttribute(pathDepth)}/terms-of-service/index.html">Terms</a>
-</div>
-
-</footer>
+<!-- ==========================================================
+     HEADER / DRAWER CONTROLLER
+========================================================== -->
 
 <script>
+(function(){
 
-function copyLink(){
-    if(navigator.clipboard){
-        navigator.clipboard.writeText(location.href);
+    const drawer=document.getElementById("publisherDrawer");
+    const toggle=document.getElementById("drawerToggle");
+    const close=document.getElementById("drawerClose");
+
+    if(!drawer||!toggle||!close)return;
+
+    function openDrawer(){
+
+        drawer.classList.add("open");
+
+        drawer.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        toggle.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+        document.documentElement.classList.add(
+            "hx-drawer-open"
+        );
+
+        document.body.classList.add(
+            "hx-drawer-open"
+        );
+
     }
 
-    alert("Link copied");
-}
+    function closeDrawer(){
 
-function shareX(){
-    window.open(
-        "https://twitter.com/intent/tweet?url="+
-        encodeURIComponent(location.href)+
-        "&text="+
-        encodeURIComponent(document.title),
-        "_blank"
-    );
-}
+        drawer.classList.remove("open");
 
-function shareLinkedIn(){
-    window.open(
-        "https://www.linkedin.com/sharing/share-offsite/?url="+
-        encodeURIComponent(location.href),
-        "_blank"
-    );
-}
-
-function goBack(){
-    history.length>1
-        ?history.back()
-        :location.href="${escapeAttribute(pathDepth)}/";
-}
-
-<\/script>
-
-</body>
-
-</html>`;
-}
-
-function makeSitemap(articles,c){
-    const urls=[
-        {u:"/",p:"1.0"},
-        {u:"/breaches/",p:".9"},
-        {u:"/dark-web/",p:".9"},
-        {u:"/ransomware/",p:".9"},
-        {u:"/signals/",p:".8"},
-        {u:"/threat-actors/",p:".8"},
-        {u:"/analysis/",p:".7"}
-    ];
-
-    articles.forEach(a=>{
-        if(!a.url)return;
-
-        const url=String(a.url);
-
-        if(url.startsWith("http"))return;
-
-        urls.push({
-            u:"/"+url.replace(/^\/+/,""),
-            p:".8",
-            d:a.updatedAt||a.date||""
-        });
-    });
-
-    const seen=new Set();
-
-    const clean=urls.filter(
-        x=>!seen.has(x.u)&&seen.add(x.u)
-    );
-
-    return`<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${clean.map(x=>`
-<url>
-<loc>${escapeHtml(c.siteUrl+x.u)}</loc>
-${x.d?`<lastmod>${escapeHtml(String(x.d).split("T")[0])}</lastmod>`:""}
-<changefreq>weekly</changefreq>
-<priority>${x.p}</priority>
-</url>
-`).join("")}
-</urlset>`;
-}
-
-function makeNewsSitemap(articles,c){
-    const cutoff=Date.now()-(48*60*60*1000);
-
-    const recent=articles.filter(a=>{
-        if(!a.date)return false;
-
-        const time=new Date(a.date).getTime();
-
-        return(
-            !Number.isNaN(time) &&
-            time>=cutoff &&
-            a.url
-        );
-    });
-
-    return`<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
-
-${recent.map(a=>`
-<url>
-<loc>${escapeHtml(getRecordUrl(a,c.siteUrl))}</loc>
-<news:news>
-<news:publication>
-<news:name>Dyve HackaX</news:name>
-<news:language>en</news:language>
-</news:publication>
-<news:publication_date>${escapeHtml(
-    new Date(a.date).toISOString()
-)}</news:publication_date>
-<news:title>${escapeHtml(a.title||"HackaX Intelligence")}</news:title>
-</news:news>
-</url>
-`).join("")}
-
-</urlset>`;
-}
-
-function makeImageSitemap(articles,c){
-    const entries=[];
-
-    articles.forEach(a=>{
-        if(!a.url||!a.image)return;
-
-        const page=getRecordUrl(
-            a,
-            c.siteUrl
+        drawer.setAttribute(
+            "aria-hidden",
+            "true"
         );
 
-        const image=String(a.image);
+        toggle.setAttribute(
+            "aria-expanded",
+            "false"
+        );
 
-        if(!/^https?:\/\//i.test(image)){
-            return;
-        }
+        document.documentElement.classList.remove(
+            "hx-drawer-open"
+        );
 
-        entries.push(`
-<url>
-<loc>${escapeHtml(page)}</loc>
-<image:image>
-<image:loc>${escapeHtml(image)}</image:loc>
-<image:title>${escapeHtml(
-    a.imageTitle||
-    a.title||
-    "HackaX Intelligence"
-)}</image:title>
-<image:caption>${escapeHtml(
-    a.imageAlt||
-    a.description||
-    a.desc||
-    a.title||
-    ""
-)}</image:caption>
-</image:image>
-</url>
-`);
-    });
+        document.body.classList.remove(
+            "hx-drawer-open"
+        );
 
-    return`<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-${entries.join("")}
-</urlset>`;
-}
-
-async function putGithub(
-    path,
-    content,
-    message,
-    existingSha
-){
-    const c=cfg();
-
-    const payload={
-        message,
-        content:b64(content),
-        branch:c.branch
-    };
-
-    if(existingSha){
-        payload.sha=existingSha;
     }
 
-    const r=await fetch(
-        `https://api.github.com/repos/${c.repo}/contents/${path}`,
-        {
-            method:"PUT",
-            headers:{
-                Authorization:`Bearer ${c.token}`,
-                Accept:"application/vnd.github+json",
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify(payload)
-        }
-    );
-
-    if(!r.ok){
-        const t=await r.text();
-
-        throw new Error(
-            `GitHub publish failed (${r.status}): ${t.slice(0,240)}`
-        );
-    }
-
-    return r.json();
-}
-
-async function updateSitemapFile(
-    path,
-    content,
-    message
-){
-    try{
-        const existing=await fetchGithub(path);
-
-        await putGithub(
-            path,
-            content,
-            message,
-            existing&&existing.sha
-        );
-
-        return true;
-    }catch(e){
-        console.warn(
-            `Unable to update ${path}`,
-            e
-        );
-
-        return false;
-    }
-}
-
-function validateBeforePublish(){
-    const title=document.getElementById("titleInput").value.trim();
-    const desc=document.getElementById("descriptionInput").value.trim();
-    const body=quill.getText().trim();
-
-    if(!title){
-        toast("Title is required");
-        return false;
-    }
-
-    if(!desc){
-        toast("Meta description is required");
-        return false;
-    }
-
-    if(body.length<500){
-        toast(
-            "Article is too thin for publication. Add more substantive analysis."
-        );
-        return false;
-    }
-
-    if(
-        !currentImageMeta||
-        !currentImageMeta.url||
-        !currentImageMeta.alt
-    ){
-        toast(
-            "Upload a featured image with generated image SEO metadata first."
-        );
-        return false;
-    }
-
-    const category=
-        document.getElementById("categorySelect").value;
-
-    if(!CATEGORIES[category]){
-        toast("Invalid HackaX category");
-        return false;
-    }
-
-    return true;
-}
-
-async function publish(){
-    const c=cfg();
-
-    if(!c.token||!c.repo){
-        return toast(
-            "Configure GitHub in HackaX Settings first"
-        );
-    }
-
-    if(!validateBeforePublish()){
-        analyzeSEO();
-        return;
-    }
-
-    const title=
-        document.getElementById("titleInput").value.trim();
-
-    const desc=
-        document.getElementById("descriptionInput").value.trim();
-
-    const category=
-        document.getElementById("categorySelect").value;
-
-    const destination=
-        document.getElementById("pageSelect").value;
-
-    const tag=
-        document.getElementById("intelTagInput").value||
-        "INTEL";
-
-    const meta=
-        document.getElementById("metaStatusInput").value||
-        "Verified Intel";
-
-    const image=
-        document.getElementById("imageUrlInput").value.trim();
-
-    const imageAlt=
-        document.getElementById("imageAltInput").value.trim()||
-        currentImageMeta?.alt||
-        generateImageAlt(
-            title,
-            category,
-            tag
-        );
-
-    const imageTitle=
-        document.getElementById("imageTitleInput").value.trim()||
-        currentImageMeta?.title||
-        generateImageTitle(
-            title,
-            category
-        );
-
-    const imageCaption=
-        document.getElementById("imageCaptionInput").value.trim()||
-        currentImageMeta?.caption||
-        generateImageCaption(
-            title,
-            category,
-            tag
-        );
-
-    const slug=
-        window.editSlug||
-        slugify(title);
-
-    const path=
-        getArticlePath(
-            category,
-            slug,
-            destination
-        );
-
-    const date=
-        window.editDate||
-        new Date().toISOString().split("T")[0];
-
-    const modified=
-        new Date().toISOString();
-
-    const root=document.createElement("div");
-
-    root.innerHTML=sanitizeArticleHTML(
-        quill.root.innerHTML
-    );
-
-    applyImageAttributes(root);
-
-    const body=root.innerHTML;
-
-    const html=generateArticleHTML(
-        c,
-        title,
-        desc,
-        image,
-        imageAlt,
-        imageTitle,
-        imageCaption,
-        tag,
-        meta,
-        category,
-        slug,
-        date,
-        modified,
-        body,
-        document.getElementById("ogPrompt").value,
-        destination
-    );
-
-    const btn=document.getElementById("publishBtn");
-
-    btn.classList.add("loading");
-    btn.textContent=
-        window.editMode
-            ?"Updating..."
-            :"Publishing...";
-
-    try{
-        toast("Reading HackaX article index...");
-
-        const oldFile=
-            await fetchGithub(path);
-
-        const db=
-            await fetchGithub(ARTICLE_DB_PATH);
-
-        let articles=[];
-
-        if(db){
-            const parsed=JSON.parse(
-                unb64(db.content)
-            );
-
-            articles=
-                Array.isArray(parsed)
-                    ?parsed
-                    :Array.isArray(parsed.articles)
-                        ?parsed.articles
-                        :[];
-        }
-
-        const topic=getArticleTopicData();
-
-        const keywords=unique([
-            ...topic.keywords,
-            ...meaningfulTokens(title),
-            ...meaningfulTokens(tag),
-            ...meaningfulTokens(CATEGORIES[category]||"")
-        ]).slice(0,20);
-
-        const record={
-            id:
-                window.editId||
-                crypto.randomUUID(),
-
-            title,
-
-            slug,
-
-            desc,
-
-            description:desc,
-
-            image,
-
-            imageAlt,
-
-            imageTitle,
-
-            imageCaption,
-
-            imageWidth:
-                currentImageMeta?.width||
-                1200,
-
-            imageHeight:
-                currentImageMeta?.height||
-                675,
-
-            imagePublicId:
-                currentImageMeta?.publicId||
-                "",
-
-            imageSeoName:
-                currentImageMeta?.seoName||
-                imageBaseName(
-                    title,
-                    category,
-                    tag
-                ),
-
-            url:path,
-
-            canonical:
-                getCanonical(
-                    c.siteUrl,
-                    category,
-                    slug,
-                    destination
-                ),
-
-            tag:tag.toUpperCase(),
-
-            meta,
-
-            category,
-
-            categoryLabel:
-                CATEGORIES[category],
-
-            page:destination,
-
-            brand:"hackax",
-
-            publisher:"Dyve HackaX",
-
-            author:"Dyve HackaX Intelligence Unit",
-
-            keywords,
-
-            content:
-                JSON.stringify(
-                    quill.getContents()
-                ),
-
-            internalLinks:
-                countExistingInternalLinks(),
-
-            relatedArticles:
-                getSmartLinkCandidates()
-                    .slice(0,6)
-                    .map(x=>({
-                        id:x.article.id||null,
-                        title:x.article.title||"",
-                        url:x.article.url||"",
-                        score:x.score
-                    })),
-
-            ogPrompt:
-                document.getElementById("ogPrompt").value,
-
-            date,
-
-            publishedAt:
-                window.editMode
-                    ?(
-                        window.editPublishedAt||
-                        date
-                    )
-                    :new Date().toISOString(),
-
-            updatedAt:modified
-        };
-
-        const idx=articles.findIndex(a=>
-            (
-                window.editId&&
-                a.id===window.editId
-            )||
-            a.url===path
-        );
-
-        if(idx>=0){
-            articles[idx]={
-                ...articles[idx],
-                ...record
-            };
-        }else{
-            articles.unshift(record);
-        }
-
-        toast("Publishing HackaX article...");
-
-        await putGithub(
-            path,
-            html,
-            `${window.editMode?"update":"feat"}: ${title}`,
-            oldFile&&oldFile.sha
-        );
-
-        toast("Updating assets/articles.json...");
-
-        await putGithub(
-            ARTICLE_DB_PATH,
-            JSON.stringify(
-                articles,
-                null,
-                2
-            ),
-            `${window.editMode?"update":"chore"}: HackaX article index`,
-            db&&db.sha
-        );
-
-        toast("Updating HackaX sitemap...");
-
-        await updateSitemapFile(
-            HACKAX_SITEMAP_PATH,
-            makeSitemap(
-                articles,
-                c
-            ),
-            "chore: update HackaX sitemap"
-        );
-
-        await updateSitemapFile(
-            NEWS_SITEMAP_PATH,
-            makeNewsSitemap(
-                articles,
-                c
-            ),
-            "chore: update HackaX news sitemap"
-        );
-
-        await updateSitemapFile(
-            IMAGE_SITEMAP_PATH,
-            makeImageSitemap(
-                articles,
-                c
-            ),
-            "chore: update HackaX image sitemap"
-        );
-
-        localStorage.removeItem(
-            STORAGE.edit
-        );
-
-        toast(
-            window.editMode
-                ?"HackaX Intel updated successfully"
-                :"HackaX Intel published successfully"
-        );
-
-        setTimeout(
-            ()=>location.href="published.html",
-            1200
-        );
-
-    }catch(e){
-        console.error(e);
-
-        toast(
-            "Publish error: "+
-            e.message
-        );
-
-    }finally{
-        btn.classList.remove("loading");
-
-        btn.textContent=
-            window.editMode
-                ?"Update Intel"
-                :"Publish Intel";
-    }
-}
-
-async function checkGitHub(){
-    const c=cfg();
-
-    const dot=document.getElementById("statusDot");
-    const txt=document.getElementById("statusText");
-
-    if(!c.token||!c.repo){
-        dot.className=
-            "w-2 h-2 rounded-full bg-red-500";
-
-        txt.textContent="Not Configured";
-
-        return false;
-    }
-
-    try{
-        const r=await fetch(
-            `https://api.github.com/repos/${c.repo}`,
-            {
-                headers:{
-                    Authorization:`Bearer ${c.token}`,
-                    Accept:"application/vnd.github+json"
-                }
-            }
-        );
-
-        dot.className=
-            `w-2 h-2 rounded-full ${
-                r.ok
-                    ?"bg-green-500"
-                    :"bg-red-500"
-            }`;
-
-        txt.textContent=
-            r.ok
-                ?"Connected"
-                :"Connection Failed";
-
-        return r.ok;
-
-    }catch(e){
-        dot.className=
-            "w-2 h-2 rounded-full bg-red-500";
-
-        txt.textContent="Offline";
-
-        return false;
-    }
-}
-
-const GRAMMAR=[
-    [/\s{2,}/g," "],
-    [/\bteh\b/gi,"the"],
-    [/\brecieve\b/gi,"receive"],
-    [/\bseperate\b/gi,"separate"],
-    [/\boccured\b/gi,"occurred"],
-    [/\bdefinately\b/gi,"definitely"],
-    [/\bthier\b/gi,"their"]
-];
-
-function aiGrammar(){
-    let t=quill.getText();
-    let n=0;
-
-    GRAMMAR.forEach(r=>{
-        const m=t.match(r[0]);
-
-        if(m)n+=m.length;
-
-        t=t.replace(
-            r[0],
-            r[1]
-        );
-    });
-
-    quill.setText(t);
-
-    toast(
-        n
-            ?`Fixed ${n} common grammar issues`
-            :"No common grammar issues found"
-    );
-}
-
-function aiShorter(){
-    const r=quill.getSelection(true);
-
-    if(!r||!r.length){
-        return toast(
-            "Select text first"
-        );
-    }
-
-    let t=quill
-        .getText(r.index,r.length)
-        .replace(
-            /\b(very|really|quite|actually|basically|just|simply)\b/gi,
-            ""
-        )
-        .replace(
-            /in order to/gi,
-            "to"
-        )
-        .replace(
-            /due to the fact that/gi,
-            "because"
-        )
-        .replace(
-            /\s{2,}/g,
-            " "
-        )
-        .trim();
-
-    quill.deleteText(
-        r.index,
-        r.length
-    );
-
-    quill.insertText(
-        r.index,
-        t
-    );
-
-    quill.setSelection(
-        r.index,
-        t.length
-    );
-
-    toast(
-        "Selected text condensed"
-    );
-}
-
-function aiLonger(){
-    const r=quill.getSelection(true);
-
-    if(!r||!r.length){
-        return toast(
-            "Select text first"
-        );
-    }
-
-    const t=
-        quill
-            .getText(
-                r.index,
-                r.length
-            )
-            .trim();
-
-    const x=
-        t+
-        " This development should be assessed alongside the broader threat landscape, operational exposure, relevant indicators and the evidence currently available to defenders.";
-
-    quill.deleteText(
-        r.index,
-        r.length
-    );
-
-    quill.insertText(
-        r.index,
-        x
-    );
-
-    quill.setSelection(
-        r.index,
-        x.length
-    );
-
-    toast(
-        "Selected text expanded"
-    );
-}
-
-function aiSEO(){
-    const topic=getArticleTopicData();
-
-    if(!topic.keywords.length){
-        return toast(
-            "Not enough content to generate SEO terms"
-        );
-    }
-
-    const tags=topic.keywords
-        .slice(0,8)
-        .join(", ");
-
-    quill.insertText(
-        quill.getLength()-1,
-        `\nSEO Topics: ${tags}\n`,
-        {
-            bold:true,
-            color:"#00aa77"
-        }
-    );
-
-    toast(
-        "SEO topics generated"
-    );
-}
-
-function aiGenerate(){
-    const cat=
-        document.getElementById("categorySelect").value;
-
-    const label=
-        CATEGORIES[cat];
-
-    const text=`
-
-<h2>Key Intelligence</h2>
-<p>This section summarizes the most important findings, observed indicators and operational significance of the ${label.toLowerCase()} development.</p>
-
-<h2>Why It Matters</h2>
-<p>The development should be assessed alongside the broader threat landscape, affected infrastructure, exposure patterns and the evidence currently available to defenders.</p>
-
-<h2>Recommended Actions</h2>
-<ul>
-<li>Validate affected systems, identities or infrastructure.</li>
-<li>Review relevant logs and threat indicators.</li>
-<li>Increase monitoring where evidence supports elevated risk.</li>
-<li>Document observed indicators and preserve relevant evidence.</li>
-</ul>
-`;
-
-    quill.clipboard.dangerouslyPasteHTML(
-        quill.getLength()-1,
-        text
-    );
-
-    toast(
-        "HackaX analysis section generated"
-    );
-}
-
-function customAI(){
-    const p=
-        document.getElementById("aiPrompt")
-            .value
-            .toLowerCase();
-
-    const r=
-        quill.getSelection(true);
-
-    if(!r||!r.length){
-        return toast(
-            "Select text first"
-        );
-    }
-
-    let t=
-        quill.getText(
-            r.index,
-            r.length
-        );
-
-    if(p.includes("uppercase")){
-        t=t.toUpperCase();
-
-    }else if(p.includes("lowercase")){
-        t=t.toLowerCase();
-
-    }else if(p.includes("summary")){
-        t=
-            t
-                .split(/[.!?]/)
-                .filter(Boolean)
-                .slice(0,2)
-                .join(". ")+
-            ".";
-
-    }else if(p.includes("bold")){
-        quill.formatText(
-            r.index,
-            r.length,
-            "bold",
-            true
-        );
-
-        return toast(
-            "Text formatted"
-        );
-
-    }else{
-        return toast(
-            'Try "uppercase", "lowercase", "summary" or "bold"'
-        );
-    }
-
-    quill.deleteText(
-        r.index,
-        r.length
-    );
-
-    quill.insertText(
-        r.index,
-        t
-    );
-
-    toast(
-        "AI command applied"
-    );
-}
-
-async function imageHandler(){
-    const input=document.createElement("input");
-
-    input.type="file";
-    input.accept="image/*";
-    input.multiple=true;
-
-    input.click();
-
-    input.onchange=async()=>{
-        for(const file of input.files){
-            try{
-                toast(
-                    "Uploading and optimizing article image..."
-                );
-
-                const compressed=
-                    await compressImage(
-                        file,
-                        1400,
-                        .84
-                    );
-
-                const result=
-                    await uploadImage(
-                        compressed,
-                        "article image"
-                    );
-
-                if(result){
-                    const range=
-                        quill.getSelection(true)||
-                        {
-                            index:quill.getLength()
-                        };
-
-                    quill.insertEmbed(
-                        range.index,
-                        "image",
-                        result.url
-                    );
-
-                    quill.setSelection(
-                        range.index+1
-                    );
-
-                    toast(
-                        "Article image uploaded with SEO metadata"
-                    );
-                }
-
-            }catch(e){
-                console.error(e);
-
-                toast(
-                    "Editor image upload failed: "+
-                    e.message
-                );
-            }
-        }
-    };
-}
-
-document.addEventListener(
-"DOMContentLoaded",
-async()=>{
-    try{
-    quill=new Quill(
-        "#editor",
-        {
-            theme:"snow",
-            placeholder:
-                "Begin HackaX intelligence report...",
-            modules:{
-                toolbar:{
-                    container:[
-                        [
-                            {
-                                header:[
-                                    1,
-                                    2,
-                                    3,
-                                    false
-                                ]
-                            }
-                        ],
-                        [
-                            "bold",
-                            "italic",
-                            "underline",
-                            "strike"
-                        ],
-                        [
-                            {
-                                list:"ordered"
-                            },
-                            {
-                                list:"bullet"
-                            }
-                        ],
-                        [
-                            "blockquote",
-                            "code-block"
-                        ],
-                        [
-                            "link",
-                            "image"
-                        ],
-                        [
-                            "clean"
-                        ]
-                    ],
-                    handlers:{
-                        image:imageHandler
-                    }
-                }
-            }
-        }
-    );
-
-    document
-        .getElementById("titleInput")
-        .oninput=e=>{
-            document
-                .getElementById("slugPreview")
-                .textContent=
-                slugify(e.target.value)||
-                "your-intel-slug";
-
-            renderKeywordPreview();
-
-            if(
-                quill&&
-                quill.getText().trim().length>80
-            ){
-                analyzeSEO();
-            }
-        };
-
-    document
-        .getElementById("descriptionInput")
-        .oninput=updateDesc;
-
-    document
-        .getElementById("categorySelect")
-        .onchange=()=>{
-            renderKeywordPreview();
-            renderLinkSuggestions();
-            imageSEOAnalysis();
-        };
-
-    document
-        .getElementById("intelTagInput")
-        .onchange=()=>{
-            renderKeywordPreview();
-            renderLinkSuggestions();
-            imageSEOAnalysis();
-        };
-
-    quill.on(
-        "text-change",
-        ()=>{
-            renderKeywordPreview();
-
-            if(
-                quill.getText().trim().length>80
-            ){
-                analyzeSEO();
-            }
-        }
-    );
-
-    document
-        .getElementById("analyzeBtn")
-        .onclick=analyzeSEO;
-
-    document
-        .getElementById("autoDescBtn")
-        .onclick=autoDescription;
-
-    document
-        .getElementById("autoSeoBtn")
-        .onclick=autoSEO;
-
-    document
-        .getElementById("linksBtn")
-        .onclick=()=>{
-            renderLinkSuggestions();
-            toast(
-                "Internal-link opportunities analyzed"
-            );
-        };
-
-    document
-        .getElementById("autoLinksBtn")
-        .onclick=automaticallyLinkArticle;
-
-    document
-        .getElementById("saveDraftBtn")
-        .onclick=saveDraft;
-
-    document
-        .getElementById("publishBtn")
-        .onclick=publish;
-
-    document
-        .getElementById("featuredImageInput")
-        .onchange=async e=>{
-            const f=e.target.files[0];
-
-            if(!f)return;
-
-            try{
-                toast(
-                    "Optimizing and uploading featured image..."
-                );
-
-                const compressed=
-                    await compressImage(
-                        f,
-                        1800,
-                        .84
-                    );
-
-                const result=
-                    await uploadImage(
-                        compressed,
-                        "featured"
-                    );
-
-                if(result){
-                    currentImageMeta=result;
-
-                    document
-                        .getElementById("imageUrlInput")
-                        .value=result.url;
-
-                    document
-                        .getElementById("imageAltInput")
-                        .value=result.alt;
-
-                    document
-                        .getElementById("imageTitleInput")
-                        .value=result.title;
-
-                    document
-                        .getElementById("imageCaptionInput")
-                        .value=result.caption;
-
-                    document
-                        .getElementById("previewImg")
-                        .src=result.url;
-
-                    document
-                        .getElementById("previewAlt")
-                        .textContent=result.alt;
-
-                    document
-                        .getElementById("featuredPreview")
-                        .classList.remove("hidden");
-
-                    imageSEOAnalysis();
-
-                    toast(
-                        "Featured image uploaded and SEO metadata generated"
-                    );
-                }
-
-            }catch(e){
-                console.error(e);
-
-                toast(
-                    "Featured image upload failed: "+
-                    e.message
-                );
-            }
-        };
-
-    document
-        .getElementById("aiBtn")
-        .onclick=e=>{
-            e.stopPropagation();
-
-            document
-                .getElementById("aiPanel")
-                .classList.toggle("active");
-        };
-
-    document
-        .getElementById("closeAi")
-        .onclick=()=>{
-            document
-                .getElementById("aiPanel")
-                .classList.remove("active");
-        };
-
-    document
-        .querySelectorAll(".ai-action")
-        .forEach(b=>{
-            b.onclick=()=>{
-                document
-                    .getElementById("aiPanel")
-                    .classList.remove("active");
-
-                const action=b.dataset.action;
-
-                const actions={
-                    grammar:aiGrammar,
-                    shorter:aiShorter,
-                    longer:aiLonger,
-                    seo:aiSEO,
-                    generate:aiGenerate,
-                    links:()=>{
-                        renderLinkSuggestions();
-                        toast(
-                            "Internal-link analysis complete"
-                        );
-                    }
-                };
-
-                if(actions[action]){
-                    actions[action]();
-                }
-            };
-        });
-
-    document
-        .getElementById("aiGo")
-        .onclick=customAI;
-
-    document
-        .getElementById("menuToggle")
-        .onclick=()=>{
-            document
-                .getElementById("slideMenu")
-                .classList
-                .toggle("hidden");
-        };
-
-    document
-        .getElementById("refreshStatusBtn")
-        .onclick=checkGitHub;
-
-    const q=
-        new URLSearchParams(
-            location.search
-        );
-
-    if(q.get("mode")==="edit"){
-        const d=
-            safeJSON(
-                localStorage.getItem(
-                    STORAGE.edit
-                )||"null",
-                null
-            );
-
-        if(d){
-            window.editMode=true;
-            window.editId=d.id;
-            window.editSlug=
-                (d.url||"")
-                    .split("/")
-                    .pop()
-                    ?.replace(".html","");
-
-            window.editDate=d.date;
-            window.editPublishedAt=
-                d.publishedAt||d.date;
-
-            loadDraftData(d);
-
-            document
-                .getElementById("publishBtn")
-                .textContent="Update Intel";
-        }
-    }
-
-    const draftId=q.get("draft");
-
-    if(draftId){
-        const dsValue=
-            safeJSON(
-                localStorage.getItem(
-                    STORAGE.drafts
-                )||"[]",
-                []
-            );
-
-        const ds=Array.isArray(dsValue)?dsValue:[];
-
-        const d=
-            ds.find(
-                x=>x.id===draftId
-            );
-
-        if(d){
-            loadDraftData(d);
-        }
-    }
-
-    await Promise.all([
-        loadArticles(),
-        checkGitHub()
-    ]);
-
-    renderKeywordPreview();
-    renderLinkSuggestions();
-    imageSEOAnalysis();
-
-    document.addEventListener(
+    toggle.addEventListener(
         "click",
-        event=>{
-            const menu=
-                document.getElementById(
-                    "slideMenu"
-                );
+        function(event){
 
-            const toggle=
-                document.getElementById(
-                    "menuToggle"
-                );
+            event.preventDefault();
+            event.stopPropagation();
 
-            if(
-                menu&&
-                !menu.classList.contains("hidden")&&
-                !menu.contains(event.target)&&
-                !toggle.contains(event.target)
-            ){
-                menu.classList.add("hidden");
-            }
+            drawer.classList.contains("open")
+                ?closeDrawer()
+                :openDrawer();
 
-            const panel=
-                document.getElementById(
-                    "aiPanel"
-                );
-
-            const ai=
-                document.getElementById(
-                    "aiBtn"
-                );
-
-            if(
-                panel&&
-                panel.classList.contains("active")&&
-                !panel.contains(event.target)&&
-                !ai.contains(event.target)
-            ){
-                panel.classList.remove("active");
-            }
         }
     );
+
+    close.addEventListener(
+        "click",
+        closeDrawer
+    );
+
+    drawer.addEventListener(
+        "click",
+        function(event){
+
+            if(event.target===drawer){
+                closeDrawer();
+            }
+
+        }
+    );
+
+    drawer
+        .querySelectorAll("a")
+        .forEach(function(link){
+
+            link.addEventListener(
+                "click",
+                closeDrawer
+            );
+
+        });
 
     document.addEventListener(
         "keydown",
-        event=>{
-            if(event.key==="Escape"){
-                document
-                    .getElementById("aiPanel")
-                    ?.classList
-                    .remove("active");
+        function(event){
 
-                document
-                    .getElementById("slideMenu")
-                    ?.classList
-                    .add("hidden");
+            if(event.key==="Escape"){
+                closeDrawer();
             }
+
         }
-    ); 
-    }catch(error){
-        window.__hackaxFatalError(error);
+    );
+
+    window.hackaxCloseDrawer=closeDrawer;
+
+})();
+</script>
+
+
+<!-- ==========================================================
+     KEEP EXISTING PUBLISHER ENGINE
+========================================================== -->
+
+<script src="hackax-publisher.js"></script>
+
+
+<!-- ==========================================================
+     CONNECTION MIRROR FOR DRAWER
+========================================================== -->
+
+<script>
+(function(){
+
+    const source=document.getElementById("statusText");
+    const target=document.getElementById("drawerConnectionText");
+
+    if(!source||!target)return;
+
+    function sync(){
+
+        const text=(source.textContent||"").trim();
+
+        target.textContent=
+            text||
+            "Checking connection...";
+
     }
-});
+
+    const observer=new MutationObserver(sync);
+
+    observer.observe(
+        source,
+        {
+            childList:true,
+            characterData:true,
+            subtree:true
+        }
+    );
+
+    sync();
+
+})();
 </script>
 
 </body>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>Dyve | HackaX Publisher — SEO</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#020403">
+<link rel="manifest" href="../manifest.json">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+tailwind.config={
+    theme:{extend:{colors:{dyve:{bg:"#020403",card:"#07100d",accent:"#00ffaa",accentHover:"#00cc88",text:"#e8f0ee",muted:"rgba(255,255,255,.6)"}}}}
+};
+</script>
+<link rel="stylesheet" href="hackax-onboarding.css">
+</head>
+<body data-stage="5" class="min-h-screen">
+
+<header class="bg-dyve-bg border-b border-white/10 sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex justify-between items-center gap-4">
+<div>
+<a href="index.html" class="text-xl font-extrabold text-white tracking-wide">DYVE<span class="text-dyve-accent">|</span>HACKAX</a>
+<p class="text-[10px] text-white/45 uppercase tracking-[.22em]">Cyber Intelligence Publisher</p>
+</div>
+<div class="flex items-center gap-2">
+<span id="saveState" class="hidden text-[10px] text-white/40">Saved</span>
+<a href="settings.html" class="hidden sm:inline-block px-3 py-2 text-xs font-semibold text-white/70 bg-white/5 border border-white/10 rounded-lg">Settings</a>
+<button id="saveDraftBtn" type="button" class="px-3 py-2 text-xs font-semibold text-white/70 bg-white/5 border border-white/10 rounded-lg">Save Draft</button>
+</div>
+</div>
+<div class="mt-4 stepper"><button type="button" class="step" data-stage="1" data-stage-link="1"><span class="step-number">1</span><span>Article</span></button><button type="button" class="step" data-stage="2" data-stage-link="2"><span class="step-number">2</span><span>Media</span></button><button type="button" class="step" data-stage="3" data-stage-link="3"><span class="step-number">3</span><span>Classification</span></button><button type="button" class="step" data-stage="4" data-stage-link="4"><span class="step-number">4</span><span>Intelligence</span></button><button type="button" class="step" data-stage="5" data-stage-link="5"><span class="step-number">5</span><span>SEO</span></button><button type="button" class="step" data-stage="6" data-stage-link="6"><span class="step-number">6</span><span>Internal Linking</span></button><button type="button" class="step" data-stage="7" data-stage-link="7"><span class="step-number">7</span><span>Technical</span></button><button type="button" class="step" data-stage="8" data-stage-link="8"><span class="step-number">8</span><span>Review</span></button></div>
+</div>
+</header>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+<div class="flex flex-wrap items-center gap-2">
+<div class="flex items-center gap-2 px-3 py-2 bg-dyve-bg text-white border border-white/10 rounded-lg">
+<span id="statusDot" class="status-dot"></span><span id="statusText" class="text-xs">Checking...</span>
+<button id="refreshStatusBtn" type="button" class="text-white/50 hover:text-white" title="Check connection">↻</button>
+</div>
+<div class="px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-semibold text-emerald-800">HackaX only</div>
+<div class="px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700"><span id="stageCounter">STEP 5 OF 8</span> · <span id="stageTitle">SEO</span></div>
+</div>
+</div>
+
+<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+<div class="mb-6"><div class="eyebrow">STAGE 05 / SEO</div><h1 class="page-title">Make the report discoverable.</h1><p class="page-subtitle">This is the SEO gate: title, description, canonical URL, social metadata and structured-data inputs are finalized here.</p></div>
+<div class="stage-layout">
+<div class="stage-main space-y-5">
+<section class="onboarding-card">
+<div class="section-head"><div><div class="section-title">Search metadata</div><div class="section-note">The publisher generates sensible defaults, but every field remains editable.</div></div><button id="autoSeoBtn" type="button" class="action-btn primary">Auto SEO</button></div>
+<label class="field-label">SEO title</label><input id="seoTitleInput" class="field">
+<div class="grid sm:grid-cols-2 gap-3 mt-4">
+<div><label class="field-label">Meta description</label><textarea id="descriptionInput" class="field" rows="5" maxlength="160"></textarea><div class="flex justify-between mt-2"><span id="descQuality" class="desc-quality">Waiting for input...</span><span id="descCount" class="text-[10px] text-slate-400">0/160</span></div></div>
+<div><label class="field-label">Canonical URL</label><input id="canonicalInput" class="field"><div class="section-note mt-2">Must resolve to the final static article URL.</div></div>
+</div>
+</section>
+<section class="onboarding-card">
+<div class="section-head"><div><div class="section-title">OpenGraph / editorial image prompt</div><div class="section-note">Stored with the article as editorial metadata. No fake generated image is inserted into the publication pipeline.</div></div></div>
+<textarea id="ogPrompt" class="field" rows="5"></textarea>
+</section>
+<section class="onboarding-card">
+<div class="section-head"><div><div class="section-title">SEO & schema analysis</div><div class="section-note">Live checks are based on the current publisher state.</div></div><span id="seoScore" class="tag">0/100</span></div>
+<div id="seoAnalysis" class="space-y-2"></div>
+</section>
+</div>
+<aside class="stage-side space-y-5">
+<section class="onboarding-card">
+<div class="section-title">What gets generated at publish</div>
+<div class="space-y-2 mt-4 text-xs text-slate-600 leading-6">
+<div>✓ Canonical link</div><div>✓ OpenGraph metadata</div><div>✓ Twitter card metadata</div><div>✓ NewsArticle JSON-LD</div><div>✓ BreadcrumbList JSON-LD</div><div>✓ Image metadata</div><div>✓ robots directives</div>
+</div>
+</section>
+<section class="onboarding-card"><button id="autoDescBtn" type="button" class="action-btn w-full">Generate Description</button></section>
+</aside>
+</div>
+
+<div id="validation" class="validation hidden"></div>
+<div class="stage-actions">
+<button type="button" class="action-btn" data-back >Back</button>
+<button type="button" class="action-btn primary flex-1" data-next >Continue</button>
+
+</div>
+<div id="toast" class="toast hidden"></div>
+<script src="hackax-publisher.js"></script>
+</body></html>
+</main>

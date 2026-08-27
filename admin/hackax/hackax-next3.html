@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>Dyve | HackaX Publisher — Classification</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#020403">
+<link rel="manifest" href="../manifest.json">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+tailwind.config={
+    theme:{extend:{colors:{dyve:{bg:"#020403",card:"#07100d",accent:"#00ffaa",accentHover:"#00cc88",text:"#e8f0ee",muted:"rgba(255,255,255,.6)"}}}}
+};
+</script>
+<link rel="stylesheet" href="hackax-onboarding.css">
+</head>
+<body data-stage="3" class="min-h-screen">
+
+<header class="bg-dyve-bg border-b border-white/10 sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex justify-between items-center gap-4">
+<div>
+<a href="index.html" class="text-xl font-extrabold text-white tracking-wide">DYVE<span class="text-dyve-accent">|</span>HACKAX</a>
+<p class="text-[10px] text-white/45 uppercase tracking-[.22em]">Cyber Intelligence Publisher</p>
+</div>
+<div class="flex items-center gap-2">
+<span id="saveState" class="hidden text-[10px] text-white/40">Saved</span>
+<a href="settings.html" class="hidden sm:inline-block px-3 py-2 text-xs font-semibold text-white/70 bg-white/5 border border-white/10 rounded-lg">Settings</a>
+<button id="saveDraftBtn" type="button" class="px-3 py-2 text-xs font-semibold text-white/70 bg-white/5 border border-white/10 rounded-lg">Save Draft</button>
+</div>
+</div>
+<div class="mt-4 stepper"><button type="button" class="step" data-stage="1" data-stage-link="1"><span class="step-number">1</span><span>Article</span></button><button type="button" class="step" data-stage="2" data-stage-link="2"><span class="step-number">2</span><span>Media</span></button><button type="button" class="step" data-stage="3" data-stage-link="3"><span class="step-number">3</span><span>Classification</span></button><button type="button" class="step" data-stage="4" data-stage-link="4"><span class="step-number">4</span><span>Intelligence</span></button><button type="button" class="step" data-stage="5" data-stage-link="5"><span class="step-number">5</span><span>SEO</span></button><button type="button" class="step" data-stage="6" data-stage-link="6"><span class="step-number">6</span><span>Internal Linking</span></button><button type="button" class="step" data-stage="7" data-stage-link="7"><span class="step-number">7</span><span>Technical</span></button><button type="button" class="step" data-stage="8" data-stage-link="8"><span class="step-number">8</span><span>Review</span></button></div>
+</div>
+</header>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+<div class="flex flex-wrap items-center gap-2">
+<div class="flex items-center gap-2 px-3 py-2 bg-dyve-bg text-white border border-white/10 rounded-lg">
+<span id="statusDot" class="status-dot"></span><span id="statusText" class="text-xs">Checking...</span>
+<button id="refreshStatusBtn" type="button" class="text-white/50 hover:text-white" title="Check connection">↻</button>
+</div>
+<div class="px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-semibold text-emerald-800">HackaX only</div>
+<div class="px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700"><span id="stageCounter">STEP 3 OF 8</span> · <span id="stageTitle">Classification</span></div>
+</div>
+</div>
+
+<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+<div class="mb-6"><div class="eyebrow">STAGE 03 / CLASSIFICATION</div><h1 class="page-title">Give the intel a precise taxonomy.</h1><p class="page-subtitle">Separate the broad editorial category from the threat classification. This gives HackaX room for routine updates without forcing every story into a threat-specific bucket.</p></div>
+<section id="stage3Form" class="onboarding-card">
+<div class="select-grid">
+<div><label class="field-label">Content type</label><select id="contentTypeInput" class="field"><option value="update">General Update</option><option value="breaking">Breaking Intelligence</option><option value="incident">Incident Report</option><option value="analysis">Threat Analysis</option><option value="research">Research / Investigation</option><option value="advisory">Security Advisory</option><option value="explainer">Security Explainer</option><option value="brief">Intelligence Brief</option></select></div>
+<div><label class="field-label">Intel category</label><select id="categoryInput" class="field"><option value="general">General Updates</option><option value="breach">Data Breach</option><option value="dark-web">Dark Web Intelligence</option><option value="ransomware">Ransomware Intelligence</option><option value="threat-actors">Threat Actors</option><option value="signals">Threat Signals</option><option value="analysis">Threat Analysis</option><option value="vulnerability">Vulnerability Intelligence</option><option value="malware">Malware Intelligence</option><option value="advisory">Security Advisory</option><option value="research">Research & Investigation</option><option value="explainer">Security Explainer</option></select></div>
+<div><label class="field-label">Intel tag</label><select id="intelTagInput" class="field"><option value="">Select Intel Tag</option><option>CRITICAL</option><option>HIGH PRIORITY</option><option>LIVE INTEL</option><option>DARK WEB</option><option>ACTIVE THREAT</option><option>VERIFIED</option><option>BREACH DATA</option><option>RANSOMWARE</option><option>APT GROUP</option><option>ZERO-DAY</option><option>IOCs</option><option>TTPs</option><option>THREAT ACTOR</option><option>INFRASTRUCTURE</option><option>MALWARE</option><option>PHISHING</option><option>EXPLOIT</option><option>VULNERABILITY</option><option>GENERAL UPDATE</option><option>SECURITY ADVISORY</option></select></div>
+<div><label class="field-label">Meta status</label><select id="statusInput" class="field"><option>Active Threat</option><option>Verified Intel</option><option>Operational Guide</option><option>Under Investigation</option><option>Mitigated / Resolved</option><option>Emerging Threat</option><option>Critical Alert</option><option>Historical Data</option><option>Routine Update</option></select></div>
+<div><label class="field-label">Severity</label><select id="severityInput" class="field"><option>Informational</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></div>
+<div><label class="field-label">Verification</label><select id="verificationInput" class="field"><option>Unverified</option><option>Partially Verified</option><option>Corroborated</option><option>Verified</option></select></div>
+<div><label class="field-label">Confidence</label><select id="confidenceInput" class="field"><option>Low</option><option>Moderate</option><option>High</option></select></div>
+<div><label class="field-label">Publish destination</label><select id="destinationInput" class="field"><option value="homepage">HackaX Intelligence Homepage</option><option value="breaches">Breach Surveillance</option><option value="dark-web">Dark Web Intelligence</option><option value="ransomware">Ransomware Intelligence</option><option value="signals">Threat Signals</option><option value="threat-actors">Threat Actors</option><option value="analysis">Threat Analysis</option><option value="vulnerabilities">Vulnerability Intelligence</option><option value="malware">Malware Intelligence</option><option value="advisories">Security Advisories</option><option value="research">Research</option><option value="explainer">Explainers</option></select></div>
+</div>
+<div class="mt-6"><div class="field-label">Threat domains</div><div class="domain-grid"><label class="check-chip"><input type="checkbox" name="domain" value="Ransomware"><span>Ransomware</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Malware"><span>Malware</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Phishing"><span>Phishing</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Credential Theft"><span>Credential Theft</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Data Breach"><span>Data Breach</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Data Leak"><span>Data Leak</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Vulnerability"><span>Vulnerability</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Exploitation"><span>Exploitation</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Zero-Day"><span>Zero-Day</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Dark Web"><span>Dark Web</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Cyber Espionage"><span>Cyber Espionage</span></label><label class="check-chip"><input type="checkbox" name="domain" value="APT"><span>APT</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Supply Chain"><span>Supply Chain</span></label><label class="check-chip"><input type="checkbox" name="domain" value="DDoS"><span>DDoS</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Botnet"><span>Botnet</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Cloud Security"><span>Cloud Security</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Identity & Access"><span>Identity & Access</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Infrastructure"><span>Infrastructure</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Web Security"><span>Web Security</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Mobile Security"><span>Mobile Security</span></label><label class="check-chip"><input type="checkbox" name="domain" value="IoT / OT"><span>IoT / OT</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Social Engineering"><span>Social Engineering</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Insider Threat"><span>Insider Threat</span></label><label class="check-chip"><input type="checkbox" name="domain" value="Financial Crime"><span>Financial Crime</span></label></div></div>
+</section>
+<section class="onboarding-card mt-5">
+<div class="section-title">Taxonomy rule</div><p class="section-note mt-2">Use <strong>General Update</strong> when an article is primarily an editorial or ecosystem update and does not need a forced threat category. Use threat-specific categories only when the intelligence itself warrants them.</p>
+</section>
+
+<div id="validation" class="validation hidden"></div>
+<div class="stage-actions">
+<button type="button" class="action-btn" data-back >Back</button>
+<button type="button" class="action-btn primary flex-1" data-next >Continue</button>
+
+</div>
+<div id="toast" class="toast hidden"></div>
+<script src="hackax-publisher.js"></script>
+</body></html>
+</main>
