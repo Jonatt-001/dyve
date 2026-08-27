@@ -5,17 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <!-- ============================================================
-     DYVE HACKAX 2.1
+     DYVE HACKAX 2.2
      PRODUCTION CYBER INTELLIGENCE HOMEPAGE
 ============================================================ -->
-
-<!-- =========================
-     PRIMARY SEO
-     
-     IMPORTANT:
-     Preserve the established title/description because
-     Google is already indexing and displaying this page.
-========================= -->
 
 <title>Dyve HackaX - Cyber Intelligence, Threat Analysis & Security News</title>
 
@@ -34,18 +26,10 @@
   content="Dyve HackaX"
 >
 
-<!-- =========================
-     CANONICAL
-========================= -->
-
 <link
   rel="canonical"
   href="https://www.dyve.online/"
 >
-
-<!-- =========================
-     ROBOTS
-========================= -->
 
 <meta
   name="robots"
@@ -56,10 +40,6 @@
   name="googlebot"
   content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
 >
-
-<!-- =========================
-     THEME / MOBILE
-========================= -->
 
 <meta
   name="theme-color"
@@ -80,10 +60,6 @@
   name="format-detection"
   content="telephone=no"
 >
-
-<!-- =========================
-     LANGUAGE / DISCOVERY
-========================= -->
 
 <link
   rel="alternate"
@@ -125,11 +101,6 @@
   property="og:url"
   content="https://www.dyve.online/"
 >
-
-<!--
-     Keep your established social preview image.
-     Do not change this simply for SEO stability.
--->
 
 <meta
   property="og:image"
@@ -210,10 +181,6 @@
   crossorigin
 >
 
-<!-- =========================
-     STYLES
-========================= -->
-
 <link
   rel="stylesheet"
   href="style.css"
@@ -223,6 +190,7 @@
   rel="stylesheet"
   href="divider.css"
 >
+
 <link
   rel="stylesheet"
   href="index.css"
@@ -235,8 +203,6 @@
 
 <!-- ============================================================
      ORGANIZATION SCHEMA
-     
-     Establishes Dyve HackaX as the publisher/entity.
 ============================================================ -->
 
 <script type="application/ld+json" id="organizationSchema">
@@ -278,12 +244,6 @@
 
 <!-- ============================================================
      WEBSITE SCHEMA
-     
-     Keep WebSite schema because Google uses it to understand
-     and establish the site's name.
-     
-     SearchAction intentionally removed:
-     Google's sitelinks search box was retired in 2024.
 ============================================================ -->
 
 <script type="application/ld+json" id="websiteSchema">
@@ -338,8 +298,6 @@
 
 <!-- ============================================================
      BREADCRUMB SCHEMA
-     
-     Homepage remains the root of the site hierarchy.
 ============================================================ -->
 
 <script type="application/ld+json" id="breadcrumbSchema">
@@ -360,11 +318,6 @@
 
 <!-- ============================================================
      ITEM LIST SCHEMA
-     
-     Populated by the static build / article feed.
-     
-     Keeping the schema element in the document means the
-     publishing system can inject real article entries.
 ============================================================ -->
 
 <script type="application/ld+json" id="articleListSchema">
@@ -391,6 +344,445 @@
 
 <style>
 
+/* ============================================================
+   FEATURED INTELLIGENCE ROTATOR
+============================================================ */
+
+.featured-rotator {
+  position: relative;
+  width: 100%;
+}
+
+.dynamic-hero {
+  position: relative;
+  display: block;
+  min-height: 520px;
+  overflow: hidden;
+  isolation: isolate;
+  text-decoration: none;
+}
+
+.dynamic-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -3;
+}
+
+.dynamic-hero-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scale(1.025);
+  transition:
+    transform 8s cubic-bezier(.2,.7,.2,1),
+    opacity .45s ease;
+}
+
+.dynamic-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,.08) 0%,
+      rgba(0,0,0,.18) 26%,
+      rgba(0,0,0,.62) 62%,
+      rgba(0,0,0,.96) 100%
+    );
+}
+
+.dynamic-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(
+      circle at 78% 28%,
+      rgba(0,255,178,.13),
+      transparent 34%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(0,255,178,.035),
+      transparent 45%
+    );
+  pointer-events: none;
+}
+
+.featured-rotator.is-changing
+.dynamic-hero-img img {
+  opacity: .35;
+  transform: scale(1.07);
+}
+
+.featured-rotator .tag {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid rgba(48,255,184,.5);
+  border-radius: 999px;
+  background: rgba(2,4,3,.42);
+  color: #48ffbd;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+
+.featured-rotator .hero-content {
+  position: relative;
+  z-index: 2;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 34px 28px 30px;
+}
+
+.featured-rotator .hero-label {
+  margin-bottom: 10px;
+  color: rgba(235,242,240,.58);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.featured-rotator .title {
+  max-width: 820px;
+  margin: 0;
+  color: #f4f7f6;
+  font-family: "Space Grotesk", Inter, sans-serif;
+  font-size: clamp(30px, 6vw, 62px);
+  line-height: .99;
+  letter-spacing: -.045em;
+}
+
+.featured-rotator .desc {
+  max-width: 760px;
+  margin: 18px 0 0;
+  color: rgba(231,239,236,.68);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.featured-rotator .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 8px;
+  margin-top: 18px;
+  color: rgba(231,239,236,.54);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+}
+
+.featured-rotator .hero-read {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-top: 24px;
+  color: #48ffbd;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+
+.featured-rotator .hero-read::after {
+  content: "";
+  width: 34px;
+  height: 1px;
+  margin-left: 10px;
+  background: currentColor;
+  transition: width .25s ease;
+}
+
+.dynamic-hero:hover .hero-read::after,
+.dynamic-hero:focus-visible .hero-read::after {
+  width: 48px;
+}
+
+.featured-controls {
+  position: absolute;
+  right: 22px;
+  bottom: 24px;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.featured-control {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 50%;
+  background: rgba(2,4,3,.5);
+  color: #eef5f2;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  transition:
+    background .2s ease,
+    border-color .2s ease,
+    transform .2s ease;
+}
+
+.featured-control:hover {
+  border-color: rgba(72,255,189,.5);
+  background: rgba(72,255,189,.1);
+  transform: translateY(-1px);
+}
+
+.featured-control:active {
+  transform: scale(.94);
+}
+
+.featured-control svg {
+  width: 17px;
+  height: 17px;
+}
+
+.featured-indicators {
+  position: absolute;
+  left: 28px;
+  bottom: 28px;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.featured-indicator {
+  position: relative;
+  width: 24px;
+  height: 3px;
+  padding: 0;
+  border: 0;
+  border-radius: 99px;
+  overflow: hidden;
+  background: rgba(255,255,255,.18);
+  cursor: pointer;
+}
+
+.featured-indicator::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 0;
+  background: #48ffbd;
+  border-radius: inherit;
+}
+
+.featured-indicator.active::after {
+  animation:
+    featuredProgress 7s linear forwards;
+}
+
+.featured-rotator.paused
+.featured-indicator.active::after {
+  animation-play-state: paused;
+}
+
+@keyframes featuredProgress {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+.featured-counter {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  z-index: 8;
+  min-width: 54px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 999px;
+  background: rgba(2,4,3,.45);
+  color: rgba(255,255,255,.68);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.featured-live {
+  position: absolute;
+  left: 28px;
+  top: 25px;
+  z-index: 8;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: rgba(231,239,236,.58);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.featured-live::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #48ffbd;
+  box-shadow: 0 0 0 4px rgba(72,255,189,.08);
+  animation: livePulse 1.8s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%,
+  100% {
+    opacity: .5;
+    transform: scale(.85);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ============================================================
+   LIVE ARTICLE TIME
+============================================================ */
+
+.article-time {
+  white-space: nowrap;
+}
+
+.article-time.updated {
+  color: #48ffbd;
+}
+
+.article-time.published {
+  color: rgba(231,239,236,.54);
+}
+
+.article-time[title] {
+  cursor: help;
+}
+
+/* ============================================================
+   ROTATOR TRANSITION
+============================================================ */
+
+.featured-content-transition {
+  animation:
+    featuredContentIn .45s cubic-bezier(.2,.7,.2,1) both;
+}
+
+@keyframes featuredContentIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 640px) {
+
+  .dynamic-hero {
+    min-height: 500px;
+  }
+
+  .featured-rotator .hero-content {
+    min-height: 500px;
+    padding: 28px 20px 82px;
+  }
+
+  .featured-rotator .title {
+    font-size: clamp(31px, 9vw, 48px);
+  }
+
+  .featured-rotator .desc {
+    font-size: 14px;
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .featured-rotator .tag {
+    top: 54px;
+    left: 20px;
+  }
+
+  .featured-live {
+    left: 20px;
+    top: 20px;
+  }
+
+  .featured-counter {
+    top: 20px;
+    right: 20px;
+  }
+
+  .featured-indicators {
+    left: 20px;
+    bottom: 22px;
+  }
+
+  .featured-controls {
+    right: 20px;
+    bottom: 14px;
+  }
+
+  .featured-control {
+    width: 36px;
+    height: 36px;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .featured-rotator *,
+  .featured-rotator *::before,
+  .featured-rotator *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+
+}
 
 </style>
 </head>
@@ -536,7 +928,11 @@
 
       </div>
 
-      <div id="dynamicHeroContainer">
+      <div
+        id="dynamicHeroContainer"
+        aria-live="polite"
+        aria-atomic="true"
+      >
 
         <div class="loading-text">
           Loading latest intelligence...
@@ -948,132 +1344,132 @@
     </section>
 
     <!-- ========================================================
-     INTELLIGENCE BRAND
-======================================================== -->
+         INTELLIGENCE BRAND
+    ========================================================= -->
 
-<section
-  class="intel-announcement reveal"
-  aria-labelledby="engineHeading"
->
-
-  <div class="intel-card">
-
-    <div
-      class="intel-visual"
-      aria-hidden="true"
+    <section
+      class="intel-announcement reveal"
+      aria-labelledby="engineHeading"
     >
 
-      <img
-        src="assets/signals.png"
-        alt=""
-        loading="lazy"
-        decoding="async"
-      >
+      <div class="intel-card">
 
-    </div>
-
-    <div class="intel-content">
-
-      <span class="section-eyebrow">
-        Dyve Intelligence
-      </span>
-
-      <h2
-        class="intel-title"
-        id="engineHeading"
-      >
-        Turning cyber events into intelligence.
-      </h2>
-
-      <p class="intel-desc">
-        Dyve HackaX organizes cybersecurity developments into
-        structured coverage across threats, incidents, actors,
-        vulnerabilities and emerging technology.
-      </p>
-
-      <a
-        href="/signals/"
-        class="intel-btn"
-      >
-        Explore Threat Signals →
-      </a>
-
-    </div>
-
-  </div>
-
-</section>
-
-<!-- ========================================================
-     INTELLIGENCE EXPLAINER
-======================================================== -->
-
-<section
-  class="intel-light reveal"
-  aria-labelledby="monitorHeading"
->
-
-  <div class="intel-light-card">
-
-    <div
-      class="intel-light-img"
-      aria-hidden="true"
-    >
-
-      <img
-        src="assets/analysis.png"
-        alt=""
-        loading="lazy"
-        decoding="async"
-      >
-
-    </div>
-
-    <div class="intel-light-content">
-
-      <div class="intel-eyebrow">
-        Threat Signals • Breaches • Dark Web • Analysis
-      </div>
-
-      <h2
-        class="intel-light-title"
-        id="monitorHeading"
-      >
-        Follow the signal, understand the event.
-      </h2>
-
-      <div class="intel-divider"></div>
-
-      <p class="intel-light-desc">
-        Explore the context behind cybersecurity incidents instead
-        of treating every headline as an isolated event. Dyve HackaX
-        connects reporting across threat actors, attack patterns,
-        vulnerabilities and affected sectors.
-      </p>
-
-      <div class="intel-actions">
-
-        <a
-          href="/analysis/"
-          class="btn-primary"
+        <div
+          class="intel-visual"
+          aria-hidden="true"
         >
-          Read Analysis →
-        </a>
 
-        <a
-          href="/about-us/"
-          class="btn-secondary"
-        >
-          How Dyve Works →
-        </a>
+          <img
+            src="assets/signals.png"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          >
+
+        </div>
+
+        <div class="intel-content">
+
+          <span class="section-eyebrow">
+            Dyve Intelligence
+          </span>
+
+          <h2
+            class="intel-title"
+            id="engineHeading"
+          >
+            Turning cyber events into intelligence.
+          </h2>
+
+          <p class="intel-desc">
+            Dyve HackaX organizes cybersecurity developments into
+            structured coverage across threats, incidents, actors,
+            vulnerabilities and emerging technology.
+          </p>
+
+          <a
+            href="/signals/"
+            class="intel-btn"
+          >
+            Explore Threat Signals →
+          </a>
+
+        </div>
 
       </div>
 
-    </div>
+    </section>
 
-  </div>
+    <!-- ========================================================
+         INTELLIGENCE EXPLAINER
+    ========================================================= -->
 
-</section>
+    <section
+      class="intel-light reveal"
+      aria-labelledby="monitorHeading"
+    >
+
+      <div class="intel-light-card">
+
+        <div
+          class="intel-light-img"
+          aria-hidden="true"
+        >
+
+          <img
+            src="assets/analysis.png"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          >
+
+        </div>
+
+        <div class="intel-light-content">
+
+          <div class="intel-eyebrow">
+            Threat Signals • Breaches • Dark Web • Analysis
+          </div>
+
+          <h2
+            class="intel-light-title"
+            id="monitorHeading"
+          >
+            Follow the signal, understand the event.
+          </h2>
+
+          <div class="intel-divider"></div>
+
+          <p class="intel-light-desc">
+            Explore the context behind cybersecurity incidents instead
+            of treating every headline as an isolated event. Dyve HackaX
+            connects reporting across threat actors, attack patterns,
+            vulnerabilities and affected sectors.
+          </p>
+
+          <div class="intel-actions">
+
+            <a
+              href="/analysis/"
+              class="btn-primary"
+            >
+              Read Analysis →
+            </a>
+
+            <a
+              href="/about-us/"
+              class="btn-secondary"
+            >
+              How Dyve Works →
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
 
     <!-- ========================================================
          CYBER BRAND BLOCK
@@ -1344,6 +1740,7 @@
 </script>
 
 <div id="global-footer"></div>
+
 <script src="/footer-ui.js"></script>
 
 <!-- ============================================================
@@ -1367,15 +1764,6 @@
 
 <!-- ============================================================
      STATIC BUILD DATA
-
-     Publishing/build engine may inject:
-
-     window.DYVE_BUILD_ARTICLES = [...]
-
-     before this application script.
-
-     If no build data is injected, the application falls back
-     to /assets/articles.json.
 ============================================================ -->
 
 <script>
@@ -1405,6 +1793,15 @@ const DYVE_CONFIG = {
 
   refreshInterval:
     60000,
+
+  timestampInterval:
+    30000,
+
+  featuredRotationInterval:
+    7000,
+
+  maxFeatured:
+    5,
 
   maxLatest:
     6,
@@ -1479,27 +1876,23 @@ let allArticles = [];
 
 let refreshTimer = null;
 
+let timestampTimer = null;
+
+let featuredTimer = null;
+
 let feedFingerprint = "";
 
+let featuredArticles = [];
 
-"use strict";
+let featuredIndex = 0;
+
+let featuredPaused = false;
+
+let featuredRotator = null;
 
 /* ============================================================
    ROBUST DYVE DRAWER CONTROLLER
 ============================================================ */
-
-/*
-   ui.js injects the actual header/drawer dynamically.
-
-   Therefore we deliberately DO NOT cache the drawer elements
-   permanently. Every interaction resolves the current DOM.
-
-   This prevents the classic failure where:
-   1. this script loads
-   2. #drawer does not exist yet
-   3. ui.js injects it later
-   4. the old controller never attaches correctly
-*/
 
 const DYVE_DRAWER_SELECTORS = {
 
@@ -1640,11 +2033,6 @@ function setDrawerState(
   } =
     getDrawerElements();
 
-  /*
-     If ui.js has not injected the drawer yet, do not fail.
-     The MutationObserver below will pick it up once available.
-  */
-
   if (!drawer) {
 
     return;
@@ -1705,10 +2093,6 @@ function setDrawerState(
     open
   );
 
-  /*
-     Prevent the drawer from remaining focused while closed.
-  */
-
   if (!open) {
 
     if (
@@ -1755,10 +2139,6 @@ function setDrawerState(
 
   }
 
-  /*
-     Move focus into the drawer after opening.
-  */
-
   const focusTarget =
     closeBtn ||
     drawer.querySelector(
@@ -1795,10 +2175,6 @@ function setDrawerState(
 
 }
 
-/* ============================================================
-   OPEN
-============================================================ */
-
 function openDrawer() {
 
   setDrawerState(
@@ -1807,10 +2183,6 @@ function openDrawer() {
 
 }
 
-/* ============================================================
-   CLOSE
-============================================================ */
-
 function closeDrawer() {
 
   setDrawerState(
@@ -1818,10 +2190,6 @@ function closeDrawer() {
   );
 
 }
-
-/* ============================================================
-   TOGGLE
-============================================================ */
 
 function toggleDrawer() {
 
@@ -1832,16 +2200,8 @@ function toggleDrawer() {
 }
 
 /* ============================================================
-   CLICK DELEGATION
+   DRAWER CLICK DELEGATION
 ============================================================ */
-
-/*
-   IMPORTANT:
-
-   This listener is attached to document, not the dynamically
-   injected button. Therefore it continues working even when
-   ui.js creates/replaces the header later.
-*/
 
 document.addEventListener(
   "click",
@@ -1866,10 +2226,6 @@ document.addEventListener(
     } =
     getDrawerElements();
 
-    /*
-       MENU TOGGLE
-    */
-
     if (
       toggle &&
       (
@@ -1886,10 +2242,6 @@ document.addEventListener(
       return;
 
     }
-
-    /*
-       CLOSE BUTTON
-    */
 
     if (
       closeBtn &&
@@ -1908,15 +2260,9 @@ document.addEventListener(
 
     }
 
-    /*
-       BACKDROP
-    */
-
     if (
       backdrop &&
-      (
-        target === backdrop
-      )
+      target === backdrop
     ) {
 
       event.preventDefault();
@@ -1926,10 +2272,6 @@ document.addEventListener(
       return;
 
     }
-
-    /*
-       ANY ELEMENT MARKED AS A DRAWER CLOSE CONTROL
-    */
 
     const closeTrigger =
       target.closest(
@@ -1945,10 +2287,6 @@ document.addEventListener(
       return;
 
     }
-
-    /*
-       CLOSE AFTER CLICKING A DRAWER NAVIGATION LINK.
-    */
 
     if (
       drawer &&
@@ -1969,11 +2307,6 @@ document.addEventListener(
         )
       ) {
 
-        /*
-           Allow normal navigation to happen.
-           Close immediately before navigation.
-        */
-
         closeDrawer();
 
       }
@@ -1985,7 +2318,7 @@ document.addEventListener(
 );
 
 /* ============================================================
-   ESCAPE KEY
+   ESCAPE
 ============================================================ */
 
 document.addEventListener(
@@ -2015,7 +2348,7 @@ document.addEventListener(
 );
 
 /* ============================================================
-   KEYBOARD FOCUS TRAP
+   DRAWER FOCUS TRAP
 ============================================================ */
 
 document.addEventListener(
@@ -2117,7 +2450,7 @@ document.addEventListener(
 );
 
 /* ============================================================
-   SWIPE TO CLOSE
+   DRAWER SWIPE
 ============================================================ */
 
 let drawerStartX =
@@ -2196,11 +2529,6 @@ document.addEventListener(
       touch.clientY -
       drawerStartY;
 
-    /*
-       Only treat it as a horizontal drawer gesture if
-       horizontal movement clearly dominates.
-    */
-
     if (
       Math.abs(deltaX) >
         Math.abs(deltaY) &&
@@ -2237,36 +2565,23 @@ document.addEventListener(
 );
 
 /* ============================================================
-   DYNAMIC UI WATCHER
+   DRAWER UI OBSERVER
 ============================================================ */
-
-/*
-   ui.js may inject or replace #global-header and
-   #global-drawer after this script has already executed.
-
-   We therefore watch those containers and normalize the drawer
-   as soon as it appears.
-*/
 
 function normalizeDrawerUI() {
 
   const {
     drawer,
     backdrop,
-    toggle,
-    closeBtn
+    toggle
   } =
-  getDrawerElements();
+    getDrawerElements();
 
   if (!drawer) {
 
     return;
 
   }
-
-  /*
-     Ensure the drawer has the required accessibility state.
-  */
 
   if (
     !drawer.hasAttribute(
@@ -2281,13 +2596,7 @@ function normalizeDrawerUI() {
 
   }
 
-  /*
-     Ensure the toggle knows which drawer it controls.
-  */
-
-  if (
-    toggle
-  ) {
+  if (toggle) {
 
     toggle.setAttribute(
       "aria-controls",
@@ -2306,9 +2615,7 @@ function normalizeDrawerUI() {
 
   }
 
-  if (
-    backdrop
-  ) {
+  if (backdrop) {
 
     backdrop.setAttribute(
       "aria-hidden",
@@ -2320,11 +2627,6 @@ function normalizeDrawerUI() {
     );
 
   }
-
-  /*
-     If ui.js accidentally renders an old active state,
-     synchronize the body state with it.
-  */
 
   const open =
     drawer.classList.contains(
@@ -2346,10 +2648,6 @@ function normalizeDrawerUI() {
 
 }
 
-/* ============================================================
-   OBSERVE GLOBAL UI
-============================================================ */
-
 function initializeDrawerObserver() {
 
   const header =
@@ -2362,9 +2660,7 @@ function initializeDrawerObserver() {
       "global-drawer"
     );
 
-  if (
-    header
-  ) {
+  if (header) {
 
     const headerObserver =
       new MutationObserver(
@@ -2388,9 +2684,7 @@ function initializeDrawerObserver() {
 
   }
 
-  if (
-    drawerHost
-  ) {
+  if (drawerHost) {
 
     const drawerObserver =
       new MutationObserver(
@@ -2414,39 +2708,9 @@ function initializeDrawerObserver() {
 
   }
 
-  /*
-     Run once immediately in case ui.js has already injected
-     everything.
-  */
-
   normalizeDrawerUI();
 
 }
-
-/* ============================================================
-   INITIALIZE DRAWER
-============================================================ */
-
-if (
-  document.readyState ===
-  "loading"
-) {
-
-  document.addEventListener(
-    "DOMContentLoaded",
-    initializeDrawerObserver,
-    {
-      once:
-        true
-    }
-  );
-
-} else {
-
-  initializeDrawerObserver();
-
-}
-
 
 /* ============================================================
    SAFE TEXT
@@ -2606,35 +2870,497 @@ function safeImageUrl(value) {
 }
 
 /* ============================================================
+   DATE FIELD RESOLUTION
+============================================================ */
+
+/*
+   Priority intentionally favors modification timestamps.
+
+   This means an article that was originally published yesterday
+   but updated today will appear as:
+
+   Updated 2h ago
+
+   rather than:
+
+   Published 1d ago
+*/
+
+function getArticleDateInfo(article) {
+
+  const modifiedFields = [
+
+    "dateModified",
+    "dateUpdated",
+    "updatedAt",
+    "updated",
+    "lastUpdated",
+    "lastModified",
+    "modifiedAt",
+    "modifiedDate",
+    "updatedDate"
+
+  ];
+
+  const publishedFields = [
+
+    "datePublished",
+    "publishedAt",
+    "publishDate",
+    "published",
+    "date"
+
+  ];
+
+  for (
+    const field of modifiedFields
+  ) {
+
+    const value =
+      article &&
+      article[field];
+
+    if (
+      value &&
+      Number.isFinite(
+        Date.parse(
+          value
+        )
+      )
+    ) {
+
+      return {
+
+        value:
+          value,
+
+        timestamp:
+          Date.parse(value),
+
+        type:
+          "updated",
+
+        field:
+          field
+
+      };
+
+    }
+
+  }
+
+  for (
+    const field of publishedFields
+  ) {
+
+    const value =
+      article &&
+      article[field];
+
+    if (
+      value &&
+      Number.isFinite(
+        Date.parse(
+          value
+        )
+      )
+    ) {
+
+      return {
+
+        value:
+          value,
+
+        timestamp:
+          Date.parse(value),
+
+        type:
+          "published",
+
+        field:
+          field
+
+      };
+
+    }
+
+  }
+
+  return {
+
+    value:
+      "",
+
+    timestamp:
+      0,
+
+    type:
+      "published",
+
+    field:
+      ""
+
+  };
+
+}
+
+/* ============================================================
    ARTICLE DATE
 ============================================================ */
 
 function getArticleDate(article) {
 
-  return (
-    article.datePublished ||
-    article.date ||
-    article.publishDate ||
-    ""
+  return getArticleDateInfo(
+    article
+  ).value;
+
+}
+
+/* ============================================================
+   ARTICLE TIMESTAMP
+============================================================ */
+
+function getTimestamp(article) {
+
+  return getArticleDateInfo(
+    article
+  ).timestamp;
+
+}
+
+/* ============================================================
+   DATE TYPE
+============================================================ */
+
+function getDateType(article) {
+
+  return getArticleDateInfo(
+    article
+  ).type;
+
+}
+
+/* ============================================================
+   ABSOLUTE DATE + TIME
+============================================================ */
+
+function formatAbsoluteDate(
+  article
+) {
+
+  const info =
+    getArticleDateInfo(
+      article
+    );
+
+  if (
+    !info.timestamp
+  ) {
+
+    return "Date unavailable";
+
+  }
+
+  try {
+
+    return new Intl.DateTimeFormat(
+      "en-US",
+      {
+        weekday:
+          "short",
+
+        day:
+          "2-digit",
+
+        month:
+          "short",
+
+        year:
+          "numeric",
+
+        hour:
+          "numeric",
+
+        minute:
+          "2-digit",
+
+        timeZoneName:
+          "short"
+      }
+    ).format(
+      new Date(
+        info.timestamp
+      )
+    );
+
+  } catch {
+
+    return new Date(
+      info.timestamp
+    ).toLocaleString();
+
+  }
+
+}
+
+/* ============================================================
+   DATE DISPLAY
+============================================================ */
+
+function formatDate(article) {
+
+  const info =
+    getArticleDateInfo(
+      article
+    );
+
+  if (
+    !info.timestamp
+  ) {
+
+    return "Recent";
+
+  }
+
+  try {
+
+    return new Intl.DateTimeFormat(
+      "en",
+      {
+        day:
+          "2-digit",
+
+        month:
+          "short",
+
+        year:
+          "numeric"
+      }
+    ).format(
+      new Date(
+        info.timestamp
+      )
+    );
+
+  } catch {
+
+    return cleanText(
+      info.value
+    );
+
+  }
+
+}
+
+/* ============================================================
+   RELATIVE FRESHNESS
+============================================================ */
+
+function formatFreshness(
+  article
+) {
+
+  const info =
+    getArticleDateInfo(
+      article
+    );
+
+  if (
+    !info.timestamp
+  ) {
+
+    return "";
+
+  }
+
+  const difference =
+    Date.now() -
+    info.timestamp;
+
+  if (
+    difference < 0
+  ) {
+
+    return "Scheduled";
+
+  }
+
+  const seconds =
+    Math.floor(
+      difference /
+      1000
+    );
+
+  if (
+    seconds < 10
+  ) {
+
+    return "Just now";
+
+  }
+
+  if (
+    seconds < 60
+  ) {
+
+    return `${seconds}s ago`;
+
+  }
+
+  const minutes =
+    Math.floor(
+      seconds /
+      60
+    );
+
+  if (
+    minutes < 60
+  ) {
+
+    return `${minutes}m ago`;
+
+  }
+
+  const hours =
+    Math.floor(
+      minutes /
+      60
+    );
+
+  if (
+    hours < 24
+  ) {
+
+    return `${hours}h ago`;
+
+  }
+
+  const days =
+    Math.floor(
+      hours /
+      24
+    );
+
+  if (
+    days < 7
+  ) {
+
+    return `${days}d ago`;
+
+  }
+
+  const weeks =
+    Math.floor(
+      days /
+      7
+    );
+
+  if (
+    weeks < 5
+  ) {
+
+    return `${weeks}w ago`;
+
+  }
+
+  return formatDate(
+    article
   );
 
 }
 
-function getTimestamp(article) {
+/* ============================================================
+   SMART TIME LABEL
+============================================================ */
 
-  const date =
-    getArticleDate(
+function formatArticleTimeLabel(
+  article
+) {
+
+  const type =
+    getDateType(
       article
     );
 
-  const timestamp =
-    Date.parse(date);
+  const freshness =
+    formatFreshness(
+      article
+    );
 
-  return Number.isFinite(
-    timestamp
-  )
-    ? timestamp
-    : 0;
+  if (
+    !freshness
+  ) {
+
+    return "";
+
+  }
+
+  return (
+    type === "updated"
+      ? `Updated ${freshness}`
+      : `Published ${freshness}`
+  );
+
+}
+
+/* ============================================================
+   TIME ELEMENT CREATOR
+============================================================ */
+
+function createArticleTime(
+  article,
+  className = ""
+) {
+
+  const time =
+    document.createElement(
+      "time"
+    );
+
+  time.className =
+    `article-time ${getDateType(article)} ${className}`
+      .trim();
+
+  const info =
+    getArticleDateInfo(
+      article
+    );
+
+  if (
+    info.timestamp
+  ) {
+
+    time.dateTime =
+      new Date(
+        info.timestamp
+      ).toISOString();
+
+    time.title =
+      formatAbsoluteDate(
+        article
+      );
+
+    time.textContent =
+      formatArticleTimeLabel(
+        article
+      );
+
+    time.dataset.articleTimestamp =
+      String(
+        info.timestamp
+      );
+
+    time.dataset.articleType =
+      info.type;
+
+  } else {
+
+    time.textContent =
+      "Date unavailable";
+
+  }
+
+  return time;
 
 }
 
@@ -2737,156 +3463,7 @@ function categoryLabel(article) {
 }
 
 /* ============================================================
-   DATE DISPLAY
-============================================================ */
-
-function formatDate(article) {
-
-  const rawDate =
-    getArticleDate(
-      article
-    );
-
-  if (!rawDate) {
-
-    return "Recent";
-
-  }
-
-  const timestamp =
-    Date.parse(
-      rawDate
-    );
-
-  if (
-    !Number.isFinite(
-      timestamp
-    )
-  ) {
-
-    return cleanText(
-      rawDate
-    );
-
-  }
-
-  try {
-
-    return new Intl.DateTimeFormat(
-      "en",
-      {
-        day:
-          "2-digit",
-
-        month:
-          "short",
-
-        year:
-          "numeric"
-      }
-    ).format(
-      new Date(
-        timestamp
-      )
-    );
-
-  } catch {
-
-    return cleanText(
-      rawDate
-    );
-
-  }
-
-}
-
-/* ============================================================
-   RELATIVE FRESHNESS
-============================================================ */
-
-function formatFreshness(article) {
-
-  const timestamp =
-    getTimestamp(
-      article
-    );
-
-  if (!timestamp) {
-
-    return "";
-
-  }
-
-  const difference =
-    Date.now() -
-    timestamp;
-
-  if (
-    difference < 0
-  ) {
-
-    return "Scheduled";
-
-  }
-
-  const minutes =
-    Math.floor(
-      difference /
-      60000
-    );
-
-  if (
-    minutes < 1
-  ) {
-
-    return "Just now";
-
-  }
-
-  if (
-    minutes < 60
-  ) {
-
-    return `${minutes}m ago`;
-
-  }
-
-  const hours =
-    Math.floor(
-      minutes /
-      60
-    );
-
-  if (
-    hours < 24
-  ) {
-
-    return `${hours}h ago`;
-
-  }
-
-  const days =
-    Math.floor(
-      hours /
-      24
-    );
-
-  if (
-    days < 7
-  ) {
-
-    return `${days}d ago`;
-
-  }
-
-  return formatDate(
-    article
-  );
-
-}
-
-/* ============================================================
-   SORT
+   SORT ARTICLES
 ============================================================ */
 
 function sortArticles(
@@ -2909,7 +3486,7 @@ function sortArticles(
 }
 
 /* ============================================================
-   FILTER
+   FILTER CATEGORY
 ============================================================ */
 
 function articlesByCategory(
@@ -3056,7 +3633,8 @@ function createArticleImage(
 
     },
     {
-      once: true
+      once:
+        true
     }
   );
 
@@ -3095,49 +3673,28 @@ function createArticleLink(
 }
 
 /* ============================================================
-   FEATURED HERO
+   FEATURED ARTICLE HTML
 ============================================================ */
 
-function renderDynamicHero(
-  articles
+function createFeaturedArticle(
+  article,
+  index
 ) {
-
-  heroContainer.innerHTML =
-    "";
-
-  if (!articles.length) {
-
-    const empty =
-      document.createElement(
-        "div"
-      );
-
-    empty.className =
-      "empty-state";
-
-    empty.textContent =
-      "No published intelligence available.";
-
-    heroContainer.appendChild(
-      empty
-    );
-
-    return;
-
-  }
-
-  const hero =
-    articles[0];
 
   const link =
     createArticleLink(
-      hero,
+      article,
       "dynamic-hero"
     );
 
+  link.setAttribute(
+    "aria-label",
+    `Read: ${cleanText(article.title)}`
+  );
+
   const image =
     createArticleImage(
-      hero,
+      article,
       "dynamic-hero-img",
       "eager"
     );
@@ -3154,6 +3711,36 @@ function renderDynamicHero(
 
   }
 
+  const live =
+    document.createElement(
+      "div"
+    );
+
+  live.className =
+    "featured-live";
+
+  live.textContent =
+    "Live Intelligence";
+
+  link.appendChild(
+    live
+  );
+
+  const counter =
+    document.createElement(
+      "div"
+    );
+
+  counter.className =
+    "featured-counter";
+
+  counter.textContent =
+    `${index + 1} / ${featuredArticles.length}`;
+
+  link.appendChild(
+    counter
+  );
+
   const tag =
     document.createElement(
       "div"
@@ -3164,10 +3751,8 @@ function renderDynamicHero(
 
   tag.textContent =
     cleanText(
-      hero.tag ||
-      categoryLabel(
-        hero
-      )
+      article.tag ||
+      categoryLabel(article)
     );
 
   link.appendChild(
@@ -3180,7 +3765,7 @@ function renderDynamicHero(
     );
 
   content.className =
-    "hero-content";
+    "hero-content featured-content-transition";
 
   const label =
     document.createElement(
@@ -3203,7 +3788,7 @@ function renderDynamicHero(
 
   title.textContent =
     cleanText(
-      hero.title,
+      article.title,
       "Latest Cyber Intelligence"
     );
 
@@ -3217,8 +3802,8 @@ function renderDynamicHero(
 
   desc.textContent =
     cleanText(
-      hero.excerpt ||
-      hero.desc ||
+      article.excerpt ||
+      article.desc ||
       "Explore the latest cybersecurity intelligence from Dyve HackaX."
     );
 
@@ -3230,29 +3815,39 @@ function renderDynamicHero(
   meta.className =
     "meta";
 
-  meta.textContent =
-    [
+  const time =
+    createArticleTime(
+      article
+    );
+
+  meta.appendChild(
+    document.createTextNode(
       categoryLabel(
-        hero
-      ),
+        article
+      ) +
+      " • "
+    )
+  );
 
-      formatDate(
-        hero
-      ),
+  meta.appendChild(
+    time
+  );
 
-      formatFreshness(
-        hero
-      ),
+  if (
+    article.readingTime
+  ) {
 
-      hero.readingTime
-        ? `${cleanText(
-            hero.readingTime
-          )} min read`
-        : ""
+    meta.appendChild(
+      document.createTextNode(
+        " • " +
+        cleanText(
+          article.readingTime
+        ) +
+        " min read"
+      )
+    );
 
-    ]
-      .filter(Boolean)
-      .join(" • ");
+  }
 
   const read =
     document.createElement(
@@ -3263,7 +3858,7 @@ function renderDynamicHero(
     "hero-read";
 
   read.textContent =
-    "Read full intelligence →";
+    "Read full intelligence";
 
   content.appendChild(
     label
@@ -3289,9 +3884,869 @@ function renderDynamicHero(
     content
   );
 
-  heroContainer.appendChild(
-    link
+  return link;
+
+}
+
+/* ============================================================
+   FEATURED ROTATOR
+============================================================ */
+
+function getFeaturedArticles(
+  articles
+) {
+
+  return sortArticles(
+    articles
+  )
+    .filter(
+      article => {
+
+        return (
+          article &&
+          typeof article ===
+            "object" &&
+          cleanText(
+            article.title
+          ) &&
+          getTimestamp(
+            article
+          ) > 0
+        );
+
+      }
+    )
+    .slice(
+      0,
+      DYVE_CONFIG.maxFeatured
+    );
+
+}
+
+/* ============================================================
+   RENDER FEATURED ROTATOR
+============================================================ */
+
+function renderDynamicHero(
+  articles
+) {
+
+  featuredArticles =
+    getFeaturedArticles(
+      articles
+    );
+
+  featuredIndex =
+    0;
+
+  stopFeaturedRotation();
+
+  heroContainer.innerHTML =
+    "";
+
+  if (
+    !featuredArticles.length
+  ) {
+
+    const empty =
+      document.createElement(
+        "div"
+      );
+
+    empty.className =
+      "empty-state";
+
+    empty.textContent =
+      "No published intelligence available.";
+
+    heroContainer.appendChild(
+      empty
+    );
+
+    return;
+
+  }
+
+  if (
+    featuredArticles.length ===
+    1
+  ) {
+
+    heroContainer.appendChild(
+      createFeaturedArticle(
+        featuredArticles[0],
+        0
+      )
+    );
+
+    return;
+
+  }
+
+  featuredRotator =
+    document.createElement(
+      "div"
+    );
+
+  featuredRotator.className =
+    "featured-rotator";
+
+  featuredRotator.appendChild(
+    createFeaturedArticle(
+      featuredArticles[0],
+      0
+    )
   );
+
+  const indicators =
+    document.createElement(
+      "div"
+    );
+
+  indicators.className =
+    "featured-indicators";
+
+  indicators.setAttribute(
+    "aria-label",
+    "Featured intelligence articles"
+  );
+
+  featuredArticles.forEach(
+    (article, index) => {
+
+      const indicator =
+        document.createElement(
+          "button"
+        );
+
+      indicator.type =
+        "button";
+
+      indicator.className =
+        "featured-indicator";
+
+      if (
+        index === 0
+      ) {
+
+        indicator.classList.add(
+          "active"
+        );
+
+      }
+
+      indicator.setAttribute(
+        "aria-label",
+        `Show featured article ${index + 1}`
+      );
+
+      indicator.addEventListener(
+        "click",
+        event => {
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          showFeatured(
+            index,
+            true
+          );
+
+        }
+      );
+
+      indicators.appendChild(
+        indicator
+      );
+
+    }
+  );
+
+  featuredRotator.appendChild(
+    indicators
+  );
+
+  const controls =
+    document.createElement(
+      "div"
+    );
+
+  controls.className =
+    "featured-controls";
+
+  const previous =
+    createFeaturedControl(
+      "Previous featured article",
+      "previous"
+    );
+
+  const next =
+    createFeaturedControl(
+      "Next featured article",
+      "next"
+    );
+
+  controls.appendChild(
+    previous
+  );
+
+  controls.appendChild(
+    next
+  );
+
+  featuredRotator.appendChild(
+    controls
+  );
+
+  heroContainer.appendChild(
+    featuredRotator
+  );
+
+  featuredRotator.addEventListener(
+    "mouseenter",
+    () => {
+
+      featuredPaused =
+        true;
+
+      featuredRotator.classList.add(
+        "paused"
+      );
+
+    }
+  );
+
+  featuredRotator.addEventListener(
+    "mouseleave",
+    () => {
+
+      featuredPaused =
+        false;
+
+      featuredRotator.classList.remove(
+        "paused"
+      );
+
+    }
+  );
+
+  featuredRotator.addEventListener(
+    "focusin",
+    () => {
+
+      featuredPaused =
+        true;
+
+      featuredRotator.classList.add(
+        "paused"
+      );
+
+    }
+  );
+
+  featuredRotator.addEventListener(
+    "focusout",
+    event => {
+
+      if (
+        featuredRotator.contains(
+          event.relatedTarget
+        )
+      ) {
+
+        return;
+
+      }
+
+      featuredPaused =
+        false;
+
+      featuredRotator.classList.remove(
+        "paused"
+      );
+
+    }
+  );
+
+  initializeFeaturedTouch();
+
+  startFeaturedRotation();
+
+}
+
+/* ============================================================
+   FEATURED CONTROL
+============================================================ */
+
+function createFeaturedControl(
+  label,
+  direction
+) {
+
+  const button =
+    document.createElement(
+      "button"
+    );
+
+  button.type =
+    "button";
+
+  button.className =
+    "featured-control";
+
+  button.setAttribute(
+    "aria-label",
+    label
+  );
+
+  button.innerHTML =
+    direction === "previous"
+
+      ? `
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M15 18l-6-6 6-6"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      `
+
+      : `
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M9 18l6-6-6-6"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      `;
+
+  button.addEventListener(
+    "click",
+    event => {
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (
+        direction ===
+        "previous"
+      ) {
+
+        showFeatured(
+          featuredIndex - 1,
+          true
+        );
+
+      } else {
+
+        showFeatured(
+          featuredIndex + 1,
+          true
+        );
+
+      }
+
+    }
+  );
+
+  return button;
+
+}
+
+/* ============================================================
+   SHOW FEATURED
+============================================================ */
+
+function showFeatured(
+  index,
+  resetTimer = false
+) {
+
+  if (
+    !featuredArticles.length ||
+    !featuredRotator
+  ) {
+
+    return;
+
+  }
+
+  if (
+    index < 0
+  ) {
+
+    index =
+      featuredArticles.length - 1;
+
+  }
+
+  if (
+    index >=
+    featuredArticles.length
+  ) {
+
+    index =
+      0;
+
+  }
+
+  featuredIndex =
+    index;
+
+  featuredRotator.classList.add(
+    "is-changing"
+  );
+
+  window.setTimeout(
+    () => {
+
+      if (
+        !featuredRotator
+      ) {
+
+        return;
+
+      }
+
+      const oldHero =
+        featuredRotator.querySelector(
+          ".dynamic-hero"
+        );
+
+      if (
+        oldHero
+      ) {
+
+        oldHero.remove();
+
+      }
+
+      const newHero =
+        createFeaturedArticle(
+          featuredArticles[
+            featuredIndex
+          ],
+          featuredIndex
+        );
+
+      featuredRotator.insertBefore(
+        newHero,
+        featuredRotator.firstChild
+      );
+
+      const indicators =
+        featuredRotator.querySelectorAll(
+          ".featured-indicator"
+        );
+
+      indicators.forEach(
+        (indicator, indicatorIndex) => {
+
+          indicator.classList.toggle(
+            "active",
+            indicatorIndex ===
+              featuredIndex
+          );
+
+        }
+      );
+
+      featuredRotator.classList.remove(
+        "is-changing"
+      );
+
+    },
+    180
+  );
+
+  if (
+    resetTimer
+  ) {
+
+    restartFeaturedRotation();
+
+  }
+
+}
+
+/* ============================================================
+   FEATURED ROTATION
+============================================================ */
+
+function startFeaturedRotation() {
+
+  stopFeaturedRotation();
+
+  if (
+    featuredArticles.length <=
+    1
+  ) {
+
+    return;
+
+  }
+
+  featuredTimer =
+    window.setInterval(
+      () => {
+
+        if (
+          featuredPaused ||
+          document.hidden
+        ) {
+
+          return;
+
+        }
+
+        showFeatured(
+          featuredIndex + 1
+        );
+
+      },
+      DYVE_CONFIG.featuredRotationInterval
+    );
+
+}
+
+function stopFeaturedRotation() {
+
+  if (
+    featuredTimer
+  ) {
+
+    window.clearInterval(
+      featuredTimer
+    );
+
+    featuredTimer =
+      null;
+
+  }
+
+}
+
+function restartFeaturedRotation() {
+
+  stopFeaturedRotation();
+
+  startFeaturedRotation();
+
+}
+
+/* ============================================================
+   FEATURED TOUCH SWIPE
+============================================================ */
+
+function initializeFeaturedTouch() {
+
+  if (
+    !featuredRotator
+  ) {
+
+    return;
+
+  }
+
+  let startX =
+    0;
+
+  let startY =
+    0;
+
+  let active =
+    false;
+
+  featuredRotator.addEventListener(
+    "touchstart",
+    event => {
+
+      const touch =
+        event.touches[0];
+
+      if (!touch) {
+
+        return;
+
+      }
+
+      startX =
+        touch.clientX;
+
+      startY =
+        touch.clientY;
+
+      active =
+        true;
+
+    },
+    {
+      passive:
+        true
+    }
+  );
+
+  featuredRotator.addEventListener(
+    "touchend",
+    event => {
+
+      if (!active) {
+
+        return;
+
+      }
+
+      active =
+        false;
+
+      const touch =
+        event.changedTouches[0];
+
+      if (!touch) {
+
+        return;
+
+      }
+
+      const deltaX =
+        touch.clientX -
+        startX;
+
+      const deltaY =
+        touch.clientY -
+        startY;
+
+      if (
+        Math.abs(deltaX) <
+          50 ||
+        Math.abs(deltaX) <=
+          Math.abs(deltaY)
+      ) {
+
+        return;
+
+      }
+
+      if (
+        deltaX < 0
+      ) {
+
+        showFeatured(
+          featuredIndex + 1,
+          true
+        );
+
+      } else {
+
+        showFeatured(
+          featuredIndex - 1,
+          true
+        );
+
+      }
+
+    },
+    {
+      passive:
+        true
+    }
+  );
+
+}
+
+/* ============================================================
+   LIVE TIMESTAMP REFRESH
+============================================================ */
+
+function refreshVisibleTimestamps() {
+
+  document
+    .querySelectorAll(
+      ".article-time[data-article-timestamp]"
+    )
+    .forEach(
+      time => {
+
+        const timestamp =
+          Number(
+            time.dataset.articleTimestamp
+          );
+
+        if (
+          !Number.isFinite(
+            timestamp
+          )
+        ) {
+
+          return;
+
+        }
+
+        const difference =
+          Date.now() -
+          timestamp;
+
+        if (
+          difference < 0
+        ) {
+
+          time.textContent =
+            "Scheduled";
+
+          return;
+
+        }
+
+        const seconds =
+          Math.floor(
+            difference /
+            1000
+          );
+
+        let freshness;
+
+        if (
+          seconds < 10
+        ) {
+
+          freshness =
+            "Just now";
+
+        } else if (
+          seconds < 60
+        ) {
+
+          freshness =
+            `${seconds}s ago`;
+
+        } else {
+
+          const minutes =
+            Math.floor(
+              seconds /
+              60
+            );
+
+          if (
+            minutes < 60
+          ) {
+
+            freshness =
+              `${minutes}m ago`;
+
+          } else {
+
+            const hours =
+              Math.floor(
+                minutes /
+                60
+              );
+
+            if (
+              hours < 24
+            ) {
+
+              freshness =
+                `${hours}h ago`;
+
+            } else {
+
+              const days =
+                Math.floor(
+                  hours /
+                  24
+                );
+
+              if (
+                days < 7
+              ) {
+
+                freshness =
+                  `${days}d ago`;
+
+              } else {
+
+                const weeks =
+                  Math.floor(
+                    days /
+                    7
+                  );
+
+                if (
+                  weeks < 5
+                ) {
+
+                  freshness =
+                    `${weeks}w ago`;
+
+                } else {
+
+                  freshness =
+                    time.textContent
+                      .replace(
+                        /^(Published|Updated)\s+/i,
+                        ""
+                      );
+
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+        const type =
+          time.dataset.articleType ===
+          "updated"
+            ? "Updated"
+            : "Published";
+
+        time.textContent =
+          `${type} ${freshness}`;
+
+      }
+    );
+
+}
+
+/* ============================================================
+   TIMESTAMP TIMER
+============================================================ */
+
+function initializeTimestampTimer() {
+
+  if (
+    timestampTimer
+  ) {
+
+    window.clearInterval(
+      timestampTimer
+    );
+
+  }
+
+  timestampTimer =
+    window.setInterval(
+      refreshVisibleTimestamps,
+      DYVE_CONFIG.timestampInterval
+    );
 
 }
 
@@ -3392,21 +4847,27 @@ function renderLatest(
       meta.className =
         "latest-meta";
 
-      meta.textContent =
-        [
-          formatFreshness(
-            article
-          ),
+      meta.appendChild(
+        createArticleTime(
+          article
+        )
+      );
 
-          article.readingTime
-            ? `${cleanText(
-                article.readingTime
-              )} min read`
-            : ""
+      if (
+        article.readingTime
+      ) {
 
-        ]
-          .filter(Boolean)
-          .join(" • ");
+        meta.appendChild(
+          document.createTextNode(
+            " • " +
+            cleanText(
+              article.readingTime
+            ) +
+            " min read"
+          )
+        );
+
+      }
 
       content.appendChild(
         category
@@ -3514,20 +4975,21 @@ function renderDarkWeb() {
       meta.className =
         "darkweb-meta";
 
-      meta.textContent =
-        [
+      meta.appendChild(
+        document.createTextNode(
           cleanText(
             article.tag ||
             "Core Intelligence"
-          ),
+          ) +
+          " • "
+        )
+      );
 
-          formatFreshness(
-            article
-          )
-
-        ]
-          .filter(Boolean)
-          .join(" • ");
+      meta.appendChild(
+        createArticleTime(
+          article
+        )
+      );
 
       content.appendChild(
         title
@@ -3667,20 +5129,21 @@ function renderBreaches() {
       meta.className =
         "breach-meta";
 
-      meta.textContent =
-        [
+      meta.appendChild(
+        document.createTextNode(
           cleanText(
             article.meta ||
             "Incident"
-          ),
+          ) +
+          " • "
+        )
+      );
 
-          formatFreshness(
-            article
-          )
-
-        ]
-          .filter(Boolean)
-          .join(" • ");
+      meta.appendChild(
+        createArticleTime(
+          article
+        )
+      );
 
       content.appendChild(
         title
@@ -3813,10 +5276,11 @@ function renderRansomware() {
       time.className =
         "ransomware-time";
 
-      time.textContent =
-        formatFreshness(
+      time.appendChild(
+        createArticleTime(
           article
-        );
+        )
+      );
 
       content.appendChild(
         title
@@ -4113,10 +5577,8 @@ function renderSignals(
         "none";
 
       meta.appendChild(
-        document.createTextNode(
-          formatFreshness(
-            article
-          )
+        createArticleTime(
+          article
         )
       );
 
@@ -4193,7 +5655,7 @@ function updateItemListSchema(
               "/"
             );
 
-          return {
+          const item = {
 
             "@type":
               "ListItem",
@@ -4213,6 +5675,38 @@ function updateItemListSchema(
               ).href
 
           };
+
+          const info =
+            getArticleDateInfo(
+              article
+            );
+
+          if (
+            info.timestamp
+          ) {
+
+            if (
+              info.type ===
+              "updated"
+            ) {
+
+              item.dateModified =
+                new Date(
+                  info.timestamp
+                ).toISOString();
+
+            } else {
+
+              item.datePublished =
+                new Date(
+                  info.timestamp
+                ).toISOString();
+
+            }
+
+          }
+
+          return item;
 
         }
       );
@@ -4273,6 +5767,10 @@ function createFeedFingerprint(
         "",
 
         article.category ||
+        "",
+
+        article.excerpt ||
+        article.desc ||
         ""
 
       ]
@@ -4329,6 +5827,8 @@ function renderFeed(
       true
     );
 
+    refreshVisibleTimestamps();
+
     return;
 
   }
@@ -4378,6 +5878,8 @@ function renderFeed(
   updateItemListSchema(
     allArticles
   );
+
+  refreshVisibleTimestamps();
 
   updateFeedStatus(
     true
@@ -4513,7 +6015,6 @@ async function loadArticles() {
 
 /* ============================================================
    LOGO ROUTING
-   Forces dynamically injected global UI to use /logo.png.
 ============================================================ */
 
 function routeDyveLogo() {
@@ -4564,7 +6065,7 @@ function routeDyveLogo() {
 }
 
 /* ============================================================
-   OBSERVE GLOBAL HEADER
+   HEADER LOGO OBSERVER
 ============================================================ */
 
 function observeHeaderLogo() {
@@ -4792,6 +6293,59 @@ function initializeSmartHeader() {
 }
 
 /* ============================================================
+   PAGE VISIBILITY
+============================================================ */
+
+document.addEventListener(
+  "visibilitychange",
+  () => {
+
+    if (
+      document.hidden
+    ) {
+
+      stopFeaturedRotation();
+
+      if (refreshTimer) {
+
+        window.clearInterval(
+          refreshTimer
+        );
+
+        refreshTimer =
+          null;
+
+      }
+
+      return;
+
+    }
+
+    loadArticles();
+
+    if (
+      featuredArticles.length >
+      1
+    ) {
+
+      startFeaturedRotation();
+
+    }
+
+    if (!refreshTimer) {
+
+      refreshTimer =
+        window.setInterval(
+          loadArticles,
+          DYVE_CONFIG.refreshInterval
+        );
+
+    }
+
+  }
+);
+
+/* ============================================================
    INITIALIZE
 ============================================================ */
 
@@ -4806,6 +6360,8 @@ function initializeDyve() {
   initializeBackTop();
 
   initializeSmartHeader();
+
+  initializeTimestampTimer();
 
   loadArticles();
 
@@ -4828,7 +6384,13 @@ if (
 
   document.addEventListener(
     "DOMContentLoaded",
-    initializeDyve,
+    () => {
+
+      initializeDrawerObserver();
+
+      initializeDyve();
+
+    },
     {
       once:
         true
@@ -4837,51 +6399,11 @@ if (
 
 } else {
 
+  initializeDrawerObserver();
+
   initializeDyve();
 
 }
-
-/* ============================================================
-   VISIBILITY MANAGEMENT
-============================================================ */
-
-document.addEventListener(
-  "visibilitychange",
-  () => {
-
-    if (
-      document.hidden
-    ) {
-
-      if (refreshTimer) {
-
-        window.clearInterval(
-          refreshTimer
-        );
-
-        refreshTimer =
-          null;
-
-      }
-
-      return;
-
-    }
-
-    loadArticles();
-
-    if (!refreshTimer) {
-
-      refreshTimer =
-        window.setInterval(
-          loadArticles,
-          DYVE_CONFIG.refreshInterval
-        );
-
-    }
-
-  }
-);
 
 /* ============================================================
    PAGE LOAD STATE
@@ -4898,6 +6420,8 @@ window.addEventListener(
     routeDyveLogo();
 
     initializeReveal();
+
+    refreshVisibleTimestamps();
 
   }
 );
