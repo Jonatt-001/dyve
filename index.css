@@ -905,100 +905,37 @@ a {
 
 /* ============================================================
    HERO
-   PREMIUM EDITORIAL FEATURED INTELLIGENCE
 ============================================================ */
 
 .featured-section {
 
-  margin:
-    32px 0 72px;
+  margin-top:
+    22px;
 
 }
-
-.featured-section .section-header {
-
-  margin-bottom:
-    20px;
-
-}
-
-.featured-section .section-eyebrow {
-
-  margin-bottom:
-    8px;
-
-  color:
-    rgba(255,255,255,.32);
-
-  font-size:
-    8px;
-
-  font-weight:
-    800;
-
-  letter-spacing:
-    1.7px;
-
-}
-
-.featured-section .section-title {
-
-  font-size:
-    clamp(26px, 7vw, 34px);
-
-  line-height:
-    1;
-
-  letter-spacing:
-    -.045em;
-
-}
-
-.featured-section .section-link {
-
-  padding-bottom:
-    2px;
-
-  color:
-    var(--dx-green);
-
-  font-size:
-    10px;
-
-  font-weight:
-    800;
-
-}
-
-/* ============================================================
-   HERO CARD
-============================================================ */
 
 .dynamic-hero {
-
-  position:
-    relative;
 
   display:
     block;
 
-  width:
-    100%;
-
-  min-height:
-    590px;
+  position:
+    relative;
 
   overflow:
     hidden;
 
+  min-height:
+    520px;
+
   border:
-    1px solid rgba(0,245,166,.18);
+    1px solid rgba(0,245,166,.15);
 
   border-radius:
-    25px;
+    var(--dx-radius);
 
   background:
-    #030706;
+    #050907;
 
   color:
     inherit;
@@ -1010,18 +947,13 @@ a {
     isolate;
 
   box-shadow:
-    0 28px 85px rgba(0,0,0,.38);
-
-  transform:
-    translateZ(0);
+    var(--dx-shadow);
 
 }
 
-/* Fine green edge */
 .dynamic-hero::before {
 
-  content:
-    "";
+  content: "";
 
   position:
     absolute;
@@ -1035,27 +967,21 @@ a {
   pointer-events:
     none;
 
-  border-radius:
-    inherit;
-
   background:
     linear-gradient(
-      180deg,
-      rgba(255,255,255,.025) 0%,
-      transparent 24%,
-      transparent 45%,
-      rgba(0,0,0,.28) 56%,
-      rgba(0,0,0,.82) 76%,
-      #020504 100%
+      to bottom,
+      rgba(0,0,0,.03) 10%,
+      rgba(0,0,0,.10) 35%,
+      rgba(0,0,0,.48) 61%,
+      rgba(0,0,0,.94) 88%,
+      #030605 100%
     );
 
 }
 
-/* Premium top hairline */
 .dynamic-hero::after {
 
-  content:
-    "";
+  content: "";
 
   position:
     absolute;
@@ -1064,34 +990,29 @@ a {
     0;
 
   left:
-    12%;
+    0;
 
   right:
-    12%;
+    0;
 
   height:
     1px;
 
   z-index:
-    7;
+    5;
 
   background:
     linear-gradient(
       90deg,
       transparent,
-      rgba(0,245,166,.75),
+      rgba(0,245,166,.55),
       transparent
     );
 
-  box-shadow:
-    0 0 18px
-    rgba(0,245,166,.24);
+  opacity:
+    .65;
 
 }
-
-/* ============================================================
-   IMAGE
-============================================================ */
 
 .dynamic-hero-img {
 
@@ -1108,42 +1029,17 @@ a {
     hidden;
 
   background:
-    #050907;
-
-}
-
-/* Atmospheric treatment */
-.dynamic-hero-img::before {
-
-  content:
-    "";
-
-  position:
-    absolute;
-
-  inset:
-    0;
-
-  z-index:
-    2;
-
-  pointer-events:
-    none;
-
-  background:
-    radial-gradient(
-      circle at 70% 18%,
-      rgba(0,245,166,.07),
-      transparent 30%
+    linear-gradient(
+      135deg,
+      #07110d,
+      #020403
     );
 
 }
 
-/* Stronger lower readability */
 .dynamic-hero-img::after {
 
-  content:
-    "";
+  content: "";
 
   position:
     absolute;
@@ -1151,21 +1047,11 @@ a {
   inset:
     0;
 
-  z-index:
-    3;
-
-  pointer-events:
-    none;
-
   background:
-    linear-gradient(
-      180deg,
-      rgba(0,0,0,.04) 0%,
-      rgba(0,0,0,.03) 28%,
-      rgba(0,0,0,.12) 42%,
-      rgba(0,0,0,.48) 60%,
-      rgba(0,0,0,.84) 78%,
-      rgba(1,4,3,.98) 100%
+    radial-gradient(
+      circle at 65% 25%,
+      rgba(0,245,166,.08),
+      transparent 35%
     );
 
 }
@@ -1184,46 +1070,32 @@ a {
   object-fit:
     cover;
 
-  object-position:
-    center center;
-
   opacity:
-    .86;
+    .82;
 
   filter:
-    saturate(.84)
-    contrast(1.08)
-    brightness(.82);
+    saturate(.86)
+    contrast(1.06);
 
   transform:
-    scale(1.025);
+    scale(1.01);
 
   transition:
-    transform 1.2s cubic-bezier(.2,.7,.2,1),
-    filter .7s ease,
-    opacity .7s ease;
+    transform 1s cubic-bezier(.2,.7,.2,1),
+    filter .6s ease;
 
 }
 
-.dynamic-hero:hover
-.dynamic-hero-img img {
+.dynamic-hero:hover .dynamic-hero-img img {
 
   transform:
-    scale(1.055);
+    scale(1.045);
 
   filter:
-    saturate(.95)
-    contrast(1.09)
-    brightness(.88);
-
-  opacity:
-    .92;
+    saturate(1)
+    contrast(1.08);
 
 }
-
-/* ============================================================
-   FEATURED BADGE
-============================================================ */
 
 .dynamic-hero .tag {
 
@@ -1231,67 +1103,45 @@ a {
     absolute;
 
   top:
-    19px;
+    15px;
 
   left:
-    19px;
+    15px;
 
   z-index:
-    8;
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  min-height:
-    38px;
+    4;
 
   padding:
-    0 15px;
+    6px 10px;
 
   border:
-    1px solid rgba(0,245,166,.38);
+    1px solid rgba(0,245,166,.28);
 
   border-radius:
     999px;
 
   background:
-    rgba(1,12,8,.74);
+    rgba(0,12,8,.72);
 
   color:
     var(--dx-green);
 
   font-size:
-    9px;
+    8px;
 
   font-weight:
     800;
 
   letter-spacing:
-    1.15px;
-
-  line-height:
-    1;
+    1px;
 
   text-transform:
     uppercase;
 
   backdrop-filter:
-    blur(16px);
-
-  -webkit-backdrop-filter:
-    blur(16px);
-
-  box-shadow:
-    0 8px 28px rgba(0,0,0,.25);
+    blur(14px);
 
 }
-
-/* ============================================================
-   HERO CONTENT
-============================================================ */
 
 .hero-content {
 
@@ -1299,45 +1149,29 @@ a {
     absolute;
 
   left:
-    22px;
+    16px;
 
   right:
-    22px;
+    16px;
 
   bottom:
-    25px;
+    18px;
 
   z-index:
-    6;
-
-  min-width:
-    0;
+    4;
 
 }
-
-/* ============================================================
-   EDITORIAL LABEL
-============================================================ */
 
 .hero-label {
 
   display:
-    flex;
+    block;
 
-  align-items:
-    center;
-
-  gap:
-    8px;
-
-  width:
-    fit-content;
-
-  margin:
-    0 0 11px;
+  margin-bottom:
+    9px;
 
   color:
-    rgba(255,255,255,.58);
+    rgba(255,255,255,.54);
 
   font-size:
     8px;
@@ -1346,55 +1180,17 @@ a {
     800;
 
   letter-spacing:
-    1.45px;
-
-  line-height:
-    1.2;
+    1.25px;
 
   text-transform:
     uppercase;
 
 }
 
-.hero-label::before {
-
-  content:
-    "";
-
-  width:
-    6px;
-
-  height:
-    6px;
-
-  flex-shrink:
-    0;
-
-  border-radius:
-    50%;
-
-  background:
-    var(--dx-green);
-
-  box-shadow:
-    0 0 0 4px
-    rgba(0,245,166,.08),
-    0 0 14px
-    rgba(0,245,166,.48);
-
-  animation:
-    dxPulse 2.4s ease-in-out infinite;
-
-}
-
-/* ============================================================
-   HEADLINE
-============================================================ */
-
 .dynamic-hero .title {
 
   max-width:
-    820px;
+    900px;
 
   margin:
     0;
@@ -1407,86 +1203,48 @@ a {
     sans-serif;
 
   font-size:
-    clamp(29px, 7.8vw, 51px);
+    clamp(25px, 6vw, 47px);
 
   font-weight:
     700;
 
   line-height:
-    1.045;
+    1.04;
 
   letter-spacing:
-    -.047em;
-
-  text-wrap:
-    balance;
+    -.045em;
 
   text-shadow:
-    0 3px 25px rgba(0,0,0,.55);
+    0 3px 30px rgba(0,0,0,.9);
 
 }
-
-/* ============================================================
-   DESCRIPTION
-============================================================ */
 
 .dynamic-hero .desc {
 
   max-width:
-    620px;
+    720px;
 
   margin:
-    14px 0 0;
+    11px 0 0;
 
   color:
-    rgba(255,255,255,.67);
+    rgba(255,255,255,.65);
 
   font-size:
-    12px;
-
-  font-weight:
-    400;
+    11px;
 
   line-height:
-    1.65;
-
-  display:
-    -webkit-box;
-
-  overflow:
-    hidden;
-
-  -webkit-box-orient:
-    vertical;
-
-  -webkit-line-clamp:
-    3;
+    1.6;
 
 }
 
-/* ============================================================
-   META
-============================================================ */
-
 .dynamic-hero .meta {
 
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  flex-wrap:
-    wrap;
-
-  gap:
-    7px;
-
-  margin:
-    17px 0 0;
+  margin-top:
+    12px;
 
   color:
-    rgba(255,255,255,.46);
+    rgba(255,255,255,.42);
 
   font-size:
     8px;
@@ -1495,28 +1253,12 @@ a {
     800;
 
   letter-spacing:
-    .8px;
-
-  line-height:
-    1.4;
+    .7px;
 
   text-transform:
     uppercase;
 
 }
-
-.dynamic-hero .meta .updated,
-.dynamic-hero .meta .live,
-.dynamic-hero .meta span:last-child {
-
-  color:
-    var(--dx-green);
-
-}
-
-/* ============================================================
-   READ CTA
-============================================================ */
 
 .hero-read {
 
@@ -1526,206 +1268,20 @@ a {
   align-items:
     center;
 
-  gap:
-    10px;
-
-  margin:
-    19px 0 0;
+  margin-top:
+    16px;
 
   color:
     var(--dx-green);
 
   font-size:
-    12px;
+    10px;
 
   font-weight:
     800;
 
   letter-spacing:
-    .1px;
-
-  line-height:
-    1.2;
-
-  transition:
-    transform .25s ease,
-    color .25s ease;
-
-}
-
-.hero-read::after {
-
-  content:
-    "";
-
-  width:
-    34px;
-
-  height:
-    1px;
-
-  background:
-    currentColor;
-
-  box-shadow:
-    0 0 10px
-    rgba(0,245,166,.35);
-
-  transition:
-    width .25s ease;
-
-}
-
-.dynamic-hero:hover .hero-read {
-
-  transform:
-    translateX(2px);
-
-}
-
-.dynamic-hero:hover .hero-read::after {
-
-  width:
-    48px;
-
-}
-
-/* ============================================================
-   CAROUSEL NAVIGATION
-   Handles common dynamically-generated controls.
-============================================================ */
-
-.dynamic-hero button {
-
-  position:
-    relative;
-
-  z-index:
-    10;
-
-  width:
-    48px;
-
-  height:
-    48px;
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  padding:
-    0;
-
-  border:
-    1px solid rgba(255,255,255,.18);
-
-  border-radius:
-    50%;
-
-  background:
-    rgba(2,7,5,.72);
-
-  color:
-    #fff;
-
-  backdrop-filter:
-    blur(15px);
-
-  -webkit-backdrop-filter:
-    blur(15px);
-
-  cursor:
-    pointer;
-
-  transition:
-    border-color .22s ease,
-    background .22s ease,
-    transform .22s ease;
-
-}
-
-.dynamic-hero button:hover {
-
-  border-color:
-    rgba(0,245,166,.45);
-
-  background:
-    rgba(0,18,12,.88);
-
-}
-
-.dynamic-hero button:active {
-
-  transform:
-    scale(.93);
-
-}
-
-/* ============================================================
-   CAROUSEL INDICATOR BARS
-============================================================ */
-
-.dynamic-hero [class*="dots"],
-.dynamic-hero [class*="indicators"],
-.dynamic-hero [class*="pagination"] {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    7px;
-
-}
-
-.dynamic-hero [class*="dots"] span,
-.dynamic-hero [class*="dots"] button,
-.dynamic-hero [class*="indicators"] span,
-.dynamic-hero [class*="indicators"] button,
-.dynamic-hero [class*="pagination"] span,
-.dynamic-hero [class*="pagination"] button {
-
-  width:
-    25px;
-
-  height:
-    3px;
-
-  min-width:
-    25px;
-
-  padding:
-    0;
-
-  border:
-    0;
-
-  border-radius:
-    999px;
-
-  background:
-    rgba(255,255,255,.22);
-
-  box-shadow:
-    none;
-
-}
-
-/* ============================================================
-   HERO CONTENT SAFE AREA
-============================================================ */
-
-.dynamic-hero > * {
-
-  min-width:
-    0;
+    .35px;
 
 }
 
@@ -5022,245 +4578,3 @@ button:focus-visible {
 }
 
 
-/* ============================================================
-   DYVE HACKAX — FINAL MOBILE HERO OVERRIDE
-============================================================ */
-
-@media (max-width: 639px) {
-
-  .featured-section {
-
-    margin-top:
-      42px;
-
-    margin-bottom:
-      76px;
-
-  }
-
-  .featured-section .section-header {
-
-    margin-bottom:
-      18px;
-
-  }
-
-  .featured-section .section-title {
-
-    font-size:
-      28px;
-
-    line-height:
-      1;
-
-  }
-
-  .featured-section .section-link {
-
-    font-size:
-      10px;
-
-  }
-
-  .dynamic-hero {
-
-    min-height:
-      585px;
-
-    border-radius:
-      24px;
-
-  }
-
-  .dynamic-hero .tag {
-
-    top:
-      18px;
-
-    left:
-      18px;
-
-    min-height:
-      38px;
-
-    padding:
-      0 14px;
-
-    font-size:
-      9px;
-
-  }
-
-  .hero-content {
-
-    left:
-      20px;
-
-    right:
-      20px;
-
-    bottom:
-      23px;
-
-  }
-
-  .hero-label {
-
-    margin-bottom:
-      10px;
-
-    font-size:
-      8px;
-
-    letter-spacing:
-      1.35px;
-
-  }
-
-  .dynamic-hero .title {
-
-    max-width:
-      100%;
-
-    font-size:
-      clamp(29px, 8.1vw, 37px);
-
-    line-height:
-      1.045;
-
-    letter-spacing:
-      -.045em;
-
-  }
-
-  .dynamic-hero .desc {
-
-    margin-top:
-      13px;
-
-    font-size:
-      12px;
-
-    line-height:
-      1.62;
-
-    -webkit-line-clamp:
-      3;
-
-  }
-
-  .dynamic-hero .meta {
-
-    margin-top:
-      16px;
-
-    font-size:
-      8px;
-
-  }
-
-  .hero-read {
-
-    margin-top:
-      18px;
-
-    font-size:
-      12px;
-
-  }
-
-  .dynamic-hero-img img {
-
-    object-position:
-      center center;
-
-  }
-
-}
-
-/* ============================================================
-   SMALL PHONES
-============================================================ */
-
-@media (max-width: 390px) {
-
-  .dynamic-hero {
-
-    min-height:
-      560px;
-
-    border-radius:
-      22px;
-
-  }
-
-  .dynamic-hero .tag {
-
-    top:
-      16px;
-
-    left:
-      16px;
-
-  }
-
-  .hero-content {
-
-    left:
-      18px;
-
-    right:
-      18px;
-
-    bottom:
-      20px;
-
-  }
-
-  .dynamic-hero .title {
-
-    font-size:
-      28px;
-
-    line-height:
-      1.055;
-
-  }
-
-  .dynamic-hero .desc {
-
-    font-size:
-      11.5px;
-
-  }
-
-}
-
-/* ============================================================
-   EXTRA SMALL PHONES
-============================================================ */
-
-@media (max-width: 360px) {
-
-  .dynamic-hero {
-
-    min-height:
-      535px;
-
-  }
-
-  .dynamic-hero .title {
-
-    font-size:
-      26px;
-
-  }
-
-  .dynamic-hero .desc {
-
-    font-size:
-      11px;
-
-  }
-
-}
