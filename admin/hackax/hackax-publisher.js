@@ -132,31 +132,22 @@ function attr(value){
 function b64(value){
     const bytes = new TextEncoder().encode(String(value));
     let binary = "";
-
-    bytes.forEach(
-        b => binary += String.fromCharCode(b)
-    );
-
+    bytes.forEach(b => binary += String.fromCharCode(b));
     return btoa(binary);
 }
 
 function unb64(value){
-    const binary = atob(
-        String(value || "").replace(/\s/g,"")
-    );
-
-    const bytes = Uint8Array.from(
-        binary,
-        c => c.charCodeAt(0)
-    );
-
+    const binary = atob(String(value || "").replace(/\s/g,""));
+    const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
     return new TextDecoder().decode(bytes);
 }
 
 function toast(message, type){
     const el = document.getElementById("toast");
 
-    if(!el) return;
+    if(!el){
+        return;
+    }
 
     el.textContent = message;
 
@@ -177,10 +168,11 @@ function toast(message, type){
 
     clearTimeout(window.__hackaxToast);
 
-    window.__hackaxToast = setTimeout(
-        () => el.classList.add("hidden"),
-        3600
-    );
+    window.__hackaxToast =
+        setTimeout(
+            () => el.classList.add("hidden"),
+            3600
+        );
 }
 
 function slugify(value){
@@ -197,9 +189,7 @@ function slugify(value){
 }
 
 function unique(arr){
-    return [...new Set(
-        arr.filter(Boolean)
-    )];
+    return [...new Set(arr.filter(Boolean))];
 }
 
 function cleanText(value){
@@ -220,20 +210,20 @@ function tokenize(value){
 
 function meaningfulTokens(value){
     return unique(
-        tokenize(value).filter(
-            x =>
-                x.length >= 4 &&
-                !STOPWORDS.has(x) &&
-                !/^\d+$/.test(x)
+        tokenize(value).filter(x =>
+            x.length >= 4 &&
+            !STOPWORDS.has(x) &&
+            !/^\d+$/.test(x)
         )
     );
 }
 
 function cfg(){
-    const saved = safeJSON(
-        localStorage.getItem(STORAGE.settings) || "{}",
-        {}
-    );
+    const saved =
+        safeJSON(
+            localStorage.getItem(STORAGE.settings) || "{}",
+            {}
+        );
 
     const merged = {
         ...DEFAULTS,
@@ -253,19 +243,19 @@ function cfg(){
             String(
                 merged.githubRepo || ""
             )
-            .trim()
-            .replace(
-                /^https?:\/\/github\.com\//i,
-                ""
-            )
-            .replace(
-                /\.git$/i,
-                ""
-            )
-            .replace(
-                /^\/+|\/+$/g,
-                ""
-            ),
+                .trim()
+                .replace(
+                    /^https?:\/\/github\.com\//i,
+                    ""
+                )
+                .replace(
+                    /\.git$/i,
+                    ""
+                )
+                .replace(
+                    /^\/+|\/+$/g,
+                    ""
+                ),
 
         githubBranch:
             String(
@@ -336,10 +326,8 @@ function freshState(){
         workflow: {
             currentStage: 1,
             completed: [],
-            createdAt:
-                new Date().toISOString(),
-            updatedAt:
-                new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
         }
     };
 }
@@ -347,10 +335,7 @@ function freshState(){
 function normalizeState(input){
     const base = freshState();
 
-    if(
-        !input ||
-        typeof input !== "object"
-    ){
+    if(!input || typeof input !== "object"){
         return base;
     }
 
@@ -466,7 +451,9 @@ function normalizeState(input){
 }
 
 function saveState(immediate){
-    if(!state) return;
+    if(!state){
+        return;
+    }
 
     state.workflow.updatedAt =
         new Date().toISOString();
@@ -482,19 +469,20 @@ function saveState(immediate){
 
     clearTimeout(autosaveTimer);
 
-    autosaveTimer = setTimeout(
-        () => {
-            if(state){
-                localStorage.setItem(
-                    STORAGE.publisher,
-                    JSON.stringify(state)
-                );
-            }
+    autosaveTimer =
+        setTimeout(
+            () => {
+                if(state){
+                    localStorage.setItem(
+                        STORAGE.publisher,
+                        JSON.stringify(state)
+                    );
+                }
 
-            updateSaveIndicator();
-        },
-        immediate ? 0 : 450
-    );
+                updateSaveIndicator();
+            },
+            immediate ? 0 : 450
+        );
 
     updateSaveIndicator();
 }
@@ -505,7 +493,9 @@ function updateSaveIndicator(){
             "saveState"
         );
 
-    if(!el) return;
+    if(!el){
+        return;
+    }
 
     el.textContent =
         "Saved " +
@@ -558,7 +548,9 @@ function renderGlobalProgress(){
     }
 
     document
-        .querySelectorAll("[data-stage]")
+        .querySelectorAll(
+            "[data-stage]"
+        )
         .forEach(
             el => {
                 const n =
@@ -577,19 +569,6 @@ function renderGlobalProgress(){
                 );
             }
         );
-}
-
-function getPublisherStageFiles(){
-    return [
-        "index.html",
-        "hackax-next2.html",
-        "hackax-next3.html",
-        "hackax-next4.html",
-        "hackax-next5.html",
-        "hackax-next6.html",
-        "hackax-next7.html",
-        "hackax-overview.html"
-    ];
 }
 
 function goStage(n){
@@ -620,30 +599,26 @@ function goStage(n){
     }
 
     currentStage = n;
+
     state.workflow.currentStage = n;
 
     saveState(true);
 
-    const files =
-        getPublisherStageFiles();
-
-    const file =
-        files[n - 1];
-
-    if(!file){
-        return;
-    }
-
-    const target =
-        new URL(
-            `./${file}`,
-            window.location.href
-        ).href;
+    const file = [
+        "index.html",
+        "hackax-next2.html",
+        "hackax-next3.html",
+        "hackax-next4.html",
+        "hackax-next5.html",
+        "hackax-next6.html",
+        "hackax-next7.html",
+        "hackax-overview.html"
+    ][n - 1];
 
     if(
-        window.location.href !== target
+        !location.pathname.endsWith(file)
     ){
-        window.location.href = target;
+        location.href = file;
     }else{
         window.dispatchEvent(
             new CustomEvent(
@@ -686,9 +661,7 @@ function nextStage(){
         return;
     }
 
-    completeStage(
-        currentStage
-    );
+    completeStage(currentStage);
 
     goStage(
         Math.min(
@@ -735,7 +708,9 @@ function validateStage(stage){
             };
         }
 
-        return {ok:true};
+        return {
+            ok:true
+        };
     }
 
     if(stage === 2){
@@ -750,9 +725,7 @@ function validateStage(stage){
             };
         }
 
-        if(
-            !state.media.featured.alt
-        ){
+        if(!state.media.featured.alt){
             return {
                 ok:false,
                 message:
@@ -760,9 +733,7 @@ function validateStage(stage){
             };
         }
 
-        if(
-            !state.media.featured.watermarked
-        ){
+        if(!state.media.featured.watermarked){
             return {
                 ok:false,
                 message:
@@ -770,7 +741,9 @@ function validateStage(stage){
             };
         }
 
-        return {ok:true};
+        return {
+            ok:true
+        };
     }
 
     if(stage === 3){
@@ -787,9 +760,7 @@ function validateStage(stage){
             };
         }
 
-        if(
-            !state.classification.contentType
-        ){
+        if(!state.classification.contentType){
             return {
                 ok:false,
                 message:
@@ -797,17 +768,19 @@ function validateStage(stage){
             };
         }
 
-        return {ok:true};
+        return {
+            ok:true
+        };
     }
 
     if(stage === 4){
-        return {ok:true};
+        return {
+            ok:true
+        };
     }
 
     if(stage === 5){
-        if(
-            !state.seo.title.trim()
-        ){
+        if(!state.seo.title.trim()){
             return {
                 ok:false,
                 message:
@@ -815,9 +788,7 @@ function validateStage(stage){
             };
         }
 
-        if(
-            !state.seo.description.trim()
-        ){
+        if(!state.seo.description.trim()){
             return {
                 ok:false,
                 message:
@@ -835,11 +806,15 @@ function validateStage(stage){
             };
         }
 
-        return {ok:true};
+        return {
+            ok:true
+        };
     }
 
     if(stage === 6){
-        return {ok:true};
+        return {
+            ok:true
+        };
     }
 
     if(stage === 7){
@@ -859,10 +834,14 @@ function validateStage(stage){
             };
         }
 
-        return {ok:true};
+        return {
+            ok:true
+        };
     }
 
-    return {ok:true};
+    return {
+        ok:true
+    };
 }
 
 function renderValidation(result){
@@ -871,7 +850,9 @@ function renderValidation(result){
             "validation"
         );
 
-    if(!el) return;
+    if(!el){
+        return;
+    }
 
     el.className =
         "validation " +
@@ -891,7 +872,9 @@ function renderValidation(result){
 
 function bindNavigation(){
     document
-        .querySelectorAll("[data-next]")
+        .querySelectorAll(
+            "[data-next]"
+        )
         .forEach(
             b =>
                 b.addEventListener(
@@ -901,7 +884,9 @@ function bindNavigation(){
         );
 
     document
-        .querySelectorAll("[data-back]")
+        .querySelectorAll(
+            "[data-back]"
+        )
         .forEach(
             b =>
                 b.addEventListener(
@@ -911,7 +896,9 @@ function bindNavigation(){
         );
 
     document
-        .querySelectorAll("[data-stage-link]")
+        .querySelectorAll(
+            "[data-stage-link]"
+        )
         .forEach(
             b =>
                 b.addEventListener(
@@ -1188,9 +1175,7 @@ function importLegacyRecord(
         "Moderate";
 
     imported.classification.domains =
-        Array.isArray(
-            d.threatDomains
-        )
+        Array.isArray(d.threatDomains)
             ? d.threatDomains
             : [];
 
@@ -1276,7 +1261,9 @@ function importLegacyRecord(
 }
 
 function saveCurrentPage(){
-    if(!state) return;
+    if(!state){
+        return;
+    }
 
     const page =
         Number(
@@ -1413,11 +1400,11 @@ function saveStage1(){
         getValue(
             "tagsInput"
         )
-        .split(",")
-        .map(
-            x => x.trim()
-        )
-        .filter(Boolean);
+            .split(",")
+            .map(
+                x => x.trim()
+            )
+            .filter(Boolean);
 
     state.article.tags =
         unique(tags);
@@ -1516,37 +1503,27 @@ function saveStage3(){
 function saveStage4(){
     state.intelligence.actors =
         splitList(
-            getValue(
-                "actorsInput"
-            )
+            getValue("actorsInput")
         );
 
     state.intelligence.malware =
         splitList(
-            getValue(
-                "malwareInput"
-            )
+            getValue("malwareInput")
         );
 
     state.intelligence.cves =
         splitList(
-            getValue(
-                "cvesInput"
-            )
+            getValue("cvesInput")
         );
 
     state.intelligence.techniques =
         splitList(
-            getValue(
-                "techniquesInput"
-            )
+            getValue("techniquesInput")
         );
 
     state.intelligence.iocs =
         parseIocs(
-            getValue(
-                "iocsInput"
-            )
+            getValue("iocsInput")
         );
 }
 
@@ -1587,41 +1564,39 @@ function saveStage6(){
                 'input[name="relatedArticle"]:checked'
             )
         ]
-        .map(
-            el => {
-                const a =
-                    existingArticles.find(
-                        x =>
-                            x.id ===
-                                el.value ||
-                            x.url ===
-                                el.value
-                    );
+            .map(
+                el => {
+                    const a =
+                        existingArticles.find(
+                            x =>
+                                x.id === el.value ||
+                                x.url === el.value
+                        );
 
-                return a
-                    ? {
-                        id:
-                            a.id ||
-                            null,
+                    return a
+                        ? {
+                            id:
+                                a.id ||
+                                null,
 
-                        title:
-                            a.title ||
-                            "",
+                            title:
+                                a.title ||
+                                "",
 
-                        url:
-                            a.url ||
-                            "",
+                            url:
+                                a.url ||
+                                "",
 
-                        score:
-                            Number(
-                                el.dataset.score ||
-                                0
-                            )
-                    }
-                    : null;
-            }
-        )
-        .filter(Boolean);
+                            score:
+                                Number(
+                                    el.dataset.score ||
+                                    0
+                                )
+                        }
+                        : null;
+                }
+            )
+            .filter(Boolean);
 
     state.linking.applied =
         countExistingInternalLinks();
@@ -1657,7 +1632,10 @@ function splitList(value){
                 x => x.trim()
             )
             .filter(Boolean)
-    ).slice(0,30);
+    ).slice(
+        0,
+        30
+    );
 }
 
 function parseIocs(value){
@@ -1668,7 +1646,10 @@ function parseIocs(value){
                 x => x.trim()
             )
             .filter(Boolean)
-    ).slice(0,100);
+    ).slice(
+        0,
+        100
+    );
 }
 
 function deltaToHtml(delta){
@@ -1840,13 +1821,17 @@ function imageBaseName(
                 title,
                 CATEGORIES[category] ||
                     category,
-                tag || ""
+                tag ||
+                    ""
             ].join(" ")
         );
 
     return slugify(
         pieces
-            .slice(0,12)
+            .slice(
+                0,
+                12
+            )
             .join("-")
     ) ||
         "hackax-intelligence";
@@ -1862,23 +1847,21 @@ function generateImageAlt(
         CATEGORIES[category] ||
         "Cyber Threat Intelligence";
 
-    const cleanTitle =
-        cleanText(title);
+    const suffix =
+        context
+            ? " " + context
+            : " featured image";
 
-    const cleanContext =
-        cleanText(context);
-
-    return `${cleanTitle} - ${label}${
-        cleanContext
-            ? " " + cleanContext
-            : " featured image"
-    }`
+    return `${cleanText(title)} - ${label}${suffix ? " " + suffix.trim() : ""}`
         .replace(
             /\s+/g,
             " "
         )
         .trim()
-        .slice(0,180);
+        .slice(
+            0,
+            180
+        );
 }
 
 function generateImageTitle(
@@ -1888,7 +1871,10 @@ function generateImageTitle(
     return `${cleanText(title)} | ${
         CATEGORIES[category] ||
         "HackaX Intelligence"
-    }`.slice(0,180);
+    }`.slice(
+        0,
+        180
+    );
 }
 
 function generateImageCaption(
@@ -1906,43 +1892,6 @@ function generateImageCaption(
     }.`;
 }
 
-
-/* ==========================================================
-   HACKAX WATERMARK
-   Actual asset location:
-   /assets/dyve-hackax.png
-
-   Publisher pages are located at:
-   /admin/hackax/
-
-   Therefore the direct relative path from publisher pages is:
-   ../../assets/dyve-hackax.png
-========================================================== */
-
-function getHackaXWatermarkPaths(){
-    const paths = [
-        "../../assets/dyve-hackax.png",
-        "/assets/dyve-hackax.png",
-        "../assets/dyve-hackax.png",
-        "assets/dyve-hackax.png"
-    ];
-
-    return unique(
-        paths.map(
-            path => {
-                try{
-                    return new URL(
-                        path,
-                        window.location.href
-                    ).href;
-                }catch(e){
-                    return path;
-                }
-            }
-        )
-    );
-}
-
 async function loadWatermark(){
     if(
         window.__hackaxWatermarkPromise
@@ -1953,45 +1902,49 @@ async function loadWatermark(){
     window.__hackaxWatermarkPromise =
         new Promise(
             (resolve,reject)=>{
-                const paths =
-                    getHackaXWatermarkPaths();
+                const paths = [
+                    "../assets/dyve-hackax.png",
+                    "/assets/dyve-hackax.png",
+                    "assets/dyve-hackax.png"
+                ];
 
                 let index = 0;
 
-                const tryNext = () => {
-                    if(
-                        index >= paths.length
-                    ){
-                        reject(
-                            new Error(
-                                "HackaX watermark asset assets/dyve-hackax.png was not found."
-                            )
-                        );
+                const tryNext =
+                    () => {
+                        if(
+                            index >=
+                            paths.length
+                        ){
+                            reject(
+                                new Error(
+                                    "HackaX watermark asset assets/dyve-hackax.png was not found."
+                                )
+                            );
 
-                        return;
-                    }
+                            return;
+                        }
 
-                    const src =
-                        paths[index++];
+                        const img =
+                            new Image();
 
-                    const img =
-                        new Image();
+                        img.onload =
+                            () =>
+                                resolve(img);
 
-                    img.onload =
-                        () => resolve(img);
+                        img.onerror =
+                            () => {
+                                index++;
+                                tryNext();
+                            };
 
-                    img.onerror =
-                        () => tryNext();
+                        const path =
+                            paths[index++];
 
-                    img.src =
-                        src +
-                        (
-                            src.includes("?")
-                                ? "&"
-                                : "?"
-                        ) +
-                        "v=1";
-                };
+                        img.src =
+                            path +
+                            "?v=1";
+                    };
 
                 tryNext();
             }
@@ -2005,7 +1958,8 @@ async function processImage(
     options
 ){
     options =
-        options || {};
+        options ||
+        {};
 
     if(
         !file ||
@@ -2042,7 +1996,10 @@ async function processImage(
     let height =
         bitmap.height;
 
-    if(width > maxWidth){
+    if(
+        width >
+        maxWidth
+    ){
         height =
             Math.round(
                 height *
@@ -2104,7 +2061,8 @@ async function processImage(
         Math.max(
             110,
             Math.round(
-                width * 0.18
+                width *
+                0.18
             )
         );
 
@@ -2119,7 +2077,8 @@ async function processImage(
         Math.max(
             18,
             Math.round(
-                width * 0.018
+                width *
+                0.018
             )
         );
 
@@ -2145,7 +2104,8 @@ async function processImage(
         Math.max(
             4,
             Math.round(
-                width * .006
+                width *
+                0.006
             )
         );
 
@@ -2203,6 +2163,14 @@ async function processImage(
     );
 }
 
+
+/* ==========================================================
+   CLOUDINARY
+   Unsigned upload presets accept a restricted parameter set.
+   We intentionally use only:
+   upload_preset + public_id.
+========================================================== */
+
 async function cloudinaryUpload(
     file,
     publicId
@@ -2226,6 +2194,21 @@ async function cloudinaryUpload(
     const form =
         new FormData();
 
+    /*
+       IMPORTANT:
+
+       Do NOT send:
+       - use_filename
+       - unique_filename
+       - filename_override
+
+       Those parameters are rejected by the
+       current unsigned upload preset.
+
+       public_id is supported and gives us a
+       predictable SEO-oriented Cloudinary asset ID.
+    */
+
     form.append(
         "file",
         file
@@ -2236,25 +2219,12 @@ async function cloudinaryUpload(
         c.uploadPreset
     );
 
-    form.append(
-        "use_filename",
-        "true"
-    );
-
-    form.append(
-        "unique_filename",
-        "false"
-    );
-
-    form.append(
-        "filename_override",
-        file.name
-    );
-
     if(publicId){
         form.append(
             "public_id",
-            publicId
+            String(publicId)
+                .replace(/^\/+/,"")
+                .replace(/\.webp$/i,"")
         );
     }
 
@@ -2267,17 +2237,38 @@ async function cloudinaryUpload(
             }
         );
 
-    const data =
+    const raw =
         await response
-            .json()
+            .text()
             .catch(
-                () => ({})
+                () => ""
             );
+
+    let data =
+        {};
+
+    try{
+        data =
+            raw
+                ? JSON.parse(raw)
+                : {};
+    }catch(e){
+        data = {};
+    }
 
     if(!response.ok){
         throw new Error(
             data.error?.message ||
+            raw ||
             `Cloudinary upload failed (${response.status}).`
+        );
+    }
+
+    if(
+        !data.secure_url
+    ){
+        throw new Error(
+            "Cloudinary returned no secure image URL."
         );
     }
 
@@ -2308,7 +2299,7 @@ async function uploadAndProcessImage(
                             : 1600,
 
                     quality:
-                        .82
+                        0.82
                 }
             );
 
@@ -2319,15 +2310,39 @@ async function uploadAndProcessImage(
                 context
             );
 
+        /*
+           public_id is now the SEO filename mechanism.
+
+           Example:
+           hackax/ransomware-healthcare-attack-1756300000000
+
+           Cloudinary will serve the transformed WebP
+           asset without requiring forbidden unsigned
+           upload filename parameters.
+        */
+        const publicId =
+            `hackax/${base}-${Date.now()}`;
+
         let data;
 
         try{
             data =
                 await cloudinaryUpload(
                     optimized,
-                    `hackax/${base}-${Date.now()}`
+                    publicId
                 );
         }catch(first){
+            /*
+               If the configured unsigned preset has
+               additional restrictions around public_id,
+               retry using only the universally required
+               unsigned parameters.
+            */
+            console.warn(
+                "Cloudinary public_id upload failed; retrying with preset-only upload.",
+                first
+            );
+
             data =
                 await cloudinaryUpload(
                     optimized,
@@ -2353,6 +2368,7 @@ async function uploadAndProcessImage(
 
             publicId:
                 data.public_id ||
+                publicId ||
                 "",
 
             resourceType:
@@ -2464,15 +2480,14 @@ function renderFeaturedMeta(){
         );
 
     if(status){
-        status.innerHTML =
-            [
-                "✓ Optimized",
-                "✓ WebP",
-                "✓ Compressed",
-                "✓ Watermarked",
-                "✓ SEO filename",
-                "✓ Alt text"
-            ]
+        status.innerHTML = [
+            "✓ Optimized",
+            "✓ WebP",
+            "✓ Compressed",
+            "✓ Watermarked",
+            "✓ SEO filename",
+            "✓ Alt text"
+        ]
             .map(
                 x =>
                     `<span class="media-chip">${x}</span>`
@@ -2575,25 +2590,6 @@ function getArticlePath(
         slugify(slug) ||
         "untitled-intelligence";
 
-    /*
-       Public article files live at:
-
-       /breaches/article.html
-       /dark-web/article.html
-       /signals/article.html
-       /updates/article.html
-       /ransomware/article.html
-       /threat-actors/article.html
-       /vulnerabilities/article.html
-       /malware/article.html
-       /advisories/article.html
-       /research/article.html
-       /explainer/article.html
-
-       The /article/ directory is NOT inserted
-       into the public article URL.
-    */
-
     return `${safeCategory}/${safeSlug}.html`;
 }
 
@@ -2603,15 +2599,14 @@ function getCanonical(
     slug,
     destination
 ){
-    return `${String(siteUrl || "")
-        .replace(/\/+$/,"")}/${getArticlePath(
-            category,
-            slug,
-            destination
-        )}`.replace(
-            /([^:]\/)\/+/g,
-            "$1"
-        );
+    return `${siteUrl}/${getArticlePath(
+        category,
+        slug,
+        destination
+    )}`.replace(
+        /([^:]\/)\/+/g,
+        "$1"
+    );
 }
 
 function getRecordUrl(
@@ -2624,19 +2619,16 @@ function getRecordUrl(
 
     if(
         /^https?:\/\//i.test(
-            a.url || ""
+            a.url ||
+            ""
         )
     ){
         return a.url;
     }
 
-    return `${String(
-        siteUrl || ""
-    ).replace(
-        /\/+$/,
+    return `${siteUrl}/${String(
+        a.url ||
         ""
-    )}/${String(
-        a.url || ""
     ).replace(
         /^\/+/,
         ""
@@ -2680,7 +2672,8 @@ async function fetchGithub(path){
         );
 
     if(
-        response.status === 404
+        response.status ===
+        404
     ){
         return null;
     }
@@ -2732,7 +2725,8 @@ async function putGithub(
         await fetch(
             url,
             {
-                method:"PUT",
+                method:
+                    "PUT",
 
                 headers:{
                     Authorization:
@@ -2823,7 +2817,8 @@ async function loadArticles(){
 function articleKeywords(a){
     return unique([
         ...meaningfulTokens(
-            a.title || ""
+            a.title ||
+            ""
         ),
 
         ...meaningfulTokens(
@@ -2874,11 +2869,14 @@ function scoreArticleCandidate(a){
         return 0;
     }
 
-    let shared = 0;
+    let shared =
+        0;
 
     theirs.forEach(
         k => {
-            if(mine.has(k)){
+            if(
+                mine.has(k)
+            ){
                 shared++;
             }
         }
@@ -2904,8 +2902,10 @@ function scoreArticleCandidate(a){
         Math.min(
             99,
             Math.round(
-                density * 80 +
-                sameCategory * 100
+                density *
+                80 +
+                sameCategory *
+                100
             )
         );
 
@@ -2943,7 +2943,8 @@ function getSmartLinkCandidates(){
         )
         .filter(
             x =>
-                x.score >= 18
+                x.score >=
+                18
         )
         .sort(
             (a,b) =>
@@ -2962,12 +2963,16 @@ function renderLinkSuggestions(){
             "linkSuggestions"
         );
 
-    if(!box) return;
+    if(!box){
+        return;
+    }
 
     const candidates =
         getSmartLinkCandidates();
 
-    if(!existingArticles.length){
+    if(
+        !existingArticles.length
+    ){
         box.innerHTML =
             `<div class="empty-state">Connect GitHub and load the article corpus to calculate contextual relationships.</div>`;
 
@@ -2994,7 +2999,6 @@ function renderLinkSuggestions(){
 
                     return `
                         <label class="link-option">
-
                             <input
                                 type="checkbox"
                                 name="relatedArticle"
@@ -3007,7 +3011,6 @@ function renderLinkSuggestions(){
                             >
 
                             <span class="link-option-body">
-
                                 <span class="link-option-title">
                                     ${esc(
                                         x.article.title
@@ -3020,9 +3023,7 @@ function renderLinkSuggestions(){
                                         x.article.url
                                     )}
                                 </span>
-
                             </span>
-
                         </label>
                     `;
                 }
@@ -3119,7 +3120,8 @@ function automaticallyLinkArticle(){
         );
     }
 
-    let applied = 0;
+    let applied =
+        0;
 
     candidates.forEach(
         c => {
@@ -3248,6 +3250,7 @@ function automaticallyLinkArticle(){
     }
 
     renderLinkSuggestions();
+
     renderStage6Metrics();
 
     toast(
@@ -3266,7 +3269,8 @@ function autoDescription(){
 
     if(
         !topic.title ||
-        topic.body.length < 30
+        topic.body.length <
+            30
     ){
         toast(
             "Add a title and article content first.",
@@ -3283,7 +3287,8 @@ function autoDescription(){
             )
             .filter(
                 x =>
-                    x.length > 30
+                    x.length >
+                    30
             );
 
     let desc =
@@ -3295,7 +3300,8 @@ function autoDescription(){
             .join(" ");
 
     if(
-        desc.length > 160
+        desc.length >
+        160
     ){
         desc =
             desc
@@ -3311,7 +3317,8 @@ function autoDescription(){
     }
 
     if(
-        desc.length < 110
+        desc.length <
+        110
     ){
         desc =
             `${topic.title}. ${desc}`
@@ -3345,7 +3352,8 @@ function autoSEO(){
 
     if(
         !topic.title ||
-        topic.body.length < 100
+        topic.body.length <
+            100
     ){
         toast(
             "Add more article content before generating SEO.",
@@ -3483,13 +3491,6 @@ function seoChecks(){
     const links =
         countExistingInternalLinks();
 
-    const imageCount =
-        (
-            topic.html.match(
-                /<img\b/gi
-            ) || []
-        ).length;
-
     const f =
         state.media.featured;
 
@@ -3514,12 +3515,16 @@ function seoChecks(){
 
         {
             ok:
-                topic.title.length >= 45 &&
-                topic.title.length <= 70,
+                topic.title.length >=
+                    45 &&
+                topic.title.length <=
+                    70,
 
             level:
-                topic.title.length >= 45 &&
-                topic.title.length <= 70
+                topic.title.length >=
+                    45 &&
+                topic.title.length <=
+                    70
                     ? "success"
                     : "warning",
 
@@ -3529,12 +3534,16 @@ function seoChecks(){
 
         {
             ok:
-                state.seo.description.length >= 140 &&
-                state.seo.description.length <= 160,
+                state.seo.description.length >=
+                    140 &&
+                state.seo.description.length <=
+                    160,
 
             level:
-                state.seo.description.length >= 140 &&
-                state.seo.description.length <= 160
+                state.seo.description.length >=
+                    140 &&
+                state.seo.description.length <=
+                    160
                     ? "success"
                     : "warning",
 
@@ -3544,13 +3553,15 @@ function seoChecks(){
 
         {
             ok:
-                words >= Number(
+                words >=
+                Number(
                     cfg().minWords ||
                     500
                 ),
 
             level:
-                words >= Number(
+                words >=
+                Number(
                     cfg().minWords ||
                     500
                 )
@@ -3565,13 +3576,15 @@ function seoChecks(){
 
         {
             ok:
-                h2 >= Number(
+                h2 >=
+                Number(
                     cfg().targetH2 ||
                     2
                 ),
 
             level:
-                h2 >= Number(
+                h2 >=
+                Number(
                     cfg().targetH2 ||
                     2
                 )
@@ -3584,13 +3597,15 @@ function seoChecks(){
 
         {
             ok:
-                links >= Number(
+                links >=
+                Number(
                     cfg().targetLinks ||
                     2
                 ),
 
             level:
-                links >= Number(
+                links >=
+                Number(
                     cfg().targetLinks ||
                     2
                 )
@@ -3700,7 +3715,7 @@ function renderSeoScore(){
                     x.level === "success"
                         ? 1
                         : x.level === "warning"
-                            ? .5
+                            ? 0.5
                             : 0
                 ),
             0
@@ -3731,10 +3746,9 @@ function renderSeoScore(){
                                         ? "!"
                                         : "×"
                             }</span>
-
-                            <span>
-                                ${esc(x.message)}
-                            </span>
+                            <span>${esc(
+                                x.message
+                            )}</span>
                         </div>`
                 )
                 .join("");
@@ -3763,7 +3777,7 @@ function technicalChecks(){
             state.classification.destination
         );
 
-    const checks = [
+    return [
         {
             level:
                 topic.title
@@ -3889,8 +3903,6 @@ function technicalChecks(){
                     : "Article corpus is not currently available."
         }
     ];
-
-    return checks;
 }
 
 function renderTechnicalChecks(){
@@ -3899,7 +3911,9 @@ function renderTechnicalChecks(){
             "technicalChecks"
         );
 
-    if(!box) return;
+    if(!box){
+        return;
+    }
 
     box.innerHTML =
         technicalChecks()
@@ -3913,10 +3927,9 @@ function renderTechnicalChecks(){
                                     ? "!"
                                     : "×"
                         }</span>
-
-                        <span>
-                            ${esc(x.message)}
-                        </span>
+                        <span>${esc(
+                            x.message
+                        )}</span>
                     </div>`
             )
             .join("");
@@ -3953,7 +3966,8 @@ function renderStage6Metrics(){
             String(
                 c.filter(
                     x =>
-                        x.score >= 60
+                        x.score >=
+                        60
                 ).length
             );
     }
@@ -4111,26 +4125,31 @@ function renderReview(){
             "reviewContent"
         );
 
-    if(!root) return;
+    if(!root){
+        return;
+    }
 
     const topic =
         getArticleTopicData();
 
-    const checks = [
-        ...seoChecks(),
-        ...technicalChecks()
-    ];
+    const checks =
+        [
+            ...seoChecks(),
+            ...technicalChecks()
+        ];
 
     const errors =
         checks.filter(
             x =>
-                x.level === "error"
+                x.level ===
+                "error"
         ).length;
 
     const warnings =
         checks.filter(
             x =>
-                x.level === "warning"
+                x.level ===
+                "warning"
         ).length;
 
     const score =
@@ -4144,9 +4163,7 @@ function renderReview(){
 
     root.innerHTML = `
         <div class="review-hero">
-
             <div>
-
                 <div class="eyebrow">
                     FINAL EDITORIAL GATE
                 </div>
@@ -4165,14 +4182,12 @@ function renderReview(){
                         "No meta description."
                     )}
                 </p>
-
             </div>
 
             <div class="review-score">
                 <strong>${score}</strong>
                 <span>SEO / QA</span>
             </div>
-
         </div>
 
         <div class="review-grid">
@@ -4204,7 +4219,9 @@ function renderReview(){
 
                     [
                         "Tags",
-                        state.article.tags.join(", ") ||
+                        state.article.tags.join(
+                            ", "
+                        ) ||
                         "None"
                     ]
                 ]
@@ -4375,14 +4392,12 @@ function renderReview(){
                                 ? ""
                                 : "s"
                         } remain`
-
                         : warnings
                             ? `${warnings} advisory warning${
                                 warnings === 1
                                     ? ""
                                     : "s"
                             }`
-
                             : "Publication checks passed"
                 }
             </strong>
@@ -4415,25 +4430,17 @@ function reviewCard(
 ){
     return `
         <section class="review-card">
-
             <div class="review-card-head">
                 ${esc(title)}
             </div>
 
-            ${rows
-                .map(
-                    r =>
-                        `<div class="review-row">
-                            <span>
-                                ${esc(r[0])}
-                            </span>
-
-                            <strong>
-                                ${esc(r[1])}
-                            </strong>
-                        </div>`
-                )
-                .join("")}
+            ${rows.map(
+                r =>
+                    `<div class="review-row">
+                        <span>${esc(r[0])}</span>
+                        <strong>${esc(r[1])}</strong>
+                    </div>`
+            ).join("")}
 
         </section>
     `;
@@ -4587,7 +4594,9 @@ function createBreadcrumbSchema(
 function applyArticleImageMetadata(
     root
 ){
-    if(!root) return;
+    if(!root){
+        return;
+    }
 
     const images =
         [
@@ -4601,7 +4610,8 @@ function applyArticleImageMetadata(
             const src =
                 img.getAttribute(
                     "src"
-                ) || "";
+                ) ||
+                "";
 
             const meta =
                 [
@@ -4684,19 +4694,6 @@ function generateArticleHTML(
     const canonical =
         data.canonical;
 
-    /*
-       Public article files live at:
-
-       /breaches/article.html
-
-       The article CSS lives at:
-
-       /article.css
-
-       Therefore a category-level article file
-       references root resources with ../
-    */
-
     const pathDepth =
         "..";
 
@@ -4757,7 +4754,6 @@ function generateArticleHTML(
         data.image
             ? `
                 <figure class="hero">
-
                     <img
                         src="${attr(data.image)}"
                         alt="${attr(data.imageAlt)}"
@@ -4786,7 +4782,6 @@ function generateArticleHTML(
                             ""
                         )}
                     </figcaption>
-
                 </figure>
             `
             : "";
@@ -5001,25 +4996,17 @@ function generateArticleHTML(
         </a>
 
         <nav>
-
-            <a
-                href="${attr(pathDepth)}/"
-            >
+            <a href="${attr(pathDepth)}/">
                 Intel
             </a>
 
-            <a
-                href="${attr(pathDepth)}/dark-web/"
-            >
+            <a href="${attr(pathDepth)}/dark-web/">
                 Dark Web
             </a>
 
-            <a
-                href="${attr(pathDepth)}/signals/"
-            >
+            <a href="${attr(pathDepth)}/signals/">
                 Signals
             </a>
-
         </nav>
 
     </div>
@@ -5037,7 +5024,6 @@ function generateArticleHTML(
             </div>
 
             <div class="intel-item">
-
                 <div class="intel-label">
                     Classification
                 </div>
@@ -5045,11 +5031,9 @@ function generateArticleHTML(
                 <div class="intel-value">
                     ${esc(label)}
                 </div>
-
             </div>
 
             <div class="intel-item">
-
                 <div class="intel-label">
                     Threat Type
                 </div>
@@ -5057,11 +5041,9 @@ function generateArticleHTML(
                 <div class="intel-value">
                     ${esc(data.tag)}
                 </div>
-
             </div>
 
             <div class="intel-item">
-
                 <div class="intel-label">
                     Status
                 </div>
@@ -5069,11 +5051,9 @@ function generateArticleHTML(
                 <div class="intel-value">
                     ${esc(data.status)}
                 </div>
-
             </div>
 
             <div class="intel-item">
-
                 <div class="intel-label">
                     Severity
                 </div>
@@ -5081,11 +5061,9 @@ function generateArticleHTML(
                 <div class="intel-value">
                     ${esc(data.severity)}
                 </div>
-
             </div>
 
             <div class="intel-item">
-
                 <div class="intel-label">
                     Scope
                 </div>
@@ -5093,7 +5071,6 @@ function generateArticleHTML(
                 <div class="intel-value">
                     Global
                 </div>
-
             </div>
 
         </div>
@@ -5167,21 +5144,15 @@ function generateArticleHTML(
 
         <div class="share">
 
-            <button
-                onclick="copyLink()"
-            >
+            <button onclick="copyLink()">
                 Copy
             </button>
 
-            <button
-                onclick="shareX()"
-            >
+            <button onclick="shareX()">
                 Share
             </button>
 
-            <button
-                onclick="shareLinkedIn()"
-            >
+            <button onclick="shareLinkedIn()">
                 LinkedIn
             </button>
 
@@ -5349,11 +5320,12 @@ function makeSitemap(
             urls.push({
                 u:
                     "/" +
-                    String(a.url)
-                        .replace(
-                            /^\/+/,
-                            ""
-                        ),
+                    String(
+                        a.url
+                    ).replace(
+                        /^\/+/,
+                        ""
+                    ),
 
                 p:
                     ".8",
@@ -5378,10 +5350,9 @@ function makeSitemap(
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${clean
-    .map(
-        x =>
-            `<url>
+${clean.map(
+    x =>
+        `<url>
             <loc>${esc(
                 c.siteUrl +
                 x.u
@@ -5389,16 +5360,16 @@ ${clean
             ${
                 x.d
                     ? `<lastmod>${esc(
-                        String(x.d)
-                            .split("T")[0]
+                        String(
+                            x.d
+                        ).split("T")[0]
                     )}</lastmod>`
                     : ""
             }
             <changefreq>weekly</changefreq>
             <priority>${x.p}</priority>
         </url>`
-    )
-    .join("\n")}
+).join("\n")}
 </urlset>`;
 }
 
@@ -5431,10 +5402,9 @@ function makeNewsSitemap(
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
-${recent
-    .map(
-        a =>
-            `<url>
+${recent.map(
+    a =>
+        `<url>
             <loc>${esc(
                 getRecordUrl(
                     a,
@@ -5474,8 +5444,7 @@ ${recent
             </news:news>
 
         </url>`
-    )
-    .join("\n")}
+).join("\n")}
 </urlset>`;
 }
 
@@ -5772,22 +5741,19 @@ function buildRecord(){
             countExistingInternalLinks(),
 
         relatedArticles:
-            state.linking.selected
-                .slice(
-                    0,
-                    8
-                ),
+            state.linking.selected.slice(
+                0,
+                8
+            ),
 
         ogPrompt:
             state.seo.ogPrompt,
 
         index:
-            state.technical.index !==
-            false,
+            state.technical.index !== false,
 
         follow:
-            state.technical.follow !==
-            false,
+            state.technical.follow !== false,
 
         date,
 
@@ -5923,8 +5889,7 @@ async function publishArticle(){
                         a.id ===
                             window.HackaXEditId
                     ) ||
-                    a.url ===
-                        path
+                    a.url === path
             );
 
         if(index >= 0){
@@ -5997,13 +5962,7 @@ async function publishArticle(){
                         record.index,
 
                     follow:
-                        record.follow,
-
-                    imageWidth:
-                        record.imageWidth,
-
-                    imageHeight:
-                        record.imageHeight
+                        record.follow
                 }
             );
 
@@ -6055,28 +6014,34 @@ async function publishArticle(){
             ] of [
                 [
                     c.sitemap,
+
                     makeSitemap(
                         articles,
                         c
                     ),
+
                     "HackaX sitemap"
                 ],
 
                 [
                     c.newsSitemap,
+
                     makeNewsSitemap(
                         articles,
                         c
                     ),
+
                     "HackaX news sitemap"
                 ],
 
                 [
                     c.imageSitemap,
+
                     makeImageSitemap(
                         articles,
                         c
                     ),
+
                     "HackaX image sitemap"
                 ]
             ]
@@ -6104,7 +6069,9 @@ async function publishArticle(){
             );
 
         if(
-            Array.isArray(drafts)
+            Array.isArray(
+                drafts
+            )
         ){
             localStorage.setItem(
                 STORAGE.drafts,
@@ -6136,7 +6103,7 @@ async function publishArticle(){
         setTimeout(
             () =>
                 location.href =
-                    "./published.html",
+                    "published.html",
             900
         );
 
@@ -6233,7 +6200,9 @@ function saveDraft(){
 }
 
 function aiGrammar(){
-    if(!quill) return;
+    if(!quill){
+        return;
+    }
 
     let text =
         quill.getText();
@@ -6298,7 +6267,9 @@ function aiGrammar(){
 function replaceSelection(
     transform
 ){
-    if(!quill) return;
+    if(!quill){
+        return;
+    }
 
     const range =
         quill.getSelection(
@@ -6437,7 +6408,9 @@ function aiSEO(){
 }
 
 function aiGenerate(){
-    if(!quill) return;
+    if(!quill){
+        return;
+    }
 
     const label =
         CATEGORIES[
@@ -6461,7 +6434,8 @@ function aiGenerate(){
     quill.clipboard.dangerouslyPasteHTML(
         Math.max(
             0,
-            quill.getLength() - 1
+            quill.getLength() -
+            1
         ),
         html,
         "api"
@@ -6488,8 +6462,8 @@ function customAI(){
         getValue(
             "aiPrompt"
         )
-        .trim()
-        .toLowerCase();
+            .trim()
+            .toLowerCase();
 
     if(!prompt){
         toast(
@@ -6531,15 +6505,15 @@ function customAI(){
                     x.split(
                         /[.!?]/
                     )
-                    .map(
-                        v =>
-                            v.trim()
-                    )
-                    .filter(Boolean)
-                    .slice(
-                        0,
-                        2
-                    );
+                        .map(
+                            v =>
+                                v.trim()
+                        )
+                        .filter(Boolean)
+                        .slice(
+                            0,
+                            2
+                        );
 
                 return parts.length
                     ? parts.join(
@@ -6605,7 +6579,9 @@ function customAI(){
 }
 
 function initStage1(){
-    if(!window.Quill) return;
+    if(!window.Quill){
+        return;
+    }
 
     quill =
         new Quill(
@@ -6682,7 +6658,7 @@ function initStage1(){
                                     true;
 
                                 input.onchange =
-                                    async() => {
+                                    async () => {
                                         for(
                                             const file of
                                             input.files
@@ -6701,7 +6677,8 @@ function initStage1(){
                                                 const range =
                                                     quill.getSelection(
                                                         true
-                                                    ) || {
+                                                    ) ||
+                                                    {
                                                         index:
                                                             quill.getLength()
                                                     };
@@ -6760,9 +6737,7 @@ function initStage1(){
                                                 state.article.contentDelta =
                                                     quill.getContents();
 
-                                                saveState(
-                                                    true
-                                                );
+                                                saveState(true);
 
                                                 toast(
                                                     "Image optimized, converted to WebP and watermarked.",
@@ -6859,7 +6834,9 @@ function initStage1(){
                 }
 
                 updateSlugPreview();
+
                 renderKeywordPreview();
+
                 saveState();
             }
         );
@@ -6893,7 +6870,9 @@ function initStage1(){
                 );
 
             renderKeywordPreview();
+
             renderWordCount();
+
             saveState();
         }
     );
@@ -7013,7 +6992,9 @@ function initStage1(){
         );
 
     updateSlugPreview();
+
     renderKeywordPreview();
+
     renderWordCount();
 }
 
@@ -7061,7 +7042,9 @@ function renderKeywordPreview(){
             "keywordPreview"
         );
 
-    if(!box) return;
+    if(!box){
+        return;
+    }
 
     const terms =
         getArticleTopicData()
@@ -7111,7 +7094,9 @@ function initStage2(){
                 const file =
                     e.target.files[0];
 
-                if(!file) return;
+                if(!file){
+                    return;
+                }
 
                 try{
                     toast(
@@ -7259,6 +7244,7 @@ function initStage5(){
 
 function initStage6(){
     renderLinkSuggestions();
+
     renderStage6Metrics();
 
     document
@@ -7267,10 +7253,11 @@ function initStage6(){
         )
         ?.addEventListener(
             "click",
-            async() => {
+            async () => {
                 await loadArticles();
 
                 renderLinkSuggestions();
+
                 renderStage6Metrics();
 
                 toast(
@@ -7298,7 +7285,9 @@ function initStage6(){
                 )
             ){
                 saveStage6();
+
                 saveState();
+
                 renderStage6Metrics();
             }
         }
@@ -7319,7 +7308,9 @@ function initStage7(){
                     "change",
                     () => {
                         saveStage7();
+
                         renderTechnicalChecks();
+
                         saveState(true);
                     }
                 )
@@ -7333,6 +7324,7 @@ function initStage7(){
             "click",
             () => {
                 saveStage7();
+
                 renderTechnicalChecks();
 
                 toast(
@@ -7392,7 +7384,7 @@ function initCommon(){
                     );
 
                     location.href =
-                        "./index.html";
+                        "index.html";
                 }
             }
         );
@@ -7408,14 +7400,13 @@ function initCommon(){
         "keydown",
         e => {
             if(
-                (
-                    e.metaKey ||
-                    e.ctrlKey
-                ) &&
+                (e.metaKey ||
+                    e.ctrlKey) &&
                 e.key.toLowerCase() ===
                     "s"
             ){
                 e.preventDefault();
+
                 saveDraft();
             }
         }
@@ -7433,7 +7424,10 @@ async function checkGitHub(){
             "statusText"
         );
 
-    if(!dot || !text){
+    if(
+        !dot ||
+        !text
+    ){
         return false;
     }
 
@@ -7514,17 +7508,16 @@ function mountStage(){
     currentStage =
         stage;
 
-    const params =
-        new URLSearchParams(
-            location.search
-        );
-
     if(
         stage === 1 &&
         state.workflow.currentStage > 1 &&
         state.workflow.currentStage < 8 &&
-        !params.has("draft") &&
-        !params.has("mode")
+        !new URLSearchParams(
+            location.search
+        ).has("draft") &&
+        !new URLSearchParams(
+            location.search
+        ).has("mode")
     ){
         const resume =
             state.workflow.currentStage;
@@ -7536,30 +7529,19 @@ function mountStage(){
         ){
             state.workflow.currentStage =
                 1;
-
-            currentStage =
-                1;
-
-            saveState(true);
-
         }else{
-            const files =
-                getPublisherStageFiles();
-
-            const target =
-                new URL(
-                    `./${files[resume - 1]}`,
-                    window.location.href
-                ).href;
-
-            if(
-                window.location.href !==
-                target
-            ){
-                location.replace(
-                    target
-                );
-            }
+            location.replace(
+                [
+                    "index.html",
+                    "hackax-next2.html",
+                    "hackax-next3.html",
+                    "hackax-next4.html",
+                    "hackax-next5.html",
+                    "hackax-next6.html",
+                    "hackax-next7.html",
+                    "hackax-overview.html"
+                ][resume - 1]
+            );
 
             return;
         }
@@ -7603,15 +7585,17 @@ function mountStage(){
         initReview();
     }
 
-    loadArticles()
-        .then(
-            () => {
-                renderLinkSuggestions();
-                renderStage6Metrics();
-                renderTechnicalChecks();
-                renderReview();
-            }
-        );
+    loadArticles().then(
+        () => {
+            renderLinkSuggestions();
+
+            renderStage6Metrics();
+
+            renderTechnicalChecks();
+
+            renderReview();
+        }
+    );
 
     checkGitHub();
 }
