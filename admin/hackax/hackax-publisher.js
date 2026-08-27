@@ -132,13 +132,24 @@ function attr(value){
 function b64(value){
     const bytes = new TextEncoder().encode(String(value));
     let binary = "";
-    bytes.forEach(b => binary += String.fromCharCode(b));
+
+    bytes.forEach(b => {
+        binary += String.fromCharCode(b);
+    });
+
     return btoa(binary);
 }
 
 function unb64(value){
-    const binary = atob(String(value || "").replace(/\s/g,""));
-    const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+    const binary = atob(
+        String(value || "").replace(/\s/g,"")
+    );
+
+    const bytes = Uint8Array.from(
+        binary,
+        c => c.charCodeAt(0)
+    );
+
     return new TextDecoder().decode(bytes);
 }
 
@@ -168,11 +179,10 @@ function toast(message, type){
 
     clearTimeout(window.__hackaxToast);
 
-    window.__hackaxToast =
-        setTimeout(
-            () => el.classList.add("hidden"),
-            3600
-        );
+    window.__hackaxToast = setTimeout(
+        () => el.classList.add("hidden"),
+        3600
+    );
 }
 
 function slugify(value){
@@ -189,7 +199,9 @@ function slugify(value){
 }
 
 function unique(arr){
-    return [...new Set(arr.filter(Boolean))];
+    return [...new Set(
+        arr.filter(Boolean)
+    )];
 }
 
 function cleanText(value){
@@ -219,11 +231,10 @@ function meaningfulTokens(value){
 }
 
 function cfg(){
-    const saved =
-        safeJSON(
-            localStorage.getItem(STORAGE.settings) || "{}",
-            {}
-        );
+    const saved = safeJSON(
+        localStorage.getItem(STORAGE.settings) || "{}",
+        {}
+    );
 
     const merged = {
         ...DEFAULTS,
@@ -243,19 +254,19 @@ function cfg(){
             String(
                 merged.githubRepo || ""
             )
-                .trim()
-                .replace(
-                    /^https?:\/\/github\.com\//i,
-                    ""
-                )
-                .replace(
-                    /\.git$/i,
-                    ""
-                )
-                .replace(
-                    /^\/+|\/+$/g,
-                    ""
-                ),
+            .trim()
+            .replace(
+                /^https?:\/\/github\.com\//i,
+                ""
+            )
+            .replace(
+                /\.git$/i,
+                ""
+            )
+            .replace(
+                /^\/+|\/+$/g,
+                ""
+            ),
 
         githubBranch:
             String(
@@ -272,62 +283,62 @@ function freshState(){
         id:
             crypto.randomUUID(),
 
-        article: {
-            title: "",
-            slug: "",
-            summary: "",
-            contentHtml: "",
-            contentDelta: null,
-            tags: []
+        article:{
+            title:"",
+            slug:"",
+            summary:"",
+            contentHtml:"",
+            contentDelta:null,
+            tags:[]
         },
 
-        media: {
-            featured: null,
-            body: []
+        media:{
+            featured:null,
+            body:[]
         },
 
-        classification: {
-            contentType: "update",
-            category: "general",
-            domains: [],
-            intelTag: "GENERAL UPDATE",
-            status: "Routine Update",
-            severity: "Informational",
-            verification: "Verified",
-            confidence: "Moderate",
-            destination: "homepage"
+        classification:{
+            contentType:"update",
+            category:"general",
+            domains:[],
+            intelTag:"GENERAL UPDATE",
+            status:"Routine Update",
+            severity:"Informational",
+            verification:"Verified",
+            confidence:"Moderate",
+            destination:"homepage"
         },
 
-        intelligence: {
-            actors: [],
-            malware: [],
-            cves: [],
-            techniques: [],
-            iocs: []
+        intelligence:{
+            actors:[],
+            malware:[],
+            cves:[],
+            techniques:[],
+            iocs:[]
         },
 
-        seo: {
-            title: "",
-            description: "",
-            canonical: "",
-            ogPrompt: ""
+        seo:{
+            title:"",
+            description:"",
+            canonical:"",
+            ogPrompt:""
         },
 
-        linking: {
-            selected: [],
-            applied: 0
+        linking:{
+            selected:[],
+            applied:0
         },
 
-        technical: {
-            index: true,
-            follow: true
+        technical:{
+            index:true,
+            follow:true
         },
 
-        workflow: {
-            currentStage: 1,
-            completed: [],
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
+        workflow:{
+            currentStage:1,
+            completed:[],
+            createdAt:new Date().toISOString(),
+            updatedAt:new Date().toISOString()
         }
     };
 }
@@ -343,107 +354,89 @@ function normalizeState(input){
         ...base,
         ...input,
 
-        article: {
+        article:{
             ...base.article,
             ...(input.article || {})
         },
 
-        media: {
+        media:{
             ...base.media,
             ...(input.media || {})
         },
 
-        classification: {
+        classification:{
             ...base.classification,
             ...(input.classification || {})
         },
 
-        intelligence: {
+        intelligence:{
             ...base.intelligence,
             ...(input.intelligence || {})
         },
 
-        seo: {
+        seo:{
             ...base.seo,
             ...(input.seo || {})
         },
 
-        linking: {
+        linking:{
             ...base.linking,
             ...(input.linking || {})
         },
 
-        technical: {
+        technical:{
             ...base.technical,
             ...(input.technical || {})
         },
 
-        workflow: {
+        workflow:{
             ...base.workflow,
             ...(input.workflow || {})
         }
     };
 
     merged.article.tags =
-        Array.isArray(
-            merged.article.tags
-        )
+        Array.isArray(merged.article.tags)
             ? merged.article.tags
             : [];
 
     merged.classification.domains =
-        Array.isArray(
-            merged.classification.domains
-        )
+        Array.isArray(merged.classification.domains)
             ? merged.classification.domains
             : [];
 
     merged.intelligence.actors =
-        Array.isArray(
-            merged.intelligence.actors
-        )
+        Array.isArray(merged.intelligence.actors)
             ? merged.intelligence.actors
             : [];
 
     merged.intelligence.malware =
-        Array.isArray(
-            merged.intelligence.malware
-        )
+        Array.isArray(merged.intelligence.malware)
             ? merged.intelligence.malware
             : [];
 
     merged.intelligence.cves =
-        Array.isArray(
-            merged.intelligence.cves
-        )
+        Array.isArray(merged.intelligence.cves)
             ? merged.intelligence.cves
             : [];
 
     merged.intelligence.techniques =
-        Array.isArray(
-            merged.intelligence.techniques
-        )
+        Array.isArray(merged.intelligence.techniques)
             ? merged.intelligence.techniques
             : [];
 
     merged.intelligence.iocs =
-        Array.isArray(
-            merged.intelligence.iocs
-        )
+        Array.isArray(merged.intelligence.iocs)
             ? merged.intelligence.iocs
             : [];
 
     merged.linking.selected =
-        Array.isArray(
-            merged.linking.selected
-        )
+        Array.isArray(merged.linking.selected)
             ? merged.linking.selected
             : [];
 
     merged.workflow.completed =
-        Array.isArray(
-            merged.workflow.completed
-        )
+        Array.isArray(merged.workflow.completed)
             ? merged.workflow.completed
             : [];
 
@@ -469,31 +462,28 @@ function saveState(immediate){
 
     clearTimeout(autosaveTimer);
 
-    autosaveTimer =
-        setTimeout(
-            () => {
-                if(state){
-                    localStorage.setItem(
-                        STORAGE.publisher,
-                        JSON.stringify(state)
-                    );
-                }
+    autosaveTimer = setTimeout(
+        () => {
+            if(state){
+                localStorage.setItem(
+                    STORAGE.publisher,
+                    JSON.stringify(state)
+                );
+            }
 
-                updateSaveIndicator();
-            },
-            immediate ? 0 : 450
-        );
+            updateSaveIndicator();
+        },
+        immediate ? 0 : 450
+    );
 
     updateSaveIndicator();
 }
 
 function updateSaveIndicator(){
     const el =
-        document.getElementById(
-            "saveState"
-        );
+        document.getElementById("saveState");
 
-    if(!el){
+    if(!el || !state){
         return;
     }
 
@@ -514,21 +504,15 @@ function updateSaveIndicator(){
 
 function renderGlobalProgress(){
     const step =
-        document.getElementById(
-            "stageCounter"
-        );
+        document.getElementById("stageCounter");
 
     if(step){
         step.textContent =
-            "STEP " +
-            currentStage +
-            " OF 8";
+            "STEP " + currentStage + " OF 8";
     }
 
     const title =
-        document.getElementById(
-            "stageTitle"
-        );
+        document.getElementById("stageTitle");
 
     if(title){
         const names = [
@@ -547,28 +531,22 @@ function renderGlobalProgress(){
             "Publisher";
     }
 
-    document
-        .querySelectorAll(
-            "[data-stage]"
-        )
-        .forEach(
-            el => {
-                const n =
-                    Number(
-                        el.dataset.stage
-                    );
+    document.querySelectorAll(
+        "[data-stage]"
+    ).forEach(el => {
+        const n =
+            Number(el.dataset.stage);
 
-                el.classList.toggle(
-                    "stage-current",
-                    n === currentStage
-                );
-
-                el.classList.toggle(
-                    "stage-complete",
-                    state.workflow.completed.includes(n)
-                );
-            }
+        el.classList.toggle(
+            "stage-current",
+            n === currentStage
         );
+
+        el.classList.toggle(
+            "stage-complete",
+            state.workflow.completed.includes(n)
+        );
+    });
 }
 
 function goStage(n){
@@ -615,15 +593,11 @@ function goStage(n){
         "hackax-overview.html"
     ][n - 1];
 
-    if(
-        !location.pathname.endsWith(file)
-    ){
+    if(!location.pathname.endsWith(file)){
         location.href = file;
     }else{
         window.dispatchEvent(
-            new CustomEvent(
-                "hackax:stage"
-            )
+            new CustomEvent("hackax:stage")
         );
     }
 }
@@ -646,9 +620,7 @@ function nextStage(){
     saveCurrentPage();
 
     const result =
-        validateStage(
-            currentStage
-        );
+        validateStage(currentStage);
 
     renderValidation(result);
 
@@ -695,8 +667,7 @@ function validateStage(stage){
         if(!title){
             return {
                 ok:false,
-                message:
-                    "Add an article title first."
+                message:"Add an article title first."
             };
         }
 
@@ -760,7 +731,9 @@ function validateStage(stage){
             };
         }
 
-        if(!state.classification.contentType){
+        if(
+            !state.classification.contentType
+        ){
             return {
                 ok:false,
                 message:
@@ -780,7 +753,9 @@ function validateStage(stage){
     }
 
     if(stage === 5){
-        if(!state.seo.title.trim()){
+        if(
+            !state.seo.title.trim()
+        ){
             return {
                 ok:false,
                 message:
@@ -788,7 +763,9 @@ function validateStage(stage){
             };
         }
 
-        if(!state.seo.description.trim()){
+        if(
+            !state.seo.description.trim()
+        ){
             return {
                 ok:false,
                 message:
@@ -871,46 +848,40 @@ function renderValidation(result){
 }
 
 function bindNavigation(){
-    document
-        .querySelectorAll(
-            "[data-next]"
-        )
-        .forEach(
-            b =>
-                b.addEventListener(
-                    "click",
-                    nextStage
-                )
-        );
+    document.querySelectorAll(
+        "[data-next]"
+    ).forEach(
+        b =>
+            b.addEventListener(
+                "click",
+                nextStage
+            )
+    );
 
-    document
-        .querySelectorAll(
-            "[data-back]"
-        )
-        .forEach(
-            b =>
-                b.addEventListener(
-                    "click",
-                    previousStage
-                )
-        );
+    document.querySelectorAll(
+        "[data-back]"
+    ).forEach(
+        b =>
+            b.addEventListener(
+                "click",
+                previousStage
+            )
+    );
 
-    document
-        .querySelectorAll(
-            "[data-stage-link]"
-        )
-        .forEach(
-            b =>
-                b.addEventListener(
-                    "click",
-                    () =>
-                        goStage(
-                            Number(
-                                b.dataset.stageLink
-                            )
+    document.querySelectorAll(
+        "[data-stage-link]"
+    ).forEach(
+        b =>
+            b.addEventListener(
+                "click",
+                () =>
+                    goStage(
+                        Number(
+                            b.dataset.stageLink
                         )
-                )
-        );
+                    )
+            )
+    );
 
     const save =
         document.getElementById(
@@ -982,9 +953,7 @@ function initState(){
         );
 
     state =
-        normalizeState(
-            stored
-        );
+        normalizeState(stored);
 
     const q =
         new URLSearchParams(
@@ -1096,11 +1065,12 @@ function importLegacyRecord(
                 null
             )
             : d.content ||
-              null;
+                null;
 
     if(
         imported.article.contentDelta &&
-        typeof imported.article.contentDelta === "object" &&
+        typeof imported.article.contentDelta ===
+            "object" &&
         Array.isArray(
             imported.article.contentDelta.ops
         )
@@ -1118,10 +1088,8 @@ function importLegacyRecord(
     imported.article.tags =
         Array.isArray(d.keywords)
             ? d.keywords
-            : (
-                d.tags ||
-                []
-            );
+            : d.tags ||
+                [];
 
     imported.media.featured =
         d.image
@@ -1136,7 +1104,11 @@ function importLegacyRecord(
                 publicId:d.imagePublicId || "",
                 seoName:d.imageSeoName || "",
                 watermarked:true,
-                processed:true
+                processed:true,
+                compressed:
+                    d.imageCompressed !== false,
+                webp:
+                    d.imageWebp !== false
             }
             : null;
 
@@ -1229,9 +1201,7 @@ function importLegacyRecord(
         new Date().toISOString();
 
     state =
-        normalizeState(
-            imported
-        );
+        normalizeState(imported);
 
     localStorage.setItem(
         STORAGE.publisher,
@@ -1400,11 +1370,11 @@ function saveStage1(){
         getValue(
             "tagsInput"
         )
-            .split(",")
-            .map(
-                x => x.trim()
-            )
-            .filter(Boolean);
+        .split(",")
+        .map(
+            x => x.trim()
+        )
+        .filter(Boolean);
 
     state.article.tags =
         unique(tags);
@@ -1563,40 +1533,25 @@ function saveStage6(){
             ...document.querySelectorAll(
                 'input[name="relatedArticle"]:checked'
             )
-        ]
-            .map(
-                el => {
-                    const a =
-                        existingArticles.find(
-                            x =>
-                                x.id === el.value ||
-                                x.url === el.value
-                        );
+        ].map(el => {
+            const a =
+                existingArticles.find(
+                    x =>
+                        x.id === el.value ||
+                        x.url === el.value
+                );
 
-                    return a
-                        ? {
-                            id:
-                                a.id ||
-                                null,
-
-                            title:
-                                a.title ||
-                                "",
-
-                            url:
-                                a.url ||
-                                "",
-
-                            score:
-                                Number(
-                                    el.dataset.score ||
-                                    0
-                                )
-                        }
-                        : null;
+            return a
+                ? {
+                    id:a.id || null,
+                    title:a.title || "",
+                    url:a.url || "",
+                    score:Number(
+                        el.dataset.score || 0
+                    )
                 }
-            )
-            .filter(Boolean);
+                : null;
+        }).filter(Boolean);
 
     state.linking.applied =
         countExistingInternalLinks();
@@ -1632,10 +1587,7 @@ function splitList(value){
                 x => x.trim()
             )
             .filter(Boolean)
-    ).slice(
-        0,
-        30
-    );
+    ).slice(0,30);
 }
 
 function parseIocs(value){
@@ -1646,10 +1598,7 @@ function parseIocs(value){
                 x => x.trim()
             )
             .filter(Boolean)
-    ).slice(
-        0,
-        100
-    );
+    ).slice(0,100);
 }
 
 function deltaToHtml(delta){
@@ -1661,66 +1610,61 @@ function deltaToHtml(delta){
     }
 
     const root =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     let html = "";
 
-    delta.ops.forEach(
-        op => {
-            if(
-                typeof op.insert !==
-                "string"
-            ){
-                return;
-            }
-
-            const text =
-                esc(op.insert)
-                    .replace(
-                        /\n/g,
-                        "<br>"
-                    );
-
-            const attrs =
-                op.attributes ||
-                {};
-
-            let chunk =
-                text;
-
-            if(attrs.bold){
-                chunk =
-                    "<strong>" +
-                    chunk +
-                    "</strong>";
-            }
-
-            if(attrs.italic){
-                chunk =
-                    "<em>" +
-                    chunk +
-                    "</em>";
-            }
-
-            if(attrs.underline){
-                chunk =
-                    "<u>" +
-                    chunk +
-                    "</u>";
-            }
-
-            if(attrs.strike){
-                chunk =
-                    "<s>" +
-                    chunk +
-                    "</s>";
-            }
-
-            html += chunk;
+    delta.ops.forEach(op => {
+        if(
+            typeof op.insert !==
+            "string"
+        ){
+            return;
         }
-    );
+
+        const text =
+            esc(op.insert)
+                .replace(
+                    /\n/g,
+                    "<br>"
+                );
+
+        const attrs =
+            op.attributes ||
+            {};
+
+        let chunk = text;
+
+        if(attrs.bold){
+            chunk =
+                "<strong>" +
+                chunk +
+                "</strong>";
+        }
+
+        if(attrs.italic){
+            chunk =
+                "<em>" +
+                chunk +
+                "</em>";
+        }
+
+        if(attrs.underline){
+            chunk =
+                "<u>" +
+                chunk +
+                "</u>";
+        }
+
+        if(attrs.strike){
+            chunk =
+                "<s>" +
+                chunk +
+                "</s>";
+        }
+
+        html += chunk;
+    });
 
     root.innerHTML =
         html;
@@ -1730,9 +1674,7 @@ function deltaToHtml(delta){
 
 function sanitizeArticleHTML(html){
     const root =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     root.innerHTML =
         String(html || "");
@@ -1743,69 +1685,66 @@ function sanitizeArticleHTML(html){
         x => x.remove()
     );
 
-    root.querySelectorAll("*")
-        .forEach(
-            el => {
-                [
-                    ...el.attributes
-                ].forEach(
-                    attrNode => {
-                        const n =
-                            attrNode.name.toLowerCase();
+    root.querySelectorAll("*").forEach(
+        el => {
+            [
+                ...el.attributes
+            ].forEach(
+                attrNode => {
+                    const n =
+                        attrNode.name.toLowerCase();
 
-                        const v =
-                            attrNode.value;
+                    const v =
+                        attrNode.value;
 
-                        if(
-                            n.startsWith("on") ||
-                            (
-                                n === "style" &&
-                                /expression|javascript:/i.test(v)
-                            )
-                        ){
-                            el.removeAttribute(
-                                attrNode.name
-                            );
-                        }
-
-                        if(
-                            (
-                                n === "href" ||
-                                n === "src"
-                            ) &&
-                            /^\s*javascript:/i.test(v)
-                        ){
-                            el.removeAttribute(
-                                attrNode.name
-                            );
-                        }
+                    if(
+                        n.startsWith("on") ||
+                        (
+                            n === "style" &&
+                            /expression|javascript:/i.test(v)
+                        )
+                    ){
+                        el.removeAttribute(
+                            attrNode.name
+                        );
                     }
-                );
-            }
-        );
 
-    root.querySelectorAll("a")
-        .forEach(
-            a => {
-                a.setAttribute(
-                    "rel",
-                    "noopener noreferrer"
-                );
-
-                if(
-                    /^https?:\/\//i.test(
-                        a.getAttribute(
-                            "href"
-                        ) || ""
-                    )
-                ){
-                    a.setAttribute(
-                        "target",
-                        "_blank"
-                    );
+                    if(
+                        (
+                            n === "href" ||
+                            n === "src"
+                        ) &&
+                        /^\s*javascript:/i.test(v)
+                    ){
+                        el.removeAttribute(
+                            attrNode.name
+                        );
+                    }
                 }
+            );
+        }
+    );
+
+    root.querySelectorAll("a").forEach(
+        a => {
+            a.setAttribute(
+                "rel",
+                "noopener noreferrer"
+            );
+
+            if(
+                /^https?:\/\//i.test(
+                    a.getAttribute("href") ||
+                    ""
+                )
+            ){
+                a.setAttribute(
+                    "target",
+                    "_blank"
+                );
             }
-        );
+        }
+    );
 
     return root.innerHTML;
 }
@@ -1819,22 +1758,18 @@ function imageBaseName(
         meaningfulTokens(
             [
                 title,
-                CATEGORIES[category] ||
-                    category,
-                tag ||
-                    ""
+                CATEGORIES[
+                    category
+                ] || category,
+                tag || ""
             ].join(" ")
         );
 
     return slugify(
         pieces
-            .slice(
-                0,
-                12
-            )
+            .slice(0,12)
             .join("-")
-    ) ||
-        "hackax-intelligence";
+    ) || "hackax-intelligence";
 }
 
 function generateImageAlt(
@@ -1844,7 +1779,9 @@ function generateImageAlt(
     context
 ){
     const label =
-        CATEGORIES[category] ||
+        CATEGORIES[
+            category
+        ] ||
         "Cyber Threat Intelligence";
 
     const suffix =
@@ -1852,29 +1789,29 @@ function generateImageAlt(
             ? " " + context
             : " featured image";
 
-    return `${cleanText(title)} - ${label}${suffix ? " " + suffix.trim() : ""}`
-        .replace(
-            /\s+/g,
-            " "
-        )
-        .trim()
-        .slice(
-            0,
-            180
-        );
+    return (
+        `${cleanText(title)} - ${label}${suffix ? " " + suffix.trim() : ""}`
+    )
+    .replace(
+        /\s+/g,
+        " "
+    )
+    .trim()
+    .slice(0,180);
 }
 
 function generateImageTitle(
     title,
     category
 ){
-    return `${cleanText(title)} | ${
-        CATEGORIES[category] ||
-        "HackaX Intelligence"
-    }`.slice(
-        0,
-        180
-    );
+    return (
+        `${cleanText(title)} | ${
+            CATEGORIES[
+                category
+            ] ||
+            "HackaX Intelligence"
+        }`
+    ).slice(0,180);
 }
 
 function generateImageCaption(
@@ -1883,13 +1820,49 @@ function generateImageCaption(
     tag
 ){
     return `${
-        CATEGORIES[category] ||
+        CATEGORIES[
+            category
+        ] ||
         "Cyber Threat Intelligence"
     } coverage: ${cleanText(title)}${
         tag
             ? " (" + tag + ")"
             : ""
     }.`;
+}
+
+/* ==========================================================
+   HACKAX WATERMARK
+   Asset is stored at the SITE ROOT:
+   /assets/dyve-hackax.png
+========================================================== */
+
+function getWatermarkUrls(){
+    const urls = [];
+
+    const rootUrl =
+        new URL(
+            "/assets/dyve-hackax.png",
+            location.origin
+        ).href;
+
+    urls.push(rootUrl);
+
+    urls.push(
+        new URL(
+            "../assets/dyve-hackax.png",
+            document.baseURI
+        ).href
+    );
+
+    urls.push(
+        new URL(
+            "assets/dyve-hackax.png",
+            document.baseURI
+        ).href
+    );
+
+    return unique(urls);
 }
 
 async function loadWatermark(){
@@ -1901,50 +1874,63 @@ async function loadWatermark(){
 
     window.__hackaxWatermarkPromise =
         new Promise(
-            (resolve,reject)=>{
-                const paths = [
-                    "../assets/dyve-hackax.png",
-                    "/assets/dyve-hackax.png",
-                    "assets/dyve-hackax.png"
-                ];
+            (resolve,reject) => {
+                const paths =
+                    getWatermarkUrls();
 
                 let index = 0;
 
-                const tryNext =
-                    () => {
-                        if(
-                            index >=
-                            paths.length
-                        ){
-                            reject(
-                                new Error(
-                                    "HackaX watermark asset assets/dyve-hackax.png was not found."
-                                )
-                            );
+                const tryNext = () => {
+                    if(
+                        index >= paths.length
+                    ){
+                        window.__hackaxWatermarkPromise =
+                            null;
 
+                        reject(
+                            new Error(
+                                "HackaX watermark asset /assets/dyve-hackax.png could not be loaded."
+                            )
+                        );
+
+                        return;
+                    }
+
+                    const src =
+                        paths[index++];
+
+                    const img =
+                        new Image();
+
+                    img.decoding =
+                        "async";
+
+                    img.onload = () => {
+                        if(
+                            img.naturalWidth <= 0 ||
+                            img.naturalHeight <= 0
+                        ){
+                            tryNext();
                             return;
                         }
 
-                        const img =
-                            new Image();
-
-                        img.onload =
-                            () =>
-                                resolve(img);
-
-                        img.onerror =
-                            () => {
-                                index++;
-                                tryNext();
-                            };
-
-                        const path =
-                            paths[index++];
-
-                        img.src =
-                            path +
-                            "?v=1";
+                        resolve(img);
                     };
+
+                    img.onerror =
+                        () => {
+                            tryNext();
+                        };
+
+                    img.src =
+                        src +
+                        (
+                            src.includes("?")
+                                ? "&"
+                                : "?"
+                        ) +
+                        "v=2";
+                };
 
                 tryNext();
             }
@@ -1958,14 +1944,11 @@ async function processImage(
     options
 ){
     options =
-        options ||
-        {};
+        options || {};
 
     if(
         !file ||
-        !file.type.startsWith(
-            "image/"
-        )
+        !file.type.startsWith("image/")
     ){
         throw new Error(
             "Please choose a valid image file."
@@ -1982,9 +1965,7 @@ async function processImage(
     }
 
     const bitmap =
-        await createImageBitmap(
-            file
-        );
+        await createImageBitmap(file);
 
     const maxWidth =
         options.maxWidth ||
@@ -1996,10 +1977,7 @@ async function processImage(
     let height =
         bitmap.height;
 
-    if(
-        width >
-        maxWidth
-    ){
+    if(width > maxWidth){
         height =
             Math.round(
                 height *
@@ -2054,6 +2032,13 @@ async function processImage(
         height
     );
 
+    if(
+        typeof bitmap.close ===
+        "function"
+    ){
+        bitmap.close();
+    }
+
     const watermark =
         await loadWatermark();
 
@@ -2061,8 +2046,7 @@ async function processImage(
         Math.max(
             110,
             Math.round(
-                width *
-                0.18
+                width * 0.18
             )
         );
 
@@ -2077,8 +2061,7 @@ async function processImage(
         Math.max(
             18,
             Math.round(
-                width *
-                0.018
+                width * 0.018
             )
         );
 
@@ -2104,8 +2087,7 @@ async function processImage(
         Math.max(
             4,
             Math.round(
-                width *
-                0.006
+                width * .006
             )
         );
 
@@ -2121,7 +2103,7 @@ async function processImage(
 
     const blob =
         await new Promise(
-            (resolve,reject)=>{
+            (resolve,reject) => {
                 canvas.toBlob(
                     b =>
                         b
@@ -2133,7 +2115,7 @@ async function processImage(
                             ),
                     "image/webp",
                     options.quality ||
-                        0.82
+                    0.82
                 );
             }
         );
@@ -2163,12 +2145,11 @@ async function processImage(
     );
 }
 
-
 /* ==========================================================
    CLOUDINARY
-   Unsigned upload presets accept a restricted parameter set.
-   We intentionally use only:
-   upload_preset + public_id.
+   IMPORTANT:
+   Unsigned upload does NOT receive filename_override,
+   use_filename or unique_filename.
 ========================================================== */
 
 async function cloudinaryUpload(
@@ -2194,21 +2175,6 @@ async function cloudinaryUpload(
     const form =
         new FormData();
 
-    /*
-       IMPORTANT:
-
-       Do NOT send:
-       - use_filename
-       - unique_filename
-       - filename_override
-
-       Those parameters are rejected by the
-       current unsigned upload preset.
-
-       public_id is supported and gives us a
-       predictable SEO-oriented Cloudinary asset ID.
-    */
-
     form.append(
         "file",
         file
@@ -2219,12 +2185,21 @@ async function cloudinaryUpload(
         c.uploadPreset
     );
 
+    /*
+       These are intentionally NOT sent:
+
+       use_filename
+       unique_filename
+       filename_override
+
+       Cloudinary unsigned uploads reject them
+       under the current unsigned preset policy.
+    */
+
     if(publicId){
         form.append(
             "public_id",
-            String(publicId)
-                .replace(/^\/+/,"")
-                .replace(/\.webp$/i,"")
+            publicId
         );
     }
 
@@ -2237,38 +2212,17 @@ async function cloudinaryUpload(
             }
         );
 
-    const raw =
+    const data =
         await response
-            .text()
+            .json()
             .catch(
-                () => ""
+                () => ({})
             );
-
-    let data =
-        {};
-
-    try{
-        data =
-            raw
-                ? JSON.parse(raw)
-                : {};
-    }catch(e){
-        data = {};
-    }
 
     if(!response.ok){
         throw new Error(
             data.error?.message ||
-            raw ||
             `Cloudinary upload failed (${response.status}).`
-        );
-    }
-
-    if(
-        !data.secure_url
-    ){
-        throw new Error(
-            "Cloudinary returned no secure image URL."
         );
     }
 
@@ -2298,8 +2252,7 @@ async function uploadAndProcessImage(
                             ? 1800
                             : 1600,
 
-                    quality:
-                        0.82
+                    quality:.82
                 }
             );
 
@@ -2310,16 +2263,6 @@ async function uploadAndProcessImage(
                 context
             );
 
-        /*
-           public_id is now the SEO filename mechanism.
-
-           Example:
-           hackax/ransomware-healthcare-attack-1756300000000
-
-           Cloudinary will serve the transformed WebP
-           asset without requiring forbidden unsigned
-           upload filename parameters.
-        */
         const publicId =
             `hackax/${base}-${Date.now()}`;
 
@@ -2333,21 +2276,24 @@ async function uploadAndProcessImage(
                 );
         }catch(first){
             /*
-               If the configured unsigned preset has
-               additional restrictions around public_id,
-               retry using only the universally required
-               unsigned parameters.
+               Retry without public_id in case the
+               unsigned preset disallows custom IDs.
             */
-            console.warn(
-                "Cloudinary public_id upload failed; retrying with preset-only upload.",
-                first
-            );
 
             data =
                 await cloudinaryUpload(
                     optimized,
                     ""
                 );
+        }
+
+        if(
+            !data ||
+            !data.secure_url
+        ){
+            throw new Error(
+                "Cloudinary returned no usable image URL."
+            );
         }
 
         const meta = {
@@ -2368,7 +2314,6 @@ async function uploadAndProcessImage(
 
             publicId:
                 data.public_id ||
-                publicId ||
                 "",
 
             resourceType:
@@ -2405,17 +2350,10 @@ async function uploadAndProcessImage(
                     state.classification.intelTag
                 ),
 
-            watermarked:
-                true,
-
-            processed:
-                true,
-
-            compressed:
-                true,
-
-            webp:
-                true,
+            watermarked:true,
+            processed:true,
+            compressed:true,
+            webp:true,
 
             byteSize:
                 optimized.size,
@@ -2424,9 +2362,7 @@ async function uploadAndProcessImage(
                 new Date().toISOString()
         };
 
-        if(
-            context === "featured"
-        ){
+        if(context === "featured"){
             state.media.featured =
                 meta;
         }else{
@@ -2472,6 +2408,10 @@ function renderFeaturedMeta(){
     if(img){
         img.src =
             m.url;
+
+        img.alt =
+            m.alt ||
+            "HackaX featured image";
     }
 
     const status =
@@ -2487,12 +2427,10 @@ function renderFeaturedMeta(){
             "✓ Watermarked",
             "✓ SEO filename",
             "✓ Alt text"
-        ]
-            .map(
-                x =>
-                    `<span class="media-chip">${x}</span>`
-            )
-            .join("");
+        ].map(
+            x =>
+                `<span class="media-chip">${x}</span>`
+        ).join("");
     }
 
     setValue(
@@ -2565,12 +2503,12 @@ function getArticleTopicData(){
                 ...meaningfulTokens(
                     CATEGORIES[
                         state?.classification?.category
-                    ] || ""
+                    ] ||
+                    ""
                 )
             ])
     };
 }
-
 
 /* ==========================================================
    CORRECT SITE ROUTING
@@ -2582,7 +2520,9 @@ function getArticlePath(
     destination
 ){
     const safeCategory =
-        CATEGORY_ROUTES[category] ||
+        CATEGORY_ROUTES[
+            category
+        ] ||
         slugify(category) ||
         "updates";
 
@@ -2619,16 +2559,14 @@ function getRecordUrl(
 
     if(
         /^https?:\/\//i.test(
-            a.url ||
-            ""
+            a.url || ""
         )
     ){
         return a.url;
     }
 
     return `${siteUrl}/${String(
-        a.url ||
-        ""
+        a.url || ""
     ).replace(
         /^\/+/,
         ""
@@ -2671,10 +2609,7 @@ async function fetchGithub(path){
             }
         );
 
-    if(
-        response.status ===
-        404
-    ){
+    if(response.status === 404){
         return null;
     }
 
@@ -2725,8 +2660,7 @@ async function putGithub(
         await fetch(
             url,
             {
-                method:
-                    "PUT",
+                method:"PUT",
 
                 headers:{
                     Authorization:
@@ -2743,9 +2677,7 @@ async function putGithub(
                 },
 
                 body:
-                    JSON.stringify(
-                        payload
-                    )
+                    JSON.stringify(payload)
             }
         );
 
@@ -2869,14 +2801,11 @@ function scoreArticleCandidate(a){
         return 0;
     }
 
-    let shared =
-        0;
+    let shared = 0;
 
     theirs.forEach(
         k => {
-            if(
-                mine.has(k)
-            ){
+            if(mine.has(k)){
                 shared++;
             }
         }
@@ -2895,17 +2824,15 @@ function scoreArticleCandidate(a){
     const sameCategory =
         a.category ===
         state.classification.category
-            ? 0.18
+            ? .18
             : 0;
 
     const score =
         Math.min(
             99,
             Math.round(
-                density *
-                80 +
-                sameCategory *
-                100
+                density * 80 +
+                sameCategory * 100
             )
         );
 
@@ -2922,8 +2849,7 @@ function getSmartLinkCandidates(){
         )
         .filter(
             a =>
-                a.id !==
-                    state.id &&
+                a.id !== state.id &&
                 a.url !==
                     getArticlePath(
                         state.classification.category,
@@ -2934,7 +2860,6 @@ function getSmartLinkCandidates(){
         .map(
             article => ({
                 article,
-
                 score:
                     scoreArticleCandidate(
                         article
@@ -2943,8 +2868,7 @@ function getSmartLinkCandidates(){
         )
         .filter(
             x =>
-                x.score >=
-                18
+                x.score >= 18
         )
         .sort(
             (a,b) =>
@@ -2970,9 +2894,7 @@ function renderLinkSuggestions(){
     const candidates =
         getSmartLinkCandidates();
 
-    if(
-        !existingArticles.length
-    ){
+    if(!existingArticles.length){
         box.innerHTML =
             `<div class="empty-state">Connect GitHub and load the article corpus to calculate contextual relationships.</div>`;
 
@@ -2987,48 +2909,46 @@ function renderLinkSuggestions(){
     }
 
     box.innerHTML =
-        candidates
-            .map(
-                x => {
-                    const checked =
-                        state.linking.selected.some(
-                            a =>
-                                a.url ===
+        candidates.map(
+            x => {
+                const checked =
+                    state.linking.selected.some(
+                        a =>
+                            a.url ===
+                            x.article.url
+                    );
+
+                return `
+                    <label class="link-option">
+                        <input
+                            type="checkbox"
+                            name="relatedArticle"
+                            value="${attr(
+                                x.article.id ||
                                 x.article.url
-                        );
+                            )}"
+                            data-score="${x.score}"
+                            ${checked ? "checked" : ""}
+                        >
 
-                    return `
-                        <label class="link-option">
-                            <input
-                                type="checkbox"
-                                name="relatedArticle"
-                                value="${attr(
-                                    x.article.id ||
-                                    x.article.url
-                                )}"
-                                data-score="${x.score}"
-                                ${checked ? "checked" : ""}
-                            >
-
-                            <span class="link-option-body">
-                                <span class="link-option-title">
-                                    ${esc(
-                                        x.article.title
-                                    )}
-                                </span>
-
-                                <span class="link-option-meta">
-                                    ${x.score}% contextual match ·
-                                    ${esc(
-                                        x.article.url
-                                    )}
-                                </span>
+                        <span class="link-option-body">
+                            <span class="link-option-title">
+                                ${esc(
+                                    x.article.title
+                                )}
                             </span>
-                        </label>
-                    `;
-                }
-            )
-            .join("");
+
+                            <span class="link-option-meta">
+                                ${x.score}% contextual match ·
+                                ${esc(
+                                    x.article.url
+                                )}
+                            </span>
+                        </span>
+                    </label>
+                `;
+            }
+        ).join("");
 }
 
 function countExistingInternalLinks(){
@@ -3039,7 +2959,8 @@ function countExistingInternalLinks(){
     return (
         html.match(
             /<a\b/gi
-        ) || []
+        ) ||
+        []
     ).length;
 }
 
@@ -3051,10 +2972,7 @@ function chooseAnchor(title){
 
     return (
         words
-            .slice(
-                0,
-                4
-            )
+            .slice(0,4)
             .join(" ") ||
         title
     );
@@ -3063,10 +2981,7 @@ function chooseAnchor(title){
 function automaticallyLinkArticle(){
     const candidates =
         getSmartLinkCandidates()
-            .slice(
-                0,
-                3
-            );
+            .slice(0,3);
 
     if(!candidates.length){
         toast(
@@ -3250,7 +3165,6 @@ function automaticallyLinkArticle(){
     }
 
     renderLinkSuggestions();
-
     renderStage6Metrics();
 
     toast(
@@ -3269,8 +3183,7 @@ function autoDescription(){
 
     if(
         !topic.title ||
-        topic.body.length <
-            30
+        topic.body.length < 30
     ){
         toast(
             "Add a title and article content first.",
@@ -3287,22 +3200,15 @@ function autoDescription(){
             )
             .filter(
                 x =>
-                    x.length >
-                    30
+                    x.length > 30
             );
 
     let desc =
         sentences
-            .slice(
-                0,
-                2
-            )
+            .slice(0,2)
             .join(" ");
 
-    if(
-        desc.length >
-        160
-    ){
+    if(desc.length > 160){
         desc =
             desc
                 .slice(
@@ -3316,10 +3222,7 @@ function autoDescription(){
                 "...";
     }
 
-    if(
-        desc.length <
-        110
-    ){
+    if(desc.length < 110){
         desc =
             `${topic.title}. ${desc}`
                 .slice(
@@ -3352,8 +3255,7 @@ function autoSEO(){
 
     if(
         !topic.title ||
-        topic.body.length <
-            100
+        topic.body.length < 100
     ){
         toast(
             "Add more article content before generating SEO.",
@@ -3378,10 +3280,11 @@ function autoSEO(){
     autoDescription();
 
     const topics =
-        topic.keywords.slice(
-            0,
-            8
-        );
+        topic.keywords
+            .slice(
+                0,
+                8
+            );
 
     state.seo.ogPrompt =
         `Professional cyber threat intelligence editorial artwork about ${
@@ -3485,7 +3388,8 @@ function seoChecks(){
         (
             topic.html.match(
                 /<h2\b/gi
-            ) || []
+            ) ||
+            []
         ).length;
 
     const links =
@@ -3515,16 +3419,12 @@ function seoChecks(){
 
         {
             ok:
-                topic.title.length >=
-                    45 &&
-                topic.title.length <=
-                    70,
+                topic.title.length >= 45 &&
+                topic.title.length <= 70,
 
             level:
-                topic.title.length >=
-                    45 &&
-                topic.title.length <=
-                    70
+                topic.title.length >= 45 &&
+                topic.title.length <= 70
                     ? "success"
                     : "warning",
 
@@ -3534,16 +3434,12 @@ function seoChecks(){
 
         {
             ok:
-                state.seo.description.length >=
-                    140 &&
-                state.seo.description.length <=
-                    160,
+                state.seo.description.length >= 140 &&
+                state.seo.description.length <= 160,
 
             level:
-                state.seo.description.length >=
-                    140 &&
-                state.seo.description.length <=
-                    160
+                state.seo.description.length >= 140 &&
+                state.seo.description.length <= 160
                     ? "success"
                     : "warning",
 
@@ -3553,15 +3449,13 @@ function seoChecks(){
 
         {
             ok:
-                words >=
-                Number(
+                words >= Number(
                     cfg().minWords ||
                     500
                 ),
 
             level:
-                words >=
-                Number(
+                words >= Number(
                     cfg().minWords ||
                     500
                 )
@@ -3576,15 +3470,13 @@ function seoChecks(){
 
         {
             ok:
-                h2 >=
-                Number(
+                h2 >= Number(
                     cfg().targetH2 ||
                     2
                 ),
 
             level:
-                h2 >=
-                Number(
+                h2 >= Number(
                     cfg().targetH2 ||
                     2
                 )
@@ -3597,15 +3489,13 @@ function seoChecks(){
 
         {
             ok:
-                links >=
-                Number(
+                links >= Number(
                     cfg().targetLinks ||
                     2
                 ),
 
             level:
-                links >=
-                Number(
+                links >= Number(
                     cfg().targetLinks ||
                     2
                 )
@@ -3715,7 +3605,7 @@ function renderSeoScore(){
                     x.level === "success"
                         ? 1
                         : x.level === "warning"
-                            ? 0.5
+                            ? .5
                             : 0
                 ),
             0
@@ -3735,23 +3625,21 @@ function renderSeoScore(){
 
     if(box){
         box.innerHTML =
-            checks
-                .map(
-                    x =>
-                        `<div class="seo-check ${x.level}">
-                            <span>${
-                                x.level === "success"
-                                    ? "✓"
-                                    : x.level === "warning"
-                                        ? "!"
-                                        : "×"
-                            }</span>
-                            <span>${esc(
-                                x.message
-                            )}</span>
-                        </div>`
-                )
-                .join("");
+            checks.map(
+                x =>
+                    `<div class="seo-check ${x.level}">
+                        <span>${
+                            x.level === "success"
+                                ? "✓"
+                                : x.level === "warning"
+                                    ? "!"
+                                    : "×"
+                        }</span>
+                        <span>${esc(
+                            x.message
+                        )}</span>
+                    </div>`
+            ).join("");
     }
 
     return score;
@@ -3916,23 +3804,21 @@ function renderTechnicalChecks(){
     }
 
     box.innerHTML =
-        technicalChecks()
-            .map(
-                x =>
-                    `<div class="seo-check ${x.level}">
-                        <span>${
-                            x.level === "success"
-                                ? "✓"
-                                : x.level === "warning"
-                                    ? "!"
-                                    : "×"
-                        }</span>
-                        <span>${esc(
-                            x.message
-                        )}</span>
-                    </div>`
-            )
-            .join("");
+        technicalChecks().map(
+            x =>
+                `<div class="seo-check ${x.level}">
+                    <span>${
+                        x.level === "success"
+                            ? "✓"
+                            : x.level === "warning"
+                                ? "!"
+                                : "×"
+                    }</span>
+                    <span>${esc(
+                        x.message
+                    )}</span>
+                </div>`
+        ).join("");
 }
 
 function renderStage6Metrics(){
@@ -3966,8 +3852,7 @@ function renderStage6Metrics(){
             String(
                 c.filter(
                     x =>
-                        x.score >=
-                        60
+                        x.score >= 60
                 ).length
             );
     }
@@ -4021,54 +3906,42 @@ function renderStage3(){
         state.classification.destination
     );
 
-    document
-        .querySelectorAll(
-            'input[name="domain"]'
-        )
-        .forEach(
-            el =>
-                el.checked =
-                    state.classification.domains
-                        .includes(
-                            el.value
-                        )
-        );
+    document.querySelectorAll(
+        'input[name="domain"]'
+    ).forEach(
+        el =>
+            el.checked =
+                state.classification.domains
+                    .includes(
+                        el.value
+                    )
+    );
 }
 
 function renderStage4(){
     setValue(
         "actorsInput",
-        state.intelligence.actors.join(
-            ", "
-        )
+        state.intelligence.actors.join(", ")
     );
 
     setValue(
         "malwareInput",
-        state.intelligence.malware.join(
-            ", "
-        )
+        state.intelligence.malware.join(", ")
     );
 
     setValue(
         "cvesInput",
-        state.intelligence.cves.join(
-            ", "
-        )
+        state.intelligence.cves.join(", ")
     );
 
     setValue(
         "techniquesInput",
-        state.intelligence.techniques.join(
-            ", "
-        )
+        state.intelligence.techniques.join(", ")
     );
 
     setValue(
         "iocsInput",
-        state.intelligence.iocs.join(
-            "\n"
-        )
+        state.intelligence.iocs.join("\n")
     );
 }
 
@@ -4132,24 +4005,21 @@ function renderReview(){
     const topic =
         getArticleTopicData();
 
-    const checks =
-        [
-            ...seoChecks(),
-            ...technicalChecks()
-        ];
+    const checks = [
+        ...seoChecks(),
+        ...technicalChecks()
+    ];
 
     const errors =
         checks.filter(
             x =>
-                x.level ===
-                "error"
+                x.level === "error"
         ).length;
 
     const warnings =
         checks.filter(
             x =>
-                x.level ===
-                "warning"
+                x.level === "warning"
         ).length;
 
     const score =
@@ -4157,9 +4027,6 @@ function renderReview(){
 
     const f =
         state.media.featured;
-
-    const related =
-        state.linking.selected;
 
     root.innerHTML = `
         <div class="review-hero">
@@ -4200,13 +4067,11 @@ function renderReview(){
                         state.article.title ||
                         "Missing"
                     ],
-
                     [
                         "Slug",
                         state.article.slug ||
                         "Missing"
                     ],
-
                     [
                         "Content",
                         `${
@@ -4216,12 +4081,9 @@ function renderReview(){
                                 .length
                         } words`
                     ],
-
                     [
                         "Tags",
-                        state.article.tags.join(
-                            ", "
-                        ) ||
+                        state.article.tags.join(", ") ||
                         "None"
                     ]
                 ]
@@ -4236,20 +4098,17 @@ function renderReview(){
                             ? "Processed"
                             : "Missing"
                     ],
-
                     [
                         "Format",
                         f?.format?.toUpperCase() ||
                         "—"
                     ],
-
                     [
                         "Watermark",
                         f?.watermarked
                             ? "Embedded"
                             : "Missing"
                     ],
-
                     [
                         "Alt",
                         f?.alt ||
@@ -4267,7 +4126,6 @@ function renderReview(){
                             state.classification.contentType
                         )
                     ],
-
                     [
                         "Category",
                         CATEGORIES[
@@ -4275,17 +4133,14 @@ function renderReview(){
                         ] ||
                         state.classification.category
                     ],
-
                     [
                         "Status",
                         state.classification.status
                     ],
-
                     [
                         "Severity",
                         state.classification.severity
                     ],
-
                     [
                         "Verification",
                         state.classification.verification
@@ -4301,19 +4156,16 @@ function renderReview(){
                         state.intelligence.actors.length ||
                         "None"
                     ],
-
                     [
                         "Malware",
                         state.intelligence.malware.length ||
                         "None"
                     ],
-
                     [
                         "CVEs",
                         state.intelligence.cves.length ||
                         "None"
                     ],
-
                     [
                         "IOCs",
                         state.intelligence.iocs.length ||
@@ -4330,18 +4182,15 @@ function renderReview(){
                         state.seo.title ||
                         "Missing"
                     ],
-
                     [
                         "Description",
                         `${state.seo.description.length}/160`
                     ],
-
                     [
                         "Canonical",
                         state.seo.canonical ||
                         "Missing"
                     ],
-
                     [
                         "Score",
                         `${score}/100`
@@ -4356,17 +4205,14 @@ function renderReview(){
                         "Candidates",
                         getSmartLinkCandidates().length
                     ],
-
                     [
                         "Applied links",
                         countExistingInternalLinks()
                     ],
-
                     [
                         "Sitemap",
                         "Will update on publish"
                     ],
-
                     [
                         "News sitemap",
                         "Will update on publish"
@@ -4655,9 +4501,7 @@ function applyArticleImageMetadata(
                 );
 
             }else if(
-                !img.getAttribute(
-                    "alt"
-                )
+                !img.getAttribute("alt")
             ){
                 img.setAttribute(
                     "alt",
@@ -4688,7 +4532,9 @@ function generateArticleHTML(
     data
 ){
     const label =
-        CATEGORIES[data.category] ||
+        CATEGORIES[
+            data.category
+        ] ||
         "Cyber Threat Intelligence";
 
     const canonical =
@@ -4717,29 +4563,15 @@ function generateArticleHTML(
 
     const schema =
         createArticleSchema({
-            title:
-                data.title,
-
-            desc:
-                data.desc,
-
-            image:
-                data.image,
-
-            date:
-                data.date,
-
-            modified:
-                data.modified,
-
+            title:data.title,
+            desc:data.desc,
+            image:data.image,
+            date:data.date,
+            modified:data.modified,
             label,
-
             canonical,
-
             c,
-
-            keywords:
-                data.keywords
+            keywords:data.keywords
         });
 
     const breadcrumb =
@@ -5327,8 +5159,7 @@ function makeSitemap(
                         ""
                     ),
 
-                p:
-                    ".8",
+                p:".8",
 
                 d:
                     a.updatedAt ||
@@ -5360,9 +5191,8 @@ ${clean.map(
             ${
                 x.d
                     ? `<lastmod>${esc(
-                        String(
-                            x.d
-                        ).split("T")[0]
+                        String(x.d)
+                            .split("T")[0]
                     )}</lastmod>`
                     : ""
             }
@@ -5379,10 +5209,7 @@ function makeNewsSitemap(
 ){
     const cutoff =
         Date.now() -
-        48 *
-        60 *
-        60 *
-        1000;
+        48 * 60 * 60 * 1000;
 
     const recent =
         articles.filter(
@@ -5395,8 +5222,7 @@ function makeNewsSitemap(
                 ) &&
                 new Date(
                     a.date
-                ).getTime() >=
-                    cutoff &&
+                ).getTime() >= cutoff &&
                 a.url
         );
 
@@ -5591,7 +5417,8 @@ function buildRecord(){
             ...meaningfulTokens(
                 CATEGORIES[
                     state.classification.category
-                ] || ""
+                ] ||
+                ""
             )
         ]).slice(
             0,
@@ -5741,10 +5568,8 @@ function buildRecord(){
             countExistingInternalLinks(),
 
         relatedArticles:
-            state.linking.selected.slice(
-                0,
-                8
-            ),
+            state.linking.selected
+                .slice(0,8),
 
         ogPrompt:
             state.seo.ogPrompt,
@@ -5780,8 +5605,7 @@ async function publishArticle(){
             ...technicalChecks()
         ].filter(
             x =>
-                x.level ===
-                "error"
+                x.level === "error"
         );
 
     if(blocking.length){
@@ -6014,34 +5838,28 @@ async function publishArticle(){
             ] of [
                 [
                     c.sitemap,
-
                     makeSitemap(
                         articles,
                         c
                     ),
-
                     "HackaX sitemap"
                 ],
 
                 [
                     c.newsSitemap,
-
                     makeNewsSitemap(
                         articles,
                         c
                     ),
-
                     "HackaX news sitemap"
                 ],
 
                 [
                     c.imageSitemap,
-
                     makeImageSitemap(
                         articles,
                         c
                     ),
-
                     "HackaX image sitemap"
                 ]
             ]
@@ -6068,11 +5886,7 @@ async function publishArticle(){
                 []
             );
 
-        if(
-            Array.isArray(
-                drafts
-            )
-        ){
+        if(Array.isArray(drafts)){
             localStorage.setItem(
                 STORAGE.drafts,
                 JSON.stringify(
@@ -6150,15 +5964,13 @@ function saveDraft(){
     const i =
         list.findIndex(
             x =>
-                x.id ===
-                record.id
+                x.id === record.id
         );
 
     const draft = {
         ...record,
 
-        draft:
-            true,
+        draft:true,
 
         content:
             JSON.stringify(
@@ -6186,9 +5998,7 @@ function saveDraft(){
 
     localStorage.setItem(
         STORAGE.drafts,
-        JSON.stringify(
-            list
-        )
+        JSON.stringify(list)
     );
 
     saveState(true);
@@ -6223,9 +6033,7 @@ function aiGrammar(){
     rules.forEach(
         ([re,repl]) => {
             const matches =
-                text.match(
-                    re
-                );
+                text.match(re);
 
             if(matches){
                 count +=
@@ -6295,9 +6103,7 @@ function replaceSelection(
         );
 
     const next =
-        transform(
-            current
-        );
+        transform(current);
 
     quill.deleteText(
         range.index,
@@ -6434,8 +6240,7 @@ function aiGenerate(){
     quill.clipboard.dangerouslyPasteHTML(
         Math.max(
             0,
-            quill.getLength() -
-            1
+            quill.getLength() - 1
         ),
         html,
         "api"
@@ -6462,8 +6267,8 @@ function customAI(){
         getValue(
             "aiPrompt"
         )
-            .trim()
-            .toLowerCase();
+        .trim()
+        .toLowerCase();
 
     if(!prompt){
         toast(
@@ -6474,20 +6279,14 @@ function customAI(){
         return;
     }
 
-    if(
-        prompt.includes(
-            "uppercase"
-        )
-    ){
+    if(prompt.includes("uppercase")){
         replaceSelection(
             x =>
                 x.toUpperCase()
         );
 
     }else if(
-        prompt.includes(
-            "lowercase"
-        )
+        prompt.includes("lowercase")
     ){
         replaceSelection(
             x =>
@@ -6495,9 +6294,7 @@ function customAI(){
         );
 
     }else if(
-        prompt.includes(
-            "summary"
-        )
+        prompt.includes("summary")
     ){
         replaceSelection(
             x => {
@@ -6505,28 +6302,25 @@ function customAI(){
                     x.split(
                         /[.!?]/
                     )
-                        .map(
-                            v =>
-                                v.trim()
-                        )
-                        .filter(Boolean)
-                        .slice(
-                            0,
-                            2
-                        );
+                    .map(
+                        v =>
+                            v.trim()
+                    )
+                    .filter(Boolean)
+                    .slice(
+                        0,
+                        2
+                    );
 
                 return parts.length
-                    ? parts.join(
-                        ". "
-                    ) + "."
+                    ? parts.join(". ") +
+                        "."
                     : x;
             }
         );
 
     }else if(
-        prompt.includes(
-            "bold"
-        )
+        prompt.includes("bold")
     ){
         const range =
             quill?.getSelection(
@@ -6587,8 +6381,7 @@ function initStage1(){
         new Quill(
             "#editor",
             {
-                theme:
-                    "snow",
+                theme:"snow",
 
                 placeholder:
                     "Begin HackaX intelligence report...",
@@ -6619,7 +6412,6 @@ function initStage1(){
                                     list:
                                         "ordered"
                                 },
-
                                 {
                                     list:
                                         "bullet"
@@ -6658,7 +6450,7 @@ function initStage1(){
                                     true;
 
                                 input.onchange =
-                                    async () => {
+                                    async() => {
                                         for(
                                             const file of
                                             input.files
@@ -6761,9 +6553,7 @@ function initStage1(){
             }
         );
 
-    if(
-        state.article.contentDelta
-    ){
+    if(state.article.contentDelta){
         quill.setContents(
             state.article.contentDelta
         );
@@ -6834,9 +6624,7 @@ function initStage1(){
                 }
 
                 updateSlugPreview();
-
                 renderKeywordPreview();
-
                 saveState();
             }
         );
@@ -6870,9 +6658,7 @@ function initStage1(){
                 );
 
             renderKeywordPreview();
-
             renderWordCount();
-
             saveState();
         }
     );
@@ -6992,9 +6778,7 @@ function initStage1(){
         );
 
     updateSlugPreview();
-
     renderKeywordPreview();
-
     renderWordCount();
 }
 
@@ -7055,14 +6839,12 @@ function renderKeywordPreview(){
             );
 
     box.innerHTML =
-        terms
-            .map(
-                x =>
-                    `<span class="keyword-chip">
-                        ${esc(x)}
-                    </span>`
-            )
-            .join("");
+        terms.map(
+            x =>
+                `<span class="keyword-chip">
+                    ${esc(x)}
+                </span>`
+        ).join("");
 }
 
 function renderWordCount(){
@@ -7120,6 +6902,13 @@ function initStage2(){
                         err.message,
                         "error"
                     );
+                }finally{
+                    /*
+                       Allows the same file to be selected
+                       again after an error or replacement.
+                    */
+                    e.target.value =
+                        "";
                 }
             }
         );
@@ -7244,7 +7033,6 @@ function initStage5(){
 
 function initStage6(){
     renderLinkSuggestions();
-
     renderStage6Metrics();
 
     document
@@ -7253,11 +7041,10 @@ function initStage6(){
         )
         ?.addEventListener(
             "click",
-            async () => {
+            async() => {
                 await loadArticles();
 
                 renderLinkSuggestions();
-
                 renderStage6Metrics();
 
                 toast(
@@ -7285,9 +7072,7 @@ function initStage6(){
                 )
             ){
                 saveStage6();
-
                 saveState();
-
                 renderStage6Metrics();
             }
         }
@@ -7308,9 +7093,7 @@ function initStage7(){
                     "change",
                     () => {
                         saveStage7();
-
                         renderTechnicalChecks();
-
                         saveState(true);
                     }
                 )
@@ -7324,7 +7107,6 @@ function initStage7(){
             "click",
             () => {
                 saveStage7();
-
                 renderTechnicalChecks();
 
                 toast(
@@ -7400,13 +7182,11 @@ function initCommon(){
         "keydown",
         e => {
             if(
-                (e.metaKey ||
-                    e.ctrlKey) &&
+                (e.metaKey || e.ctrlKey) &&
                 e.key.toLowerCase() ===
                     "s"
             ){
                 e.preventDefault();
-
                 saveDraft();
             }
         }
@@ -7424,10 +7204,7 @@ async function checkGitHub(){
             "statusText"
         );
 
-    if(
-        !dot ||
-        !text
-    ){
+    if(!dot || !text){
         return false;
     }
 
@@ -7588,11 +7365,8 @@ function mountStage(){
     loadArticles().then(
         () => {
             renderLinkSuggestions();
-
             renderStage6Metrics();
-
             renderTechnicalChecks();
-
             renderReview();
         }
     );
