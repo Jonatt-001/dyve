@@ -2164,64 +2164,118 @@ section {
         font-size: 16px;
     }
 
+    /*
+       HERO MOBILE REBALANCE
+       The previous mobile composition allowed the headline
+       to dominate almost the entire image. The image now gets
+       significantly more visual territory.
+    */
+
     .hero {
-        min-height: 575px;
+        min-height: 535px;
         height: auto;
         max-height: none;
+        background-position: 68% center;
+    }
+
+    .hero:before {
+        background:
+            linear-gradient(
+                90deg,
+                rgba(3,5,9,.88) 0%,
+                rgba(3,5,9,.62) 35%,
+                rgba(3,5,9,.25) 66%,
+                rgba(3,5,9,.03) 100%
+            ),
+            linear-gradient(
+                0deg,
+                rgba(3,5,9,.92) 0%,
+                rgba(3,5,9,.58) 18%,
+                rgba(3,5,9,.08) 56%,
+                rgba(3,5,9,.22) 100%
+            );
+    }
+
+    .hero:after {
+        background:
+            radial-gradient(
+                circle at 76% 32%,
+                rgba(77,124,255,.10),
+                transparent 25%
+            ),
+            radial-gradient(
+                circle at 84% 66%,
+                rgba(0,217,149,.07),
+                transparent 24%
+            ),
+            linear-gradient(
+                115deg,
+                transparent 0%,
+                rgba(255,255,255,.012) 45%,
+                transparent 65%
+            );
     }
 
     .hero-inner {
         width: calc(100% - 32px);
-        padding: 75px 0 27px;
+        padding: 58px 0 23px;
     }
 
     .hero-label {
         gap: 9px;
-        margin-bottom: 17px;
+        margin-bottom: 15px;
     }
 
     .hero-label i {
-        width: 31px;
-        flex-basis: 31px;
+        width: 28px;
+        flex-basis: 28px;
     }
 
     .hero-label span {
-        font-size: 6.5px;
-        letter-spacing: .18em;
+        font-size: 6px;
+        letter-spacing: .17em;
     }
 
     .hero h1 {
-        max-width: 365px;
-        font-size: clamp(45px, 13.2vw, 64px);
-        line-height: .88;
+        max-width: 310px;
+        font-size: clamp(42px, 11.5vw, 50px);
+        line-height: .9;
+        letter-spacing: -.02em;
     }
 
     .hero-copy {
-        max-width: 335px;
-        margin-top: 18px;
-        font-size: 10px;
-        line-height: 1.72;
+        max-width: 300px;
+        margin-top: 16px;
+        color: rgba(255,255,255,.64);
+        font-size: 9.5px;
+        line-height: 1.68;
     }
 
     .hero-actions {
         gap: 7px;
-        margin-top: 21px;
+        margin-top: 18px;
     }
 
     .button {
-        min-height: 40px;
-        padding: 0 14px;
-        font-size: 7px;
+        min-height: 39px;
+        padding: 0 13px;
+        font-size: 6.5px;
     }
 
     .hero-index {
-        margin-top: 29px;
-        padding-top: 12px;
-        gap: 8px;
+        max-width: 315px;
+        margin-top: 24px;
+        padding-top: 11px;
+        gap: 7px;
+    }
+
+    .hero-index-item {
+        padding-right: 3px;
     }
 
     .hero-index-item strong {
-        font-size: 10.5px;
+        font-size: 9.5px;
+        line-height: .98;
     }
 
     .section {
@@ -2390,40 +2444,43 @@ section {
 @media (max-width: 390px) {
 
     .hero {
-        min-height: 555px;
+        min-height: 515px;
+        background-position: 70% center;
     }
 
     .hero-inner {
         width: calc(100% - 30px);
-        padding-top: 65px;
-        padding-bottom: 23px;
+        padding-top: 52px;
+        padding-bottom: 21px;
     }
 
     .hero h1 {
-        font-size: 44px;
-        line-height: .9;
+        max-width: 292px;
+        font-size: 41px;
+        line-height: .91;
     }
 
     .hero-copy {
-        max-width: 310px;
-        font-size: 9.5px;
+        max-width: 285px;
+        font-size: 9px;
     }
 
     .hero-actions {
-        margin-top: 19px;
+        margin-top: 17px;
     }
 
     .button {
-        min-height: 39px;
-        padding-inline: 12px;
+        min-height: 38px;
+        padding-inline: 11px;
     }
 
     .hero-index {
-        margin-top: 26px;
+        max-width: 295px;
+        margin-top: 22px;
     }
 
     .hero-index-item strong {
-        font-size: 9.5px;
+        font-size: 9px;
     }
 
     .section-title {
@@ -2470,28 +2527,28 @@ section {
 @media (max-width: 699px) and (max-height: 700px) {
 
     .hero {
-        min-height: 535px;
+        min-height: 505px;
     }
 
     .hero-inner {
-        padding-top: 55px;
-        padding-bottom: 23px;
+        padding-top: 46px;
+        padding-bottom: 20px;
     }
 
     .hero h1 {
-        font-size: clamp(42px, 11.8vw, 56px);
+        font-size: clamp(40px, 10.8vw, 47px);
     }
 
     .hero-copy {
-        margin-top: 15px;
+        margin-top: 14px;
     }
 
     .hero-actions {
-        margin-top: 18px;
+        margin-top: 17px;
     }
 
     .hero-index {
-        margin-top: 23px;
+        margin-top: 21px;
     }
 }
 
@@ -2639,10 +2696,6 @@ section {
 
 <main>
 
-<!-- ========================================================
-     HERO
-========================================================= -->
-
 <section class="hero" id="hero">
 
     <div class="hero-inner">
@@ -2687,10 +2740,6 @@ section {
 
 </section>
 
-<!-- ========================================================
-     FEATURED INTELLIGENCE
-========================================================= -->
-
 <section
     class="section news"
     id="featured"
@@ -2732,10 +2781,6 @@ section {
 
 </section>
 
-<!-- ========================================================
-     CINEMATIC FEATURE
-========================================================= -->
-
 <section
     class="cinematic"
     id="intelligence-feature"
@@ -2774,10 +2819,6 @@ section {
     </div>
 
 </section>
-
-<!-- ========================================================
-     INTELLIGENCE BRIEF
-========================================================= -->
 
 <section
     class="section brief"
@@ -2855,10 +2896,6 @@ section {
 
 </section>
 
-<!-- ========================================================
-     LATEST INTELLIGENCE
-========================================================= -->
-
 <section
     class="section releases"
     id="releases"
@@ -2896,10 +2933,6 @@ section {
 
 </section>
 
-<!-- ========================================================
-     SIGNAL FEATURE
-========================================================= -->
-
 <section
     class="signal"
     id="signal-feature"
@@ -2935,10 +2968,6 @@ section {
 
 </section>
 
-<!-- ========================================================
-     TOPICS
-========================================================= -->
-
 <section
     class="section topics"
     id="topics"
@@ -2970,10 +2999,6 @@ section {
 </section>
 
 </main>
-
-<!-- ========================================================
-     FOOTER
-========================================================= -->
 
 <footer class="footer">
 
