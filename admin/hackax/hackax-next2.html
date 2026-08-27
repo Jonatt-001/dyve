@@ -31,75 +31,2458 @@ tailwind.config={
 <button id="saveDraftBtn" type="button" class="px-3 py-2 text-xs font-semibold text-white/70 bg-white/5 border border-white/10 rounded-lg">Save Draft</button>
 </div>
 </div>
-<div class="mt-4 stepper"><button type="button" class="step" data-stage="1" data-stage-link="1"><span class="step-number">1</span><span>Article</span></button><button type="button" class="step" data-stage="2" data-stage-link="2"><span class="step-number">2</span><span>Media</span></button><button type="button" class="step" data-stage="3" data-stage-link="3"><span class="step-number">3</span><span>Classification</span></button><button type="button" class="step" data-stage="4" data-stage-link="4"><span class="step-number">4</span><span>Intelligence</span></button><button type="button" class="step" data-stage="5" data-stage-link="5"><span class="step-number">5</span><span>SEO</span></button><button type="button" class="step" data-stage="6" data-stage-link="6"><span class="step-number">6</span><span>Internal Linking</span></button><button type="button" class="step" data-stage="7" data-stage-link="7"><span class="step-number">7</span><span>Technical</span></button><button type="button" class="step" data-stage="8" data-stage-link="8"><span class="step-number">8</span><span>Review</span></button></div>
+
+<div class="mt-4 stepper">
+<button type="button" class="step" data-stage="1" data-stage-link="1"><span class="step-number">1</span><span>Article</span></button>
+<button type="button" class="step" data-stage="2" data-stage-link="2"><span class="step-number">2</span><span>Media</span></button>
+<button type="button" class="step" data-stage="3" data-stage-link="3"><span class="step-number">3</span><span>Classification</span></button>
+<button type="button" class="step" data-stage="4" data-stage-link="4"><span class="step-number">4</span><span>Intelligence</span></button>
+<button type="button" class="step" data-stage="5" data-stage-link="5"><span class="step-number">5</span><span>SEO</span></button>
+<button type="button" class="step" data-stage="6" data-stage-link="6"><span class="step-number">6</span><span>Internal Linking</span></button>
+<button type="button" class="step" data-stage="7" data-stage-link="7"><span class="step-number">7</span><span>Technical</span></button>
+<button type="button" class="step" data-stage="8" data-stage-link="8"><span class="step-number">8</span><span>Review</span></button>
+</div>
 </div>
 </header>
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
 <div class="flex flex-wrap items-center gap-2">
+
 <div class="flex items-center gap-2 px-3 py-2 bg-dyve-bg text-white border border-white/10 rounded-lg">
-<span id="statusDot" class="status-dot"></span><span id="statusText" class="text-xs">Checking...</span>
+<span id="statusDot" class="status-dot"></span>
+<span id="statusText" class="text-xs">Checking...</span>
 <button id="refreshStatusBtn" type="button" class="text-white/50 hover:text-white" title="Check connection">↻</button>
 </div>
-<div class="px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-semibold text-emerald-800">HackaX only</div>
-<div class="px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700"><span id="stageCounter">STEP 2 OF 8</span> · <span id="stageTitle">Media</span></div>
+
+<div class="px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-semibold text-emerald-800">
+HackaX only
+</div>
+
+<div class="px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700">
+<span id="stageCounter">STEP 2 OF 8</span> · <span id="stageTitle">Media</span>
+</div>
+
 </div>
 </div>
 
 <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-<div class="mb-6"><div class="eyebrow">STAGE 02 / MEDIA</div><h1 class="page-title">Process every image properly.</h1><p class="page-subtitle">Upload the featured image once. The browser resizes it, compresses it, converts it to WebP, embeds the HackaX watermark, generates an SEO filename and creates contextual alt metadata before Cloudinary upload.</p></div>
-<div class="stage-layout">
-<div class="stage-main space-y-5">
-<section class="onboarding-card">
-<div class="section-head"><div><div class="section-title">Featured image</div><div class="section-note">Recommended editorial ratio: 16:9. Maximum processing width: 1800px.</div></div><span class="tag">WEBP</span></div>
-<label class="media-drop" id="mediaDrop">
-<input id="featuredImageInput" type="file" accept="image/*">
-<div class="media-icon">+</div>
-<div class="font-black text-lg">Choose featured image</div>
-<div class="text-xs text-slate-500 mt-2">Tap to select from your device. Processing happens before upload.</div>
-</label>
-<div id="featuredPreview" class="media-preview hidden"><img id="previewImg" alt="HackaX featured image preview"></div>
-<div id="imageProcessingStatus" class="mt-3"></div>
-</section>
-<section class="onboarding-card">
-<div class="section-head"><div><div class="section-title">Image SEO metadata</div><div class="section-note">Generated from the actual article context. You can edit the wording without replacing the processed image.</div></div></div>
-<div class="image-meta-grid">
-<div><label class="field-label">SEO alt text</label><input id="imageAltInput" class="field"></div>
-<div><label class="field-label">Image title</label><input id="imageTitleInput" class="field"></div>
-</div>
-<div class="mt-3"><label class="field-label">Caption</label><textarea id="imageCaptionInput" class="field" rows="3"></textarea></div>
-</section>
-</div>
-<aside class="stage-side space-y-5">
-<section class="dark-panel">
-<div class="eyebrow text-dyve-accent">MEDIA PIPELINE</div>
-<div class="mt-4 space-y-3 text-xs text-white/65">
-<div>✓ Client-side resize</div><div>✓ JPEG/PNG source normalization</div><div>✓ WebP conversion</div><div>✓ Quality compression</div><div>✓ Permanent HackaX watermark</div><div>✓ SEO filename</div><div>✓ Contextual alt generation</div><div>✓ Cloudinary upload</div>
-</div>
-</section>
-<section class="onboarding-card">
-<div class="section-title">Watermark policy</div>
-<p class="section-note mt-2">The watermark is rendered into the pixels before upload. It is not a CSS overlay, so the published image retains it permanently.</p>
-<div class="warning-strip mt-4">If assets/dyve-hackax.png is missing from the deployment, processing stops instead of silently publishing an unwatermarked image.</div>
-</section>
-</aside>
+
+<div class="mb-6">
+<div class="eyebrow">STAGE 02 / MEDIA</div>
+
+<h1 class="page-title">
+Process every image properly.
+</h1>
+
+<p class="page-subtitle">
+Select the source image, process it locally, inspect the exact WebP/watermarked result, complete its metadata, and explicitly commit the approved asset to Cloudinary. Nothing is uploaded until you approve the processed image.
+</p>
 </div>
 
-<div id="validation" class="validation hidden"></div>
+<div class="stage-layout">
+
+<div class="stage-main space-y-5">
+
+<section class="onboarding-card">
+
+<div class="section-head">
+
+<div>
+<div class="section-title">
+Featured image
+</div>
+
+<div class="section-note">
+Recommended editorial ratio: 16:9. Maximum processing width: 1800px.
+</div>
+</div>
+
+<span class="tag">
+WEBP
+</span>
+
+</div>
+
+<div
+    id="mediaDrop"
+    class="media-drop"
+    role="button"
+    tabindex="0"
+    aria-controls="featuredImageInput"
+    aria-label="Choose featured image"
+>
+
+<input
+    id="featuredImageInput"
+    type="file"
+    accept="image/jpeg,image/png,image/webp,image/gif,image/avif,image/*"
+>
+
+<div
+    id="mediaIcon"
+    class="media-icon"
+>
++
+</div>
+
+<div
+    id="mediaDropTitle"
+    class="font-black text-lg"
+>
+Choose featured image
+</div>
+
+<div
+    id="mediaDropNote"
+    class="text-xs text-slate-500 mt-2"
+>
+Tap to select from your device. The image is processed locally before any upload.
+</div>
+
+</div>
+
+<div
+    id="imageProcessingStatus"
+    class="mt-3"
+    aria-live="polite"
+></div>
+
+<div
+    id="pendingImagePanel"
+    class="hidden mt-4"
+>
+
+<div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4">
+
+<div class="flex flex-wrap items-center justify-between gap-3">
+
+<div>
+<div class="text-sm font-black text-slate-900">
+Processed image ready for review
+</div>
+
+<div
+    id="pendingImageFilename"
+    class="text-xs text-slate-500 mt-1 break-all"
+>
+</div>
+</div>
+
+<div
+    id="pendingImageStatus"
+    class="text-[10px] uppercase tracking-[.18em] font-black text-emerald-700"
+>
+LOCAL ONLY
+</div>
+
+</div>
+
+<div
+    id="pendingPreview"
+    class="mt-4 rounded-2xl overflow-hidden bg-black border border-black/10"
+>
+<img
+    id="pendingPreviewImg"
+    src=""
+    alt="Processed HackaX featured image preview"
+    class="w-full block"
+>
+</div>
+
+<div
+    id="pendingImageFacts"
+    class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2"
+>
+
+<div class="rounded-xl bg-white border border-slate-200 p-3">
+<div class="text-[9px] uppercase tracking-[.15em] text-slate-400 font-bold">
+Dimensions
+</div>
+<div
+    id="pendingDimensions"
+    class="text-xs font-black text-slate-900 mt-1"
+>
+—
+</div>
+</div>
+
+<div class="rounded-xl bg-white border border-slate-200 p-3">
+<div class="text-[9px] uppercase tracking-[.15em] text-slate-400 font-bold">
+Format
+</div>
+<div
+    id="pendingFormat"
+    class="text-xs font-black text-slate-900 mt-1"
+>
+WEBP
+</div>
+</div>
+
+<div class="rounded-xl bg-white border border-slate-200 p-3">
+<div class="text-[9px] uppercase tracking-[.15em] text-slate-400 font-bold">
+Output size
+</div>
+<div
+    id="pendingSize"
+    class="text-xs font-black text-slate-900 mt-1"
+>
+—
+</div>
+</div>
+
+<div class="rounded-xl bg-white border border-slate-200 p-3">
+<div class="text-[9px] uppercase tracking-[.15em] text-slate-400 font-bold">
+Upload state
+</div>
+<div
+    id="pendingUploadState"
+    class="text-xs font-black text-amber-700 mt-1"
+>
+Not uploaded
+</div>
+</div>
+
+</div>
+
+<div class="mt-4 flex flex-col sm:flex-row gap-2">
+
+<button
+    id="uploadProcessedImageBtn"
+    type="button"
+    class="action-btn primary flex-1"
+    disabled
+>
+Upload & Commit Image
+</button>
+
+<button
+    id="discardProcessedImageBtn"
+    type="button"
+    class="action-btn"
+>
+Discard
+</button>
+
+</div>
+
+<div class="mt-3 text-[11px] leading-5 text-slate-500">
+The processed image above is the exact asset that will be uploaded. Review it before committing. Selecting a replacement does not remove the currently committed asset.
+</div>
+
+</div>
+
+</div>
+
+<div
+    id="featuredPreview"
+    class="media-preview hidden"
+>
+<img
+    id="previewImg"
+    alt="HackaX featured image preview"
+>
+</div>
+
+<div
+    id="committedImagePanel"
+    class="hidden mt-4"
+>
+
+<div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+
+<div class="flex items-center justify-between gap-3">
+
+<div>
+<div class="text-sm font-black text-slate-900">
+Committed featured asset
+</div>
+
+<div class="text-xs text-slate-500 mt-1">
+This asset is already stored in the current publisher state.
+</div>
+</div>
+
+<div class="text-[10px] uppercase tracking-[.18em] font-black text-emerald-700">
+COMMITTED
+</div>
+
+</div>
+
+<div class="mt-4 rounded-2xl overflow-hidden bg-black">
+<img
+    id="committedPreviewImg"
+    src=""
+    alt="Committed HackaX featured image"
+    class="w-full block"
+>
+</div>
+
+<div
+    id="committedImageFacts"
+    class="mt-3 text-xs text-slate-500"
+></div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="onboarding-card">
+
+<div class="section-head">
+
+<div>
+<div class="section-title">
+Image SEO metadata
+</div>
+
+<div class="section-note">
+Generated from the current article context. Metadata may be edited before the processed asset is committed.
+</div>
+</div>
+
+</div>
+
+<div class="image-meta-grid">
+
+<div>
+<label
+    class="field-label"
+    for="imageAltInput"
+>
+SEO alt text
+</label>
+
+<input
+    id="imageAltInput"
+    class="field"
+    autocomplete="off"
+    maxlength="180"
+>
+</div>
+
+<div>
+<label
+    class="field-label"
+    for="imageTitleInput"
+>
+Image title
+</label>
+
+<input
+    id="imageTitleInput"
+    class="field"
+    autocomplete="off"
+    maxlength="180"
+>
+</div>
+
+</div>
+
+<div class="mt-3">
+
+<label
+    class="field-label"
+    for="imageCaptionInput"
+>
+Caption
+</label>
+
+<textarea
+    id="imageCaptionInput"
+    class="field"
+    rows="3"
+    maxlength="300"
+></textarea>
+
+</div>
+
+<div
+    id="metadataState"
+    class="mt-3 text-xs text-slate-500"
+>
+Metadata will be committed with the approved image.
+</div>
+
+</section>
+
+</div>
+
+<aside class="stage-side space-y-5">
+
+<section class="dark-panel">
+
+<div class="eyebrow text-dyve-accent">
+MEDIA PIPELINE
+</div>
+
+<div class="mt-4 space-y-3 text-xs text-white/65">
+
+<div>
+<span id="pipelineStepValidate">○</span>
+Validate source
+</div>
+
+<div>
+<span id="pipelineStepResize">○</span>
+Resize / normalize
+</div>
+
+<div>
+<span id="pipelineStepWebp">○</span>
+Convert to WebP
+</div>
+
+<div>
+<span id="pipelineStepWatermark">○</span>
+Embed HackaX watermark
+</div>
+
+<div>
+<span id="pipelineStepPreview">○</span>
+Generate local review asset
+</div>
+
+<div>
+<span id="pipelineStepMetadata">○</span>
+Generate contextual metadata
+</div>
+
+<div>
+<span id="pipelineStepUpload">○</span>
+Cloudinary upload
+</div>
+
+<div>
+<span id="pipelineStepVerify">○</span>
+Verify remote asset
+</div>
+
+</div>
+
+<div
+    id="pipelineMessage"
+    class="mt-5 rounded-xl border border-white/10 bg-white/5 p-3 text-[11px] leading-5 text-white/55"
+>
+Waiting for an image.
+</div>
+
+</section>
+
+<section class="onboarding-card">
+
+<div class="section-title">
+Watermark policy
+</div>
+
+<p class="section-note mt-2">
+The watermark is rendered into the pixels before upload. It is not a CSS overlay, so the published image retains it permanently.
+</p>
+
+<div class="warning-strip mt-4">
+If assets/dyve-hackax.png is missing from the deployment, processing stops instead of silently publishing an unwatermarked image.
+</div>
+
+</section>
+
+<section class="onboarding-card">
+
+<div class="section-title">
+Upload policy
+</div>
+
+<div class="section-note mt-2">
+Selecting a file never uploads it. Cloudinary is contacted only after the processed image has been generated and you explicitly choose to commit it.
+</div>
+
+<div class="mt-4 space-y-2 text-xs">
+
+<div class="flex justify-between gap-4">
+<span class="text-slate-500">Source</span>
+<strong class="text-slate-900">Local device</strong>
+</div>
+
+<div class="flex justify-between gap-4">
+<span class="text-slate-500">Processing</span>
+<strong class="text-slate-900">Browser</strong>
+</div>
+
+<div class="flex justify-between gap-4">
+<span class="text-slate-500">Remote upload</span>
+<strong class="text-slate-900">Explicit confirmation</strong>
+</div>
+
+</div>
+
+</section>
+
+</aside>
+
+</div>
+
+<div
+    id="validation"
+    class="validation hidden"
+></div>
 
 <div class="stage-actions">
-    <button type="button" class="action-btn" data-back>
-        Back
-    </button>
 
-    <button type="button" class="action-btn primary flex-1" data-next>
-        Continue
-    </button>
+<button
+    type="button"
+    class="action-btn"
+    data-back
+>
+Back
+</button>
+
+<button
+    type="button"
+    class="action-btn primary flex-1"
+    data-next
+>
+Continue
+</button>
+
 </div>
 
-<div id="toast" class="toast hidden"></div>
+<div
+    id="toast"
+    class="toast hidden"
+></div>
 
 </main>
 
+<!-- ==========================================================
+     STAGE 02 INLINE MEDIA CONTROLLER
+     ==========================================================
+     This controller owns the Stage 02 image-selection workflow.
+
+     The shared hackax-publisher.js remains loaded below and
+     continues to own the global publisher state, navigation,
+     persistence and publishing engine.
+
+     The capture-phase change handler below intentionally
+     intercepts the featured image input before the legacy
+     Stage 02 listener inside hackax-publisher.js can perform
+     an immediate upload.
+========================================================== -->
+
+<script>
+(function(){
+"use strict";
+
+const MAX_SOURCE_BYTES = 25 * 1024 * 1024;
+const MAX_WIDTH = 1800;
+const WEBP_QUALITY = 0.82;
+
+let pendingImage = null;
+let pendingObjectUrl = "";
+let processing = false;
+let uploadInProgress = false;
+
+function getPublisherState(){
+    if(
+        window.HackaX &&
+        typeof window.HackaX.state === "function"
+    ){
+        return window.HackaX.state();
+    }
+
+    return null;
+}
+
+function getConfig(){
+    const defaults = {
+        cloudName: "dxdbn6xwy",
+        uploadPreset: "geefox_unsigned",
+        cloudEndpoint: "https://api.cloudinary.com/v1_1/dxdbn6xwy/image/upload"
+    };
+
+    let saved = {};
+
+    try{
+        saved = JSON.parse(
+            localStorage.getItem(
+                "dyve-hackax-settings"
+            ) || "{}"
+        );
+    }catch(e){
+        saved = {};
+    }
+
+    const merged = {
+        ...defaults,
+        ...(saved && typeof saved === "object"
+            ? saved
+            : {})
+    };
+
+    return merged;
+}
+
+function cleanText(value){
+    return String(value || "")
+        .replace(/<[^>]*>/g," ")
+        .replace(/&nbsp;/gi," ")
+        .replace(/\s+/g," ")
+        .trim();
+}
+
+function slugify(value){
+    return String(value || "")
+        .normalize("NFKD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g,"")
+        .replace(/\s+/g,"-")
+        .replace(/-+/g,"-")
+        .replace(/^-|-$/g,"")
+        .slice(0,120);
+}
+
+function meaningfulTokens(value){
+    const stopwords = new Set(
+        (
+            "a an and are as at be been being by can could did do does for from had has have he her here hers him his how i if in into is it its just me more most my no not of on or our ours she should so than that the their theirs them then there these they this those through to under up us was we were what when where which who why will with would you your yours about above after again against all also among any because before below between both but during each few further itself once other over own same some such too very according across actually almost already although another around away back became become becoming behind beside besides beyond certain clearly despite down especially even ever every everything first following four found general generally given going good great however important including instead known last later less likely many maybe might much near nearly never new next often only otherwise particular perhaps possible probably recent really right several since still sure taken than though together toward towards usually using various well while within without"
+        ).split(/\s+/)
+    );
+
+    const tokens = cleanText(value)
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g," ")
+        .split(/\s+/)
+        .filter(Boolean)
+        .filter(
+            x =>
+                x.length >= 4 &&
+                !stopwords.has(x) &&
+                !/^\d+$/.test(x)
+        );
+
+    return [...new Set(tokens)];
+}
+
+function categoryLabel(state){
+    const categories = {
+        general: "General Updates",
+        breach: "Data Breach",
+        "dark-web": "Dark Web Intelligence",
+        ransomware: "Ransomware Intelligence",
+        "threat-actors": "Threat Actors",
+        signals: "Threat Signals",
+        analysis: "Threat Analysis",
+        vulnerability: "Vulnerability Intelligence",
+        malware: "Malware Intelligence",
+        advisory: "Security Advisory",
+        research: "Research & Investigation",
+        explainer: "Security Explainer"
+    };
+
+    return categories[
+        state?.classification?.category
+    ] || "Cyber Threat Intelligence";
+}
+
+function generateBaseName(state, context){
+    const title =
+        state?.article?.title ||
+        "HackaX intelligence";
+
+    const category =
+        categoryLabel(state);
+
+    const tag =
+        state?.classification?.intelTag ||
+        context ||
+        "featured";
+
+    const tokens = [
+        ...meaningfulTokens(title),
+        ...meaningfulTokens(category),
+        ...meaningfulTokens(tag)
+    ];
+
+    const unique = [...new Set(tokens)];
+
+    return slugify(
+        unique
+            .slice(0,12)
+            .join("-")
+    ) || "hackax-intelligence";
+}
+
+function generateAlt(state){
+    const title =
+        cleanText(
+            state?.article?.title ||
+            "HackaX intelligence"
+        );
+
+    const category =
+        categoryLabel(state);
+
+    return `${title} - ${category} featured image`
+        .replace(/\s+/g," ")
+        .trim()
+        .slice(0,180);
+}
+
+function generateTitle(state){
+    const title =
+        cleanText(
+            state?.article?.title ||
+            "HackaX Intelligence"
+        );
+
+    return `${title} | ${categoryLabel(state)}`
+        .slice(0,180);
+}
+
+function generateCaption(state){
+    const title =
+        cleanText(
+            state?.article?.title ||
+            "HackaX intelligence"
+        );
+
+    const category =
+        categoryLabel(state);
+
+    const tag =
+        cleanText(
+            state?.classification?.intelTag ||
+            ""
+        );
+
+    return `${category} coverage: ${title}${
+        tag
+            ? " (" + tag + ")"
+            : ""
+    }.`;
+}
+
+function formatBytes(bytes){
+    if(!Number.isFinite(bytes)){
+        return "—";
+    }
+
+    if(bytes < 1024){
+        return `${bytes} B`;
+    }
+
+    if(bytes < 1024 * 1024){
+        return `${(bytes / 1024).toFixed(1)} KB`;
+    }
+
+    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+}
+
+function setPipelineStep(name, state){
+    const el =
+        document.getElementById(
+            `pipelineStep${name}`
+        );
+
+    if(!el){
+        return;
+    }
+
+    el.textContent =
+        state === "done"
+            ? "✓"
+            : state === "active"
+                ? "●"
+                : state === "error"
+                    ? "×"
+                    : "○";
+}
+
+function setPipelineMessage(message, type){
+    const el =
+        document.getElementById(
+            "pipelineMessage"
+        );
+
+    if(!el){
+        return;
+    }
+
+    el.textContent = message;
+
+    el.classList.remove(
+        "text-white/55",
+        "text-emerald-300",
+        "text-amber-300",
+        "text-red-300"
+    );
+
+    el.classList.add(
+        type === "success"
+            ? "text-emerald-300"
+            : type === "error"
+                ? "text-red-300"
+                : type === "warning"
+                    ? "text-amber-300"
+                    : "text-white/55"
+    );
+}
+
+function showToast(message, type){
+    if(
+        window.HackaX &&
+        typeof window.HackaX.toast === "function"
+    ){
+        window.HackaX.toast(
+            message,
+            type
+        );
+
+        return;
+    }
+
+    const el =
+        document.getElementById("toast");
+
+    if(!el){
+        return;
+    }
+
+    el.textContent = message;
+
+    el.classList.remove(
+        "hidden",
+        "toast-success",
+        "toast-error",
+        "toast-info"
+    );
+
+    el.classList.add(
+        type === "error"
+            ? "toast-error"
+            : type === "success"
+                ? "toast-success"
+                : "toast-info"
+    );
+}
+
+function setBusy(value){
+    processing = value;
+
+    const input =
+        document.getElementById(
+            "featuredImageInput"
+        );
+
+    const upload =
+        document.getElementById(
+            "uploadProcessedImageBtn"
+        );
+
+    const discard =
+        document.getElementById(
+            "discardProcessedImageBtn"
+        );
+
+    if(input){
+        input.disabled =
+            value || uploadInProgress;
+    }
+
+    if(upload){
+        upload.disabled =
+            value ||
+            uploadInProgress ||
+            !pendingImage;
+    }
+
+    if(discard){
+        discard.disabled =
+            value ||
+            uploadInProgress ||
+            !pendingImage;
+    }
+}
+
+function revokePendingUrl(){
+    if(pendingObjectUrl){
+        URL.revokeObjectURL(
+            pendingObjectUrl
+        );
+
+        pendingObjectUrl = "";
+    }
+}
+
+function clearPendingImage(){
+    revokePendingUrl();
+
+    pendingImage = null;
+
+    const panel =
+        document.getElementById(
+            "pendingImagePanel"
+        );
+
+    if(panel){
+        panel.classList.add("hidden");
+    }
+
+    const upload =
+        document.getElementById(
+            "uploadProcessedImageBtn"
+        );
+
+    if(upload){
+        upload.disabled = true;
+    }
+
+    setPipelineStep(
+        "Preview",
+        "pending"
+    );
+
+    setPipelineMessage(
+        "Waiting for an image."
+    );
+}
+
+function getWatermarkUrls(){
+    const urls = [];
+
+    try{
+        urls.push(
+            new URL(
+                "/assets/dyve-hackax.png",
+                location.origin
+            ).href
+        );
+
+        urls.push(
+            new URL(
+                "../assets/dyve-hackax.png",
+                document.baseURI
+            ).href
+        );
+
+        urls.push(
+            new URL(
+                "assets/dyve-hackax.png",
+                document.baseURI
+            ).href
+        );
+    }catch(e){}
+
+    return [...new Set(urls)];
+}
+
+async function loadWatermark(){
+    if(
+        window.__hackaxStage2WatermarkPromise
+    ){
+        return window.__hackaxStage2WatermarkPromise;
+    }
+
+    window.__hackaxStage2WatermarkPromise =
+        new Promise(
+            (resolve,reject) => {
+                const paths =
+                    getWatermarkUrls();
+
+                let index = 0;
+
+                function tryNext(){
+                    if(
+                        index >= paths.length
+                    ){
+                        window.__hackaxStage2WatermarkPromise =
+                            null;
+
+                        reject(
+                            new Error(
+                                "HackaX watermark asset /assets/dyve-hackax.png could not be loaded."
+                            )
+                        );
+
+                        return;
+                    }
+
+                    const src =
+                        paths[index++];
+
+                    const img =
+                        new Image();
+
+                    img.decoding =
+                        "async";
+
+                    img.onload = () => {
+                        if(
+                            img.naturalWidth <= 0 ||
+                            img.naturalHeight <= 0
+                        ){
+                            tryNext();
+                            return;
+                        }
+
+                        resolve(img);
+                    };
+
+                    img.onerror =
+                        () => {
+                            tryNext();
+                        };
+
+                    img.src =
+                        src +
+                        (
+                            src.includes("?")
+                                ? "&"
+                                : "?"
+                        ) +
+                        "v=stage2";
+                }
+
+                tryNext();
+            }
+        );
+
+    return window.__hackaxStage2WatermarkPromise;
+}
+
+async function decodeSource(file){
+    if(
+        "createImageBitmap" in window
+    ){
+        try{
+            const bitmap =
+                await createImageBitmap(file);
+
+            return {
+                bitmap,
+                width: bitmap.width,
+                height: bitmap.height,
+                close(){
+                    if(
+                        typeof bitmap.close ===
+                        "function"
+                    ){
+                        bitmap.close();
+                    }
+                }
+            };
+        }catch(e){}
+    }
+
+    const url =
+        URL.createObjectURL(file);
+
+    try{
+        const img =
+            await new Promise(
+                (resolve,reject) => {
+                    const image =
+                        new Image();
+
+                    image.onload =
+                        () => resolve(image);
+
+                    image.onerror =
+                        () =>
+                            reject(
+                                new Error(
+                                    "The selected image could not be decoded by this browser."
+                                )
+                            );
+
+                    image.src =
+                        url;
+                }
+            );
+
+        return {
+            bitmap: img,
+            width: img.naturalWidth,
+            height: img.naturalHeight,
+            close(){}
+        };
+    }finally{
+        URL.revokeObjectURL(url);
+    }
+}
+
+async function processLocally(file){
+    if(
+        !file ||
+        !file.type ||
+        !file.type.startsWith("image/")
+    ){
+        throw new Error(
+            "Please choose a valid image file."
+        );
+    }
+
+    setPipelineStep(
+        "Validate",
+        "active"
+    );
+
+    if(
+        file.size >
+        MAX_SOURCE_BYTES
+    ){
+        throw new Error(
+            "Image is larger than the 25 MB processing limit."
+        );
+    }
+
+    setPipelineStep(
+        "Validate",
+        "done"
+    );
+
+    setPipelineStep(
+        "Resize",
+        "active"
+    );
+
+    const source =
+        await decodeSource(file);
+
+    let width =
+        source.width;
+
+    let height =
+        source.height;
+
+    if(
+        !width ||
+        !height
+    ){
+        source.close();
+
+        throw new Error(
+            "The selected image has invalid dimensions."
+        );
+    }
+
+    if(width > MAX_WIDTH){
+        height =
+            Math.round(
+                height *
+                MAX_WIDTH /
+                width
+            );
+
+        width =
+            MAX_WIDTH;
+    }
+
+    const canvas =
+        document.createElement(
+            "canvas"
+        );
+
+    canvas.width =
+        width;
+
+    canvas.height =
+        height;
+
+    const ctx =
+        canvas.getContext(
+            "2d",
+            {
+                alpha:false
+            }
+        );
+
+    if(!ctx){
+        source.close();
+
+        throw new Error(
+            "Browser image processing is unavailable."
+        );
+    }
+
+    ctx.fillStyle =
+        "#111";
+
+    ctx.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    ctx.drawImage(
+        source.bitmap,
+        0,
+        0,
+        width,
+        height
+    );
+
+    source.close();
+
+    setPipelineStep(
+        "Resize",
+        "done"
+    );
+
+    setPipelineStep(
+        "Webp",
+        "active"
+    );
+
+    const watermark =
+        await loadWatermark();
+
+    setPipelineStep(
+        "Webp",
+        "done"
+    );
+
+    setPipelineStep(
+        "Watermark",
+        "active"
+    );
+
+    const wmWidth =
+        Math.max(
+            110,
+            Math.round(
+                width * 0.18
+            )
+        );
+
+    const wmHeight =
+        Math.round(
+            watermark.naturalHeight *
+            wmWidth /
+            watermark.naturalWidth
+        );
+
+    const pad =
+        Math.max(
+            18,
+            Math.round(
+                width * 0.018
+            )
+        );
+
+    const x =
+        width -
+        wmWidth -
+        pad;
+
+    const y =
+        height -
+        wmHeight -
+        pad;
+
+    ctx.save();
+
+    ctx.globalAlpha =
+        0.82;
+
+    ctx.shadowColor =
+        "rgba(0,0,0,.38)";
+
+    ctx.shadowBlur =
+        Math.max(
+            4,
+            Math.round(
+                width * .006
+            )
+        );
+
+    ctx.drawImage(
+        watermark,
+        x,
+        y,
+        wmWidth,
+        wmHeight
+    );
+
+    ctx.restore();
+
+    setPipelineStep(
+        "Watermark",
+        "done"
+    );
+
+    setPipelineStep(
+        "Preview",
+        "active"
+    );
+
+    const blob =
+        await new Promise(
+            (resolve,reject) => {
+                canvas.toBlob(
+                    result => {
+                        if(result){
+                            resolve(result);
+                        }else{
+                            reject(
+                                new Error(
+                                    "WebP conversion failed."
+                                )
+                            );
+                        }
+                    },
+                    "image/webp",
+                    WEBP_QUALITY
+                );
+            }
+        );
+
+    if(!blob){
+        throw new Error(
+            "Unable to create optimized WebP image."
+        );
+    }
+
+    const state =
+        getPublisherState();
+
+    const base =
+        generateBaseName(
+            state,
+            "featured"
+        );
+
+    const filename =
+        `${base}-${Date.now()}.webp`;
+
+    const output =
+        new File(
+            [blob],
+            filename,
+            {
+                type:"image/webp"
+            }
+        );
+
+    setPipelineStep(
+        "Preview",
+        "done"
+    );
+
+    setPipelineStep(
+        "Metadata",
+        "active"
+    );
+
+    const metadata = {
+        alt:
+            generateAlt(
+                state
+            ),
+
+        title:
+            generateTitle(
+                state
+            ),
+
+        caption:
+            generateCaption(
+                state
+            )
+    };
+
+    setPipelineStep(
+        "Metadata",
+        "done"
+    );
+
+    return {
+        file: output,
+        width,
+        height,
+        metadata,
+        seoName: base,
+        sourceName: file.name,
+        sourceType: file.type,
+        sourceSize: file.size,
+        processedSize: output.size,
+        processedFormat: "webp",
+        watermarked: true,
+        processed: true,
+        compressed: true,
+        webp: true
+    };
+}
+
+function renderPending(result){
+    revokePendingUrl();
+
+    pendingImage =
+        result;
+
+    pendingObjectUrl =
+        URL.createObjectURL(
+            result.file
+        );
+
+    const panel =
+        document.getElementById(
+            "pendingImagePanel"
+        );
+
+    const image =
+        document.getElementById(
+            "pendingPreviewImg"
+        );
+
+    const filename =
+        document.getElementById(
+            "pendingImageFilename"
+        );
+
+    const dimensions =
+        document.getElementById(
+            "pendingDimensions"
+        );
+
+    const format =
+        document.getElementById(
+            "pendingFormat"
+        );
+
+    const size =
+        document.getElementById(
+            "pendingSize"
+        );
+
+    const uploadState =
+        document.getElementById(
+            "pendingUploadState"
+        );
+
+    if(image){
+        image.src =
+            pendingObjectUrl;
+
+        image.alt =
+            result.metadata.alt ||
+            "Processed HackaX featured image";
+    }
+
+    if(filename){
+        filename.textContent =
+            result.file.name;
+    }
+
+    if(dimensions){
+        dimensions.textContent =
+            `${result.width} × ${result.height}`;
+    }
+
+    if(format){
+        format.textContent =
+            "WEBP";
+    }
+
+    if(size){
+        size.textContent =
+            formatBytes(
+                result.processedSize
+            );
+    }
+
+    if(uploadState){
+        uploadState.textContent =
+            "Not uploaded";
+
+        uploadState.className =
+            "text-xs font-black text-amber-700 mt-1";
+    }
+
+    if(panel){
+        panel.classList.remove(
+            "hidden"
+        );
+    }
+
+    setValue(
+        "imageAltInput",
+        result.metadata.alt
+    );
+
+    setValue(
+        "imageTitleInput",
+        result.metadata.title
+    );
+
+    setValue(
+        "imageCaptionInput",
+        result.metadata.caption
+    );
+
+    const metadataState =
+        document.getElementById(
+            "metadataState"
+        );
+
+    if(metadataState){
+        metadataState.textContent =
+            "Metadata is generated from the current article context. Changes will be committed when this processed image is uploaded.";
+    }
+
+    const upload =
+        document.getElementById(
+            "uploadProcessedImageBtn"
+        );
+
+    if(upload){
+        upload.disabled =
+            false;
+    }
+
+    setPipelineMessage(
+        "Local processing complete. Review the processed image and metadata before committing it to Cloudinary.",
+        "success"
+    );
+}
+
+function setValue(id,value){
+    const el =
+        document.getElementById(id);
+
+    if(el){
+        el.value =
+            value == null
+                ? ""
+                : value;
+    }
+}
+
+function getValue(id){
+    const el =
+        document.getElementById(id);
+
+    return el
+        ? el.value
+        : "";
+}
+
+function renderCommittedAsset(){
+    const state =
+        getPublisherState();
+
+    const media =
+        state?.media?.featured;
+
+    const panel =
+        document.getElementById(
+            "committedImagePanel"
+        );
+
+    if(
+        !media ||
+        !media.url
+    ){
+        if(panel){
+            panel.classList.add(
+                "hidden"
+            );
+        }
+
+        return;
+    }
+
+    const image =
+        document.getElementById(
+            "committedPreviewImg"
+        );
+
+    if(image){
+        image.src =
+            media.url;
+
+        image.alt =
+            media.alt ||
+            "Committed HackaX featured image";
+    }
+
+    const facts =
+        document.getElementById(
+            "committedImageFacts"
+        );
+
+    if(facts){
+        const dimensions =
+            media.width &&
+            media.height
+                ? `${media.width} × ${media.height}`
+                : "Dimensions unavailable";
+
+        const size =
+            media.byteSize
+                ? formatBytes(
+                    media.byteSize
+                )
+                : "Size unavailable";
+
+        facts.textContent =
+            `${dimensions} · ${(
+                media.format ||
+                "webp"
+            ).toUpperCase()} · ${size}`;
+    }
+
+    if(panel){
+        panel.classList.remove(
+            "hidden"
+        );
+    }
+
+    setPipelineStep(
+        "Upload",
+        "done"
+    );
+
+    setPipelineStep(
+        "Verify",
+        "done"
+    );
+}
+
+function syncMetadataToPending(){
+    if(!pendingImage){
+        return;
+    }
+
+    pendingImage.metadata.alt =
+        getValue(
+            "imageAltInput"
+        ).trim() ||
+        pendingImage.metadata.alt;
+
+    pendingImage.metadata.title =
+        getValue(
+            "imageTitleInput"
+        ).trim() ||
+        pendingImage.metadata.title;
+
+    pendingImage.metadata.caption =
+        getValue(
+            "imageCaptionInput"
+        ).trim() ||
+        pendingImage.metadata.caption;
+
+    const image =
+        document.getElementById(
+            "pendingPreviewImg"
+        );
+
+    if(image){
+        image.alt =
+            pendingImage.metadata.alt ||
+            "Processed HackaX featured image";
+    }
+}
+
+async function uploadProcessedImage(){
+    if(
+        !pendingImage ||
+        !pendingImage.file
+    ){
+        showToast(
+            "Process an image before uploading.",
+            "error"
+        );
+
+        return;
+    }
+
+    if(uploadInProgress){
+        return;
+    }
+
+    const state =
+        getPublisherState();
+
+    if(!state){
+        showToast(
+            "Publisher state is not ready. Please wait and try again.",
+            "error"
+        );
+
+        return;
+    }
+
+    syncMetadataToPending();
+
+    const config =
+        getConfig();
+
+    if(
+        !config.cloudName ||
+        !config.uploadPreset
+    ){
+        showToast(
+            "Cloudinary media settings are not configured.",
+            "error"
+        );
+
+        return;
+    }
+
+    uploadInProgress = true;
+
+    const uploadBtn =
+        document.getElementById(
+            "uploadProcessedImageBtn"
+        );
+
+    const discardBtn =
+        document.getElementById(
+            "discardProcessedImageBtn"
+        );
+
+    if(uploadBtn){
+        uploadBtn.disabled = true;
+        uploadBtn.textContent =
+            "Uploading...";
+    }
+
+    if(discardBtn){
+        discardBtn.disabled = true;
+    }
+
+    setPipelineStep(
+        "Upload",
+        "active"
+    );
+
+    setPipelineMessage(
+        "Uploading the approved processed asset to Cloudinary...",
+        "warning"
+    );
+
+    showToast(
+        "Uploading approved image to Cloudinary..."
+    );
+
+    try{
+        const base =
+            pendingImage.seoName ||
+            generateBaseName(
+                state,
+                "featured"
+            );
+
+        const publicId =
+            `hackax/${base}-${Date.now()}`;
+
+        const endpoint =
+            config.cloudEndpoint ||
+            `https://api.cloudinary.com/v1_1/${encodeURIComponent(
+                config.cloudName
+            )}/image/upload`;
+
+        const form =
+            new FormData();
+
+        form.append(
+            "file",
+            pendingImage.file
+        );
+
+        form.append(
+            "upload_preset",
+            config.uploadPreset
+        );
+
+        form.append(
+            "public_id",
+            publicId
+        );
+
+        let response =
+            await fetch(
+                endpoint,
+                {
+                    method:"POST",
+                    body:form
+                }
+            );
+
+        let data =
+            await response
+                .json()
+                .catch(
+                    () => ({})
+                );
+
+        if(!response.ok){
+            /*
+               Only retry when Cloudinary explicitly rejects
+               the custom public_id. The retry is deliberately
+               NOT used for network failures, because a network
+               failure after server acceptance can otherwise
+               create duplicate assets.
+            */
+
+            const message =
+                String(
+                    data?.error?.message ||
+                    ""
+                ).toLowerCase();
+
+            const publicIdRejected =
+                message.includes("public_id") ||
+                message.includes("public id") ||
+                message.includes("not allowed") ||
+                message.includes("unsigned");
+
+            if(!publicIdRejected){
+                throw new Error(
+                    data?.error?.message ||
+                    `Cloudinary upload failed (${response.status}).`
+                );
+            }
+
+            setPipelineMessage(
+                "Cloudinary rejected the custom asset ID. Retrying once without a custom public ID.",
+                "warning"
+            );
+
+            const retryForm =
+                new FormData();
+
+            retryForm.append(
+                "file",
+                pendingImage.file
+            );
+
+            retryForm.append(
+                "upload_preset",
+                config.uploadPreset
+            );
+
+            response =
+                await fetch(
+                    endpoint,
+                    {
+                        method:"POST",
+                        body:retryForm
+                    }
+                );
+
+            data =
+                await response
+                    .json()
+                    .catch(
+                        () => ({})
+                    );
+
+            if(!response.ok){
+                throw new Error(
+                    data?.error?.message ||
+                    `Cloudinary upload failed (${response.status}).`
+                );
+            }
+        }
+
+        if(
+            !data ||
+            !data.secure_url
+        ){
+            throw new Error(
+                "Cloudinary returned no usable image URL."
+            );
+        }
+
+        setPipelineStep(
+            "Upload",
+            "done"
+        );
+
+        setPipelineStep(
+            "Verify",
+            "active"
+        );
+
+        setPipelineMessage(
+            "Cloudinary accepted the asset. Verifying the returned media record...",
+            "warning"
+        );
+
+        /*
+           Verify the response itself before committing the
+           asset into HackaX publisher state.
+        */
+
+        const verifiedUrl =
+            /^https:\/\//i.test(
+                String(
+                    data.secure_url
+                )
+            );
+
+        const verifiedFormat =
+            String(
+                data.format ||
+                ""
+            ).toLowerCase() === "webp";
+
+        const verifiedDimensions =
+            Number(data.width) > 0 &&
+            Number(data.height) > 0;
+
+        if(
+            !verifiedUrl ||
+            !verifiedDimensions
+        ){
+            throw new Error(
+                "Cloudinary returned an incomplete media record."
+            );
+        }
+
+        if(!verifiedFormat){
+            throw new Error(
+                "Cloudinary did not confirm the committed asset as WebP."
+            );
+        }
+
+        const metadata =
+            pendingImage.metadata;
+
+        state.media.featured = {
+            url:
+                data.secure_url,
+
+            width:
+                Number(data.width) ||
+                pendingImage.width,
+
+            height:
+                Number(data.height) ||
+                pendingImage.height,
+
+            format:
+                data.format ||
+                "webp",
+
+            publicId:
+                data.public_id ||
+                "",
+
+            resourceType:
+                data.resource_type ||
+                "image",
+
+            originalFilename:
+                data.original_filename ||
+                pendingImage.file.name,
+
+            seoName:
+                pendingImage.seoName,
+
+            alt:
+                metadata.alt,
+
+            title:
+                metadata.title,
+
+            caption:
+                metadata.caption,
+
+            watermarked:
+                true,
+
+            processed:
+                true,
+
+            compressed:
+                true,
+
+            webp:
+                true,
+
+            byteSize:
+                pendingImage.processedSize,
+
+            sourceFilename:
+                pendingImage.sourceName,
+
+            sourceType:
+                pendingImage.sourceType,
+
+            sourceByteSize:
+                pendingImage.sourceSize,
+
+            uploadedAt:
+                new Date().toISOString(),
+
+            pipelineVersion:
+                "stage2-local-confirmed-v1"
+        };
+
+        /*
+           Persist through the shared publisher engine.
+        */
+
+        if(
+            window.HackaX &&
+            typeof window.HackaX.save === "function"
+        ){
+            window.HackaX.save();
+        }else{
+            localStorage.setItem(
+                "dyve-hackax-publisher-v2",
+                JSON.stringify(state)
+            );
+        }
+
+        setPipelineStep(
+            "Verify",
+            "done"
+        );
+
+        const uploadState =
+            document.getElementById(
+                "pendingUploadState"
+            );
+
+        if(uploadState){
+            uploadState.textContent =
+                "Committed";
+
+            uploadState.className =
+                "text-xs font-black text-emerald-700 mt-1";
+        }
+
+        setPipelineMessage(
+            "Asset uploaded, verified and committed to the HackaX publisher state.",
+            "success"
+        );
+
+        showToast(
+            "Featured image uploaded and committed successfully.",
+            "success"
+        );
+
+        clearPendingImage();
+
+        renderCommittedAsset();
+
+        const input =
+            document.getElementById(
+                "featuredImageInput"
+            );
+
+        if(input){
+            input.value = "";
+        }
+
+    }catch(error){
+        console.error(
+            "HackaX Stage 02 media upload failed:",
+            error
+        );
+
+        setPipelineStep(
+            "Upload",
+            "error"
+        );
+
+        setPipelineStep(
+            "Verify",
+            "pending"
+        );
+
+        setPipelineMessage(
+            error.message ||
+            "The image could not be committed. Your current committed asset remains unchanged.",
+            "error"
+        );
+
+        showToast(
+            error.message ||
+            "Image upload failed.",
+            "error"
+        );
+
+    }finally{
+        uploadInProgress = false;
+
+        if(uploadBtn){
+            uploadBtn.disabled =
+                !pendingImage;
+
+            uploadBtn.textContent =
+                "Upload & Commit Image";
+        }
+
+        if(discardBtn){
+            discardBtn.disabled =
+                !pendingImage;
+        }
+    }
+}
+
+async function handleImageSelection(file){
+    if(
+        !file ||
+        processing ||
+        uploadInProgress
+    ){
+        return;
+    }
+
+    clearPendingImage();
+
+    setBusy(true);
+
+    setPipelineStep(
+        "Validate",
+        "active"
+    );
+
+    setPipelineMessage(
+        "Validating the selected source image..."
+    );
+
+    showToast(
+        "Validating and processing image..."
+    );
+
+    try{
+        const result =
+            await processLocally(
+                file
+            );
+
+        renderPending(
+            result
+        );
+
+        showToast(
+            "Image processed locally. Review it before uploading.",
+            "success"
+        );
+
+    }catch(error){
+        console.error(
+            "HackaX Stage 02 local processing failed:",
+            error
+        );
+
+        setPipelineStep(
+            "Validate",
+            "error"
+        );
+
+        setPipelineStep(
+            "Resize",
+            "pending"
+        );
+
+        setPipelineStep(
+            "Webp",
+            "pending"
+        );
+
+        setPipelineStep(
+            "Watermark",
+            "pending"
+        );
+
+        setPipelineStep(
+            "Preview",
+            "pending"
+        );
+
+        setPipelineStep(
+            "Metadata",
+            "pending"
+        );
+
+        setPipelineStep(
+            "Upload",
+            "pending"
+        );
+
+        setPipelineStep(
+            "Verify",
+            "pending"
+        );
+
+        setPipelineMessage(
+            error.message ||
+            "The image could not be processed.",
+            "error"
+        );
+
+        showToast(
+            error.message ||
+            "Image processing failed.",
+            "error"
+        );
+
+    }finally{
+        setBusy(false);
+
+        const input =
+            document.getElementById(
+                "featuredImageInput"
+            );
+
+        if(input){
+            input.value = "";
+        }
+    }
+}
+
+function bindStage2Controller(){
+    const input =
+        document.getElementById(
+            "featuredImageInput"
+        );
+
+    const drop =
+        document.getElementById(
+            "mediaDrop"
+        );
+
+    const upload =
+        document.getElementById(
+            "uploadProcessedImageBtn"
+        );
+
+    const discard =
+        document.getElementById(
+            "discardProcessedImageBtn"
+        );
+
+    /*
+       CAPTURE PHASE IS INTENTIONAL.
+
+       hackax-publisher.js currently registers its legacy
+       Stage 02 change handler during DOMContentLoaded.
+
+       This listener runs during the capture phase first and
+       stops that legacy handler from immediately uploading the
+       selected source image.
+    */
+
+    if(input){
+        input.addEventListener(
+            "change",
+            event => {
+                event.stopImmediatePropagation();
+
+                const file =
+                    event.target.files?.[0];
+
+                if(file){
+                    handleImageSelection(
+                        file
+                    );
+                }
+            },
+            true
+        );
+    }
+
+    if(drop && input){
+        drop.addEventListener(
+            "click",
+            event => {
+                if(
+                    event.target === input
+                ){
+                    return;
+                }
+
+                if(
+                    processing ||
+                    uploadInProgress
+                ){
+                    return;
+                }
+
+                input.click();
+            }
+        );
+
+        drop.addEventListener(
+            "keydown",
+            event => {
+                if(
+                    event.key === "Enter" ||
+                    event.key === " "
+                ){
+                    event.preventDefault();
+
+                    if(
+                        processing ||
+                        uploadInProgress
+                    ){
+                        return;
+                    }
+
+                    input.click();
+                }
+            }
+        );
+    }
+
+    if(upload){
+        upload.addEventListener(
+            "click",
+            uploadProcessedImage
+        );
+    }
+
+    if(discard){
+        discard.addEventListener(
+            "click",
+            () => {
+                if(
+                    !pendingImage ||
+                    processing ||
+                    uploadInProgress
+                ){
+                    return;
+                }
+
+                clearPendingImage();
+
+                setPipelineStep(
+                    "Validate",
+                    "pending"
+                );
+
+                setPipelineStep(
+                    "Resize",
+                    "pending"
+                );
+
+                setPipelineStep(
+                    "Webp",
+                    "pending"
+                );
+
+                setPipelineStep(
+                    "Watermark",
+                    "pending"
+                );
+
+                setPipelineStep(
+                    "Preview",
+                    "pending"
+                );
+
+                setPipelineStep(
+                    "Metadata",
+                    "pending"
+                );
+
+                setPipelineStep(
+                    "Upload",
+                    "pending"
+                );
+
+                setPipelineStep(
+                    "Verify",
+                    "pending"
+                );
+
+                setPipelineMessage(
+                    "Processed image discarded. The previously committed asset, if any, remains unchanged."
+                );
+
+                showToast(
+                    "Processed image discarded.",
+                    "info"
+                );
+            }
+        );
+    }
+
+    [
+        "imageAltInput",
+        "imageTitleInput",
+        "imageCaptionInput"
+    ].forEach(
+        id => {
+            document
+                .getElementById(id)
+                ?.addEventListener(
+                    "input",
+                    () => {
+                        syncMetadataToPending();
+
+                        if(
+                            pendingImage
+                        ){
+                            const state =
+                                getPublisherState();
+
+                            if(
+                                state &&
+                                window.HackaX &&
+                                typeof window.HackaX.save ===
+                                    "function"
+                            ){
+                                /*
+                                   Metadata is intentionally not
+                                   written into state.media.featured
+                                   until the image is committed.
+                                */
+                            }
+                        }
+                    }
+                );
+        }
+    );
+
+    renderCommittedAsset();
+
+    setPipelineMessage(
+        "Waiting for an image."
+    );
+}
+
+function bootStage2Controller(){
+    /*
+       The shared publisher engine is loaded after this script.
+       Its DOMContentLoaded handler initializes HackaX.state().
+       Defer our controller by one task so the global engine has
+       established the shared publisher state first.
+    */
+
+    setTimeout(
+        bindStage2Controller,
+        0
+    );
+}
+
+if(
+    document.readyState === "loading"
+){
+    document.addEventListener(
+        "DOMContentLoaded",
+        bootStage2Controller,
+        {
+            once:true
+        }
+    );
+}else{
+    bootStage2Controller();
+}
+
+})();
+</script>
+
+<!-- Shared global publisher engine -->
 <script src="hackax-publisher.js"></script>
 
 </body>
