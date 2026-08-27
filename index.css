@@ -905,37 +905,100 @@ a {
 
 /* ============================================================
    HERO
+   PREMIUM EDITORIAL FEATURED INTELLIGENCE
 ============================================================ */
 
 .featured-section {
 
-  margin-top:
-    22px;
+  margin:
+    32px 0 72px;
 
 }
 
-.dynamic-hero {
+.featured-section .section-header {
 
-  display:
-    block;
+  margin-bottom:
+    20px;
+
+}
+
+.featured-section .section-eyebrow {
+
+  margin-bottom:
+    8px;
+
+  color:
+    rgba(255,255,255,.32);
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    1.7px;
+
+}
+
+.featured-section .section-title {
+
+  font-size:
+    clamp(26px, 7vw, 34px);
+
+  line-height:
+    1;
+
+  letter-spacing:
+    -.045em;
+
+}
+
+.featured-section .section-link {
+
+  padding-bottom:
+    2px;
+
+  color:
+    var(--dx-green);
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+}
+
+/* ============================================================
+   HERO CARD
+============================================================ */
+
+.dynamic-hero {
 
   position:
     relative;
 
+  display:
+    block;
+
+  width:
+    100%;
+
+  min-height:
+    590px;
+
   overflow:
     hidden;
 
-  min-height:
-    520px;
-
   border:
-    1px solid rgba(0,245,166,.15);
+    1px solid rgba(0,245,166,.18);
 
   border-radius:
-    var(--dx-radius);
+    25px;
 
   background:
-    #050907;
+    #030706;
 
   color:
     inherit;
@@ -947,13 +1010,18 @@ a {
     isolate;
 
   box-shadow:
-    var(--dx-shadow);
+    0 28px 85px rgba(0,0,0,.38);
+
+  transform:
+    translateZ(0);
 
 }
 
+/* Fine green edge */
 .dynamic-hero::before {
 
-  content: "";
+  content:
+    "";
 
   position:
     absolute;
@@ -967,21 +1035,27 @@ a {
   pointer-events:
     none;
 
+  border-radius:
+    inherit;
+
   background:
     linear-gradient(
-      to bottom,
-      rgba(0,0,0,.03) 10%,
-      rgba(0,0,0,.10) 35%,
-      rgba(0,0,0,.48) 61%,
-      rgba(0,0,0,.94) 88%,
-      #030605 100%
+      180deg,
+      rgba(255,255,255,.025) 0%,
+      transparent 24%,
+      transparent 45%,
+      rgba(0,0,0,.28) 56%,
+      rgba(0,0,0,.82) 76%,
+      #020504 100%
     );
 
 }
 
+/* Premium top hairline */
 .dynamic-hero::after {
 
-  content: "";
+  content:
+    "";
 
   position:
     absolute;
@@ -990,29 +1064,34 @@ a {
     0;
 
   left:
-    0;
+    12%;
 
   right:
-    0;
+    12%;
 
   height:
     1px;
 
   z-index:
-    5;
+    7;
 
   background:
     linear-gradient(
       90deg,
       transparent,
-      rgba(0,245,166,.55),
+      rgba(0,245,166,.75),
       transparent
     );
 
-  opacity:
-    .65;
+  box-shadow:
+    0 0 18px
+    rgba(0,245,166,.24);
 
 }
+
+/* ============================================================
+   IMAGE
+============================================================ */
 
 .dynamic-hero-img {
 
@@ -1029,17 +1108,15 @@ a {
     hidden;
 
   background:
-    linear-gradient(
-      135deg,
-      #07110d,
-      #020403
-    );
+    #050907;
 
 }
 
-.dynamic-hero-img::after {
+/* Atmospheric treatment */
+.dynamic-hero-img::before {
 
-  content: "";
+  content:
+    "";
 
   position:
     absolute;
@@ -1047,11 +1124,48 @@ a {
   inset:
     0;
 
+  z-index:
+    2;
+
+  pointer-events:
+    none;
+
   background:
     radial-gradient(
-      circle at 65% 25%,
-      rgba(0,245,166,.08),
-      transparent 35%
+      circle at 70% 18%,
+      rgba(0,245,166,.07),
+      transparent 30%
+    );
+
+}
+
+/* Stronger lower readability */
+.dynamic-hero-img::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    3;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,.04) 0%,
+      rgba(0,0,0,.03) 28%,
+      rgba(0,0,0,.12) 42%,
+      rgba(0,0,0,.48) 60%,
+      rgba(0,0,0,.84) 78%,
+      rgba(1,4,3,.98) 100%
     );
 
 }
@@ -1070,32 +1184,46 @@ a {
   object-fit:
     cover;
 
+  object-position:
+    center center;
+
   opacity:
-    .82;
+    .86;
 
   filter:
-    saturate(.86)
-    contrast(1.06);
+    saturate(.84)
+    contrast(1.08)
+    brightness(.82);
 
   transform:
-    scale(1.01);
+    scale(1.025);
 
   transition:
-    transform 1s cubic-bezier(.2,.7,.2,1),
-    filter .6s ease;
+    transform 1.2s cubic-bezier(.2,.7,.2,1),
+    filter .7s ease,
+    opacity .7s ease;
 
 }
 
-.dynamic-hero:hover .dynamic-hero-img img {
+.dynamic-hero:hover
+.dynamic-hero-img img {
 
   transform:
-    scale(1.045);
+    scale(1.055);
 
   filter:
-    saturate(1)
-    contrast(1.08);
+    saturate(.95)
+    contrast(1.09)
+    brightness(.88);
+
+  opacity:
+    .92;
 
 }
+
+/* ============================================================
+   FEATURED BADGE
+============================================================ */
 
 .dynamic-hero .tag {
 
@@ -1103,45 +1231,67 @@ a {
     absolute;
 
   top:
-    15px;
+    19px;
 
   left:
-    15px;
+    19px;
 
   z-index:
-    4;
+    8;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  min-height:
+    38px;
 
   padding:
-    6px 10px;
+    0 15px;
 
   border:
-    1px solid rgba(0,245,166,.28);
+    1px solid rgba(0,245,166,.38);
 
   border-radius:
     999px;
 
   background:
-    rgba(0,12,8,.72);
+    rgba(1,12,8,.74);
 
   color:
     var(--dx-green);
 
   font-size:
-    8px;
+    9px;
 
   font-weight:
     800;
 
   letter-spacing:
-    1px;
+    1.15px;
+
+  line-height:
+    1;
 
   text-transform:
     uppercase;
 
   backdrop-filter:
-    blur(14px);
+    blur(16px);
+
+  -webkit-backdrop-filter:
+    blur(16px);
+
+  box-shadow:
+    0 8px 28px rgba(0,0,0,.25);
 
 }
+
+/* ============================================================
+   HERO CONTENT
+============================================================ */
 
 .hero-content {
 
@@ -1149,29 +1299,45 @@ a {
     absolute;
 
   left:
-    16px;
+    22px;
 
   right:
-    16px;
+    22px;
 
   bottom:
-    18px;
+    25px;
 
   z-index:
-    4;
+    6;
+
+  min-width:
+    0;
 
 }
+
+/* ============================================================
+   EDITORIAL LABEL
+============================================================ */
 
 .hero-label {
 
   display:
-    block;
+    flex;
 
-  margin-bottom:
-    9px;
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  width:
+    fit-content;
+
+  margin:
+    0 0 11px;
 
   color:
-    rgba(255,255,255,.54);
+    rgba(255,255,255,.58);
 
   font-size:
     8px;
@@ -1180,17 +1346,55 @@ a {
     800;
 
   letter-spacing:
-    1.25px;
+    1.45px;
+
+  line-height:
+    1.2;
 
   text-transform:
     uppercase;
 
 }
 
+.hero-label::before {
+
+  content:
+    "";
+
+  width:
+    6px;
+
+  height:
+    6px;
+
+  flex-shrink:
+    0;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--dx-green);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(0,245,166,.08),
+    0 0 14px
+    rgba(0,245,166,.48);
+
+  animation:
+    dxPulse 2.4s ease-in-out infinite;
+
+}
+
+/* ============================================================
+   HEADLINE
+============================================================ */
+
 .dynamic-hero .title {
 
   max-width:
-    900px;
+    820px;
 
   margin:
     0;
@@ -1203,48 +1407,86 @@ a {
     sans-serif;
 
   font-size:
-    clamp(25px, 6vw, 47px);
+    clamp(29px, 7.8vw, 51px);
 
   font-weight:
     700;
 
   line-height:
-    1.04;
+    1.045;
 
   letter-spacing:
-    -.045em;
+    -.047em;
+
+  text-wrap:
+    balance;
 
   text-shadow:
-    0 3px 30px rgba(0,0,0,.9);
+    0 3px 25px rgba(0,0,0,.55);
 
 }
+
+/* ============================================================
+   DESCRIPTION
+============================================================ */
 
 .dynamic-hero .desc {
 
   max-width:
-    720px;
+    620px;
 
   margin:
-    11px 0 0;
+    14px 0 0;
 
   color:
-    rgba(255,255,255,.65);
+    rgba(255,255,255,.67);
 
   font-size:
-    11px;
+    12px;
+
+  font-weight:
+    400;
 
   line-height:
-    1.6;
+    1.65;
+
+  display:
+    -webkit-box;
+
+  overflow:
+    hidden;
+
+  -webkit-box-orient:
+    vertical;
+
+  -webkit-line-clamp:
+    3;
 
 }
 
+/* ============================================================
+   META
+============================================================ */
+
 .dynamic-hero .meta {
 
-  margin-top:
-    12px;
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    7px;
+
+  margin:
+    17px 0 0;
 
   color:
-    rgba(255,255,255,.42);
+    rgba(255,255,255,.46);
 
   font-size:
     8px;
@@ -1253,12 +1495,28 @@ a {
     800;
 
   letter-spacing:
-    .7px;
+    .8px;
+
+  line-height:
+    1.4;
 
   text-transform:
     uppercase;
 
 }
+
+.dynamic-hero .meta .updated,
+.dynamic-hero .meta .live,
+.dynamic-hero .meta span:last-child {
+
+  color:
+    var(--dx-green);
+
+}
+
+/* ============================================================
+   READ CTA
+============================================================ */
 
 .hero-read {
 
@@ -1268,20 +1526,206 @@ a {
   align-items:
     center;
 
-  margin-top:
-    16px;
+  gap:
+    10px;
+
+  margin:
+    19px 0 0;
 
   color:
     var(--dx-green);
 
   font-size:
-    10px;
+    12px;
 
   font-weight:
     800;
 
   letter-spacing:
-    .35px;
+    .1px;
+
+  line-height:
+    1.2;
+
+  transition:
+    transform .25s ease,
+    color .25s ease;
+
+}
+
+.hero-read::after {
+
+  content:
+    "";
+
+  width:
+    34px;
+
+  height:
+    1px;
+
+  background:
+    currentColor;
+
+  box-shadow:
+    0 0 10px
+    rgba(0,245,166,.35);
+
+  transition:
+    width .25s ease;
+
+}
+
+.dynamic-hero:hover .hero-read {
+
+  transform:
+    translateX(2px);
+
+}
+
+.dynamic-hero:hover .hero-read::after {
+
+  width:
+    48px;
+
+}
+
+/* ============================================================
+   CAROUSEL NAVIGATION
+   Handles common dynamically-generated controls.
+============================================================ */
+
+.dynamic-hero button {
+
+  position:
+    relative;
+
+  z-index:
+    10;
+
+  width:
+    48px;
+
+  height:
+    48px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    0;
+
+  border:
+    1px solid rgba(255,255,255,.18);
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(2,7,5,.72);
+
+  color:
+    #fff;
+
+  backdrop-filter:
+    blur(15px);
+
+  -webkit-backdrop-filter:
+    blur(15px);
+
+  cursor:
+    pointer;
+
+  transition:
+    border-color .22s ease,
+    background .22s ease,
+    transform .22s ease;
+
+}
+
+.dynamic-hero button:hover {
+
+  border-color:
+    rgba(0,245,166,.45);
+
+  background:
+    rgba(0,18,12,.88);
+
+}
+
+.dynamic-hero button:active {
+
+  transform:
+    scale(.93);
+
+}
+
+/* ============================================================
+   CAROUSEL INDICATOR BARS
+============================================================ */
+
+.dynamic-hero [class*="dots"],
+.dynamic-hero [class*="indicators"],
+.dynamic-hero [class*="pagination"] {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    7px;
+
+}
+
+.dynamic-hero [class*="dots"] span,
+.dynamic-hero [class*="dots"] button,
+.dynamic-hero [class*="indicators"] span,
+.dynamic-hero [class*="indicators"] button,
+.dynamic-hero [class*="pagination"] span,
+.dynamic-hero [class*="pagination"] button {
+
+  width:
+    25px;
+
+  height:
+    3px;
+
+  min-width:
+    25px;
+
+  padding:
+    0;
+
+  border:
+    0;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(255,255,255,.22);
+
+  box-shadow:
+    none;
+
+}
+
+/* ============================================================
+   HERO CONTENT SAFE AREA
+============================================================ */
+
+.dynamic-hero > * {
+
+  min-width:
+    0;
 
 }
 
@@ -4578,858 +5022,245 @@ button:focus-visible {
 }
 
 
-
 /* ============================================================
-   DYVE HACKAX — FEATURED INTELLIGENCE REFINEMENT
-   Mobile-first editorial treatment
-   APPEND TO THE END OF index.css
+   DYVE HACKAX — FINAL MOBILE HERO OVERRIDE
 ============================================================ */
 
-:root {
-    --dx-green: #27e6a2;
-    --dx-green-soft: rgba(39, 230, 162, 0.72);
-    --dx-border: rgba(39, 230, 162, 0.18);
-    --dx-border-strong: rgba(39, 230, 162, 0.38);
-    --dx-panel: #050b09;
-    --dx-panel-soft: #07100d;
-    --dx-white: #f4f7f5;
-    --dx-muted: #9ba6a2;
-}
+@media (max-width: 639px) {
 
-/* ============================================================
-   FEATURED SECTION
-============================================================ */
+  .featured-section {
 
-.featured-section {
-    position: relative;
-    margin-top: clamp(54px, 10vw, 92px);
-}
+    margin-top:
+      42px;
 
-.featured-section .section-header {
-    margin-bottom: 22px;
-    align-items: flex-end;
-}
+    margin-bottom:
+      76px;
 
-.featured-section .section-eyebrow {
-    margin-bottom: 8px;
-}
+  }
 
-.featured-section .section-title {
-    letter-spacing: -0.045em;
-    line-height: 1.02;
-}
+  .featured-section .section-header {
 
-.featured-section .section-link {
-    white-space: nowrap;
-    font-weight: 700;
-}
+    margin-bottom:
+      18px;
 
-/* ============================================================
-   HERO OUTER CONTAINER
-============================================================ */
+  }
 
-#dynamicHeroContainer {
-    position: relative;
-    width: 100%;
-    min-width: 0;
-}
+  .featured-section .section-title {
 
-/* ============================================================
-   HERO CARD
-============================================================ */
+    font-size:
+      28px;
 
-.dynamic-hero {
-    position: relative;
-    display: block;
-    width: 100%;
-    min-height: 590px;
-    overflow: hidden;
+    line-height:
+      1;
 
-    border: 1px solid var(--dx-border);
-    border-radius: 26px;
+  }
 
-    background:
-        linear-gradient(
-            180deg,
-            rgba(4, 10, 8, 0.02) 0%,
-            rgba(4, 10, 8, 0.22) 36%,
-            rgba(2, 5, 4, 0.94) 100%
-        );
+  .featured-section .section-link {
 
-    color: var(--dx-white);
-    text-decoration: none;
+    font-size:
+      10px;
 
-    isolation: isolate;
+  }
 
-    box-shadow:
-        0 24px 70px rgba(0, 0, 0, 0.28);
+  .dynamic-hero {
 
-    transition:
-        border-color 280ms ease,
-        transform 280ms ease,
-        box-shadow 280ms ease;
-}
+    min-height:
+      585px;
 
-/* subtle editorial hover */
-@media (hover: hover) {
+    border-radius:
+      24px;
 
-    .dynamic-hero:hover {
-        border-color: var(--dx-border-strong);
+  }
 
-        box-shadow:
-            0 30px 90px rgba(0, 0, 0, 0.38);
-    }
+  .dynamic-hero .tag {
 
-}
+    top:
+      18px;
 
-/* ============================================================
-   HERO IMAGE
-============================================================ */
+    left:
+      18px;
 
-.dynamic-hero-img {
-    position: absolute;
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    overflow: hidden;
-
-    z-index: -3;
-
-    background: #07100d;
-}
-
-.dynamic-hero-img::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(1, 5, 4, 0.05) 0%,
-            rgba(1, 5, 4, 0.08) 25%,
-            rgba(1, 5, 4, 0.38) 48%,
-            rgba(1, 4, 3, 0.88) 78%,
-            rgba(1, 3, 2, 0.98) 100%
-        );
-
-    pointer-events: none;
-}
-
-.dynamic-hero-img img {
-    width: 100%;
-    height: 100%;
-
-    display: block;
-
-    object-fit: cover;
-    object-position: center center;
-
-    filter:
-        saturate(0.9)
-        contrast(1.04);
-
-    transform: scale(1.015);
-
-    transition:
-        transform 900ms cubic-bezier(.2,.65,.2,1);
-}
-
-@media (hover: hover) {
-
-    .dynamic-hero:hover .dynamic-hero-img img {
-        transform: scale(1.045);
-    }
-
-}
-
-/* ============================================================
-   TOP-OF-CARD TAG
-============================================================ */
-
-.dynamic-hero > .tag {
-    position: absolute;
-
-    top: 22px;
-    left: 22px;
-
-    z-index: 4;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    min-height: 42px;
-    padding: 0 18px;
-
-    border: 1px solid rgba(39, 230, 162, 0.58);
-    border-radius: 999px;
-
-    background:
-        rgba(3, 13, 10, 0.74);
-
-    color: var(--dx-green);
-
-    font-family:
-        "Space Grotesk",
-        "Inter",
-        sans-serif;
-
-    font-size: 11px;
-    font-weight: 700;
-
-    line-height: 1;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-
-    box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.24);
-}
-
-/* ============================================================
-   HERO CONTENT
-============================================================ */
-
-.dynamic-hero .hero-content {
-    position: absolute;
-
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    z-index: 3;
-
-    display: flex;
-    flex-direction: column;
+    min-height:
+      38px;
 
     padding:
-        30px 22px 26px;
+      0 14px;
 
-    background:
-        linear-gradient(
-            180deg,
-            rgba(2, 5, 4, 0) 0%,
-            rgba(2, 5, 4, 0.24) 12%,
-            rgba(2, 5, 4, 0.74) 44%,
-            rgba(2, 5, 4, 0.96) 100%
-        );
-}
+    font-size:
+      9px;
 
-/* ============================================================
-   FEATURED LABEL
-============================================================ */
+  }
 
-.dynamic-hero .hero-label {
-    display: inline-flex;
-    align-items: center;
+  .hero-content {
 
-    width: fit-content;
+    left:
+      20px;
 
-    margin-bottom: 10px;
+    right:
+      20px;
 
-    color: rgba(239, 246, 243, 0.66);
+    bottom:
+      23px;
 
-    font-family:
-        "Space Grotesk",
-        "Inter",
-        sans-serif;
+  }
 
-    font-size: 10px;
-    font-weight: 700;
+  .hero-label {
 
-    line-height: 1.2;
-    letter-spacing: 0.17em;
-    text-transform: uppercase;
-}
+    margin-bottom:
+      10px;
 
-.dynamic-hero .hero-label::before {
-    content: "";
+    font-size:
+      8px;
 
-    width: 7px;
-    height: 7px;
+    letter-spacing:
+      1.35px;
 
-    margin-right: 9px;
+  }
 
-    border-radius: 50%;
+  .dynamic-hero .title {
 
-    background: var(--dx-green);
+    max-width:
+      100%;
 
-    box-shadow:
-        0 0 0 4px rgba(39, 230, 162, 0.09),
-        0 0 15px rgba(39, 230, 162, 0.42);
-}
+    font-size:
+      clamp(29px, 8.1vw, 37px);
 
-/* ============================================================
-   HERO TITLE
-============================================================ */
+    line-height:
+      1.045;
 
-.dynamic-hero .title {
-    max-width: 760px;
+    letter-spacing:
+      -.045em;
 
-    margin: 0;
+  }
 
-    color: #ffffff;
+  .dynamic-hero .desc {
 
-    font-family:
-        "Inter",
-        sans-serif;
+    margin-top:
+      13px;
 
-    font-size: clamp(30px, 7.6vw, 54px);
-    font-weight: 750;
+    font-size:
+      12px;
 
-    line-height: 1.045;
-    letter-spacing: -0.045em;
+    line-height:
+      1.62;
 
-    text-wrap: balance;
+    -webkit-line-clamp:
+      3;
 
-    text-shadow:
-        0 2px 24px rgba(0, 0, 0, 0.42);
-}
+  }
 
-/* ============================================================
-   HERO DESCRIPTION
-============================================================ */
+  .dynamic-hero .meta {
 
-.dynamic-hero .desc {
-    max-width: 650px;
+    margin-top:
+      16px;
 
-    margin:
-        15px 0 0;
+    font-size:
+      8px;
 
-    color: rgba(230, 237, 234, 0.72);
+  }
 
-    font-family:
-        "Inter",
-        sans-serif;
+  .hero-read {
 
-    font-size: 14px;
-    font-weight: 400;
+    margin-top:
+      18px;
 
-    line-height: 1.65;
+    font-size:
+      12px;
 
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+  }
 
-    overflow: hidden;
-}
+  .dynamic-hero-img img {
 
-/* ============================================================
-   HERO META
-============================================================ */
+    object-position:
+      center center;
 
-.dynamic-hero .meta {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-
-    gap: 7px;
-
-    margin-top: 18px;
-
-    color: rgba(224, 234, 230, 0.58);
-
-    font-family:
-        "Space Grotesk",
-        "Inter",
-        sans-serif;
-
-    font-size: 10px;
-    font-weight: 700;
-
-    line-height: 1.4;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-}
-
-/* Make freshness visually primary */
-.dynamic-hero .meta {
-    color: rgba(224, 234, 230, 0.54);
-}
-
-/* ============================================================
-   READ LINK
-============================================================ */
-
-.dynamic-hero .hero-read {
-    display: inline-flex;
-    align-items: center;
-
-    width: fit-content;
-
-    margin-top: 20px;
-
-    color: var(--dx-green);
-
-    font-family:
-        "Space Grotesk",
-        "Inter",
-        sans-serif;
-
-    font-size: 14px;
-    font-weight: 700;
-
-    line-height: 1.2;
-
-    transition:
-        color 200ms ease,
-        transform 200ms ease;
-}
-
-.dynamic-hero .hero-read::after {
-    content: "";
-
-    width: 28px;
-    height: 1px;
-
-    margin-left: 10px;
-
-    background: currentColor;
-
-    transition:
-        width 200ms ease;
-}
-
-@media (hover: hover) {
-
-    .dynamic-hero:hover .hero-read {
-        transform: translateX(2px);
-    }
-
-    .dynamic-hero:hover .hero-read::after {
-        width: 40px;
-    }
+  }
 
 }
 
 /* ============================================================
-   FEATURED CAROUSEL SUPPORT
-   These styles also handle dynamically injected controls.
-============================================================ */
-
-#dynamicHeroContainer [class*="hero-controls"],
-#dynamicHeroContainer [class*="carousel-controls"],
-#dynamicHeroContainer [class*="hero-navigation"] {
-    position: absolute;
-    z-index: 8;
-
-    bottom: 22px;
-    right: 22px;
-
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* Generic carousel buttons */
-#dynamicHeroContainer button {
-    appearance: none;
-    -webkit-appearance: none;
-
-    width: 48px;
-    height: 48px;
-
-    border: 1px solid rgba(255, 255, 255, 0.17);
-    border-radius: 50%;
-
-    background:
-        rgba(3, 8, 6, 0.72);
-
-    color: #ffffff;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    cursor: pointer;
-
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-
-    transition:
-        border-color 180ms ease,
-        background 180ms ease,
-        transform 180ms ease;
-}
-
-#dynamicHeroContainer button:hover {
-    border-color: var(--dx-border-strong);
-    background: rgba(5, 16, 12, 0.88);
-}
-
-#dynamicHeroContainer button:active {
-    transform: scale(0.94);
-}
-
-/* ============================================================
-   CAROUSEL INDICATORS
-============================================================ */
-
-#dynamicHeroContainer [class*="hero-dots"],
-#dynamicHeroContainer [class*="carousel-dots"],
-#dynamicHeroContainer [class*="hero-indicators"] {
-    position: absolute;
-
-    z-index: 8;
-
-    left: 22px;
-    bottom: 36px;
-
-    display: flex;
-    align-items: center;
-    gap: 7px;
-}
-
-#dynamicHeroContainer [class*="hero-dots"] *,
-#dynamicHeroContainer [class*="carousel-dots"] *,
-#dynamicHeroContainer [class*="hero-indicators"] * {
-    width: 24px;
-    height: 3px;
-
-    border-radius: 999px;
-
-    background:
-        rgba(255, 255, 255, 0.24);
-}
-
-/* ============================================================
-   MOBILE REFINEMENT
-============================================================ */
-
-@media (max-width: 767px) {
-
-    .featured-section {
-        margin-top: 58px;
-    }
-
-    .featured-section .section-header {
-        margin-bottom: 18px;
-    }
-
-    .featured-section .section-title {
-        font-size: 29px;
-    }
-
-    .featured-section .section-link {
-        font-size: 13px;
-    }
-
-    .dynamic-hero {
-        min-height: 565px;
-        border-radius: 24px;
-    }
-
-    .dynamic-hero > .tag {
-        top: 18px;
-        left: 18px;
-
-        min-height: 39px;
-
-        padding:
-            0 15px;
-
-        font-size: 10px;
-    }
-
-    .dynamic-hero .hero-content {
-        padding:
-            26px 20px 23px;
-    }
-
-    .dynamic-hero .hero-label {
-        margin-bottom: 9px;
-
-        font-size: 9px;
-        letter-spacing: 0.15em;
-    }
-
-    .dynamic-hero .title {
-        font-size: clamp(29px, 8.4vw, 38px);
-        line-height: 1.055;
-        letter-spacing: -0.042em;
-    }
-
-    .dynamic-hero .desc {
-        margin-top: 13px;
-
-        font-size: 13px;
-        line-height: 1.6;
-
-        -webkit-line-clamp: 3;
-    }
-
-    .dynamic-hero .meta {
-        margin-top: 16px;
-
-        font-size: 9px;
-        letter-spacing: 0.075em;
-    }
-
-    .dynamic-hero .hero-read {
-        margin-top: 18px;
-
-        font-size: 13px;
-    }
-
-    /*
-       Keep controls from colliding with the content.
-       If your JS places controls inside the hero, the bottom
-       area gets reserved visually by keeping them compact.
-    */
-
-    #dynamicHeroContainer [class*="hero-controls"],
-    #dynamicHeroContainer [class*="carousel-controls"],
-    #dynamicHeroContainer [class*="hero-navigation"] {
-        right: 17px;
-        bottom: 17px;
-
-        gap: 7px;
-    }
-
-    #dynamicHeroContainer button {
-        width: 44px;
-        height: 44px;
-    }
-
-    #dynamicHeroContainer [class*="hero-dots"],
-    #dynamicHeroContainer [class*="carousel-dots"],
-    #dynamicHeroContainer [class*="hero-indicators"] {
-        left: 18px;
-        bottom: 37px;
-
-        gap: 6px;
-    }
-
-    #dynamicHeroContainer [class*="hero-dots"] *,
-    #dynamicHeroContainer [class*="carousel-dots"] *,
-    #dynamicHeroContainer [class*="hero-indicators"] * {
-        width: 21px;
-        height: 3px;
-    }
-
-}
-
-/* ============================================================
-   VERY SMALL PHONES
+   SMALL PHONES
 ============================================================ */
 
 @media (max-width: 390px) {
 
-    .dynamic-hero {
-        min-height: 545px;
-        border-radius: 22px;
-    }
+  .dynamic-hero {
 
-    .dynamic-hero .hero-content {
-        padding:
-            23px 18px 20px;
-    }
+    min-height:
+      560px;
 
-    .dynamic-hero .title {
-        font-size: 28px;
-        line-height: 1.06;
-    }
+    border-radius:
+      22px;
 
-    .dynamic-hero .desc {
-        font-size: 12.5px;
-    }
+  }
 
-    .dynamic-hero .meta {
-        font-size: 8.5px;
-    }
+  .dynamic-hero .tag {
 
-}
+    top:
+      16px;
 
-/* ============================================================
-   TABLET / DESKTOP
-============================================================ */
+    left:
+      16px;
 
-@media (min-width: 768px) {
+  }
 
-    .dynamic-hero {
-        min-height: 650px;
-        border-radius: 30px;
-    }
+  .hero-content {
 
-    .dynamic-hero .hero-content {
-        padding:
-            48px;
-    }
+    left:
+      18px;
 
-    .dynamic-hero > .tag {
-        top: 30px;
-        left: 30px;
-    }
+    right:
+      18px;
 
-    .dynamic-hero .title {
-        max-width: 820px;
-        font-size: clamp(42px, 5vw, 64px);
-    }
+    bottom:
+      20px;
 
-    .dynamic-hero .desc {
-        font-size: 15px;
-        line-height: 1.7;
-    }
+  }
+
+  .dynamic-hero .title {
+
+    font-size:
+      28px;
+
+    line-height:
+      1.055;
+
+  }
+
+  .dynamic-hero .desc {
+
+    font-size:
+      11.5px;
+
+  }
 
 }
 
 /* ============================================================
-   ACCESSIBILITY
+   EXTRA SMALL PHONES
 ============================================================ */
 
-@media (prefers-reduced-motion: reduce) {
+@media (max-width: 360px) {
 
-    .dynamic-hero,
-    .dynamic-hero-img img,
-    .dynamic-hero .hero-read,
-    .dynamic-hero .hero-read::after,
-    #dynamicHeroContainer button {
-        transition: none !important;
-    }
+  .dynamic-hero {
 
-}
+    min-height:
+      535px;
 
-/* ============================================================
-   LATEST SECTION — MATCH THE NEW EDITORIAL SYSTEM
-============================================================ */
+  }
 
-.latest-section {
-    margin-top: clamp(72px, 12vw, 110px);
-}
+  .dynamic-hero .title {
 
-.latest-section .section-header {
-    margin-bottom: 25px;
-}
+    font-size:
+      26px;
 
-.latest-section .section-title {
-    letter-spacing: -0.04em;
-    line-height: 1.04;
-}
+  }
 
-.latest-section .section-description {
-    max-width: 580px;
+  .dynamic-hero .desc {
 
-    margin-top: 12px;
+    font-size:
+      11px;
 
-    color: rgba(190, 201, 197, 0.6);
+  }
 
-    line-height: 1.6;
-}
-
-/* ============================================================
-   LATEST CARDS
-============================================================ */
-
-.latest-card {
-    position: relative;
-
-    min-width: 0;
-
-    border-color: rgba(255, 255, 255, 0.075) !important;
-    border-radius: 20px !important;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(10, 20, 16, 0.92),
-            rgba(4, 9, 7, 0.96)
-        ) !important;
-
-    transition:
-        border-color 220ms ease,
-        background 220ms ease,
-        transform 220ms ease;
-}
-
-.latest-card:hover {
-    border-color:
-        rgba(39, 230, 162, 0.22) !important;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(11, 25, 20, 0.96),
-            rgba(4, 10, 8, 0.98)
-        ) !important;
-}
-
-.latest-image {
-    overflow: hidden;
-
-    border-radius: 14px;
-}
-
-.latest-image img {
-    transition:
-        transform 500ms cubic-bezier(.2,.65,.2,1);
-}
-
-.latest-card:hover .latest-image img {
-    transform: scale(1.035);
-}
-
-.latest-category {
-    font-size: 10px !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.14em !important;
-    text-transform: uppercase;
-}
-
-.latest-title {
-    letter-spacing: -0.025em;
-    line-height: 1.2;
-}
-
-.latest-meta {
-    color: rgba(184, 197, 191, 0.5) !important;
-}
-
-/* ============================================================
-   GLOBAL MOBILE CONTAINER POLISH
-============================================================ */
-
-@media (max-width: 767px) {
-
-    .container {
-        width: 100%;
-        max-width: 100%;
-        padding-left: 24px;
-        padding-right: 24px;
-    }
-
-    .section-header {
-        gap: 16px;
-    }
-
-    .section-heading-wrap {
-        min-width: 0;
-    }
-
-    .section-description {
-        font-size: 14px;
-        line-height: 1.65;
-    }
-
-}
-
-/* ============================================================
-   PREVENT HORIZONTAL ARTIFACTS
-============================================================ */
-
-main,
-.container,
-.featured-section,
-.latest-section,
-#dynamicHeroContainer {
-    max-width: 100%;
-    min-width: 0;
-}
-
-body {
-    overflow-x: hidden;
 }
