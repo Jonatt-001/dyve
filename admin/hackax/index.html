@@ -39,6 +39,23 @@ tailwind.config={
 
 <style>
 /* ==========================================================
+   FRESH ARTICLE SESSION
+========================================================== */
+
+.hx-new-article-transition{
+    opacity:0;
+    transition:opacity .16s ease;
+}
+
+html.hx-fresh-session body{
+    opacity:0;
+}
+
+html.hx-session-ready body{
+    opacity:1;
+}
+
+/* ==========================================================
    CLEAN HACKAX PUBLISHER HEADER
 ========================================================== */
 
@@ -201,6 +218,7 @@ tailwind.config={
     padding:2px 1px 4px;
     scrollbar-width:none;
     -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
 }
 
 .hx-workflow-rail::-webkit-scrollbar{
@@ -465,22 +483,64 @@ tailwind.config={
 }
 
 /* ==========================================================
-   MOBILE
+   NATIVE MOBILE APP BALANCE
 ========================================================== */
 
 @media(max-width:640px){
 
+    html{
+        background:#f5f7f7;
+        overflow-x:hidden;
+    }
+
+    body{
+        min-height:100svh;
+        overflow-x:hidden;
+        -webkit-text-size-adjust:100%;
+        background:#f5f7f7;
+    }
+
+    .hx-header{
+        position:sticky;
+        top:0;
+        z-index:80;
+        padding-top:env(safe-area-inset-top);
+        box-shadow:
+            0 1px 0 rgba(255,255,255,.04),
+            0 10px 30px rgba(0,0,0,.12);
+    }
+
     .hx-header-main{
-        padding:12px 14px;
+        padding:11px 14px 9px;
+    }
+
+    .hx-brand-row{
+        min-height:43px;
+        gap:10px;
+    }
+
+    .hx-brand{
+        min-width:0;
+        max-width:calc(100% - 148px);
     }
 
     .hx-brand-name{
-        font-size:18px;
+        font-size:17px;
+        gap:5px;
+        letter-spacing:-.045em;
     }
 
     .hx-brand-sub{
-        font-size:7px;
-        letter-spacing:.20em;
+        margin-top:5px;
+        font-size:6.5px;
+        letter-spacing:.18em;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+    .hx-header-actions{
+        gap:6px;
     }
 
     .hx-save-state{
@@ -488,28 +548,366 @@ tailwind.config={
     }
 
     .hx-header-btn{
-        min-height:40px;
-        padding:0 11px;
-        font-size:10px;
+        min-height:38px;
+        padding:0 10px;
+        border-radius:10px;
+        font-size:9px;
     }
 
     .hx-save-btn{
-        min-width:66px;
+        min-width:74px;
+        padding:0 10px;
+    }
+
+    .hx-menu-btn{
+        width:38px;
+        padding:0;
+    }
+
+    .hx-menu-icon{
+        gap:4px;
+    }
+
+    .hx-menu-icon span{
+        width:16px;
+        height:1.5px;
     }
 
     .hx-workflow{
-        padding:0 14px 11px;
+        padding:0 14px 9px;
+    }
+
+    .hx-workflow-rail{
+        gap:6px;
+        margin:0 -2px;
+        padding:2px 2px 3px;
+        scroll-snap-type:x proximity;
     }
 
     .hx-step{
-        min-height:36px;
-        padding:0 8px;
+        min-height:34px;
+        padding:0 9px;
+        gap:6px;
+        border-radius:10px;
         font-size:8px;
+        scroll-snap-align:start;
     }
 
     .hx-step-number{
-        width:20px;
-        height:20px;
+        width:19px;
+        height:19px;
+        font-size:8px;
+    }
+
+    /* Status strip */
+
+    .max-w-7xl.mx-auto.px-4.sm\:px-6.lg\:px-8.pt-4{
+        max-width:none;
+        padding:10px 14px 0 !important;
+    }
+
+    .max-w-7xl.mx-auto.px-4.sm\:px-6.lg\:px-8.pt-4 > .flex{
+        flex-wrap:nowrap;
+        overflow-x:auto;
+        scrollbar-width:none;
+        gap:7px;
+        padding-bottom:2px;
+    }
+
+    .max-w-7xl.mx-auto.px-4.sm\:px-6.lg\:px-8.pt-4 > .flex::-webkit-scrollbar{
+        display:none;
+    }
+
+    .max-w-7xl.mx-auto.px-4.sm\:px-6.lg\:px-8.pt-4 > .flex > div{
+        flex:0 0 auto;
+        min-height:40px;
+        display:flex;
+        align-items:center;
+        white-space:nowrap;
+        border-radius:12px;
+    }
+
+    /* Main shell */
+
+    main.max-w-7xl{
+        max-width:none;
+        width:100%;
+        padding:
+            17px
+            14px
+            calc(92px + env(safe-area-inset-bottom))
+            !important;
+        margin:0;
+    }
+
+    main.max-w-7xl > .mb-6{
+        margin-bottom:17px !important;
+    }
+
+    .eyebrow{
+        font-size:9px;
+        letter-spacing:.20em;
+        margin-bottom:8px;
+    }
+
+    .page-title{
+        font-size:clamp(31px,8.7vw,42px);
+        line-height:1.02;
+        letter-spacing:-.055em;
+        max-width:100%;
+    }
+
+    .page-subtitle{
+        margin-top:11px;
+        font-size:14px;
+        line-height:1.58;
+        max-width:100%;
+        color:#697487;
+    }
+
+    .stage-layout{
+        display:block !important;
+    }
+
+    .stage-main{
+        width:100%;
+        min-width:0;
+    }
+
+    .stage-side{
+        width:100%;
+        min-width:0;
+        margin-top:16px;
+    }
+
+    /* Cards */
+
+    .onboarding-card,
+    .editor-card{
+        width:100%;
+        min-width:0;
+        border-radius:20px;
+        margin:0;
+    }
+
+    .onboarding-card{
+        padding:17px;
+    }
+
+    .section-head{
+        align-items:flex-start;
+        gap:10px;
+    }
+
+    .section-title{
+        font-size:17px;
+        line-height:1.15;
+        letter-spacing:-.025em;
+    }
+
+    .section-note{
+        font-size:11px;
+        line-height:1.55;
+    }
+
+    .tag{
+        flex-shrink:0;
+    }
+
+    .field-label{
+        margin-top:17px;
+        margin-bottom:7px;
+        font-size:9px;
+        letter-spacing:.15em;
+    }
+
+    .field{
+        width:100%;
+        min-height:50px;
+        border-radius:13px;
+        font-size:15px;
+        padding:12px 14px;
+    }
+
+    textarea.field{
+        min-height:110px;
+    }
+
+    .grid.sm\:grid-cols-2{
+        display:block !important;
+    }
+
+    .grid.sm\:grid-cols-2 > div + div{
+        margin-top:14px;
+    }
+
+    .route-box{
+        min-height:50px;
+        padding:12px 13px;
+        font-size:10px;
+        line-height:1.5;
+        word-break:break-word;
+    }
+
+    /* Quill */
+
+    .editor-card{
+        background:#fff;
+        overflow:hidden;
+        box-shadow:
+            0 8px 30px rgba(15,23,42,.07),
+            0 1px 2px rgba(15,23,42,.04);
+    }
+
+    #editor{
+        min-height:430px;
+        background:#fff;
+    }
+
+    #editor .ql-toolbar.ql-snow{
+        position:sticky;
+        top:0;
+        z-index:4;
+        display:flex;
+        align-items:center;
+        gap:1px;
+        flex-wrap:nowrap;
+        overflow-x:auto;
+        padding:8px 7px;
+        border:0;
+        border-bottom:1px solid #e8eceb;
+        background:rgba(255,255,255,.96);
+        backdrop-filter:blur(14px);
+        -webkit-backdrop-filter:blur(14px);
+        scrollbar-width:none;
+    }
+
+    #editor .ql-toolbar.ql-snow::-webkit-scrollbar{
+        display:none;
+    }
+
+    #editor .ql-toolbar .ql-formats{
+        display:flex;
+        flex:0 0 auto;
+        margin-right:3px;
+    }
+
+    #editor .ql-toolbar button{
+        width:32px;
+        height:32px;
+    }
+
+    #editor .ql-container.ql-snow{
+        border:0;
+        font-size:16px;
+        line-height:1.72;
+    }
+
+    #editor .ql-editor{
+        min-height:385px;
+        padding:19px 17px 30px;
+        color:#18201e;
+    }
+
+    #editor .ql-editor.ql-blank::before{
+        left:17px;
+        right:17px;
+        font-size:15px;
+        color:#a2abb7;
+        font-style:normal;
+    }
+
+    #editor .ql-editor h1,
+    #editor .ql-editor h2,
+    #editor .ql-editor h3{
+        letter-spacing:-.035em;
+        line-height:1.15;
+    }
+
+    /* AI */
+
+    .ai-fab{
+        width:54px !important;
+        height:54px !important;
+        right:15px !important;
+        bottom:76px !important;
+        border-radius:50%;
+        box-shadow:
+            0 8px 24px rgba(0,255,170,.25),
+            0 0 0 7px rgba(0,255,170,.07);
+    }
+
+    .ai-panel{
+        position:fixed !important;
+        left:10px !important;
+        right:10px !important;
+        bottom:10px !important;
+        width:auto !important;
+        max-height:min(72svh,620px);
+        overflow:auto;
+        border-radius:20px !important;
+        z-index:95 !important;
+        box-shadow:0 20px 70px rgba(0,0,0,.28);
+    }
+
+    /* Hide secondary side panels behind a compact flow */
+
+    .stage-side .onboarding-card{
+        padding:16px;
+    }
+
+    .stage-side .space-y-3{
+        line-height:1.55;
+    }
+
+    /* Bottom navigation */
+
+    .stage-actions{
+        position:fixed;
+        left:0;
+        right:0;
+        bottom:0;
+        z-index:70;
+        display:flex;
+        align-items:center;
+        gap:9px;
+        padding:
+            9px
+            14px
+            calc(9px + env(safe-area-inset-bottom));
+        background:rgba(255,255,255,.94);
+        border-top:1px solid rgba(15,23,42,.08);
+        box-shadow:0 -10px 30px rgba(15,23,42,.08);
+        backdrop-filter:blur(18px);
+        -webkit-backdrop-filter:blur(18px);
+    }
+
+    .stage-actions .action-btn{
+        min-height:48px;
+        border-radius:13px;
+        font-size:12px;
+    }
+
+    .stage-actions .action-btn:first-child{
+        min-width:84px;
+    }
+
+    .validation{
+        margin-bottom:12px;
+    }
+
+    /* Drawer */
+
+    .hx-drawer{
+        width:min(350px,91vw);
+        padding-bottom:env(safe-area-inset-bottom);
+    }
+
+    .hx-drawer-head{
+        padding:
+            calc(16px + env(safe-area-inset-top))
+            16px
+            14px;
     }
 }
 
@@ -525,11 +923,185 @@ tailwind.config={
 }
 
 /* Prevent page scroll while drawer is open */
+
 html.hx-drawer-open,
 body.hx-drawer-open{
     overflow:hidden;
 }
+
+/* ==========================================================
+   TOUCH / ACCESSIBILITY
+========================================================== */
+
+button,
+a,
+input,
+textarea,
+select{
+    -webkit-tap-highlight-color:transparent;
+}
+
+button,
+a{
+    touch-action:manipulation;
+}
+
+@media(max-width:640px){
+
+    input,
+    textarea,
+    select{
+        font-size:16px !important;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible{
+        outline:2px solid #00c98a;
+        outline-offset:2px;
+    }
+}
+
+/* ==========================================================
+   REDUCE MOTION
+========================================================== */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+        scroll-behavior:auto !important;
+        transition-duration:.01ms !important;
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+    }
+}
 </style>
+
+<!-- ==========================================================
+     NEW ARTICLE SESSION BOOTSTRAP
+     Runs BEFORE hackax-publisher.js
+========================================================== -->
+
+<script>
+(function(){
+
+    const params=new URLSearchParams(window.location.search);
+
+    if(params.get("new")!=="1"){
+        document.documentElement.classList.add("hx-session-ready");
+        return;
+    }
+
+    document.documentElement.classList.add("hx-fresh-session");
+
+    /*
+     * Remove only publishing/session data.
+     *
+     * Settings, authentication and configuration keys are
+     * intentionally preserved.
+     */
+    function clearStorage(storage){
+
+        const keys=[];
+
+        try{
+
+            for(let i=0;i<storage.length;i++){
+
+                const key=storage.key(i);
+
+                if(!key)continue;
+
+                const normalized=key
+                    .toLowerCase()
+                    .replace(/[\s_-]+/g,"");
+
+                const isPublishingState=
+                    normalized.includes("hackaxdraft")||
+                    normalized.includes("hackaxarticle")||
+                    normalized.includes("hackaxpublisher")||
+                    normalized.includes("hackaxsession")||
+                    normalized.includes("publisherdraft")||
+                    normalized.includes("publishersession")||
+                    normalized.includes("articlesession")||
+                    normalized.includes("articledraft");
+
+                const isProtected=
+                    normalized.includes("settings")||
+                    normalized.includes("config")||
+                    normalized.includes("github")||
+                    normalized.includes("auth")||
+                    normalized.includes("token");
+
+                if(isPublishingState&&!isProtected){
+                    keys.push(key);
+                }
+
+            }
+
+            keys.forEach(function(key){
+                try{
+                    storage.removeItem(key);
+                }catch(error){}
+            });
+
+        }catch(error){}
+
+    }
+
+    clearStorage(window.localStorage);
+    clearStorage(window.sessionStorage);
+
+    /*
+     * Tell the publisher engine that this is explicitly
+     * a fresh article session.
+     */
+    window.HACKAX_NEW_ARTICLE=true;
+
+    /*
+     * Prevent the new-session query parameter from remaining
+     * in the address bar after the clean state has been created.
+     */
+    try{
+
+        const cleanUrl=
+            window.location.pathname+
+            window.location.hash;
+
+        window.history.replaceState(
+            {},
+            document.title,
+            cleanUrl
+        );
+
+    }catch(error){}
+
+    /*
+     * Give the browser one paint cycle before revealing the
+     * editor. This prevents the previous state flashing onscreen.
+     */
+    requestAnimationFrame(function(){
+
+        requestAnimationFrame(function(){
+
+            document.documentElement.classList.remove(
+                "hx-fresh-session"
+            );
+
+            document.documentElement.classList.add(
+                "hx-session-ready"
+            );
+
+        });
+
+    });
+
+})();
+</script>
+
 </head>
 
 <body data-stage="1" class="min-h-screen">
@@ -545,6 +1117,7 @@ body.hx-drawer-open{
         <div class="hx-brand-row">
 
             <a href="index.html" class="hx-brand" aria-label="HackaX Publisher Home">
+
                 <div class="hx-brand-name">
                     DYVE
                     <span class="hx-brand-divider">|</span>
@@ -554,6 +1127,7 @@ body.hx-drawer-open{
                 <div class="hx-brand-sub">
                     Cyber Intelligence Publisher
                 </div>
+
             </a>
 
             <div class="hx-header-actions">
@@ -715,6 +1289,7 @@ body.hx-drawer-open{
         <div class="hx-drawer-head">
 
             <div>
+
                 <div class="hx-drawer-title">
                     HackaX Publisher
                 </div>
@@ -722,6 +1297,7 @@ body.hx-drawer-open{
                 <div class="hx-drawer-kicker">
                     Publication control
                 </div>
+
             </div>
 
             <button
@@ -734,17 +1310,28 @@ body.hx-drawer-open{
 
         </div>
 
+
         <div class="hx-drawer-section">
 
             <div class="hx-drawer-label">
                 Workspace
             </div>
 
-            <a href="index.html" class="hx-drawer-item">
 
-                <span class="hx-drawer-item-icon">+</span>
+            <!-- IMPORTANT:
+                 New Article explicitly starts a clean session.
+            -->
+
+            <a
+                href="index.html?new=1"
+                class="hx-drawer-item hx-new-article-link">
+
+                <span class="hx-drawer-item-icon">
+                    +
+                </span>
 
                 <span class="hx-drawer-item-content">
+
                     <span class="hx-drawer-item-title">
                         New Article
                     </span>
@@ -752,17 +1339,24 @@ body.hx-drawer-open{
                     <span class="hx-drawer-item-note">
                         Start a fresh HackaX report
                     </span>
+
                 </span>
 
-                <span class="hx-drawer-arrow">›</span>
+                <span class="hx-drawer-arrow">
+                    ›
+                </span>
 
             </a>
 
+
             <a href="drafts.html" class="hx-drawer-item">
 
-                <span class="hx-drawer-item-icon">D</span>
+                <span class="hx-drawer-item-icon">
+                    D
+                </span>
 
                 <span class="hx-drawer-item-content">
+
                     <span class="hx-drawer-item-title">
                         Drafts
                     </span>
@@ -770,17 +1364,24 @@ body.hx-drawer-open{
                     <span class="hx-drawer-item-note">
                         Continue unpublished reports
                     </span>
+
                 </span>
 
-                <span class="hx-drawer-arrow">›</span>
+                <span class="hx-drawer-arrow">
+                    ›
+                </span>
 
             </a>
 
+
             <a href="published.html" class="hx-drawer-item">
 
-                <span class="hx-drawer-item-icon">P</span>
+                <span class="hx-drawer-item-icon">
+                    P
+                </span>
 
                 <span class="hx-drawer-item-content">
+
                     <span class="hx-drawer-item-title">
                         Published Intel
                     </span>
@@ -788,17 +1389,24 @@ body.hx-drawer-open{
                     <span class="hx-drawer-item-note">
                         Manage published HackaX articles
                     </span>
+
                 </span>
 
-                <span class="hx-drawer-arrow">›</span>
+                <span class="hx-drawer-arrow">
+                    ›
+                </span>
 
             </a>
 
+
             <a href="hackax-overview.html" class="hx-drawer-item">
 
-                <span class="hx-drawer-item-icon">R</span>
+                <span class="hx-drawer-item-icon">
+                    R
+                </span>
 
                 <span class="hx-drawer-item-content">
+
                     <span class="hx-drawer-item-title">
                         Publication Review
                     </span>
@@ -806,9 +1414,12 @@ body.hx-drawer-open{
                     <span class="hx-drawer-item-note">
                         Inspect the current article state
                     </span>
+
                 </span>
 
-                <span class="hx-drawer-arrow">›</span>
+                <span class="hx-drawer-arrow">
+                    ›
+                </span>
 
             </a>
 
@@ -823,9 +1434,12 @@ body.hx-drawer-open{
 
             <a href="settings.html" class="hx-drawer-item">
 
-                <span class="hx-drawer-item-icon">S</span>
+                <span class="hx-drawer-item-icon">
+                    S
+                </span>
 
                 <span class="hx-drawer-item-content">
+
                     <span class="hx-drawer-item-title">
                         Publisher Settings
                     </span>
@@ -833,9 +1447,12 @@ body.hx-drawer-open{
                     <span class="hx-drawer-item-note">
                         GitHub, site and publishing configuration
                     </span>
+
                 </span>
 
-                <span class="hx-drawer-arrow">›</span>
+                <span class="hx-drawer-arrow">
+                    ›
+                </span>
 
             </a>
 
@@ -845,10 +1462,13 @@ body.hx-drawer-open{
         <div class="hx-drawer-status">
 
             <div class="hx-drawer-status-top">
+
                 <span class="hx-drawer-status-dot"></span>
+
                 <span id="drawerConnectionText">
                     Checking connection...
                 </span>
+
             </div>
 
             <div class="hx-drawer-status-note">
@@ -1406,7 +2026,35 @@ body.hx-drawer-open{
 
             link.addEventListener(
                 "click",
-                closeDrawer
+                function(event){
+
+                    /*
+                     * New Article must preserve ?new=1.
+                     * All other links behave normally.
+                     */
+
+                    if(
+                        link.classList.contains(
+                            "hx-new-article-link"
+                        )
+                    ){
+
+                        closeDrawer();
+
+                        /*
+                         * Do not prevent navigation.
+                         * index.html?new=1 triggers the fresh
+                         * session bootstrap before the publisher
+                         * engine loads.
+                         */
+
+                        return;
+
+                    }
+
+                    closeDrawer();
+
+                }
             );
 
         });
@@ -1469,6 +2117,64 @@ body.hx-drawer-open{
     );
 
     sync();
+
+})();
+</script>
+
+
+<!-- ==========================================================
+     NEW ARTICLE HARD RESET
+     Extra protection for browser back-forward cache.
+========================================================== -->
+
+<script>
+(function(){
+
+    let wasHidden=false;
+
+    document.addEventListener(
+        "visibilitychange",
+        function(){
+
+            if(document.hidden){
+
+                wasHidden=true;
+
+                return;
+
+            }
+
+            if(!wasHidden)return;
+
+            wasHidden=false;
+
+        }
+    );
+
+    window.addEventListener(
+        "pageshow",
+        function(event){
+
+            /*
+             * If this page was restored from bfcache after
+             * explicitly starting a new article, make sure
+             * the publisher engine cannot retain the old
+             * browser snapshot.
+             */
+
+            if(
+                event.persisted &&
+                window.HACKAX_NEW_ARTICLE===true
+            ){
+
+                window.location.replace(
+                    "index.html?new=1"
+                );
+
+            }
+
+        }
+    );
 
 })();
 </script>
