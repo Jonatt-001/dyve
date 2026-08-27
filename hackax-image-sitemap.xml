@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 <url>
+                        <loc>https://dyve.online/threat-actors/gocaracal-malware-uses-ethereum-smart-contracts-to-keep-c2-infrastructure-alive.html</loc>
+
+                        <image:image>
+
+                            <image:loc>
+                                https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787834989/hackax/gocaracal-malware-uses-ethereum-smart-contracts-keep-infrastructure-alive-updates-featured-1787834981638.png
+                            </image:loc>
+
+                            <image:title>
+                                GoCaracal Malware Uses Ethereum Smart Contracts to Keep C2 Infrastructure Alive | General Updates
+                            </image:title>
+
+                            <image:caption>
+                                GoCaracal Malware Uses Ethereum Smart Contracts to Keep C2 Infrastructure Alive - General Updates featured image
+                            </image:caption>
+
+                        </image:image>
+
+                    </url>
+<url>
                         <loc>https://dyve.online/advisories/how-to-fix-a-leaked-api-key-a-developers-guide-to-git-security.html</loc>
 
                         <image:image>
