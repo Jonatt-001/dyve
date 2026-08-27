@@ -1575,1246 +1575,4676 @@ button {
 
     </div>
 </footer>
+<script src="ui.js"></script>
+
+<!-- ============================================================
+     STATIC BUILD DATA
+============================================================ -->
 
 <script>
-(function () {
-    "use strict";
+"use strict";
 
-    /*
-     * =========================================================
-     * HACKAX BACKEND / DATA CONFIGURATION
-     * =========================================================
-     */
+window.DYVE_BUILD_ARTICLES =
+  Array.isArray(window.DYVE_BUILD_ARTICLES)
+    ? window.DYVE_BUILD_ARTICLES
+    : [];
+</script>
 
-    const DATA_URL = "/data/articles.json";
-    const SITE_URL = "https://www.dyve.online";
-    const HOME_URL = SITE_URL + "/";
-    const ARTICLE_ROOT = "/article/";
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
 
-    let articles = [];
-    let categories = [];
+<script>
+"use strict";
 
-    /*
-     * =========================================================
-     * HELPERS
-     * =========================================================
-     */
+/* ============================================================
+   CONFIGURATION
+============================================================ */
 
-    function escapeHTML(value) {
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+const DYVE_CONFIG = {
+
+  articlesUrl:
+    "/assets/articles.json",
+
+  refreshInterval:
+    60000,
+
+  timestampInterval:
+    30000,
+
+  featuredRotationInterval:
+    7000,
+
+  maxFeatured:
+    5,
+
+  maxLatest:
+    6,
+
+  maxDarkWeb:
+    4,
+
+  maxBreaches:
+    6,
+
+  maxRansomware:
+    5,
+
+  maxThreatActors:
+    6,
+
+  maxSignals:
+    5
+
+};
+
+/* ============================================================
+   DOM REFERENCES
+============================================================ */
+
+const heroContainer =
+  document.getElementById(
+    "dynamicHeroContainer"
+  );
+
+const latestGrid =
+  document.getElementById(
+    "latestGrid"
+  );
+
+const darkwebGrid =
+  document.getElementById(
+    "darkwebGrid"
+  );
+
+const breachGrid =
+  document.getElementById(
+    "breachGrid"
+  );
+
+const ransomwareList =
+  document.getElementById(
+    "ransomwareList"
+  );
+
+const threatGrid =
+  document.getElementById(
+    "threatGrid"
+  );
+
+const signalList =
+  document.getElementById(
+    "signalList"
+  );
+
+const feedStatus =
+  document.getElementById(
+    "feedStatus"
+  );
+
+const backTop =
+  document.getElementById(
+    "dxBackTop"
+  );
+
+let allArticles = [];
+
+let refreshTimer = null;
+
+let timestampTimer = null;
+
+let featuredTimer = null;
+
+let feedFingerprint = "";
+
+let featuredArticles = [];
+
+let featuredIndex = 0;
+
+let featuredPaused = false;
+
+let featuredRotator = null;
+
+/* ============================================================
+   ROBUST DYVE DRAWER CONTROLLER
+============================================================ */
+
+const DYVE_DRAWER_SELECTORS = {
+
+  drawer: [
+    "#drawer",
+    ".drawer",
+    "[data-drawer]"
+  ],
+
+  backdrop: [
+    "#drawerBackdrop",
+    ".drawer-backdrop",
+    "[data-drawer-backdrop]"
+  ],
+
+  toggle: [
+    "#menuToggle",
+    ".menu-icon",
+    ".menu-toggle",
+    "[data-menu-toggle]",
+    "[data-drawer-toggle]"
+  ],
+
+  close: [
+    "#drawerClose",
+    ".drawer-close",
+    "[data-drawer-close]"
+  ]
+
+};
+
+/* ============================================================
+   SELECTOR RESOLVER
+============================================================ */
+
+function findFirstElement(
+  selectors
+) {
+
+  for (
+    const selector of selectors
+  ) {
+
+    const element =
+      document.querySelector(
+        selector
+      );
+
+    if (element) {
+
+      return element;
+
     }
 
-    function cleanText(value) {
-        if (value == null) return "";
+  }
 
-        const text = String(value)
-            .replace(/<[^>]*>/g, " ")
-            .replace(/\s+/g, " ")
-            .trim();
+  return null;
 
-        return text;
+}
+
+/* ============================================================
+   GET LIVE DRAWER ELEMENTS
+============================================================ */
+
+function getDrawerElements() {
+
+  return {
+
+    drawer:
+      findFirstElement(
+        DYVE_DRAWER_SELECTORS.drawer
+      ),
+
+    backdrop:
+      findFirstElement(
+        DYVE_DRAWER_SELECTORS.backdrop
+      ),
+
+    toggle:
+      findFirstElement(
+        DYVE_DRAWER_SELECTORS.toggle
+      ),
+
+    closeBtn:
+      findFirstElement(
+        DYVE_DRAWER_SELECTORS.close
+      )
+
+  };
+
+}
+
+/* ============================================================
+   DRAWER OPEN STATE
+============================================================ */
+
+function isDrawerOpen() {
+
+  const {
+    drawer
+  } =
+    getDrawerElements();
+
+  if (!drawer) {
+
+    return false;
+
+  }
+
+  return (
+    drawer.classList.contains(
+      "active"
+    ) ||
+    drawer.getAttribute(
+      "data-open"
+    ) === "true" ||
+    document.body.classList.contains(
+      "drawer-open"
+    )
+  );
+
+}
+
+/* ============================================================
+   SET DRAWER STATE
+============================================================ */
+
+function setDrawerState(
+  open,
+  restoreFocus = true
+) {
+
+  const {
+    drawer,
+    backdrop,
+    toggle,
+    closeBtn
+  } =
+    getDrawerElements();
+
+  if (!drawer) {
+
+    return;
+
+  }
+
+  drawer.classList.toggle(
+    "active",
+    open
+  );
+
+  drawer.setAttribute(
+    "data-open",
+    String(open)
+  );
+
+  drawer.setAttribute(
+    "aria-hidden",
+    String(!open)
+  );
+
+  if (backdrop) {
+
+    backdrop.classList.toggle(
+      "active",
+      open
+    );
+
+    backdrop.setAttribute(
+      "aria-hidden",
+      String(!open)
+    );
+
+  }
+
+  if (toggle) {
+
+    toggle.setAttribute(
+      "aria-expanded",
+      String(open)
+    );
+
+    toggle.setAttribute(
+      "aria-controls",
+      drawer.id ||
+      "drawer"
+    );
+
+  }
+
+  document.documentElement.classList.toggle(
+    "drawer-open",
+    open
+  );
+
+  document.body.classList.toggle(
+    "drawer-open",
+    open
+  );
+
+  if (!open) {
+
+    if (
+      document.activeElement &&
+      drawer.contains(
+        document.activeElement
+      )
+    ) {
+
+      document.activeElement.blur();
+
     }
 
-    function slugify(value) {
-        return cleanText(value)
-            .toLowerCase()
-            .replace(/&/g, "and")
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-+|-+$/g, "");
+    if (
+      restoreFocus &&
+      toggle &&
+      typeof toggle.focus ===
+        "function"
+    ) {
+
+      window.setTimeout(
+        () => {
+
+          try {
+
+            toggle.focus({
+              preventScroll:
+                true
+            });
+
+          } catch {
+
+            toggle.focus();
+
+          }
+
+        },
+        30
+      );
+
     }
 
-    function firstValid(...values) {
-        for (const value of values) {
-            if (value === null || value === undefined) continue;
+    return;
 
-            if (Array.isArray(value)) {
-                if (value.length) return value;
-                continue;
-            }
+  }
 
-            if (String(value).trim()) {
-                return value;
-            }
+  const focusTarget =
+    closeBtn ||
+    drawer.querySelector(
+      "a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])"
+    );
+
+  if (
+    focusTarget &&
+    typeof focusTarget.focus ===
+      "function"
+  ) {
+
+    window.setTimeout(
+      () => {
+
+        try {
+
+          focusTarget.focus({
+            preventScroll:
+              true
+          });
+
+        } catch {
+
+          focusTarget.focus();
+
         }
 
-        return "";
+      },
+      60
+    );
+
+  }
+
+}
+
+function openDrawer() {
+
+  setDrawerState(
+    true
+  );
+
+}
+
+function closeDrawer() {
+
+  setDrawerState(
+    false
+  );
+
+}
+
+function toggleDrawer() {
+
+  setDrawerState(
+    !isDrawerOpen()
+  );
+
+}
+
+/* ============================================================
+   DRAWER CLICK DELEGATION
+============================================================ */
+
+document.addEventListener(
+  "click",
+  event => {
+
+    const target =
+      event.target;
+
+    if (
+      !(target instanceof Element)
+    ) {
+
+      return;
+
     }
 
-    function getDateValue(article) {
-        return firstValid(
-            article.date,
-            article.publishedAt,
-            article.published_at,
-            article.datePublished,
-            article.date_published,
-            article.createdAt,
-            article.created_at,
-            article.updatedAt,
-            article.dateUpdated
+    const {
+      drawer,
+      backdrop,
+      toggle,
+      closeBtn
+    } =
+    getDrawerElements();
+
+    if (
+      toggle &&
+      (
+        target === toggle ||
+        toggle.contains(target)
+      )
+    ) {
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      toggleDrawer();
+
+      return;
+
+    }
+
+    if (
+      closeBtn &&
+      (
+        target === closeBtn ||
+        closeBtn.contains(target)
+      )
+    ) {
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      closeDrawer();
+
+      return;
+
+    }
+
+    if (
+      backdrop &&
+      target === backdrop
+    ) {
+
+      event.preventDefault();
+
+      closeDrawer();
+
+      return;
+
+    }
+
+    const closeTrigger =
+      target.closest(
+        "[data-drawer-close]"
+      );
+
+    if (closeTrigger) {
+
+      event.preventDefault();
+
+      closeDrawer();
+
+      return;
+
+    }
+
+    if (
+      drawer &&
+      drawer.classList.contains(
+        "active"
+      )
+    ) {
+
+      const drawerLink =
+        target.closest(
+          "a"
         );
+
+      if (
+        drawerLink &&
+        drawer.contains(
+          drawerLink
+        )
+      ) {
+
+        closeDrawer();
+
+      }
+
     }
 
-    function getImage(article) {
-        return firstValid(
-            article.image,
-            article.imageUrl,
-            article.thumbnail,
-            article.coverImage,
-            article.cover
+  },
+  true
+);
+
+/* ============================================================
+   ESCAPE
+============================================================ */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key !==
+      "Escape"
+    ) {
+
+      return;
+
+    }
+
+    if (
+      isDrawerOpen()
+    ) {
+
+      event.preventDefault();
+
+      closeDrawer();
+
+    }
+
+  }
+);
+
+/* ============================================================
+   DRAWER FOCUS TRAP
+============================================================ */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key !==
+      "Tab"
+    ) {
+
+      return;
+
+    }
+
+    const {
+      drawer
+    } =
+    getDrawerElements();
+
+    if (
+      !drawer ||
+      !drawer.classList.contains(
+        "active"
+      )
+    ) {
+
+      return;
+
+    }
+
+    const focusable =
+      Array.from(
+        drawer.querySelectorAll(
+          [
+            "a[href]",
+            "button:not([disabled])",
+            "input:not([disabled])",
+            "select:not([disabled])",
+            "textarea:not([disabled])",
+            "[tabindex]:not([tabindex='-1'])"
+          ].join(",")
+        )
+      )
+      .filter(
+        element => {
+
+          return (
+            element.offsetParent !==
+              null
+          );
+
+        }
+      );
+
+    if (
+      !focusable.length
+    ) {
+
+      return;
+
+    }
+
+    const first =
+      focusable[0];
+
+    const last =
+      focusable[
+        focusable.length - 1
+      ];
+
+    if (
+      event.shiftKey &&
+      document.activeElement ===
+        first
+    ) {
+
+      event.preventDefault();
+
+      last.focus();
+
+      return;
+
+    }
+
+    if (
+      !event.shiftKey &&
+      document.activeElement ===
+        last
+    ) {
+
+      event.preventDefault();
+
+      first.focus();
+
+    }
+
+  }
+);
+
+/* ============================================================
+   DRAWER SWIPE
+============================================================ */
+
+let drawerStartX =
+  0;
+
+let drawerStartY =
+  0;
+
+let drawerSwipeActive =
+  false;
+
+document.addEventListener(
+  "touchstart",
+  event => {
+
+    if (
+      !isDrawerOpen()
+    ) {
+
+      return;
+
+    }
+
+    const touch =
+      event.touches[0];
+
+    if (!touch) {
+
+      return;
+
+    }
+
+    drawerStartX =
+      touch.clientX;
+
+    drawerStartY =
+      touch.clientY;
+
+    drawerSwipeActive =
+      true;
+
+  },
+  {
+    passive:
+      true
+  }
+);
+
+document.addEventListener(
+  "touchmove",
+  event => {
+
+    if (
+      !drawerSwipeActive ||
+      !isDrawerOpen()
+    ) {
+
+      return;
+
+    }
+
+    const touch =
+      event.touches[0];
+
+    if (!touch) {
+
+      return;
+
+    }
+
+    const deltaX =
+      touch.clientX -
+      drawerStartX;
+
+    const deltaY =
+      touch.clientY -
+      drawerStartY;
+
+    if (
+      Math.abs(deltaX) >
+        Math.abs(deltaY) &&
+      deltaX <
+        -70
+    ) {
+
+      drawerSwipeActive =
+        false;
+
+      closeDrawer();
+
+    }
+
+  },
+  {
+    passive:
+      true
+  }
+);
+
+document.addEventListener(
+  "touchend",
+  () => {
+
+    drawerSwipeActive =
+      false;
+
+  },
+  {
+    passive:
+      true
+  }
+);
+
+/* ============================================================
+   DRAWER UI OBSERVER
+============================================================ */
+
+function normalizeDrawerUI() {
+
+  const {
+    drawer,
+    backdrop,
+    toggle
+  } =
+    getDrawerElements();
+
+  if (!drawer) {
+
+    return;
+
+  }
+
+  if (
+    !drawer.hasAttribute(
+      "aria-hidden"
+    )
+  ) {
+
+    drawer.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+  }
+
+  if (toggle) {
+
+    toggle.setAttribute(
+      "aria-controls",
+      drawer.id ||
+      "drawer"
+    );
+
+    toggle.setAttribute(
+      "aria-expanded",
+      String(
+        drawer.classList.contains(
+          "active"
+        )
+      )
+    );
+
+  }
+
+  if (backdrop) {
+
+    backdrop.setAttribute(
+      "aria-hidden",
+      String(
+        !drawer.classList.contains(
+          "active"
+        )
+      )
+    );
+
+  }
+
+  const open =
+    drawer.classList.contains(
+      "active"
+    ) ||
+    drawer.getAttribute(
+      "data-open"
+    ) === "true";
+
+  document.body.classList.toggle(
+    "drawer-open",
+    open
+  );
+
+  document.documentElement.classList.toggle(
+    "drawer-open",
+    open
+  );
+
+}
+
+function initializeDrawerObserver() {
+
+  const header =
+    document.getElementById(
+      "global-header"
+    );
+
+  const drawerHost =
+    document.getElementById(
+      "global-drawer"
+    );
+
+  if (header) {
+
+    const headerObserver =
+      new MutationObserver(
+        () => {
+
+          normalizeDrawerUI();
+
+        }
+      );
+
+    headerObserver.observe(
+      header,
+      {
+        childList:
+          true,
+
+        subtree:
+          true
+      }
+    );
+
+  }
+
+  if (drawerHost) {
+
+    const drawerObserver =
+      new MutationObserver(
+        () => {
+
+          normalizeDrawerUI();
+
+        }
+      );
+
+    drawerObserver.observe(
+      drawerHost,
+      {
+        childList:
+          true,
+
+        subtree:
+          true
+      }
+    );
+
+  }
+
+  normalizeDrawerUI();
+
+}
+
+/* ============================================================
+   SAFE TEXT
+============================================================ */
+
+function cleanText(
+  value,
+  fallback = ""
+) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+
+    return fallback;
+
+  }
+
+  const temporary =
+    document.createElement(
+      "div"
+    );
+
+  temporary.innerHTML =
+    String(value);
+
+  return (
+    temporary.textContent ||
+    temporary.innerText ||
+    ""
+  )
+    .replace(/\s+/g, " ")
+    .trim();
+
+}
+
+/* ============================================================
+   SAFE INTERNAL URL
+============================================================ */
+
+function safeInternalUrl(
+  value,
+  fallback = "/"
+) {
+
+  if (!value) {
+
+    return fallback;
+
+  }
+
+  try {
+
+    const url =
+      new URL(
+        value,
+        window.location.origin
+      );
+
+    if (
+      url.protocol !== "http:" &&
+      url.protocol !== "https:"
+    ) {
+
+      return fallback;
+
+    }
+
+    if (
+      url.origin !==
+      window.location.origin
+    ) {
+
+      return fallback;
+
+    }
+
+    let pathname =
+      url.pathname;
+
+    if (
+      pathname.endsWith(
+        "/index.html"
+      )
+    ) {
+
+      pathname =
+        pathname.slice(
+          0,
+          -"index.html".length
         );
+
     }
 
-    function getExcerpt(article) {
-        return cleanText(firstValid(
-            article.excerpt,
-            article.summary,
-            article.description,
-            article.dek,
-            article.desc
-        ));
+    if (
+      pathname === "" ||
+      pathname === "/"
+    ) {
+
+      pathname =
+        "/";
+
     }
 
-    function getCategory(article) {
-        return cleanText(firstValid(
-            article.category,
-            article.section,
-            article.type,
-            article.topic,
-            article.meta
-        )) || "Intelligence";
+    return (
+      pathname +
+      url.search +
+      url.hash
+    );
+
+  } catch {
+
+    return fallback;
+
+  }
+
+}
+
+/* ============================================================
+   SAFE IMAGE URL
+============================================================ */
+
+function safeImageUrl(value) {
+
+  if (!value) {
+
+    return "";
+
+  }
+
+  try {
+
+    const url =
+      new URL(
+        value,
+        window.location.origin
+      );
+
+    if (
+      url.protocol !== "http:" &&
+      url.protocol !== "https:"
+    ) {
+
+      return "";
+
     }
 
-    function getAuthor(article) {
-        return cleanText(firstValid(
-            article.author,
-            article.byline,
-            article.authorName
-        )) || "HackaX Editorial Unit";
+    return url.href;
+
+  } catch {
+
+    return "";
+
+  }
+
+}
+
+/* ============================================================
+   DATE FIELD RESOLUTION
+============================================================ */
+
+/*
+   Priority intentionally favors modification timestamps.
+
+   This means an article that was originally published yesterday
+   but updated today will appear as:
+
+   Updated 2h ago
+
+   rather than:
+
+   Published 1d ago
+*/
+
+function getArticleDateInfo(article) {
+
+  const modifiedFields = [
+
+    "dateModified",
+    "dateUpdated",
+    "updatedAt",
+    "updated",
+    "lastUpdated",
+    "lastModified",
+    "modifiedAt",
+    "modifiedDate",
+    "updatedDate"
+
+  ];
+
+  const publishedFields = [
+
+    "datePublished",
+    "publishedAt",
+    "publishDate",
+    "published",
+    "date"
+
+  ];
+
+  for (
+    const field of modifiedFields
+  ) {
+
+    const value =
+      article &&
+      article[field];
+
+    if (
+      value &&
+      Number.isFinite(
+        Date.parse(
+          value
+        )
+      )
+    ) {
+
+      return {
+
+        value:
+          value,
+
+        timestamp:
+          Date.parse(value),
+
+        type:
+          "updated",
+
+        field:
+          field
+
+      };
+
     }
 
-    function getReadTime(article) {
-        const raw = firstValid(
-            article.readingTime,
-            article.readTime,
-            article.reading_time
-        );
+  }
 
-        const match = String(raw || "").match(/\d+/);
+  for (
+    const field of publishedFields
+  ) {
 
-        return match ? Math.max(1, Number(match[0])) : 1;
+    const value =
+      article &&
+      article[field];
+
+    if (
+      value &&
+      Number.isFinite(
+        Date.parse(
+          value
+        )
+      )
+    ) {
+
+      return {
+
+        value:
+          value,
+
+        timestamp:
+          Date.parse(value),
+
+        type:
+          "published",
+
+        field:
+          field
+
+      };
+
     }
 
-    function getArticleUrl(article) {
-        const rawUrl = firstValid(
-            article.url,
-            article.path,
-            article.href
-        );
+  }
 
-        if (rawUrl) {
-            const value = String(rawUrl).trim();
+  return {
 
-            if (/^https?:\/\//i.test(value)) {
-                return value;
-            }
+    value:
+      "",
 
-            return value.startsWith("/")
-                ? value
-                : "/" + value;
+    timestamp:
+      0,
+
+    type:
+      "published",
+
+    field:
+      ""
+
+  };
+
+}
+
+/* ============================================================
+   ARTICLE DATE
+============================================================ */
+
+function getArticleDate(article) {
+
+  return getArticleDateInfo(
+    article
+  ).value;
+
+}
+
+/* ============================================================
+   ARTICLE TIMESTAMP
+============================================================ */
+
+function getTimestamp(article) {
+
+  return getArticleDateInfo(
+    article
+  ).timestamp;
+
+}
+
+/* ============================================================
+   DATE TYPE
+============================================================ */
+
+function getDateType(article) {
+
+  return getArticleDateInfo(
+    article
+  ).type;
+
+}
+
+/* ============================================================
+   ABSOLUTE DATE + TIME
+============================================================ */
+
+function formatAbsoluteDate(
+  article
+) {
+
+  const info =
+    getArticleDateInfo(
+      article
+    );
+
+  if (
+    !info.timestamp
+  ) {
+
+    return "Date unavailable";
+
+  }
+
+  try {
+
+    return new Intl.DateTimeFormat(
+      "en-US",
+      {
+        weekday:
+          "short",
+
+        day:
+          "2-digit",
+
+        month:
+          "short",
+
+        year:
+          "numeric",
+
+        hour:
+          "numeric",
+
+        minute:
+          "2-digit",
+
+        timeZoneName:
+          "short"
+      }
+    ).format(
+      new Date(
+        info.timestamp
+      )
+    );
+
+  } catch {
+
+    return new Date(
+      info.timestamp
+    ).toLocaleString();
+
+  }
+
+}
+
+/* ============================================================
+   DATE DISPLAY
+============================================================ */
+
+function formatDate(article) {
+
+  const info =
+    getArticleDateInfo(
+      article
+    );
+
+  if (
+    !info.timestamp
+  ) {
+
+    return "Recent";
+
+  }
+
+  try {
+
+    return new Intl.DateTimeFormat(
+      "en",
+      {
+        day:
+          "2-digit",
+
+        month:
+          "short",
+
+        year:
+          "numeric"
+      }
+    ).format(
+      new Date(
+        info.timestamp
+      )
+    );
+
+  } catch {
+
+    return cleanText(
+      info.value
+    );
+
+  }
+
+}
+
+/* ============================================================
+   RELATIVE FRESHNESS
+============================================================ */
+
+function formatFreshness(
+  article
+) {
+
+  const info =
+    getArticleDateInfo(
+      article
+    );
+
+  if (
+    !info.timestamp
+  ) {
+
+    return "";
+
+  }
+
+  const difference =
+    Date.now() -
+    info.timestamp;
+
+  if (
+    difference < 0
+  ) {
+
+    return "Scheduled";
+
+  }
+
+  const seconds =
+    Math.floor(
+      difference /
+      1000
+    );
+
+  if (
+    seconds < 10
+  ) {
+
+    return "Just now";
+
+  }
+
+  if (
+    seconds < 60
+  ) {
+
+    return `${seconds}s ago`;
+
+  }
+
+  const minutes =
+    Math.floor(
+      seconds /
+      60
+    );
+
+  if (
+    minutes < 60
+  ) {
+
+    return `${minutes}m ago`;
+
+  }
+
+  const hours =
+    Math.floor(
+      minutes /
+      60
+    );
+
+  if (
+    hours < 24
+  ) {
+
+    return `${hours}h ago`;
+
+  }
+
+  const days =
+    Math.floor(
+      hours /
+      24
+    );
+
+  if (
+    days < 7
+  ) {
+
+    return `${days}d ago`;
+
+  }
+
+  const weeks =
+    Math.floor(
+      days /
+      7
+    );
+
+  if (
+    weeks < 5
+  ) {
+
+    return `${weeks}w ago`;
+
+  }
+
+  return formatDate(
+    article
+  );
+
+}
+
+/* ============================================================
+   SMART TIME LABEL
+============================================================ */
+
+function formatArticleTimeLabel(
+  article
+) {
+
+  const type =
+    getDateType(
+      article
+    );
+
+  const freshness =
+    formatFreshness(
+      article
+    );
+
+  if (
+    !freshness
+  ) {
+
+    return "";
+
+  }
+
+  return (
+    type === "updated"
+      ? `Updated ${freshness}`
+      : `Published ${freshness}`
+  );
+
+}
+
+/* ============================================================
+   TIME ELEMENT CREATOR
+============================================================ */
+
+function createArticleTime(
+  article,
+  className = ""
+) {
+
+  const time =
+    document.createElement(
+      "time"
+    );
+
+  time.className =
+    `article-time ${getDateType(article)} ${className}`
+      .trim();
+
+  const info =
+    getArticleDateInfo(
+      article
+    );
+
+  if (
+    info.timestamp
+  ) {
+
+    time.dateTime =
+      new Date(
+        info.timestamp
+      ).toISOString();
+
+    time.title =
+      formatAbsoluteDate(
+        article
+      );
+
+    time.textContent =
+      formatArticleTimeLabel(
+        article
+      );
+
+    time.dataset.articleTimestamp =
+      String(
+        info.timestamp
+      );
+
+    time.dataset.articleType =
+      info.type;
+
+  } else {
+
+    time.textContent =
+      "Date unavailable";
+
+  }
+
+  return time;
+
+}
+
+/* ============================================================
+   CATEGORY NORMALIZATION
+============================================================ */
+
+function normalizeCategory(
+  value
+) {
+
+  return cleanText(
+    value
+  )
+    .toLowerCase()
+    .replace(/_/g, "-")
+    .replace(/\s+/g, "-")
+    .trim();
+
+}
+
+/* ============================================================
+   CATEGORY LABEL
+============================================================ */
+
+function categoryLabel(article) {
+
+  const category =
+    normalizeCategory(
+      article.category ||
+      "intel"
+    );
+
+  const labels = {
+
+    "dark-web":
+      "Dark Web",
+
+    "darkweb":
+      "Dark Web",
+
+    "breach":
+      "Breach",
+
+    "breaches":
+      "Breach",
+
+    "ransomware":
+      "Ransomware",
+
+    "threat-actors":
+      "Threat Actors",
+
+    "threat-actor":
+      "Threat Actors",
+
+    "analysis":
+      "Analysis",
+
+    "technology":
+      "Technology",
+
+    "tech":
+      "Technology",
+
+    "vulnerability":
+      "Vulnerability",
+
+    "vulnerabilities":
+      "Vulnerability",
+
+    "malware":
+      "Malware",
+
+    "phishing":
+      "Phishing",
+
+    "ai-security":
+      "AI Security",
+
+    "cloud-security":
+      "Cloud Security",
+
+    "signals":
+      "Threat Signal",
+
+    "intel":
+      "Intelligence"
+
+  };
+
+  return (
+    labels[category] ||
+    cleanText(
+      article.category ||
+      "Intelligence"
+    )
+  );
+
+}
+
+/* ============================================================
+   SORT ARTICLES
+============================================================ */
+
+function sortArticles(
+  articles
+) {
+
+  return [
+    ...articles
+  ].sort(
+    (a, b) => {
+
+      return (
+        getTimestamp(b) -
+        getTimestamp(a)
+      );
+
+    }
+  );
+
+}
+
+/* ============================================================
+   FILTER CATEGORY
+============================================================ */
+
+function articlesByCategory(
+  category,
+  limit
+) {
+
+  const normalized =
+    normalizeCategory(
+      category
+    );
+
+  return allArticles
+    .filter(
+      article => {
+
+        const current =
+          normalizeCategory(
+            article.category
+          );
+
+        if (
+          normalized ===
+          "breach"
+        ) {
+
+          return (
+            current ===
+              "breach" ||
+            current ===
+              "breaches"
+          );
+
         }
 
-        const slug = cleanText(firstValid(
-            article.slug,
-            article.id,
+        if (
+          normalized ===
+          "dark-web"
+        ) {
+
+          return (
+            current ===
+              "dark-web" ||
+            current ===
+              "darkweb"
+          );
+
+        }
+
+        if (
+          normalized ===
+          "threat-actors"
+        ) {
+
+          return (
+            current ===
+              "threat-actors" ||
+            current ===
+              "threat-actor"
+          );
+
+        }
+
+        return (
+          current ===
+          normalized
+        );
+
+      }
+    )
+    .slice(
+      0,
+      limit
+    );
+
+}
+
+/* ============================================================
+   IMAGE CREATOR
+============================================================ */
+
+function createArticleImage(
+  article,
+  className,
+  loading = "lazy"
+) {
+
+  const wrapper =
+    document.createElement(
+      "div"
+    );
+
+  wrapper.className =
+    className;
+
+  const imageUrl =
+    safeImageUrl(
+      article.image
+    );
+
+  if (!imageUrl) {
+
+    return wrapper;
+
+  }
+
+  const image =
+    document.createElement(
+      "img"
+    );
+
+  image.src =
+    imageUrl;
+
+  image.alt =
+    cleanText(
+      article.imageAlt ||
+      article.title ||
+      "Dyve HackaX cybersecurity intelligence"
+    );
+
+  image.loading =
+    loading;
+
+  image.decoding =
+    "async";
+
+  if (
+    loading ===
+    "eager"
+  ) {
+
+    image.fetchPriority =
+      "high";
+
+  }
+
+  image.addEventListener(
+    "error",
+    () => {
+
+      wrapper.style.display =
+        "none";
+
+    },
+    {
+      once:
+        true
+    }
+  );
+
+  wrapper.appendChild(
+    image
+  );
+
+  return wrapper;
+
+}
+
+/* ============================================================
+   LINK CREATOR
+============================================================ */
+
+function createArticleLink(
+  article,
+  className
+) {
+
+  const link =
+    document.createElement(
+      "a"
+    );
+
+  link.className =
+    className;
+
+  link.href =
+    safeInternalUrl(
+      article.url
+    );
+
+  return link;
+
+}
+
+/* ============================================================
+   FEATURED ARTICLE HTML
+============================================================ */
+
+function createFeaturedArticle(
+  article,
+  index
+) {
+
+  const link =
+    createArticleLink(
+      article,
+      "dynamic-hero"
+    );
+
+  link.setAttribute(
+    "aria-label",
+    `Read: ${cleanText(article.title)}`
+  );
+
+  const image =
+    createArticleImage(
+      article,
+      "dynamic-hero-img",
+      "eager"
+    );
+
+  if (
+    image.querySelector(
+      "img"
+    )
+  ) {
+
+    link.appendChild(
+      image
+    );
+
+  }
+
+  const live =
+    document.createElement(
+      "div"
+    );
+
+  live.className =
+    "featured-live";
+
+  live.textContent =
+    "Live Intelligence";
+
+  link.appendChild(
+    live
+  );
+
+  const counter =
+    document.createElement(
+      "div"
+    );
+
+  counter.className =
+    "featured-counter";
+
+  counter.textContent =
+    `${index + 1} / ${featuredArticles.length}`;
+
+  link.appendChild(
+    counter
+  );
+
+  const tag =
+    document.createElement(
+      "div"
+    );
+
+  tag.className =
+    "tag";
+
+  tag.textContent =
+    cleanText(
+      article.tag ||
+      categoryLabel(article)
+    );
+
+  link.appendChild(
+    tag
+  );
+
+  const content =
+    document.createElement(
+      "div"
+    );
+
+  content.className =
+    "hero-content featured-content-transition";
+
+  const label =
+    document.createElement(
+      "span"
+    );
+
+  label.className =
+    "hero-label";
+
+  label.textContent =
+    "Featured Intelligence";
+
+  const title =
+    document.createElement(
+      "h3"
+    );
+
+  title.className =
+    "title";
+
+  title.textContent =
+    cleanText(
+      article.title,
+      "Latest Cyber Intelligence"
+    );
+
+  const desc =
+    document.createElement(
+      "p"
+    );
+
+  desc.className =
+    "desc";
+
+  desc.textContent =
+    cleanText(
+      article.excerpt ||
+      article.desc ||
+      "Explore the latest cybersecurity intelligence from Dyve HackaX."
+    );
+
+  const meta =
+    document.createElement(
+      "div"
+    );
+
+  meta.className =
+    "meta";
+
+  const time =
+    createArticleTime(
+      article
+    );
+
+  meta.appendChild(
+    document.createTextNode(
+      categoryLabel(
+        article
+      ) +
+      " • "
+    )
+  );
+
+  meta.appendChild(
+    time
+  );
+
+  if (
+    article.readingTime
+  ) {
+
+    meta.appendChild(
+      document.createTextNode(
+        " • " +
+        cleanText(
+          article.readingTime
+        ) +
+        " min read"
+      )
+    );
+
+  }
+
+  const read =
+    document.createElement(
+      "span"
+    );
+
+  read.className =
+    "hero-read";
+
+  read.textContent =
+    "Read full intelligence";
+
+  content.appendChild(
+    label
+  );
+
+  content.appendChild(
+    title
+  );
+
+  content.appendChild(
+    desc
+  );
+
+  content.appendChild(
+    meta
+  );
+
+  content.appendChild(
+    read
+  );
+
+  link.appendChild(
+    content
+  );
+
+  return link;
+
+}
+
+/* ============================================================
+   FEATURED ROTATOR
+============================================================ */
+
+function getFeaturedArticles(
+  articles
+) {
+
+  return sortArticles(
+    articles
+  )
+    .filter(
+      article => {
+
+        return (
+          article &&
+          typeof article ===
+            "object" &&
+          cleanText(
             article.title
-        ));
+          ) &&
+          getTimestamp(
+            article
+          ) > 0
+        );
 
-        const category = slugify(getCategory(article));
+      }
+    )
+    .slice(
+      0,
+      DYVE_CONFIG.maxFeatured
+    );
 
-        if (!slug) {
-            return ARTICLE_ROOT;
+}
+
+/* ============================================================
+   RENDER FEATURED ROTATOR
+============================================================ */
+
+function renderDynamicHero(
+  articles
+) {
+
+  featuredArticles =
+    getFeaturedArticles(
+      articles
+    );
+
+  featuredIndex =
+    0;
+
+  stopFeaturedRotation();
+
+  heroContainer.innerHTML =
+    "";
+
+  if (
+    !featuredArticles.length
+  ) {
+
+    const empty =
+      document.createElement(
+        "div"
+      );
+
+    empty.className =
+      "empty-state";
+
+    empty.textContent =
+      "No published intelligence available.";
+
+    heroContainer.appendChild(
+      empty
+    );
+
+    return;
+
+  }
+
+  if (
+    featuredArticles.length ===
+    1
+  ) {
+
+    heroContainer.appendChild(
+      createFeaturedArticle(
+        featuredArticles[0],
+        0
+      )
+    );
+
+    return;
+
+  }
+
+  featuredRotator =
+    document.createElement(
+      "div"
+    );
+
+  featuredRotator.className =
+    "featured-rotator";
+
+  featuredRotator.appendChild(
+    createFeaturedArticle(
+      featuredArticles[0],
+      0
+    )
+  );
+
+  const indicators =
+    document.createElement(
+      "div"
+    );
+
+  indicators.className =
+    "featured-indicators";
+
+  indicators.setAttribute(
+    "aria-label",
+    "Featured intelligence articles"
+  );
+
+  featuredArticles.forEach(
+    (article, index) => {
+
+      const indicator =
+        document.createElement(
+          "button"
+        );
+
+      indicator.type =
+        "button";
+
+      indicator.className =
+        "featured-indicator";
+
+      if (
+        index === 0
+      ) {
+
+        indicator.classList.add(
+          "active"
+        );
+
+      }
+
+      indicator.setAttribute(
+        "aria-label",
+        `Show featured article ${index + 1}`
+      );
+
+      indicator.addEventListener(
+        "click",
+        event => {
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          showFeatured(
+            index,
+            true
+          );
+
         }
+      );
 
-        return ARTICLE_ROOT +
-            encodeURIComponent(category) +
-            "/" +
-            encodeURIComponent(slugify(slug));
+      indicators.appendChild(
+        indicator
+      );
+
     }
+  );
 
-    function getTimestamp(article) {
-        const raw = getDateValue(article);
-        const timestamp = Date.parse(raw);
+  featuredRotator.appendChild(
+    indicators
+  );
 
-        return Number.isFinite(timestamp)
-            ? timestamp
-            : 0;
+  const controls =
+    document.createElement(
+      "div"
+    );
+
+  controls.className =
+    "featured-controls";
+
+  const previous =
+    createFeaturedControl(
+      "Previous featured article",
+      "previous"
+    );
+
+  const next =
+    createFeaturedControl(
+      "Next featured article",
+      "next"
+    );
+
+  controls.appendChild(
+    previous
+  );
+
+  controls.appendChild(
+    next
+  );
+
+  featuredRotator.appendChild(
+    controls
+  );
+
+  heroContainer.appendChild(
+    featuredRotator
+  );
+
+  featuredRotator.addEventListener(
+    "mouseenter",
+    () => {
+
+      featuredPaused =
+        true;
+
+      featuredRotator.classList.add(
+        "paused"
+      );
+
     }
+  );
 
-    function formatDate(article) {
-        const timestamp = getTimestamp(article);
+  featuredRotator.addEventListener(
+    "mouseleave",
+    () => {
 
-        if (!timestamp) {
-            return "";
-        }
+      featuredPaused =
+        false;
 
-        return new Intl.DateTimeFormat("en", {
-            day: "numeric",
-            month: "short",
-            year: "numeric"
-        }).format(new Date(timestamp));
+      featuredRotator.classList.remove(
+        "paused"
+      );
+
     }
+  );
 
-    function formatRelativeDate(article) {
-        const timestamp = getTimestamp(article);
+  featuredRotator.addEventListener(
+    "focusin",
+    () => {
 
-        if (!timestamp) {
-            return "";
-        }
+      featuredPaused =
+        true;
 
-        const diff = Date.now() - timestamp;
+      featuredRotator.classList.add(
+        "paused"
+      );
 
-        if (diff < 0) {
-            return formatDate(article);
-        }
-
-        const minute = 60 * 1000;
-        const hour = 60 * minute;
-        const day = 24 * hour;
-
-        if (diff < hour) {
-            const minutes = Math.max(1, Math.floor(diff / minute));
-            return minutes + (minutes === 1 ? " min ago" : " mins ago");
-        }
-
-        if (diff < day) {
-            const hours = Math.floor(diff / hour);
-            return hours + (hours === 1 ? " hour ago" : " hours ago");
-        }
-
-        if (diff < 7 * day) {
-            const days = Math.floor(diff / day);
-            return days + (days === 1 ? " day ago" : " days ago");
-        }
-
-        return formatDate(article);
     }
+  );
 
-    function normalizeArticle(article) {
-        if (!article || typeof article !== "object") {
-            return null;
-        }
+  featuredRotator.addEventListener(
+    "focusout",
+    event => {
 
-        const title = cleanText(firstValid(
-            article.title,
-            article.headline,
-            article.name
-        ));
+      if (
+        featuredRotator.contains(
+          event.relatedTarget
+        )
+      ) {
 
-        if (!title) {
-            return null;
-        }
+        return;
 
-        const url = getArticleUrl(article);
-        const image = getImage(article);
-        const category = getCategory(article);
-        const excerpt = getExcerpt(article);
+      }
 
-        return {
-            raw: article,
-            id: cleanText(firstValid(
-                article.id,
-                article.slug,
-                url,
-                title
-            )),
-            slug: cleanText(firstValid(
-                article.slug,
-                article.id,
-                title
-            )),
-            title,
-            excerpt,
-            category,
-            tag: cleanText(firstValid(
-                article.tag,
-                article.type,
-                article.meta,
-                category
-            )) || "Intelligence",
-            image,
-            imageAlt: cleanText(firstValid(
-                article.imageAlt,
-                article.alt,
-                article.image_alt,
-                title
-            )) || title,
-            url,
-            author: getAuthor(article),
-            date: getDateValue(article),
-            datePublished: firstValid(
-                article.datePublished,
-                article.date,
-                article.publishedAt
-            ),
-            dateModified: firstValid(
-                article.dateModified,
-                article.modified,
-                article.dateUpdated,
-                article.updatedAt,
-                article.date,
-                article.publishedAt
-            ),
-            readTime: getReadTime(article),
-            seoTitle: cleanText(article.seoTitle),
-            focusKeyword: cleanText(article.focusKeyword),
-            keywords: Array.isArray(article.keywords)
-                ? article.keywords.map(cleanText).filter(Boolean)
-                : cleanText(article.keywords)
-                    .split(",")
-                    .map(item => item.trim())
-                    .filter(Boolean),
-            sourceUrl: cleanText(article.sourceUrl),
-            ogPrompt: cleanText(article.ogPrompt)
-        };
+      featuredPaused =
+        false;
+
+      featuredRotator.classList.remove(
+        "paused"
+      );
+
     }
+  );
 
-    function sortArticles(items) {
-        return items.sort(function (a, b) {
-            return getTimestamp(b) - getTimestamp(a);
-        });
+  initializeFeaturedTouch();
+
+  startFeaturedRotation();
+
+}
+
+/* ============================================================
+   FEATURED CONTROL
+============================================================ */
+
+function createFeaturedControl(
+  label,
+  direction
+) {
+
+  const button =
+    document.createElement(
+      "button"
+    );
+
+  button.type =
+    "button";
+
+  button.className =
+    "featured-control";
+
+  button.setAttribute(
+    "aria-label",
+    label
+  );
+
+  button.innerHTML =
+    direction === "previous"
+
+      ? `
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M15 18l-6-6 6-6"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      `
+
+      : `
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M9 18l6-6-6-6"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      `;
+
+  button.addEventListener(
+    "click",
+    event => {
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (
+        direction ===
+        "previous"
+      ) {
+
+        showFeatured(
+          featuredIndex - 1,
+          true
+        );
+
+      } else {
+
+        showFeatured(
+          featuredIndex + 1,
+          true
+        );
+
+      }
+
     }
+  );
 
-    function articleIsPublished(article) {
-        if (!article || typeof article !== "object") {
-            return false;
+  return button;
+
+}
+
+/* ============================================================
+   SHOW FEATURED
+============================================================ */
+
+function showFeatured(
+  index,
+  resetTimer = false
+) {
+
+  if (
+    !featuredArticles.length ||
+    !featuredRotator
+  ) {
+
+    return;
+
+  }
+
+  if (
+    index < 0
+  ) {
+
+    index =
+      featuredArticles.length - 1;
+
+  }
+
+  if (
+    index >=
+    featuredArticles.length
+  ) {
+
+    index =
+      0;
+
+  }
+
+  featuredIndex =
+    index;
+
+  featuredRotator.classList.add(
+    "is-changing"
+  );
+
+  window.setTimeout(
+    () => {
+
+      if (
+        !featuredRotator
+      ) {
+
+        return;
+
+      }
+
+      const oldHero =
+        featuredRotator.querySelector(
+          ".dynamic-hero"
+        );
+
+      if (
+        oldHero
+      ) {
+
+        oldHero.remove();
+
+      }
+
+      const newHero =
+        createFeaturedArticle(
+          featuredArticles[
+            featuredIndex
+          ],
+          featuredIndex
+        );
+
+      featuredRotator.insertBefore(
+        newHero,
+        featuredRotator.firstChild
+      );
+
+      const indicators =
+        featuredRotator.querySelectorAll(
+          ".featured-indicator"
+        );
+
+      indicators.forEach(
+        (indicator, indicatorIndex) => {
+
+          indicator.classList.toggle(
+            "active",
+            indicatorIndex ===
+              featuredIndex
+          );
+
+        }
+      );
+
+      featuredRotator.classList.remove(
+        "is-changing"
+      );
+
+    },
+    180
+  );
+
+  if (
+    resetTimer
+  ) {
+
+    restartFeaturedRotation();
+
+  }
+
+}
+
+/* ============================================================
+   FEATURED ROTATION
+============================================================ */
+
+function startFeaturedRotation() {
+
+  stopFeaturedRotation();
+
+  if (
+    featuredArticles.length <=
+    1
+  ) {
+
+    return;
+
+  }
+
+  featuredTimer =
+    window.setInterval(
+      () => {
+
+        if (
+          featuredPaused ||
+          document.hidden
+        ) {
+
+          return;
+
         }
 
-        if (article.published === false) {
-            return false;
+        showFeatured(
+          featuredIndex + 1
+        );
+
+      },
+      DYVE_CONFIG.featuredRotationInterval
+    );
+
+}
+
+function stopFeaturedRotation() {
+
+  if (
+    featuredTimer
+  ) {
+
+    window.clearInterval(
+      featuredTimer
+    );
+
+    featuredTimer =
+      null;
+
+  }
+
+}
+
+function restartFeaturedRotation() {
+
+  stopFeaturedRotation();
+
+  startFeaturedRotation();
+
+}
+
+/* ============================================================
+   FEATURED TOUCH SWIPE
+============================================================ */
+
+function initializeFeaturedTouch() {
+
+  if (
+    !featuredRotator
+  ) {
+
+    return;
+
+  }
+
+  let startX =
+    0;
+
+  let startY =
+    0;
+
+  let active =
+    false;
+
+  featuredRotator.addEventListener(
+    "touchstart",
+    event => {
+
+      const touch =
+        event.touches[0];
+
+      if (!touch) {
+
+        return;
+
+      }
+
+      startX =
+        touch.clientX;
+
+      startY =
+        touch.clientY;
+
+      active =
+        true;
+
+    },
+    {
+      passive:
+        true
+    }
+  );
+
+  featuredRotator.addEventListener(
+    "touchend",
+    event => {
+
+      if (!active) {
+
+        return;
+
+      }
+
+      active =
+        false;
+
+      const touch =
+        event.changedTouches[0];
+
+      if (!touch) {
+
+        return;
+
+      }
+
+      const deltaX =
+        touch.clientX -
+        startX;
+
+      const deltaY =
+        touch.clientY -
+        startY;
+
+      if (
+        Math.abs(deltaX) <
+          50 ||
+        Math.abs(deltaX) <=
+          Math.abs(deltaY)
+      ) {
+
+        return;
+
+      }
+
+      if (
+        deltaX < 0
+      ) {
+
+        showFeatured(
+          featuredIndex + 1,
+          true
+        );
+
+      } else {
+
+        showFeatured(
+          featuredIndex - 1,
+          true
+        );
+
+      }
+
+    },
+    {
+      passive:
+        true
+    }
+  );
+
+}
+
+/* ============================================================
+   LIVE TIMESTAMP REFRESH
+============================================================ */
+
+function refreshVisibleTimestamps() {
+
+  document
+    .querySelectorAll(
+      ".article-time[data-article-timestamp]"
+    )
+    .forEach(
+      time => {
+
+        const timestamp =
+          Number(
+            time.dataset.articleTimestamp
+          );
+
+        if (
+          !Number.isFinite(
+            timestamp
+          )
+        ) {
+
+          return;
+
         }
 
-        if (article.status) {
-            const status = String(article.status).toLowerCase();
+        const difference =
+          Date.now() -
+          timestamp;
+
+        if (
+          difference < 0
+        ) {
+
+          time.textContent =
+            "Scheduled";
+
+          return;
+
+        }
+
+        const seconds =
+          Math.floor(
+            difference /
+            1000
+          );
+
+        let freshness;
+
+        if (
+          seconds < 10
+        ) {
+
+          freshness =
+            "Just now";
+
+        } else if (
+          seconds < 60
+        ) {
+
+          freshness =
+            `${seconds}s ago`;
+
+        } else {
+
+          const minutes =
+            Math.floor(
+              seconds /
+              60
+            );
+
+          if (
+            minutes < 60
+          ) {
+
+            freshness =
+              `${minutes}m ago`;
+
+          } else {
+
+            const hours =
+              Math.floor(
+                minutes /
+                60
+              );
 
             if (
-                status === "draft" ||
-                status === "unpublished" ||
-                status === "archived"
+              hours < 24
             ) {
-                return false;
+
+              freshness =
+                `${hours}h ago`;
+
+            } else {
+
+              const days =
+                Math.floor(
+                  hours /
+                  24
+                );
+
+              if (
+                days < 7
+              ) {
+
+                freshness =
+                  `${days}d ago`;
+
+              } else {
+
+                const weeks =
+                  Math.floor(
+                    days /
+                    7
+                  );
+
+                if (
+                  weeks < 5
+                ) {
+
+                  freshness =
+                    `${weeks}w ago`;
+
+                } else {
+
+                  freshness =
+                    time.textContent
+                      .replace(
+                        /^(Published|Updated)\s+/i,
+                        ""
+                      );
+
+                }
+
+              }
+
             }
+
+          }
+
         }
 
-        return true;
-    }
+        const type =
+          time.dataset.articleType ===
+          "updated"
+            ? "Updated"
+            : "Published";
 
-    /*
-     * =========================================================
-     * IMAGE HANDLING
-     * =========================================================
-     */
+        time.textContent =
+          `${type} ${freshness}`;
 
-    function setBackground(element, image) {
-        if (!element || !image) {
-            return;
-        }
+      }
+    );
 
-        const safeImage = String(image).replace(/"/g, "%22");
+}
 
-        element.style.backgroundImage =
-            "linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.42) 43%, rgba(0,0,0,.05) 100%), " +
-            "linear-gradient(0deg, rgba(0,0,0,.45), transparent 45%), " +
-            'url("' + safeImage + '")';
-    }
+/* ============================================================
+   TIMESTAMP TIMER
+============================================================ */
 
-    function setImage(element, image, alt) {
-        if (!element) {
-            return;
-        }
+function initializeTimestampTimer() {
 
-        if (image) {
-            element.src = image;
-            element.alt = alt || "";
-            element.removeAttribute("hidden");
-        } else {
-            element.removeAttribute("src");
-            element.alt = "";
-            element.setAttribute("hidden", "hidden");
-        }
-    }
+  if (
+    timestampTimer
+  ) {
 
-    /*
-     * =========================================================
-     * ARTICLE CARD
-     * =========================================================
-     */
+    window.clearInterval(
+      timestampTimer
+    );
 
-    function createStory(article, small) {
-        const story = document.createElement("article");
+  }
 
-        story.className = "story" + (small ? " story-small" : "");
+  timestampTimer =
+    window.setInterval(
+      refreshVisibleTimestamps,
+      DYVE_CONFIG.timestampInterval
+    );
 
-        const image = article.image
-            ? '<img src="' + escapeHTML(article.image) +
-              '" alt="' + escapeHTML(article.imageAlt) +
-              '" loading="lazy">'
-            : "";
+}
 
-        const meta = [
-            article.author,
-            formatRelativeDate(article),
-            article.readTime + " min read"
-        ].filter(Boolean);
+/* ============================================================
+   LATEST
+============================================================ */
 
-        story.innerHTML =
-            '<a href="' + escapeHTML(article.url) + '" aria-label="' +
-                escapeHTML(article.title) + '">' +
-                image +
-                '<div class="story-content">' +
-                    '<div class="story-type">' +
-                        escapeHTML(article.tag || article.category) +
-                    '</div>' +
-                    '<h3>' +
-                        escapeHTML(article.title) +
-                    '</h3>' +
-                    '<div class="story-meta">' +
-                        meta.map(escapeHTML).join("<span>•</span>") +
-                    '</div>' +
-                '</div>' +
-            '</a>';
+function renderLatest(
+  articles
+) {
 
-        return story;
-    }
+  latestGrid.innerHTML =
+    "";
 
-    function createRelease(article) {
-        const release = document.createElement("article");
+  const latest =
+    articles.slice(
+      0,
+      DYVE_CONFIG.maxLatest
+    );
 
-        release.className = "release";
+  if (!latest.length) {
 
-        release.innerHTML =
-            '<a href="' + escapeHTML(article.url) + '">' +
-                '<div class="release-image">' +
-                    (article.image
-                        ? '<img src="' + escapeHTML(article.image) +
-                          '" alt="' + escapeHTML(article.imageAlt) +
-                          '" loading="lazy">'
-                        : "") +
-                '</div>' +
-                '<div class="release-content">' +
-                    '<div class="release-label">' +
-                        escapeHTML(article.category) +
-                    '</div>' +
-                    '<h3>' +
-                        escapeHTML(article.title) +
-                    '</h3>' +
-                    '<p>' +
-                        escapeHTML(article.excerpt) +
-                    '</p>' +
-                '</div>' +
-            '</a>';
+    const empty =
+      document.createElement(
+        "div"
+      );
 
-        return release;
-    }
+    empty.className =
+      "empty-state";
 
-    /*
-     * =========================================================
-     * HERO
-     * =========================================================
-     */
+    empty.textContent =
+      "No recent intelligence available.";
 
-    function renderHero() {
-        const article = articles[0];
+    latestGrid.appendChild(
+      empty
+    );
 
-        if (!article) {
-            return;
-        }
+    return;
 
-        const hero = document.getElementById("hero");
+  }
 
-        setBackground(hero, article.image);
+  latest.forEach(
+    article => {
 
-        document.getElementById("hero-kicker").textContent =
-            "HackaX / " + article.category;
-
-        document.getElementById("hero-title").textContent =
-            article.title;
-
-        document.getElementById("hero-copy").textContent =
-            article.excerpt ||
-            "The latest cybersecurity intelligence from HackaX.";
-
-        const heroBottom = document.getElementById("hero-bottom");
-
-        const latest = articles.slice(0, 3);
-
-        heroBottom.innerHTML = latest.map(function (item) {
-            return (
-                '<a href="' + escapeHTML(item.url) + '" class="hero-link">' +
-                    escapeHTML(item.category) +
-                    '<strong>' +
-                        escapeHTML(item.title) +
-                    '</strong>' +
-                '</a>'
-            );
-        }).join("");
-    }
-
-    /*
-     * =========================================================
-     * FEATURED
-     * =========================================================
-     */
-
-    function renderFeatured() {
-        const grid = document.getElementById("featured-grid");
-
-        grid.innerHTML = "";
-
-        if (!articles.length) {
-            return;
-        }
-
-        const selected = articles.slice(0, 4);
-
-        if (selected[0]) {
-            grid.appendChild(createStory(selected[0], false));
-        }
-
-        if (selected.length > 1) {
-            const side = document.createElement("div");
-
-            side.className = "featured-side";
-
-            selected.slice(1, 4).forEach(function (article) {
-                side.appendChild(createStory(article, true));
-            });
-
-            grid.appendChild(side);
-        }
-    }
-
-    /*
-     * =========================================================
-     * LARGE FEATURE
-     * =========================================================
-     */
-
-    function renderLargeFeature() {
-        const article = articles[1] || articles[0];
-
-        if (!article) {
-            return;
-        }
-
-        const section = document.getElementById("intelligence-feature");
-
-        setBackground(section, article.image);
-
-        document.getElementById("feature-kicker").textContent =
-            "HackaX / " + article.category;
-
-        document.getElementById("feature-title").textContent =
-            article.title;
-
-        document.getElementById("feature-copy").textContent =
-            article.excerpt ||
-            "Read the latest cybersecurity intelligence and analysis from HackaX.";
-
-        document.getElementById("feature-link").href =
-            article.url;
-    }
-
-    /*
-     * =========================================================
-     * DAILY / MAIN BRIEF
-     * =========================================================
-     */
-
-    function renderBrief() {
-        const article = articles[0];
-
-        if (!article) {
-            return;
-        }
-
-        document.getElementById("brief-title").textContent =
-            article.title;
-
-        document.getElementById("brief-copy").textContent =
-            article.excerpt ||
-            "Read the latest cybersecurity intelligence from HackaX.";
-
-        document.getElementById("brief-link").href =
-            article.url;
-
-        const image = document.getElementById("brief-image");
-
-        setImage(
-            image,
-            article.image,
-            article.imageAlt
+      const link =
+        createArticleLink(
+          article,
+          "latest-card"
         );
 
-        document.getElementById("brief-credit").textContent =
-            article.author || "HackaX";
+      link.appendChild(
+        createArticleImage(
+          article,
+          "latest-image"
+        )
+      );
+
+      const content =
+        document.createElement(
+          "div"
+        );
+
+      content.className =
+        "latest-content";
+
+      const category =
+        document.createElement(
+          "div"
+        );
+
+      category.className =
+        "latest-category";
+
+      category.textContent =
+        categoryLabel(
+          article
+        );
+
+      const title =
+        document.createElement(
+          "div"
+        );
+
+      title.className =
+        "latest-title";
+
+      title.textContent =
+        cleanText(
+          article.title,
+          "Untitled intelligence"
+        );
+
+      const meta =
+        document.createElement(
+          "div"
+        );
+
+      meta.className =
+        "latest-meta";
+
+      meta.appendChild(
+        createArticleTime(
+          article
+        )
+      );
+
+      if (
+        article.readingTime
+      ) {
+
+        meta.appendChild(
+          document.createTextNode(
+            " • " +
+            cleanText(
+              article.readingTime
+            ) +
+            " min read"
+          )
+        );
+
+      }
+
+      content.appendChild(
+        category
+      );
+
+      content.appendChild(
+        title
+      );
+
+      content.appendChild(
+        meta
+      );
+
+      link.appendChild(
+        content
+      );
+
+      latestGrid.appendChild(
+        link
+      );
+
     }
+  );
 
-    /*
-     * =========================================================
-     * LATEST RELEASES
-     * =========================================================
-     */
+}
 
-    function renderReleases() {
-        const grid = document.getElementById("release-grid");
+/* ============================================================
+   DARK WEB
+============================================================ */
 
-        grid.innerHTML = "";
+function renderDarkWeb() {
 
-        articles.slice(4, 8).forEach(function (article) {
-            grid.appendChild(createRelease(article));
-        });
+  darkwebGrid.innerHTML =
+    "";
 
-        if (!grid.children.length) {
-            articles.slice(0, 2).forEach(function (article) {
-                grid.appendChild(createRelease(article));
-            });
-        }
+  const articles =
+    articlesByCategory(
+      "dark-web",
+      DYVE_CONFIG.maxDarkWeb
+    );
+
+  if (!articles.length) {
+
+    const empty =
+      document.createElement(
+        "div"
+      );
+
+    empty.className =
+      "empty-state";
+
+    empty.textContent =
+      "No dark web intelligence published yet.";
+
+    darkwebGrid.appendChild(
+      empty
+    );
+
+    return;
+
+  }
+
+  articles.forEach(
+    article => {
+
+      const link =
+        createArticleLink(
+          article,
+          "darkweb-card"
+        );
+
+      link.appendChild(
+        createArticleImage(
+          article,
+          "darkweb-img"
+        )
+      );
+
+      const content =
+        document.createElement(
+          "div"
+        );
+
+      content.className =
+        "darkweb-content";
+
+      const title =
+        document.createElement(
+          "div"
+        );
+
+      title.className =
+        "darkweb-card-title";
+
+      title.textContent =
+        cleanText(
+          article.title
+        );
+
+      const meta =
+        document.createElement(
+          "div"
+        );
+
+      meta.className =
+        "darkweb-meta";
+
+      meta.appendChild(
+        document.createTextNode(
+          cleanText(
+            article.tag ||
+            "Core Intelligence"
+          ) +
+          " • "
+        )
+      );
+
+      meta.appendChild(
+        createArticleTime(
+          article
+        )
+      );
+
+      content.appendChild(
+        title
+      );
+
+      content.appendChild(
+        meta
+      );
+
+      link.appendChild(
+        content
+      );
+
+      darkwebGrid.appendChild(
+        link
+      );
+
     }
+  );
 
-    /*
-     * =========================================================
-     * FEATURE SECTION
-     * =========================================================
-     */
+}
 
-    function renderNewsletterFeature() {
-        const article = articles[2] || articles[0];
+/* ============================================================
+   BREACHES
+============================================================ */
 
-        if (!article) {
-            return;
-        }
+function renderBreaches() {
 
-        const section = document.getElementById("newsletter-feature");
+  breachGrid.innerHTML =
+    "";
 
-        setBackground(section, article.image);
+  const articles =
+    articlesByCategory(
+      "breach",
+      DYVE_CONFIG.maxBreaches
+    );
 
-        document.getElementById("newsletter-kicker").textContent =
-            "HackaX / " + article.category;
+  if (!articles.length) {
 
-        document.getElementById("newsletter-title").textContent =
-            article.title;
+    const empty =
+      document.createElement(
+        "div"
+      );
 
-        document.getElementById("newsletter-copy").textContent =
-            article.excerpt ||
-            "Follow the latest cybersecurity developments, threats and security intelligence.";
+    empty.className =
+      "empty-state";
 
-        document.getElementById("newsletter-link").href =
-            article.url;
+    empty.textContent =
+      "No breach intelligence published yet.";
+
+    breachGrid.appendChild(
+      empty
+    );
+
+    return;
+
+  }
+
+  articles.forEach(
+    article => {
+
+      const link =
+        createArticleLink(
+          article,
+          "breach-card"
+        );
+
+      const imageWrapper =
+        createArticleImage(
+          article,
+          "breach-img"
+        );
+
+      const badge =
+        document.createElement(
+          "div"
+        );
+
+      badge.className =
+        "breach-badge";
+
+      badge.textContent =
+        cleanText(
+          article.tag ||
+          "Incident"
+        );
+
+      imageWrapper.appendChild(
+        badge
+      );
+
+      link.appendChild(
+        imageWrapper
+      );
+
+      const content =
+        document.createElement(
+          "div"
+        );
+
+      content.className =
+        "breach-content";
+
+      const title =
+        document.createElement(
+          "div"
+        );
+
+      title.className =
+        "breach-title";
+
+      title.textContent =
+        cleanText(
+          article.title
+        );
+
+      const description =
+        document.createElement(
+          "p"
+        );
+
+      description.className =
+        "breach-desc";
+
+      description.textContent =
+        cleanText(
+          article.excerpt ||
+          article.desc ||
+          "Cybersecurity incident and breach intelligence."
+        );
+
+      const meta =
+        document.createElement(
+          "div"
+        );
+
+      meta.className =
+        "breach-meta";
+
+      meta.appendChild(
+        document.createTextNode(
+          cleanText(
+            article.meta ||
+            "Incident"
+          ) +
+          " • "
+        )
+      );
+
+      meta.appendChild(
+        createArticleTime(
+          article
+        )
+      );
+
+      content.appendChild(
+        title
+      );
+
+      content.appendChild(
+        description
+      );
+
+      content.appendChild(
+        meta
+      );
+
+      link.appendChild(
+        content
+      );
+
+      breachGrid.appendChild(
+        link
+      );
+
     }
+  );
 
-    /*
-     * =========================================================
-     * CATEGORIES / TOPICS
-     * =========================================================
-     */
+}
 
-    function buildCategories() {
-        const map = new Map();
+/* ============================================================
+   RANSOMWARE
+============================================================ */
 
-        articles.forEach(function (article) {
-            const category = article.category || "Intelligence";
-            const key = slugify(category);
+function renderRansomware() {
 
-            if (!key) {
-                return;
-            }
+  ransomwareList.innerHTML =
+    "";
 
-            if (!map.has(key)) {
-                map.set(key, {
-                    name: category,
-                    slug: key,
-                    article: article,
-                    count: 0
-                });
-            }
+  const articles =
+    articlesByCategory(
+      "ransomware",
+      DYVE_CONFIG.maxRansomware
+    );
 
-            map.get(key).count++;
-        });
+  if (!articles.length) {
 
-        categories = Array.from(map.values())
-            .sort(function (a, b) {
-                return b.count - a.count;
-            });
+    const empty =
+      document.createElement(
+        "div"
+      );
+
+    empty.className =
+      "empty-state";
+
+    empty.textContent =
+      "No ransomware intelligence published yet.";
+
+    ransomwareList.appendChild(
+      empty
+    );
+
+    return;
+
+  }
+
+  articles.forEach(
+    article => {
+
+      const link =
+        createArticleLink(
+          article,
+          "ransomware-item"
+        );
+
+      const dot =
+        document.createElement(
+          "div"
+        );
+
+      dot.className =
+        "ransomware-dot";
+
+      const content =
+        document.createElement(
+          "div"
+        );
+
+      content.className =
+        "ransomware-content";
+
+      const title =
+        document.createElement(
+          "div"
+        );
+
+      title.className =
+        "ransomware-title";
+
+      title.textContent =
+        cleanText(
+          article.title
+        );
+
+      const meta =
+        document.createElement(
+          "div"
+        );
+
+      meta.className =
+        "ransomware-meta";
+
+      meta.textContent =
+        [
+          cleanText(
+            article.tag ||
+            "Ransomware"
+          ),
+
+          cleanText(
+            article.meta ||
+            "Threat activity"
+          )
+
+        ]
+          .filter(Boolean)
+          .join(" • ");
+
+      const time =
+        document.createElement(
+          "div"
+        );
+
+      time.className =
+        "ransomware-time";
+
+      time.appendChild(
+        createArticleTime(
+          article
+        )
+      );
+
+      content.appendChild(
+        title
+      );
+
+      content.appendChild(
+        meta
+      );
+
+      content.appendChild(
+        time
+      );
+
+      link.appendChild(
+        dot
+      );
+
+      link.appendChild(
+        content
+      );
+
+      ransomwareList.appendChild(
+        link
+      );
+
     }
+  );
 
-    function renderTopics() {
-        const track = document.getElementById("topic-track");
+}
 
-        track.innerHTML = "";
+/* ============================================================
+   THREAT ACTORS
+============================================================ */
 
-        categories.slice(0, 8).forEach(function (category) {
-            const article = category.article;
+function renderThreatActors() {
 
-            const link = document.createElement("a");
+  threatGrid.innerHTML =
+    "";
 
-            link.className = "topic";
+  const articles =
+    articlesByCategory(
+      "threat-actors",
+      DYVE_CONFIG.maxThreatActors
+    );
 
-            link.href =
-                ARTICLE_ROOT +
-                encodeURIComponent(category.slug) +
-                "/";
+  if (!articles.length) {
 
-            link.innerHTML =
-                (article.image
-                    ? '<img src="' + escapeHTML(article.image) +
-                      '" alt="' + escapeHTML(article.imageAlt) +
-                      '" loading="lazy">'
-                    : "") +
-                '<h3>' +
-                    escapeHTML(category.name) +
-                '</h3>';
+    const empty =
+      document.createElement(
+        "div"
+      );
 
-            track.appendChild(link);
-        });
-    }
+    empty.className =
+      "empty-state";
 
-    /*
-     * =========================================================
-     * NAVIGATION
-     * =========================================================
-     */
+    empty.textContent =
+      "No threat actor intelligence published yet.";
 
-    function renderNavigation() {
-        const nav = document.getElementById("desktop-nav");
-        const mobile = document.getElementById("mobile-nav");
+    threatGrid.appendChild(
+      empty
+    );
 
-        const baseLinks = [
-            {
-                label: "Latest",
-                href: "/article/"
-            },
-            {
-                label: "Threats",
-                href: "/article/threats/"
-            },
-            {
-                label: "Breaches",
-                href: "/article/breaches/"
-            },
-            {
-                label: "Vulnerabilities",
-                href: "/article/vulnerabilities/"
-            },
-            {
-                label: "Malware",
-                href: "/article/malware/"
-            }
+    return;
+
+  }
+
+  const icons = [
+
+    '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>',
+
+    '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>',
+
+    '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>',
+
+    '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>'
+
+  ];
+
+  articles.forEach(
+    (article, index) => {
+
+      const link =
+        createArticleLink(
+          article,
+          "threat-card"
+        );
+
+      const icon =
+        document.createElement(
+          "div"
+        );
+
+      icon.className =
+        "threat-icon";
+
+      icon.innerHTML =
+        icons[
+          index %
+          icons.length
         ];
 
-        const dynamicLinks = categories
-            .filter(function (category) {
-                return !baseLinks.some(function (link) {
-                    return link.label.toLowerCase() === category.name.toLowerCase();
-                });
-            })
-            .slice(0, 3)
-            .map(function (category) {
-                return {
-                    label: category.name,
-                    href: ARTICLE_ROOT + encodeURIComponent(category.slug) + "/"
-                };
-            });
+      const content =
+        document.createElement(
+          "div"
+        );
 
-        const links = baseLinks.concat(dynamicLinks);
+      content.className =
+        "threat-content";
 
-        nav.innerHTML = links.map(function (link) {
+      const title =
+        document.createElement(
+          "div"
+        );
+
+      title.className =
+        "threat-title";
+
+      title.textContent =
+        cleanText(
+          article.title
+        );
+
+      const type =
+        document.createElement(
+          "div"
+        );
+
+      type.className =
+        "threat-type";
+
+      type.textContent =
+        cleanText(
+          article.tag ||
+          "Threat Actor"
+        );
+
+      const description =
+        document.createElement(
+          "div"
+        );
+
+      description.className =
+        "threat-desc";
+
+      description.textContent =
+        cleanText(
+          article.excerpt ||
+          article.desc ||
+          "Threat actor intelligence and campaign reporting."
+        );
+
+      content.appendChild(
+        title
+      );
+
+      content.appendChild(
+        type
+      );
+
+      content.appendChild(
+        description
+      );
+
+      link.appendChild(
+        icon
+      );
+
+      link.appendChild(
+        content
+      );
+
+      threatGrid.appendChild(
+        link
+      );
+
+    }
+  );
+
+}
+
+/* ============================================================
+   SIGNAL FEED
+============================================================ */
+
+function renderSignals(
+  articles
+) {
+
+  signalList.innerHTML =
+    "";
+
+  const signals =
+    articles.slice(
+      0,
+      DYVE_CONFIG.maxSignals
+    );
+
+  if (!signals.length) {
+
+    const empty =
+      document.createElement(
+        "div"
+      );
+
+    empty.className =
+      "empty-state";
+
+    empty.textContent =
+      "No intelligence signals available.";
+
+    signalList.appendChild(
+      empty
+    );
+
+    return;
+
+  }
+
+  signals.forEach(
+    article => {
+
+      const item =
+        document.createElement(
+          "article"
+        );
+
+      item.className =
+        "signal-item";
+
+      const dot =
+        document.createElement(
+          "div"
+        );
+
+      dot.className =
+        "signal-dot";
+
+      const content =
+        document.createElement(
+          "div"
+        );
+
+      const category =
+        document.createElement(
+          "div"
+        );
+
+      category.className =
+        "signal-category";
+
+      category.textContent =
+        categoryLabel(
+          article
+        );
+
+      const title =
+        document.createElement(
+          "div"
+        );
+
+      title.className =
+        "signal-title";
+
+      title.textContent =
+        cleanText(
+          article.title
+        );
+
+      const meta =
+        document.createElement(
+          "div"
+        );
+
+      meta.className =
+        "signal-meta";
+
+      const link =
+        document.createElement(
+          "a"
+        );
+
+      link.href =
+        safeInternalUrl(
+          article.url
+        );
+
+      link.textContent =
+        "Open intelligence →";
+
+      link.style.color =
+        "inherit";
+
+      link.style.textDecoration =
+        "none";
+
+      meta.appendChild(
+        createArticleTime(
+          article
+        )
+      );
+
+      meta.appendChild(
+        document.createTextNode(
+          " • "
+        )
+      );
+
+      meta.appendChild(
+        link
+      );
+
+      content.appendChild(
+        category
+      );
+
+      content.appendChild(
+        title
+      );
+
+      content.appendChild(
+        meta
+      );
+
+      item.appendChild(
+        dot
+      );
+
+      item.appendChild(
+        content
+      );
+
+      signalList.appendChild(
+        item
+      );
+
+    }
+  );
+
+}
+
+/* ============================================================
+   ITEM LIST SCHEMA
+============================================================ */
+
+function updateItemListSchema(
+  articles
+) {
+
+  const schemaElement =
+    document.getElementById(
+      "articleListSchema"
+    );
+
+  if (!schemaElement) {
+
+    return;
+
+  }
+
+  const items =
+    articles
+      .slice(
+        0,
+        10
+      )
+      .map(
+        (article, index) => {
+
+          const url =
+            safeInternalUrl(
+              article.url,
+              "/"
+            );
+
+          const item = {
+
+            "@type":
+              "ListItem",
+
+            "position":
+              index + 1,
+
+            "name":
+              cleanText(
+                article.title
+              ),
+
+            "url":
+              new URL(
+                url,
+                window.location.origin
+              ).href
+
+          };
+
+          const info =
+            getArticleDateInfo(
+              article
+            );
+
+          if (
+            info.timestamp
+          ) {
+
+            if (
+              info.type ===
+              "updated"
+            ) {
+
+              item.dateModified =
+                new Date(
+                  info.timestamp
+                ).toISOString();
+
+            } else {
+
+              item.datePublished =
+                new Date(
+                  info.timestamp
+                ).toISOString();
+
+            }
+
+          }
+
+          return item;
+
+        }
+      );
+
+  schemaElement.textContent =
+    JSON.stringify({
+
+      "@context":
+        "https://schema.org",
+
+      "@type":
+        "ItemList",
+
+      "@id":
+        "https://www.dyve.online/#latest-intelligence",
+
+      "name":
+        "Latest Cyber Intelligence",
+
+      "itemListOrder":
+        "https://schema.org/ItemListOrderDescending",
+
+      "numberOfItems":
+        items.length,
+
+      "itemListElement":
+        items
+
+    });
+
+}
+
+/* ============================================================
+   FEED FINGERPRINT
+============================================================ */
+
+function createFeedFingerprint(
+  articles
+) {
+
+  return JSON.stringify(
+    articles.map(
+      article => [
+
+        article.id ||
+        article.slug ||
+        article.url ||
+        "",
+
+        article.title ||
+        "",
+
+        getArticleDate(
+          article
+        ),
+
+        article.image ||
+        "",
+
+        article.category ||
+        "",
+
+        article.excerpt ||
+        article.desc ||
+        ""
+
+      ]
+    )
+  );
+
+}
+
+/* ============================================================
+   FEED STATUS
+============================================================ */
+
+function updateFeedStatus(
+  success
+) {
+
+  if (!feedStatus) {
+
+    return;
+
+  }
+
+  feedStatus.textContent =
+    success
+      ? "Updated"
+      : "Unavailable";
+
+  feedStatus.classList.toggle(
+    "live",
+    success
+  );
+
+}
+
+/* ============================================================
+   COMPLETE FEED RENDER
+============================================================ */
+
+function renderFeed(
+  articles
+) {
+
+  const fingerprint =
+    createFeedFingerprint(
+      articles
+    );
+
+  if (
+    fingerprint ===
+    feedFingerprint
+  ) {
+
+    updateFeedStatus(
+      true
+    );
+
+    refreshVisibleTimestamps();
+
+    return;
+
+  }
+
+  feedFingerprint =
+    fingerprint;
+
+  allArticles =
+    sortArticles(
+      articles
+        .filter(
+          article => {
+
             return (
-                '<a href="' + escapeHTML(link.href) + '">' +
-                    escapeHTML(link.label) +
-                '</a>'
+              article &&
+              typeof article ===
+                "object" &&
+              cleanText(
+                article.title
+              )
             );
-        }).join("");
 
-        mobile.innerHTML = links.map(function (link) {
-            return (
-                '<a href="' + escapeHTML(link.href) + '">' +
-                    escapeHTML(link.label) +
-                '</a>'
-            );
-        }).join("");
+          }
+        )
+    );
+
+  renderDynamicHero(
+    allArticles
+  );
+
+  renderLatest(
+    allArticles
+  );
+
+  renderDarkWeb();
+
+  renderBreaches();
+
+  renderRansomware();
+
+  renderThreatActors();
+
+  renderSignals(
+    allArticles
+  );
+
+  updateItemListSchema(
+    allArticles
+  );
+
+  refreshVisibleTimestamps();
+
+  updateFeedStatus(
+    true
+  );
+
+}
+
+/* ============================================================
+   LOAD ARTICLES
+============================================================ */
+
+async function loadArticles() {
+
+  try {
+
+    if (
+      Array.isArray(
+        window.DYVE_BUILD_ARTICLES
+      ) &&
+      window.DYVE_BUILD_ARTICLES.length
+    ) {
+
+      renderFeed(
+        window.DYVE_BUILD_ARTICLES
+      );
+
+      return;
+
     }
 
-    /*
-     * =========================================================
-     * FOOTER
-     * =========================================================
-     */
+    const response =
+      await fetch(
+        `${DYVE_CONFIG.articlesUrl}?v=${Date.now()}`,
+        {
+          method:
+            "GET",
 
-    function renderFooter() {
-        const explore = document.getElementById("footer-explore");
-        const intelligence = document.getElementById("footer-intelligence");
+          cache:
+            "no-store",
 
-        explore.innerHTML = categories.slice(0, 5).map(function (category) {
-            return (
-                '<a href="' +
-                escapeHTML(
-                    ARTICLE_ROOT +
-                    encodeURIComponent(category.slug) +
-                    "/"
-                ) +
-                '">' +
-                escapeHTML(category.name) +
-                '</a>'
-            );
-        }).join("");
+          headers: {
 
-        intelligence.innerHTML = articles.slice(0, 5).map(function (article) {
-            return (
-                '<a href="' + escapeHTML(article.url) + '">' +
-                    escapeHTML(article.title) +
-                '</a>'
-            );
-        }).join("");
+            "Accept":
+              "application/json"
 
-        document.getElementById("footer-updated").textContent =
-            "Feed updated: " +
-            new Intl.DateTimeFormat("en", {
-                day: "numeric",
-                month: "short",
-                year: "numeric"
-            }).format(new Date());
-    }
+          }
 
-    /*
-     * =========================================================
-     * SEO
-     * =========================================================
-     */
-
-    function setMeta(selector, attribute, value) {
-        const element = document.querySelector(selector);
-
-        if (element && value) {
-            element.setAttribute(attribute, value);
         }
+      );
+
+    if (!response.ok) {
+
+      throw new Error(
+        `Article feed returned HTTP ${response.status}`
+      );
+
     }
 
-    function setCanonical(url) {
-        let canonical = document.querySelector('link[rel="canonical"]');
+    const data =
+      await response.json();
 
-        if (!canonical) {
-            canonical = document.createElement("link");
-            canonical.rel = "canonical";
-            document.head.appendChild(canonical);
+    if (!Array.isArray(data)) {
+
+      throw new Error(
+        "Article feed must contain an array."
+      );
+
+    }
+
+    renderFeed(
+      data
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Dyve HackaX article feed error:",
+      error
+    );
+
+    updateFeedStatus(
+      false
+    );
+
+    const message =
+      "Intelligence feed is temporarily unavailable.";
+
+    [
+      heroContainer,
+      latestGrid,
+      darkwebGrid,
+      breachGrid,
+      ransomwareList,
+      threatGrid,
+      signalList
+    ]
+      .forEach(
+        container => {
+
+          if (
+            container &&
+            container.querySelector(
+              ".loading-text"
+            )
+          ) {
+
+            container.innerHTML =
+              "";
+
+            const errorState =
+              document.createElement(
+                "div"
+              );
+
+            errorState.className =
+              "error-state";
+
+            errorState.textContent =
+              message;
+
+            container.appendChild(
+              errorState
+            );
+
+          }
+
         }
+      );
 
-        canonical.href = url;
-    }
+  }
 
-    function updateSEO() {
-        const latest = articles[0];
+}
 
-        const siteTitle =
-            latest
-                ? latest.title + " | HackaX"
-                : "HackaX — Cybersecurity Intelligence";
+/* ============================================================
+   LOGO ROUTING
+============================================================ */
 
-        const description =
-            latest && latest.excerpt
-                ? latest.excerpt
-                : "HackaX delivers cybersecurity intelligence, threat signals, breaches, vulnerabilities, malware, ransomware, threat actors and security analysis.";
+function routeDyveLogo() {
 
-        document.title = siteTitle;
+  const selectors = [
 
-        setMeta(
-            'meta[name="description"]',
-            "content",
-            description
+    "#global-header img",
+
+    ".header img",
+
+    ".header .logo img",
+
+    ".header .brand img",
+
+    ".logo img",
+
+    "[data-logo] img"
+
+  ];
+
+  document
+    .querySelectorAll(
+      selectors.join(",")
+    )
+    .forEach(
+      image => {
+
+        image.src =
+          "/logo.png";
+
+        image.removeAttribute(
+          "srcset"
         );
 
-        setMeta(
-            'meta[property="og:title"]',
-            "content",
-            siteTitle
+        image.setAttribute(
+          "decoding",
+          "async"
         );
 
-        setMeta(
-            'meta[property="og:description"]',
-            "content",
-            description
+        image.setAttribute(
+          "alt",
+          "Dyve HackaX"
         );
 
-        setMeta(
-            'meta[name="twitter:title"]',
-            "content",
-            siteTitle
+      }
+    );
+
+}
+
+/* ============================================================
+   HEADER LOGO OBSERVER
+============================================================ */
+
+function observeHeaderLogo() {
+
+  const target =
+    document.getElementById(
+      "global-header"
+    );
+
+  if (!target) {
+
+    return;
+
+  }
+
+  routeDyveLogo();
+
+  const observer =
+    new MutationObserver(
+      () => {
+
+        routeDyveLogo();
+
+      }
+    );
+
+  observer.observe(
+    target,
+    {
+      childList:
+        true,
+
+      subtree:
+        true
+    }
+  );
+
+}
+
+/* ============================================================
+   REVEAL ON SCROLL
+============================================================ */
+
+function initializeReveal() {
+
+  const elements =
+    document.querySelectorAll(
+      ".reveal"
+    );
+
+  if (
+    !elements.length
+  ) {
+
+    return;
+
+  }
+
+  if (
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+  ) {
+
+    elements.forEach(
+      element => {
+
+        element.classList.add(
+          "revealed"
         );
 
-        setMeta(
-            'meta[name="twitter:description"]',
-            "content",
-            description
-        );
+      }
+    );
 
-        if (latest && latest.image) {
-            setMeta(
-                'meta[property="og:image"]',
-                "content",
-                absoluteUrl(latest.image)
-            );
+    return;
 
-            setMeta(
-                'meta[name="twitter:image"]',
-                "content",
-                absoluteUrl(latest.image)
-            );
-        }
+  }
 
-        setCanonical(HOME_URL);
+  const observer =
+    new IntersectionObserver(
+      entries => {
 
-        document
-            .querySelector('meta[property="og:url"]')
-            ?.setAttribute("content", HOME_URL);
-    }
+        entries.forEach(
+          entry => {
 
-    function absoluteUrl(value) {
-        if (!value) {
-            return "";
-        }
+            if (
+              entry.isIntersecting
+            ) {
 
-        if (/^https?:\/\//i.test(value)) {
-            return value;
-        }
+              entry.target.classList.add(
+                "revealed"
+              );
 
-        return SITE_URL +
-            (value.startsWith("/") ? value : "/" + value);
-    }
+              observer.unobserve(
+                entry.target
+              );
 
-    function injectJSONLD() {
-        document
-            .querySelectorAll('script[data-hackax-schema]')
-            .forEach(function (element) {
-                element.remove();
-            });
-
-        const graph = [];
-
-        graph.push({
-            "@type": "Organization",
-            "@id": SITE_URL + "/#organization",
-            "name": "HackaX",
-            "url": HOME_URL,
-            "description": "Cybersecurity intelligence property of Dyve."
-        });
-
-        graph.push({
-            "@type": "WebSite",
-            "@id": SITE_URL + "/#website",
-            "url": HOME_URL,
-            "name": "HackaX",
-            "description": "Cybersecurity Intelligence",
-            "publisher": {
-                "@id": SITE_URL + "/#organization"
-            },
-            "potentialAction": {
-                "@type": "SearchAction",
-                "target": SITE_URL + "/article/?q={search_term_string}",
-                "query-input": "required name=search_term_string"
-            }
-        });
-
-        const itemList = articles.slice(0, 10).map(function (article, index) {
-            return {
-                "@type": "ListItem",
-                "position": index + 1,
-                "url": absoluteUrl(article.url),
-                "name": article.title
-            };
-        });
-
-        if (itemList.length) {
-            graph.push({
-                "@type": "ItemList",
-                "@id": HOME_URL + "#latest-intelligence",
-                "name": "Latest HackaX Intelligence",
-                "itemListElement": itemList
-            });
-        }
-
-        const script = document.createElement("script");
-
-        script.type = "application/ld+json";
-        script.dataset.hackaxSchema = "true";
-
-        script.textContent = JSON.stringify({
-            "@context": "https://schema.org",
-            "@graph": graph
-        });
-
-        document.head.appendChild(script);
-    }
-
-    /*
-     * =========================================================
-     * SEARCH
-     * =========================================================
-     */
-
-    function initSearch() {
-        const button = document.getElementById("search-button");
-        const panel = document.getElementById("search-panel");
-        const close = document.getElementById("search-close");
-        const input = document.getElementById("search-input");
-        const results = document.getElementById("search-results");
-
-        button.addEventListener("click", function () {
-            panel.classList.add("open");
-            panel.setAttribute("aria-hidden", "false");
-
-            setTimeout(function () {
-                input.focus();
-            }, 50);
-        });
-
-        close.addEventListener("click", function () {
-            panel.classList.remove("open");
-            panel.setAttribute("aria-hidden", "true");
-        });
-
-        input.addEventListener("input", function () {
-            const query = cleanText(input.value).toLowerCase();
-
-            if (!query) {
-                results.innerHTML = "";
-                return;
-            }
-
-            const matches = articles
-                .filter(function (article) {
-                    const haystack = [
-                        article.title,
-                        article.excerpt,
-                        article.category,
-                        article.tag,
-                        article.author,
-                        article.keywords.join(" ")
-                    ].join(" ").toLowerCase();
-
-                    return haystack.includes(query);
-                })
-                .slice(0, 12);
-
-            results.innerHTML = matches.length
-                ? matches.map(function (article) {
-                    return (
-                        '<a class="search-result" href="' +
-                            escapeHTML(article.url) +
-                        '">' +
-                            '<small>' +
-                                escapeHTML(article.category) +
-                            '</small>' +
-                            '<strong>' +
-                                escapeHTML(article.title) +
-                            '</strong>' +
-                        '</a>'
-                    );
-                }).join("")
-                : '<div class="search-result">' +
-                    '<small>HackaX</small>' +
-                    '<strong>No matching intelligence found.</strong>' +
-                  '</div>';
-        });
-
-        document.addEventListener("keydown", function (event) {
-            if (event.key === "Escape") {
-                panel.classList.remove("open");
-                panel.setAttribute("aria-hidden", "true");
-            }
-        });
-    }
-
-    /*
-     * =========================================================
-     * MOBILE MENU
-     * =========================================================
-     */
-
-    function initMenu() {
-        const button = document.getElementById("menu-button");
-
-        button.addEventListener("click", function () {
-            const open = document.body.classList.toggle("menu-open");
-
-            button.setAttribute(
-                "aria-expanded",
-                open ? "true" : "false"
-            );
-
-            button.setAttribute(
-                "aria-label",
-                open ? "Close menu" : "Open menu"
-            );
-        });
-
-        document
-            .getElementById("mobile-nav")
-            .addEventListener("click", function (event) {
-                if (event.target.closest("a")) {
-                    document.body.classList.remove("menu-open");
-
-                    button.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
-
-                    button.setAttribute(
-                        "aria-label",
-                        "Open menu"
-                    );
-                }
-            });
-    }
-
-    /*
-     * =========================================================
-     * REVEAL OBSERVER
-     * =========================================================
-     */
-
-    function initReveal() {
-        const elements = document.querySelectorAll(".reveal");
-
-        if (!("IntersectionObserver" in window)) {
-            elements.forEach(function (element) {
-                element.classList.add("visible");
-            });
-
-            return;
-        }
-
-        const observer = new IntersectionObserver(
-            function (entries) {
-                entries.forEach(function (entry) {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("visible");
-                        observer.unobserve(entry.target);
-                    }
-                });
-            },
-            {
-                threshold: 0.08
-            }
-        );
-
-        elements.forEach(function (element) {
-            observer.observe(element);
-        });
-    }
-
-    /*
-     * =========================================================
-     * BACKEND LOAD
-     * =========================================================
-     */
-
-    async function loadArticles() {
-        try {
-            const response = await fetch(
-                DATA_URL,
-                {
-                    cache: "no-store",
-                    headers: {
-                        "Accept": "application/json"
-                    }
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error(
-                    "Backend returned HTTP " + response.status
-                );
             }
 
-            const payload = await response.json();
-
-            const source = Array.isArray(payload)
-                ? payload
-                : Array.isArray(payload.articles)
-                    ? payload.articles
-                    : [];
-
-            articles = source
-                .filter(articleIsPublished)
-                .map(normalizeArticle)
-                .filter(Boolean);
-
-            sortArticles(articles);
-
-            if (!articles.length) {
-                throw new Error("No published articles were returned.");
-            }
-
-            buildCategories();
-
-            renderHero();
-            renderFeatured();
-            renderLargeFeature();
-            renderBrief();
-            renderReleases();
-            renderNewsletterFeature();
-            renderTopics();
-            renderNavigation();
-            renderFooter();
-
-            updateSEO();
-            injectJSONLD();
-
-            initReveal();
-
-        } catch (error) {
-            console.error("HackaX backend error:", error);
-
-            document.querySelectorAll(".reveal").forEach(function (element) {
-                element.classList.add("visible");
-            });
-        }
-    }
-
-    /*
-     * =========================================================
-     * LIVE DATA REFRESH
-     * =========================================================
-     */
-
-    let refreshTimer = null;
-
-    function startLiveRefresh() {
-        refreshTimer = setInterval(
-            function () {
-                loadArticles();
-            },
-            60000
+          }
         );
+
+      },
+      {
+        threshold:
+          .08,
+
+        rootMargin:
+          "0px 0px -45px 0px"
+
+      }
+    );
+
+  elements.forEach(
+    element => {
+
+      observer.observe(
+        element
+      );
+
+    }
+  );
+
+}
+
+/* ============================================================
+   BACK TO TOP
+============================================================ */
+
+function initializeBackTop() {
+
+  if (!backTop) {
+
+    return;
+
+  }
+
+  window.addEventListener(
+    "scroll",
+    () => {
+
+      backTop.classList.toggle(
+        "visible",
+        window.scrollY > 700
+      );
+
+    },
+    {
+      passive:
+        true
+    }
+  );
+
+  backTop.addEventListener(
+    "click",
+    () => {
+
+      window.scrollTo(
+        {
+          top:
+            0,
+
+          behavior:
+            "smooth"
+        }
+      );
+
+    }
+  );
+
+}
+
+/* ============================================================
+   SMART HEADER
+============================================================ */
+
+function initializeSmartHeader() {
+
+  let ticking =
+    false;
+
+  window.addEventListener(
+    "scroll",
+    () => {
+
+      if (ticking) {
+
+        return;
+
+      }
+
+      window.requestAnimationFrame(
+        () => {
+
+          const headerEl =
+            document.querySelector(
+              ".header"
+            );
+
+          if (headerEl) {
+
+            headerEl.classList.toggle(
+              "scrolled",
+              window.scrollY > 40
+            );
+
+          }
+
+          ticking =
+            false;
+
+        }
+      );
+
+      ticking =
+        true;
+
+    },
+    {
+      passive:
+        true
+    }
+  );
+
+}
+
+/* ============================================================
+   PAGE VISIBILITY
+============================================================ */
+
+document.addEventListener(
+  "visibilitychange",
+  () => {
+
+    if (
+      document.hidden
+    ) {
+
+      stopFeaturedRotation();
+
+      if (refreshTimer) {
+
+        window.clearInterval(
+          refreshTimer
+        );
+
+        refreshTimer =
+          null;
+
+      }
+
+      return;
+
     }
 
-    /*
-     * =========================================================
-     * INIT
-     * =========================================================
-     */
-
-    initSearch();
-    initMenu();
     loadArticles();
-    startLiveRefresh();
 
-})();
+    if (
+      featuredArticles.length >
+      1
+    ) {
+
+      startFeaturedRotation();
+
+    }
+
+    if (!refreshTimer) {
+
+      refreshTimer =
+        window.setInterval(
+          loadArticles,
+          DYVE_CONFIG.refreshInterval
+        );
+
+    }
+
+  }
+);
+
+/* ============================================================
+   INITIALIZE
+============================================================ */
+
+function initializeDyve() {
+
+  routeDyveLogo();
+
+  observeHeaderLogo();
+
+  initializeReveal();
+
+  initializeBackTop();
+
+  initializeSmartHeader();
+
+  initializeTimestampTimer();
+
+  loadArticles();
+
+  refreshTimer =
+    window.setInterval(
+      loadArticles,
+      DYVE_CONFIG.refreshInterval
+    );
+
+}
+
+/* ============================================================
+   DOM READY
+============================================================ */
+
+if (
+  document.readyState ===
+  "loading"
+) {
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+      initializeDrawerObserver();
+
+      initializeDyve();
+
+    },
+    {
+      once:
+        true
+    }
+  );
+
+} else {
+
+  initializeDrawerObserver();
+
+  initializeDyve();
+
+}
+
+/* ============================================================
+   PAGE LOAD STATE
+============================================================ */
+
+window.addEventListener(
+  "load",
+  () => {
+
+    document.body.classList.add(
+      "loaded"
+    );
+
+    routeDyveLogo();
+
+    initializeReveal();
+
+    refreshVisibleTimestamps();
+
+  }
+);
+
 </script>
+
+
+
 
 </body>
 </html>
