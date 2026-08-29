@@ -2,7 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     <url>
         <loc>https://dyve.online/tech/</loc>
-        <lastmod>2026-08-21</lastmod>
+        <lastmod>2026-08-29</lastmod>
+    </url>
+    <url>
+        <loc>https://dyve.online/tech/nigeria-under-cyber-threat-major-cyber-breaches-and-attacks-making-headlines-in-2026.html</loc>
+        <lastmod>2026-08-29</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788022418/dyve-tech/nigeria-under-cyber-threat-major-cyber-breaches-and-attacks-making-headlines-in-2026-featured.png</image:loc>
+            <image:title>Nigeria Under Cyber Threat: Major Cyber Breaches and Attacks Making Headlines in 2026</image:title>
+            <image:caption>The Corporate Affairs Commission Data Breach Investigation</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/openai-slows-down-training-after-its-ai-carried-out-hack.html</loc>
