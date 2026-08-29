@@ -1,5 +1,42 @@
 [
   {
+    "title": "Frontier AI tipping the scales toward cyber adversaries",
+    "category": "cyber-risk",
+    "slug": "frontier-ai-tipping-the-scales-toward-cyber-adversaries",
+    "tag": "News",
+    "contentType": "News",
+    "desc": "Frontier AI tipping the scales toward cyber adversaries: NEW YORK – The advanced use of AI has created a generational shift in the balance between the abilit...",
+    "image": "https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788003535/igqxxyxcruujf95bmfhs.png",
+    "date": "2026-08-29",
+    "modified": "2026-08-29T11:39:53.965Z",
+    "author": "Dyve HackaX Intelligence Unit",
+    "readTime": 2,
+    "seoTitle": "Frontier AI tipping the scales toward cyber adversaries",
+    "focusKeyword": "york",
+    "keywords": [
+      "york",
+      "advanced",
+      "created",
+      "generational",
+      "shift",
+      "balance",
+      "ability",
+      "protect"
+    ],
+    "sourceUrl": "",
+    "cves": "",
+    "threatActor": "",
+    "severity": "Medium",
+    "intelligenceNotes": "",
+    "imageAlt": "Frontier AI tipping the scales toward cyber adversaries",
+    "delta": "assets/cyber-deltas/frontier-ai-tipping-the-scales-toward-cyber-adversaries.json",
+    "status": "published",
+    "publishedAt": "2026-08-29T11:39:53.965Z",
+    "meta": "cyber-risk",
+    "page": "cybersecurity",
+    "url": "cybersecurity/cyber-risk/frontier-ai-tipping-the-scales-toward-cyber-adversaries.html"
+  },
+  {
     "title": "Fake Apple Support AI Calls Target Stolen-Device Owners for Passcodes and 2FA Codes",
     "category": "threat-intelligence",
     "slug": "fake-apple-support-ai-calls-target-stolen-device-owners-for-passcodes-and-2fa-codes",
@@ -30,6 +67,9 @@
     "imageAlt": "Fake Apple Support AI Calls Target Stolen-Device Owners for Passcodes and 2FA Codes",
     "delta": "assets/cyber-deltas/fake-apple-support-ai-calls-target-stolen-device-owners-for-passcodes-and-2fa-codes.json",
     "meta": "threat-intelligence",
-    "url": "cybersecurity/threat-intelligence/fake-apple-support-ai-calls-target-stolen-device-owners-for-passcodes-and-2fa-codes.html"
+    "url": "cybersecurity/threat-intelligence/fake-apple-support-ai-calls-target-stolen-device-owners-for-passcodes-and-2fa-codes.html",
+    "page": "cybersecurity",
+    "contentType": "News",
+    "status": "published"
   }
 ]
