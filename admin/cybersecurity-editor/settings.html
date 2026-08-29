@@ -1,0 +1,2274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Settings — Cybersecurity Editor</title>
+
+<meta name="theme-color" content="#020403">
+<meta name="description" content="Configure Dyve HackaX Cybersecurity publishing, AI, media and repository settings.">
+
+<link rel="manifest" href="../manifest.json">
+<link rel="apple-touch-icon" href="/assets/dyve-hackax.png">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Michroma&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --bg:#020403;
+    --panel:rgba(10,15,13,.78);
+    --panel-strong:rgba(13,18,16,.95);
+    --border:rgba(255,255,255,.07);
+    --border-strong:rgba(255,255,255,.11);
+    --text:#edf4f1;
+    --muted:#8d9b97;
+    --accent:#4F8A73;
+    --accent-light:#87b6a1;
+    --green:#00ffaa;
+    --yellow:#f4c84c;
+    --red:#ff5c5c;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+    scroll-padding-top:92px;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:Inter,sans-serif;
+    background:
+        radial-gradient(circle at 80% -10%,rgba(79,138,115,.10),transparent 32%),
+        radial-gradient(circle at 0% 40%,rgba(0,255,170,.035),transparent 28%),
+        var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+}
+
+body:before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background-image:
+        linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);
+    background-size:42px 42px;
+    mask-image:linear-gradient(to bottom,black,transparent 75%);
+    z-index:-1;
+}
+
+button,
+input,
+select{
+    font:inherit;
+}
+
+button,
+a{
+    -webkit-tap-highlight-color:transparent;
+}
+
+a{
+    text-decoration:none;
+}
+
+.glass{
+    background:var(--panel);
+    border:1px solid var(--border);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+}
+
+.glass-strong{
+    background:var(--panel-strong);
+    border:1px solid var(--border-strong);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+}
+
+.field{
+    width:100%;
+    min-height:46px;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:11px;
+    color:var(--text);
+    padding:.72rem .9rem;
+    outline:none;
+    transition:
+        border-color .18s ease,
+        background .18s ease,
+        box-shadow .18s ease;
+}
+
+.field::placeholder{
+    color:#56625e;
+}
+
+.field:hover{
+    border-color:rgba(255,255,255,.13);
+    background:rgba(255,255,255,.045);
+}
+
+.field:focus{
+    border-color:rgba(79,138,115,.72);
+    background:rgba(79,138,115,.035);
+    box-shadow:0 0 0 3px rgba(79,138,115,.09);
+}
+
+.field[readonly]{
+    color:#9aa7a2;
+    cursor:default;
+}
+
+select.field{
+    cursor:pointer;
+}
+
+select.field option{
+    background:#0b100e;
+    color:#edf4f1;
+}
+
+.status-dot{
+    width:8px;
+    height:8px;
+    min-width:8px;
+    border-radius:999px;
+    background:#66736f;
+    transition:
+        background .2s ease,
+        box-shadow .2s ease;
+}
+
+.status-dot.online{
+    background:var(--green);
+    box-shadow:0 0 12px rgba(0,255,170,.45);
+}
+
+.status-dot.warning{
+    background:var(--yellow);
+    box-shadow:0 0 10px rgba(244,200,76,.18);
+}
+
+.status-dot.error{
+    background:var(--red);
+    box-shadow:0 0 10px rgba(255,92,92,.18);
+}
+
+.secondary{
+    background:rgba(255,255,255,.045);
+    color:#d6dfdc;
+    border:1px solid rgba(255,255,255,.09);
+    transition:
+        background .18s ease,
+        border-color .18s ease,
+        color .18s ease,
+        transform .18s ease;
+}
+
+.secondary:hover{
+    background:rgba(255,255,255,.075);
+    border-color:rgba(255,255,255,.14);
+    color:#fff;
+}
+
+.secondary:active,
+.primary:active{
+    transform:translateY(1px);
+}
+
+.primary{
+    background:var(--accent);
+    color:#fff;
+    border:1px solid rgba(255,255,255,.08);
+    transition:
+        background .18s ease,
+        box-shadow .18s ease,
+        transform .18s ease;
+}
+
+.primary:hover{
+    background:#5b977f;
+    box-shadow:0 8px 24px rgba(79,138,115,.18);
+}
+
+.primary:disabled,
+.secondary:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+    transform:none;
+}
+
+.secret{
+    position:relative;
+}
+
+.secret .field{
+    padding-right:76px;
+}
+
+.toggle{
+    position:absolute;
+    right:8px;
+    top:50%;
+    transform:translateY(-50%);
+    min-width:56px;
+    height:32px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.04);
+    color:#9ba8a3;
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
+    transition:
+        background .18s ease,
+        color .18s ease;
+}
+
+.toggle:hover{
+    background:rgba(255,255,255,.08);
+    color:#fff;
+}
+
+.section-link{
+    color:#7e8c87;
+    transition:
+        color .18s ease,
+        background .18s ease,
+        box-shadow .18s ease;
+}
+
+.section-link.active,
+.section-link:hover{
+    color:#fff;
+    background:rgba(255,255,255,.045);
+}
+
+.section-link.active{
+    box-shadow:inset 2px 0 0 var(--accent);
+}
+
+.save{
+    transition:color .18s ease;
+}
+
+.save.saving{
+    color:var(--yellow);
+}
+
+.save.saved{
+    color:var(--green);
+}
+
+.save.unsaved{
+    color:var(--yellow);
+}
+
+.toast{
+    transform:translateY(18px);
+    opacity:0;
+    pointer-events:none;
+    transition:
+        transform .2s ease,
+        opacity .2s ease;
+}
+
+.toast.show{
+    transform:none;
+    opacity:1;
+    pointer-events:auto;
+}
+
+.toast.success .glass-strong{
+    border-color:rgba(0,255,170,.14);
+}
+
+.toast.error .glass-strong{
+    border-color:rgba(255,92,92,.18);
+}
+
+.toast.warning .glass-strong{
+    border-color:rgba(244,200,76,.18);
+}
+
+.config-card{
+    transition:
+        border-color .18s ease,
+        background .18s ease;
+}
+
+.config-card:hover{
+    border-color:rgba(255,255,255,.09);
+    background:rgba(255,255,255,.032);
+}
+
+.section-heading{
+    letter-spacing:-.01em;
+}
+
+.danger-section{
+    border-color:rgba(255,92,92,.10);
+}
+
+.danger-section .section-header{
+    border-color:rgba(255,92,92,.10);
+}
+
+.danger-button{
+    transition:
+        background .18s ease,
+        border-color .18s ease,
+        transform .18s ease;
+}
+
+.danger-button:hover{
+    background:rgba(255,92,92,.15);
+    border-color:rgba(255,92,92,.32);
+}
+
+@media(max-width:767px){
+    html{
+        scroll-padding-top:76px;
+    }
+
+    .desktop-only{
+        display:none!important;
+    }
+
+    .sticky-actions{
+        left:0!important;
+        right:0!important;
+        bottom:0!important;
+        border-radius:0!important;
+        border-left:0!important;
+        border-right:0!important;
+        border-bottom:0!important;
+        padding-bottom:calc(.75rem + env(safe-area-inset-bottom))!important;
+    }
+
+    main{
+        padding-bottom:110px!important;
+    }
+}
+
+@media(prefers-reduced-motion:reduce){
+    *,
+    *:before,
+    *:after{
+        scroll-behavior:auto!important;
+        transition:none!important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="sticky top-0 z-50 glass-strong">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="h-16 flex items-center justify-between gap-4">
+
+            <div class="flex items-center min-w-0">
+                <a
+                    href="index.html"
+                    aria-label="Return to Cybersecurity Editor"
+                    class="w-9 h-9 rounded-xl bg-[#4F8A73] flex items-center justify-center mr-3 text-white font-black shrink-0"
+                >D</a>
+
+                <div class="min-w-0">
+                    <div class="text-[10px] uppercase tracking-[.18em] text-gray-500 font-bold">
+                        DYVE|HACKAX
+                    </div>
+
+                    <div class="text-sm font-semibold text-white truncate">
+                        Cybersecurity Settings
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 shrink-0">
+
+                <div id="saveIndicator" class="hidden sm:flex items-center gap-2 text-xs text-gray-500">
+                    <span id="saveDot" class="status-dot"></span>
+                    <span id="saveStatus">Saved</span>
+                </div>
+
+                <a
+                    href="index.html"
+                    class="secondary px-3 py-2 rounded-lg text-xs font-semibold"
+                >
+                    Editor
+                </a>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
+
+    <section class="mb-8">
+
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+
+            <div>
+
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#4F8A73]/10 border border-[#4F8A73]/20 text-[#87b6a1] text-[11px] font-bold uppercase tracking-wider mb-4">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#4F8A73]"></span>
+                    Cyber Editor Control Center
+                </div>
+
+                <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+                    Settings
+                </h1>
+
+                <p class="mt-2 max-w-2xl text-sm sm:text-base text-gray-400 leading-relaxed">
+                    Configure GitHub publishing, Groq AI, Cloudinary media and Cybersecurity publication infrastructure.
+                </p>
+
+            </div>
+
+            <div class="glass rounded-xl px-4 py-3 flex items-center gap-3 shrink-0">
+
+                <div id="systemStatusDot" class="status-dot"></div>
+
+                <div>
+                    <div id="systemStatusTitle" class="text-xs font-semibold text-gray-300">
+                        Checking configuration
+                    </div>
+
+                    <div id="systemStatusText" class="text-[11px] text-gray-500 mt-0.5">
+                        Reading local settings
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="grid lg:grid-cols-[220px_minmax(0,1fr)] gap-8">
+
+        <aside class="hidden lg:block">
+
+            <div class="sticky top-24">
+
+                <div class="text-[10px] uppercase tracking-[.18em] font-bold text-gray-600 mb-3 px-3">
+                    Configuration
+                </div>
+
+                <nav class="space-y-1" aria-label="Settings sections">
+
+                    <a href="#github" class="section-link active block px-3 py-2.5 rounded-lg text-xs font-medium">
+                        Repository
+                    </a>
+
+                    <a href="#groq" class="section-link block px-3 py-2.5 rounded-lg text-xs font-medium">
+                        Groq AI
+                    </a>
+
+                    <a href="#cloudinary" class="section-link block px-3 py-2.5 rounded-lg text-xs font-medium">
+                        Media
+                    </a>
+
+                    <a href="#publication" class="section-link block px-3 py-2.5 rounded-lg text-xs font-medium">
+                        Publication
+                    </a>
+
+                    <a href="#system" class="section-link block px-3 py-2.5 rounded-lg text-xs font-medium">
+                        System
+                    </a>
+
+                    <a href="#advanced" class="section-link block px-3 py-2.5 rounded-lg text-xs font-medium">
+                        Advanced
+                    </a>
+
+                </nav>
+
+            </div>
+
+        </aside>
+
+        <div class="space-y-6">
+
+            <!-- GITHUB -->
+
+            <section id="github" class="glass rounded-2xl overflow-hidden">
+
+                <div class="section-header px-5 sm:px-6 py-5 border-b border-white/5">
+
+                    <div class="flex justify-between gap-4">
+
+                        <div>
+                            <h2 class="section-heading font-semibold text-white">
+                                GitHub Publishing
+                            </h2>
+
+                            <p class="text-xs text-gray-500 mt-1">
+                                Canonical repository and branch for Cybersecurity.
+                            </p>
+                        </div>
+
+                        <div class="flex items-center gap-2 shrink-0">
+
+                            <span id="githubStatusDot" class="status-dot"></span>
+
+                            <span id="githubStatus" class="text-xs text-gray-500">
+                                Not verified
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="p-5 sm:p-6 space-y-5">
+
+                    <div>
+
+                        <label
+                            for="githubToken"
+                            class="block text-xs font-semibold text-gray-300 mb-2"
+                        >
+                            GitHub Token
+                        </label>
+
+                        <div class="secret">
+
+                            <input
+                                id="githubToken"
+                                type="password"
+                                class="field"
+                                autocomplete="off"
+                                spellcheck="false"
+                                placeholder="ghp_..."
+                            >
+
+                            <button
+                                type="button"
+                                class="toggle"
+                                data-target="githubToken"
+                                aria-label="Show GitHub token"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                        <p class="mt-2 text-[11px] text-gray-500 leading-relaxed">
+                            Credential is stored locally in this browser for the existing browser publisher model.
+                        </p>
+
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+
+                        <div>
+
+                            <label
+                                for="githubRepo"
+                                class="block text-xs font-semibold text-gray-300 mb-2"
+                            >
+                                Repository
+                            </label>
+
+                            <input
+                                id="githubRepo"
+                                class="field"
+                                autocomplete="off"
+                                spellcheck="false"
+                                placeholder="username/repository"
+                            >
+
+                        </div>
+
+                        <div>
+
+                            <label
+                                for="githubBranch"
+                                class="block text-xs font-semibold text-gray-300 mb-2"
+                            >
+                                Branch
+                            </label>
+
+                            <input
+                                id="githubBranch"
+                                class="field"
+                                value="main"
+                                autocomplete="off"
+                                spellcheck="false"
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <label
+                            for="siteUrl"
+                            class="block text-xs font-semibold text-gray-300 mb-2"
+                        >
+                            Published Site URL
+                        </label>
+
+                        <input
+                            id="siteUrl"
+                            class="field"
+                            value="https://dyve.online"
+                            autocomplete="url"
+                            spellcheck="false"
+                        >
+
+                    </div>
+
+                    <div class="rounded-xl border border-[#4F8A73]/15 bg-[#4F8A73]/5 px-4 py-3 text-[11px] text-gray-400 leading-relaxed">
+                        Fixed publication target:
+                        <span class="text-gray-200 font-medium">assets/cyber-articles.json</span>
+                        →
+                        <span class="text-gray-200 font-medium">/cybersecurity/</span>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+
+                        <span id="githubValidation" class="text-xs text-gray-500">
+                            Repository connection has not been tested.
+                        </span>
+
+                        <button
+                            id="testGithubBtn"
+                            type="button"
+                            class="secondary px-4 py-2.5 rounded-lg text-xs font-semibold"
+                        >
+                            Verify GitHub
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- GROQ -->
+
+            <section id="groq" class="glass rounded-2xl overflow-hidden">
+
+                <div class="section-header px-5 sm:px-6 py-5 border-b border-white/5">
+
+                    <div class="flex justify-between gap-4">
+
+                        <div>
+                            <h2 class="section-heading font-semibold text-white">
+                                Groq AI
+                            </h2>
+
+                            <p class="text-xs text-gray-500 mt-1">
+                                Threat intelligence, SEO and editorial assistance.
+                            </p>
+                        </div>
+
+                        <div class="flex items-center gap-2 shrink-0">
+
+                            <span id="groqStatusDot" class="status-dot"></span>
+
+                            <span id="groqStatus" class="text-xs text-gray-500">
+                                Not verified
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="p-5 sm:p-6 space-y-5">
+
+                    <div class="rounded-xl bg-[#4F8A73]/5 border border-[#4F8A73]/10 px-4 py-3 text-[11px] text-gray-400 leading-relaxed">
+                        Settings namespace:
+                        <span class="text-gray-300 font-medium">
+                            dyve-cybersecurity-settings
+                        </span>.
+                        Separate from Dyve Tech configuration.
+                    </div>
+
+                    <div>
+
+                        <label
+                            for="groqKey"
+                            class="block text-xs font-semibold text-gray-300 mb-2"
+                        >
+                            Groq API Key
+                        </label>
+
+                        <div class="secret">
+
+                            <input
+                                id="groqKey"
+                                type="password"
+                                class="field"
+                                autocomplete="off"
+                                spellcheck="false"
+                                placeholder="gsk_..."
+                            >
+
+                            <button
+                                type="button"
+                                class="toggle"
+                                data-target="groqKey"
+                                aria-label="Show Groq API key"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <label
+                            for="groqModel"
+                            class="block text-xs font-semibold text-gray-300 mb-2"
+                        >
+                            Default Model
+                        </label>
+
+                        <select id="groqModel" class="field">
+
+                            <option value="openai/gpt-oss-120b">
+                                openai/gpt-oss-120b — smart editorial pass
+                            </option>
+
+                            <option value="llama-3.3-70b-versatile">
+                                llama-3.3-70b-versatile — balanced
+                            </option>
+
+                            <option value="openai/gpt-oss-20b">
+                                openai/gpt-oss-20b — fast
+                            </option>
+
+                            <option value="llama-3.1-8b-instant">
+                                llama-3.1-8b-instant — light
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+
+                        <span id="groqTestResult" class="text-xs text-gray-500">
+                            Not tested yet
+                        </span>
+
+                        <button
+                            id="testGroqBtn"
+                            type="button"
+                            class="secondary px-4 py-2.5 rounded-lg text-xs font-semibold"
+                        >
+                            Test AI Connection
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- CLOUDINARY -->
+
+            <section id="cloudinary" class="glass rounded-2xl overflow-hidden">
+
+                <div class="section-header px-5 sm:px-6 py-5 border-b border-white/5">
+
+                    <div>
+                        <h2 class="section-heading font-semibold text-white">
+                            Cloudinary Media
+                        </h2>
+
+                        <p class="text-xs text-gray-500 mt-1">
+                            Featured and inline image delivery.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="p-5 sm:p-6 space-y-5">
+
+                    <div class="grid md:grid-cols-2 gap-4">
+
+                        <div>
+
+                            <label
+                                for="cloudName"
+                                class="block text-xs font-semibold text-gray-300 mb-2"
+                            >
+                                Cloud Name
+                            </label>
+
+                            <input
+                                id="cloudName"
+                                class="field"
+                                value="dxdbn6xwy"
+                                autocomplete="off"
+                                spellcheck="false"
+                            >
+
+                        </div>
+
+                        <div>
+
+                            <label
+                                for="uploadPreset"
+                                class="block text-xs font-semibold text-gray-300 mb-2"
+                            >
+                                Upload Preset
+                            </label>
+
+                            <input
+                                id="uploadPreset"
+                                class="field"
+                                value="geefox_unsigned"
+                                autocomplete="off"
+                                spellcheck="false"
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="cloudinaryValidation"
+                        class="rounded-xl border border-white/5 bg-white/[.025] px-4 py-3 text-xs text-gray-500 leading-relaxed"
+                    >
+                        Configure both fields to enable media uploads.
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PUBLICATION -->
+
+            <section id="publication" class="glass rounded-2xl overflow-hidden">
+
+                <div class="section-header px-5 sm:px-6 py-5 border-b border-white/5">
+
+                    <div>
+                        <h2 class="section-heading font-semibold text-white">
+                            Cybersecurity Publication
+                        </h2>
+
+                        <p class="text-xs text-gray-500 mt-1">
+                            Identity, data boundary and route architecture.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="p-5 sm:p-6 space-y-5">
+
+                    <div class="grid md:grid-cols-2 gap-4">
+
+                        <div>
+
+                            <label
+                                for="publisherName"
+                                class="block text-xs font-semibold text-gray-300 mb-2"
+                            >
+                                Publication Name
+                            </label>
+
+                            <input
+                                id="publisherName"
+                                class="field"
+                                value="Dyve HackaX"
+                                autocomplete="organization"
+                            >
+
+                        </div>
+
+                        <div>
+
+                            <label class="block text-xs font-semibold text-gray-300 mb-2">
+                                Data Source
+                            </label>
+
+                            <input
+                                class="field"
+                                value="assets/cyber-articles.json"
+                                readonly
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+
+                        <div>
+
+                            <label class="block text-xs font-semibold text-gray-300 mb-2">
+                                Publication Root
+                            </label>
+
+                            <input
+                                class="field"
+                                value="/cybersecurity/"
+                                readonly
+                            >
+
+                        </div>
+
+                        <div>
+
+                            <label class="block text-xs font-semibold text-gray-300 mb-2">
+                                Editor Namespace
+                            </label>
+
+                            <input
+                                class="field"
+                                value="dyve-cybersecurity"
+                                readonly
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <p class="text-[11px] text-gray-500 leading-relaxed">
+                        This editor never writes HackaX's legacy articles.json or Dyve Tech's tech-articles.json.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- SYSTEM -->
+
+            <section id="system" class="glass rounded-2xl overflow-hidden">
+
+                <div class="section-header px-5 sm:px-6 py-5 border-b border-white/5">
+
+                    <div>
+                        <h2 class="section-heading font-semibold text-white">
+                            System State
+                        </h2>
+
+                        <p class="text-xs text-gray-500 mt-1">
+                            Live local configuration and portability.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="p-5 sm:p-6">
+
+                    <div class="grid sm:grid-cols-2 gap-3">
+
+                        <div class="config-card rounded-xl border border-white/5 bg-white/[.025] p-4">
+
+                            <div class="text-[10px] uppercase tracking-wider text-gray-600 font-bold">
+                                Storage
+                            </div>
+
+                            <div class="mt-2 flex items-center gap-2">
+
+                                <span id="storageDot" class="status-dot online"></span>
+
+                                <span id="storageStatus" class="text-sm font-semibold text-white">
+                                    Local storage available
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="config-card rounded-xl border border-white/5 bg-white/[.025] p-4">
+
+                            <div class="text-[10px] uppercase tracking-wider text-gray-600 font-bold">
+                                Configuration
+                            </div>
+
+                            <div
+                                id="configurationStatus"
+                                class="mt-2 text-sm font-semibold text-white"
+                            >
+                                Checking...
+                            </div>
+
+                        </div>
+
+                        <div class="config-card rounded-xl border border-white/5 bg-white/[.025] p-4">
+
+                            <div class="text-[10px] uppercase tracking-wider text-gray-600 font-bold">
+                                Last Saved
+                            </div>
+
+                            <div
+                                id="lastSaved"
+                                class="mt-2 text-sm font-semibold text-white"
+                            >
+                                Not available
+                            </div>
+
+                        </div>
+
+                        <div class="config-card rounded-xl border border-white/5 bg-white/[.025] p-4">
+
+                            <div class="text-[10px] uppercase tracking-wider text-gray-600 font-bold">
+                                Settings Version
+                            </div>
+
+                            <div
+                                id="settingsVersion"
+                                class="mt-2 text-sm font-semibold text-white"
+                            >
+                                v1
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mt-5 pt-5 border-t border-white/5 flex flex-wrap gap-2">
+
+                        <button
+                            id="exportBtn"
+                            type="button"
+                            class="secondary px-3 py-2 rounded-lg text-xs font-semibold"
+                        >
+                            Export JSON
+                        </button>
+
+                        <button
+                            id="importBtn"
+                            type="button"
+                            class="secondary px-3 py-2 rounded-lg text-xs font-semibold"
+                        >
+                            Import JSON
+                        </button>
+
+                        <input
+                            type="file"
+                            id="importFile"
+                            accept="application/json,.json"
+                            class="hidden"
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ADVANCED -->
+
+            <section
+                id="advanced"
+                class="glass rounded-2xl overflow-hidden danger-section"
+            >
+
+                <div class="section-header px-5 sm:px-6 py-5 border-b">
+
+                    <h2 class="section-heading font-semibold text-white">
+                        Advanced
+                    </h2>
+
+                    <p class="text-xs text-gray-500 mt-1">
+                        Reset local Cybersecurity configuration.
+                    </p>
+
+                </div>
+
+                <div class="p-5 sm:p-6">
+
+                    <button
+                        id="resetBtn"
+                        type="button"
+                        class="danger-button px-4 py-2.5 rounded-lg text-xs font-semibold border border-red-500/20 bg-red-500/10 text-red-300"
+                    >
+                        Reset Local Settings
+                    </button>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- SAVE BAR -->
+
+<div class="sticky-actions fixed bottom-4 left-4 right-4 lg:left-auto lg:right-8 lg:w-auto z-40 glass-strong rounded-2xl px-3 py-3 shadow-2xl">
+
+    <div class="flex items-center gap-2 sm:gap-3">
+
+        <div class="hidden sm:block mr-1">
+
+            <div
+                id="bottomSaveStatus"
+                class="text-xs font-medium text-gray-500"
+            >
+                All changes saved
+            </div>
+
+        </div>
+
+        <button
+            id="discardBtn"
+            type="button"
+            class="secondary px-4 py-2.5 rounded-xl text-xs font-semibold flex-1 sm:flex-none"
+        >
+            Discard
+        </button>
+
+        <button
+            id="saveBtn"
+            type="button"
+            class="primary px-5 py-2.5 rounded-xl text-xs font-bold flex-1 sm:flex-none"
+        >
+            Save Settings
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+    id="toast"
+    class="toast fixed top-20 right-4 z-[100] max-w-sm"
+    role="status"
+    aria-live="polite"
+>
+
+    <div class="glass-strong rounded-xl px-4 py-3">
+
+        <div
+            id="toastTitle"
+            class="text-sm font-semibold text-white"
+        >
+            Saved
+        </div>
+
+        <div
+            id="toastMessage"
+            class="text-xs text-gray-500 mt-0.5"
+        >
+            Settings updated.
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+(function(){
+
+    "use strict";
+
+    const KEY = "dyve-cybersecurity-settings";
+
+    const IDS = [
+        "githubToken",
+        "githubRepo",
+        "githubBranch",
+        "siteUrl",
+        "cloudName",
+        "uploadPreset",
+        "groqKey",
+        "groqModel",
+        "publisherName"
+    ];
+
+    const DEFAULTS = {
+        githubBranch: "main",
+        siteUrl: "https://dyve.online",
+        cloudName: "dxdbn6xwy",
+        uploadPreset: "geefox_unsigned",
+        groqModel: "openai/gpt-oss-120b",
+        publisherName: "Dyve HackaX"
+    };
+
+    let saved = {};
+    let toastTimer = null;
+
+    const el = id => document.getElementById(id);
+
+    function parse(value, fallback = {}){
+        try{
+            return JSON.parse(value);
+        }catch{
+            return fallback;
+        }
+    }
+
+    function storageAvailable(){
+        try{
+            const testKey = "__dyve_cybersecurity_storage_test__";
+
+            localStorage.setItem(testKey, "1");
+            localStorage.removeItem(testKey);
+
+            return true;
+        }catch{
+            return false;
+        }
+    }
+
+    function stored(){
+
+        if(!storageAvailable()){
+            return {};
+        }
+
+        const value = parse(
+            localStorage.getItem(KEY) || "{}",
+            {}
+        );
+
+        if(
+            !value ||
+            typeof value !== "object" ||
+            Array.isArray(value)
+        ){
+            return {};
+        }
+
+        return value;
+    }
+
+    function form(){
+
+        const data = {};
+
+        IDS.forEach(id => {
+
+            const node = el(id);
+
+            if(node){
+                data[id] = node.value.trim();
+            }
+
+        });
+
+        return data;
+    }
+
+    function setSave(state){
+
+        const dot = el("saveDot");
+        const text = el("saveStatus");
+        const bottom = el("bottomSaveStatus");
+
+        if(!dot || !text || !bottom){
+            return;
+        }
+
+        if(state === "saving"){
+
+            dot.className = "status-dot warning";
+
+            text.textContent = "Saving...";
+            text.className = "text-xs save saving";
+
+            bottom.textContent = "Saving changes...";
+
+            return;
+        }
+
+        if(state === "unsaved"){
+
+            dot.className = "status-dot warning";
+
+            text.textContent = "Unsaved changes";
+            text.className = "text-xs save unsaved";
+
+            bottom.textContent = "Changes pending";
+
+            return;
+        }
+
+        dot.className = "status-dot online";
+
+        text.textContent = "Saved";
+        text.className = "text-xs save saved";
+
+        bottom.textContent = "All changes saved";
+    }
+
+    function render(state){
+
+        const configured = [
+            Boolean(state.githubToken && state.githubRepo && state.githubBranch),
+            Boolean(state.groqKey),
+            Boolean(state.cloudName && state.uploadPreset)
+        ];
+
+        const count = configured.filter(Boolean).length;
+
+        const configuration = el("configurationStatus");
+        const systemTitle = el("systemStatusTitle");
+        const systemText = el("systemStatusText");
+        const systemDot = el("systemStatusDot");
+
+        if(configuration){
+
+            configuration.textContent =
+                count === 3
+                    ? "Fully configured"
+                    : `${count}/3 integrations configured`;
+
+        }
+
+        if(systemTitle){
+
+            systemTitle.textContent =
+                count === 3
+                    ? "System ready"
+                    : count
+                        ? "Partially configured"
+                        : "Setup required";
+
+        }
+
+        if(systemText){
+
+            systemText.textContent =
+                count === 3
+                    ? "All core integrations configured"
+                    : "Some integrations need attention";
+
+        }
+
+        if(systemDot){
+
+            systemDot.className =
+                "status-dot " +
+                (
+                    count === 3
+                        ? "online"
+                        : count
+                            ? "warning"
+                            : "error"
+                );
+
+        }
+
+        const cloudValidation = el("cloudinaryValidation");
+
+        if(cloudValidation){
+
+            if(state.cloudName && state.uploadPreset){
+
+                cloudValidation.textContent =
+                    "Cloud name and unsigned preset configured.";
+
+                cloudValidation.className =
+                    "rounded-xl border border-[#4F8A73]/15 bg-[#4F8A73]/5 px-4 py-3 text-xs text-[#87b6a1] leading-relaxed";
+
+            }else{
+
+                cloudValidation.textContent =
+                    "Configure both fields to enable media uploads.";
+
+                cloudValidation.className =
+                    "rounded-xl border border-white/5 bg-white/[.025] px-4 py-3 text-xs text-gray-500 leading-relaxed";
+
+            }
+
+        }
+
+        const lastSaved = el("lastSaved");
+
+        if(lastSaved){
+
+            if(state.settingsUpdatedAt){
+
+                const date = new Date(state.settingsUpdatedAt);
+
+                lastSaved.textContent =
+                    Number.isNaN(date.getTime())
+                        ? "Unknown"
+                        : date.toLocaleString();
+
+            }else{
+
+                lastSaved.textContent = "Not available";
+
+            }
+
+        }
+
+        const version = el("settingsVersion");
+
+        if(version){
+            version.textContent = "v" + (state.settingsVersion || 1);
+        }
+
+    }
+
+    function fill(state){
+
+        const merged = {
+            ...DEFAULTS,
+            ...state
+        };
+
+        IDS.forEach(id => {
+
+            const node = el(id);
+
+            if(
+                node &&
+                Object.prototype.hasOwnProperty.call(merged, id)
+            ){
+                node.value = String(merged[id] ?? "");
+            }
+
+        });
+
+        saved = {
+            ...form()
+        };
+
+        render(merged);
+    }
+
+    function isUnsaved(){
+
+        return JSON.stringify(form()) !== JSON.stringify(saved);
+
+    }
+
+    function toast(title, message, type = "success"){
+
+        const node = el("toast");
+
+        if(!node){
+            return;
+        }
+
+        el("toastTitle").textContent = title;
+        el("toastMessage").textContent = message;
+
+        node.classList.remove(
+            "success",
+            "error",
+            "warning"
+        );
+
+        node.classList.add(
+            "show",
+            type
+        );
+
+        clearTimeout(toastTimer);
+
+        toastTimer = setTimeout(() => {
+
+            node.classList.remove("show");
+
+        }, 3200);
+
+    }
+
+    function save(){
+
+        const errors = validate();
+
+        if(errors.length){
+
+            toast(
+                "Settings need attention",
+                errors[0],
+                "warning"
+            );
+
+            return;
+        }
+
+        setSave("saving");
+
+        const current = stored();
+
+        const next = {
+            ...current,
+            ...form(),
+            settingsVersion: 1,
+            settingsUpdatedAt: new Date().toISOString()
+        };
+
+        try{
+
+            localStorage.setItem(
+                KEY,
+                JSON.stringify(next)
+            );
+
+            saved = {
+                ...form()
+            };
+
+            render(next);
+            setSave("saved");
+
+            toast(
+                "Settings saved",
+                "Cybersecurity configuration is up to date.",
+                "success"
+            );
+
+        }catch{
+
+            setSave("unsaved");
+
+            toast(
+                "Save failed",
+                "The browser could not store these settings.",
+                "error"
+            );
+
+        }
+
+    }
+
+    function validate(){
+
+        const state = form();
+        const errors = [];
+
+        if(
+            state.githubRepo &&
+            !/^[^/]+\/[^/]+$/.test(state.githubRepo)
+        ){
+            errors.push(
+                "Repository must use username/repository format."
+            );
+        }
+
+        if(state.siteUrl){
+
+            try{
+
+                const url = new URL(state.siteUrl);
+
+                if(
+                    url.protocol !== "https:" &&
+                    url.protocol !== "http:"
+                ){
+                    errors.push(
+                        "Site URL must use HTTP or HTTPS."
+                    );
+                }
+
+            }catch{
+
+                errors.push(
+                    "Site URL is invalid."
+                );
+
+            }
+
+        }
+
+        if(
+            state.githubToken &&
+            state.githubToken.length < 10
+        ){
+            errors.push(
+                "GitHub token appears too short."
+            );
+        }
+
+        if(
+            state.groqKey &&
+            state.groqKey.length < 10
+        ){
+            errors.push(
+                "Groq API key appears too short."
+            );
+        }
+
+        return errors;
+    }
+
+    async function gh(){
+
+        const state = form();
+
+        const output = el("githubValidation");
+        const dot = el("githubStatusDot");
+        const status = el("githubStatus");
+        const button = el("testGithubBtn");
+
+        if(
+            !state.githubToken ||
+            !state.githubRepo
+        ){
+
+            output.textContent =
+                "Enter token and repository first.";
+
+            dot.className = "status-dot warning";
+            status.textContent = "Incomplete";
+
+            return;
+        }
+
+        button.disabled = true;
+
+        output.textContent =
+            "Checking repository...";
+
+        dot.className = "status-dot warning";
+        status.textContent = "Testing...";
+
+        try{
+
+            const response = await fetch(
+                `https://api.github.com/repos/${encodeURIComponent(state.githubRepo)}`,
+                {
+                    method:"GET",
+                    headers:{
+                        Authorization:"Bearer " + state.githubToken,
+                        Accept:"application/vnd.github+json"
+                    }
+                }
+            );
+
+            if(response.ok){
+
+                dot.className = "status-dot online";
+                status.textContent = "Connected";
+
+                output.textContent =
+                    "Repository is accessible.";
+
+                toast(
+                    "GitHub connected",
+                    "Repository access verified.",
+                    "success"
+                );
+
+            }else if(response.status === 401){
+
+                dot.className = "status-dot error";
+                status.textContent = "Invalid token";
+
+                output.textContent =
+                    "GitHub rejected the authentication token.";
+
+                toast(
+                    "GitHub authentication failed",
+                    "Check the token and try again.",
+                    "error"
+                );
+
+            }else if(response.status === 404){
+
+                dot.className = "status-dot error";
+                status.textContent = "Not found";
+
+                output.textContent =
+                    "Repository was not found or is inaccessible.";
+
+            }else{
+
+                dot.className = "status-dot error";
+                status.textContent = "Failed";
+
+                output.textContent =
+                    "GitHub returned HTTP " + response.status + ".";
+
+            }
+
+        }catch{
+
+            dot.className = "status-dot error";
+            status.textContent = "Offline";
+
+            output.textContent =
+                "Network error. Check your connection.";
+
+        }finally{
+
+            button.disabled = false;
+
+        }
+
+    }
+
+    async function groq(){
+
+        const state = form();
+
+        const output = el("groqTestResult");
+        const dot = el("groqStatusDot");
+        const status = el("groqStatus");
+        const button = el("testGroqBtn");
+
+        if(!state.groqKey){
+
+            output.textContent =
+                "Enter a Groq API key first.";
+
+            dot.className = "status-dot warning";
+            status.textContent = "Missing key";
+
+            return;
+        }
+
+        button.disabled = true;
+
+        output.textContent =
+            "Testing Groq...";
+
+        dot.className = "status-dot warning";
+        status.textContent = "Testing...";
+
+        try{
+
+            const response = await fetch(
+                "https://api.groq.com/openai/v1/models",
+                {
+                    method:"GET",
+                    headers:{
+                        Authorization:"Bearer " + state.groqKey,
+                        Accept:"application/json"
+                    }
+                }
+            );
+
+            if(response.ok){
+
+                dot.className = "status-dot online";
+                status.textContent = "Connected";
+
+                output.textContent =
+                    "Groq API key accepted.";
+
+                toast(
+                    "Groq connected",
+                    "API authentication verified.",
+                    "success"
+                );
+
+            }else if(
+                response.status === 401 ||
+                response.status === 403
+            ){
+
+                dot.className = "status-dot error";
+                status.textContent = "Invalid key";
+
+                output.textContent =
+                    "Groq rejected the API key.";
+
+                toast(
+                    "Groq authentication failed",
+                    "Check the API key and try again.",
+                    "error"
+                );
+
+            }else{
+
+                dot.className = "status-dot error";
+                status.textContent = "Failed";
+
+                output.textContent =
+                    "Groq returned HTTP " + response.status + ".";
+
+            }
+
+        }catch{
+
+            dot.className = "status-dot error";
+            status.textContent = "Offline";
+
+            output.textContent =
+                "Network error. Check your connection.";
+
+        }finally{
+
+            button.disabled = false;
+
+        }
+
+    }
+
+    function reset(){
+
+        const confirmed = confirm(
+            "Reset all Cybersecurity settings stored in this browser?"
+        );
+
+        if(!confirmed){
+            return;
+        }
+
+        try{
+
+            localStorage.removeItem(KEY);
+
+            const defaults = {
+                ...DEFAULTS,
+                settingsVersion:1,
+                settingsUpdatedAt:new Date().toISOString()
+            };
+
+            localStorage.setItem(
+                KEY,
+                JSON.stringify(defaults)
+            );
+
+            fill(defaults);
+            setSave("saved");
+
+            el("githubStatusDot").className =
+                "status-dot";
+
+            el("githubStatus").textContent =
+                "Not verified";
+
+            el("githubValidation").textContent =
+                "Repository connection has not been tested.";
+
+            el("groqStatusDot").className =
+                "status-dot";
+
+            el("groqStatus").textContent =
+                "Not verified";
+
+            el("groqTestResult").textContent =
+                "Not tested yet";
+
+            toast(
+                "Settings reset",
+                "Cybersecurity defaults restored.",
+                "success"
+            );
+
+        }catch{
+
+            toast(
+                "Reset failed",
+                "The browser could not update local storage.",
+                "error"
+            );
+
+        }
+
+    }
+
+    function exportJson(){
+
+        const data = stored();
+
+        const blob = new Blob(
+            [
+                JSON.stringify(
+                    data,
+                    null,
+                    2
+                )
+            ],
+            {
+                type:"application/json"
+            }
+        );
+
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement("a");
+
+        anchor.href = url;
+        anchor.download =
+            "dyve-cybersecurity-settings.json";
+
+        document.body.appendChild(anchor);
+        anchor.click();
+        anchor.remove();
+
+        setTimeout(
+            () => URL.revokeObjectURL(url),
+            1000
+        );
+
+        toast(
+            "Configuration exported",
+            "Your Cybersecurity settings JSON is ready.",
+            "success"
+        );
+
+    }
+
+    async function importJson(file){
+
+        if(!file){
+            return;
+        }
+
+        try{
+
+            if(
+                file.type &&
+                file.type !== "application/json" &&
+                !file.name.toLowerCase().endsWith(".json")
+            ){
+                throw new Error("Invalid file type");
+            }
+
+            const text = await file.text();
+            const imported = JSON.parse(text);
+
+            if(
+                !imported ||
+                typeof imported !== "object" ||
+                Array.isArray(imported)
+            ){
+                throw new Error("Invalid configuration");
+            }
+
+            const allowed = {};
+
+            IDS.forEach(id => {
+
+                if(
+                    Object.prototype.hasOwnProperty.call(
+                        imported,
+                        id
+                    )
+                ){
+                    allowed[id] = String(
+                        imported[id] ?? ""
+                    );
+                }
+
+            });
+
+            const merged = {
+                ...stored(),
+                ...allowed,
+                settingsVersion:1,
+                settingsUpdatedAt:new Date().toISOString()
+            };
+
+            localStorage.setItem(
+                KEY,
+                JSON.stringify(merged)
+            );
+
+            fill(merged);
+            setSave("saved");
+
+            toast(
+                "Configuration imported",
+                "Cybersecurity settings loaded successfully.",
+                "success"
+            );
+
+        }catch{
+
+            toast(
+                "Import failed",
+                "Selected file is not a valid Cybersecurity settings file.",
+                "error"
+            );
+
+        }
+
+    }
+
+    function initNavigation(){
+
+        const links = [
+            ...document.querySelectorAll(".section-link")
+        ];
+
+        const sections = [
+            ...document.querySelectorAll(
+                "#github,#groq,#cloudinary,#publication,#system,#advanced"
+            )
+        ];
+
+        const observer = new IntersectionObserver(
+            entries => {
+
+                const visible = entries
+                    .filter(entry => entry.isIntersecting)
+                    .sort(
+                        (a,b) =>
+                            b.intersectionRatio -
+                            a.intersectionRatio
+                    )[0];
+
+                if(!visible){
+                    return;
+                }
+
+                links.forEach(link => {
+
+                    link.classList.toggle(
+                        "active",
+                        link.getAttribute("href") ===
+                        "#" + visible.target.id
+                    );
+
+                });
+
+            },
+            {
+                rootMargin:"-110px 0px -55% 0px",
+                threshold:[0,.15,.3,.5]
+            }
+        );
+
+        sections.forEach(
+            section => observer.observe(section)
+        );
+
+    }
+
+    function init(){
+
+        const storageDot = el("storageDot");
+        const storageStatus = el("storageStatus");
+
+        if(!storageAvailable()){
+
+            storageDot.className =
+                "status-dot error";
+
+            storageStatus.textContent =
+                "Local storage unavailable";
+
+        }else{
+
+            storageDot.className =
+                "status-dot online";
+
+            storageStatus.textContent =
+                "Local storage available";
+
+        }
+
+        fill(stored());
+        setSave("saved");
+
+        document
+            .querySelectorAll(".toggle")
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        const target =
+                            el(button.dataset.target);
+
+                        if(!target){
+                            return;
+                        }
+
+                        const visible =
+                            target.type === "text";
+
+                        target.type =
+                            visible
+                                ? "password"
+                                : "text";
+
+                        button.textContent =
+                            visible
+                                ? "Show"
+                                : "Hide";
+
+                        button.setAttribute(
+                            "aria-label",
+                            visible
+                                ? "Show secret"
+                                : "Hide secret"
+                        );
+
+                    }
+                );
+
+            });
+
+        IDS.forEach(id => {
+
+            const node = el(id);
+
+            if(!node){
+                return;
+            }
+
+            node.addEventListener(
+                "input",
+                () => {
+
+                    setSave(
+                        isUnsaved()
+                            ? "unsaved"
+                            : "saved"
+                    );
+
+                    render({
+                        ...stored(),
+                        ...form()
+                    });
+
+                }
+            );
+
+            node.addEventListener(
+                "change",
+                () => {
+
+                    setSave(
+                        isUnsaved()
+                            ? "unsaved"
+                            : "saved"
+                    );
+
+                    render({
+                        ...stored(),
+                        ...form()
+                    });
+
+                }
+            );
+
+        });
+
+        el("saveBtn").addEventListener(
+            "click",
+            save
+        );
+
+        el("discardBtn").addEventListener(
+            "click",
+            () => {
+
+                fill(saved);
+                setSave("saved");
+
+                toast(
+                    "Changes discarded",
+                    "Form restored to the last saved state.",
+                    "success"
+                );
+
+            }
+        );
+
+        el("resetBtn").addEventListener(
+            "click",
+            reset
+        );
+
+        el("testGithubBtn").addEventListener(
+            "click",
+            gh
+        );
+
+        el("testGroqBtn").addEventListener(
+            "click",
+            groq
+        );
+
+        el("exportBtn").addEventListener(
+            "click",
+            exportJson
+        );
+
+        el("importBtn").addEventListener(
+            "click",
+            () => el("importFile").click()
+        );
+
+        el("importFile").addEventListener(
+            "change",
+            event => {
+
+                const file =
+                    event.target.files &&
+                    event.target.files[0];
+
+                if(file){
+                    importJson(file);
+                }
+
+                event.target.value = "";
+
+            }
+        );
+
+        initNavigation();
+
+        window.addEventListener(
+            "beforeunload",
+            event => {
+
+                if(!isUnsaved()){
+                    return;
+                }
+
+                event.preventDefault();
+                event.returnValue = "";
+
+            }
+        );
+
+    }
+
+    if(
+        document.readyState === "loading"
+    ){
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            init,
+            {
+                once:true
+            }
+        );
+
+    }else{
+
+        init();
+
+    }
+
+})();
+</script>
+
+</body>
+</html> 
