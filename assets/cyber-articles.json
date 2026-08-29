@@ -1,5 +1,42 @@
 [
   {
+    "title": "Berlin Refuses to Pay Hackers Who Stole Data From the City's State Network",
+    "category": "attacks-data-breaches",
+    "slug": "berlin-refuses-to-pay-hackers-who-stole-data-from-the-citys-state-network",
+    "tag": "News",
+    "contentType": "News",
+    "desc": "Berlin Refuses to Pay Hackers Who Stole Data From the City's State Network: Berlin's state government has confirmed that it is the target of an extortion att...",
+    "image": "https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788005597/fvzyd4ggev5ojppudskl.png",
+    "date": "2026-08-29",
+    "modified": "2026-08-29T12:13:56.221Z",
+    "author": "Dyve HackaX Intelligence Unit",
+    "readTime": 4,
+    "seoTitle": "Berlin Refuses to Pay Hackers Who Stole Data From the City's S...",
+    "focusKeyword": "berlin",
+    "keywords": [
+      "berlin",
+      "state",
+      "government",
+      "confirmed",
+      "target",
+      "extortion",
+      "attempt",
+      "following"
+    ],
+    "sourceUrl": "",
+    "cves": "",
+    "threatActor": "",
+    "severity": "Medium",
+    "intelligenceNotes": "",
+    "imageAlt": "Berlin Refuses to Pay Hackers Who Stole Data From the City's State Network",
+    "delta": "assets/cyber-deltas/berlin-refuses-to-pay-hackers-who-stole-data-from-the-citys-state-network.json",
+    "status": "published",
+    "publishedAt": "2026-08-29T12:13:56.221Z",
+    "meta": "attacks-data-breaches",
+    "page": "cybersecurity",
+    "url": "cybersecurity/attacks-data-breaches/berlin-refuses-to-pay-hackers-who-stole-data-from-the-citys-state-network/"
+  },
+  {
     "title": "Frontier AI tipping the scales toward cyber adversaries",
     "category": "cyber-risk",
     "slug": "frontier-ai-tipping-the-scales-toward-cyber-adversaries",
@@ -34,7 +71,7 @@
     "publishedAt": "2026-08-29T11:39:53.965Z",
     "meta": "cyber-risk",
     "page": "cybersecurity",
-    "url": "cybersecurity/cyber-risk/frontier-ai-tipping-the-scales-toward-cyber-adversaries.html"
+    "url": "cybersecurity/cyber-risk/frontier-ai-tipping-the-scales-toward-cyber-adversaries/"
   },
   {
     "title": "Fake Apple Support AI Calls Target Stolen-Device Owners for Passcodes and 2FA Codes",
@@ -67,7 +104,7 @@
     "imageAlt": "Fake Apple Support AI Calls Target Stolen-Device Owners for Passcodes and 2FA Codes",
     "delta": "assets/cyber-deltas/fake-apple-support-ai-calls-target-stolen-device-owners-for-passcodes-and-2fa-codes.json",
     "meta": "threat-intelligence",
-    "url": "cybersecurity/threat-intelligence/fake-apple-support-ai-calls-target-stolen-device-owners-for-passcodes-and-2fa-codes.html",
+    "url": "cybersecurity/threat-intelligence/fake-apple-support-ai-calls-target-stolen-device-owners-for-passcodes-and-2fa-codes/",
     "page": "cybersecurity",
     "contentType": "News",
     "status": "published"
