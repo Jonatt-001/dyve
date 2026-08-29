@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Cybersecurity Intelligence | Dyve</title>
+<meta name="description" content="Cybersecurity intelligence, threat analysis, vulnerabilities, breaches and security reporting from Dyve Cybersecurity.">
+<meta name="author" content="Dyve HackaX Intelligence Unit">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="theme-color" content="#07090b">
+<meta name="color-scheme" content="dark">
+
+<link rel="canonical" href="https://dyve.online/cybersecurity/">
+<link rel="alternate" type="application/rss+xml" title="Dyve Cybersecurity RSS" href="/cyber-rss.xml">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Dyve Cybersecurity">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Cybersecurity Intelligence | Dyve">
+<meta property="og:description" content="Cybersecurity intelligence, threat analysis, vulnerabilities, breaches and security reporting from Dyve Cybersecurity.">
+<meta property="og:url" content="https://dyve.online/cybersecurity/">
+<meta property="og:image" content="https://dyve.online/assets/cyber.jpg">
+<meta property="og:image:alt" content="Dyve Cybersecurity">
+<meta property="og:image:type" content="image/jpeg">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cybersecurity Intelligence | Dyve">
+<meta name="twitter:description" content="Cybersecurity intelligence, threat analysis, vulnerabilities, breaches and security reporting from Dyve Cybersecurity.">
+<meta name="twitter:image" content="https://dyve.online/assets/cyber.jpg">
+<meta name="twitter:image:alt" content="Dyve Cybersecurity">
+
+<link rel="icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/hackax-logo.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --black:#050609;
+    --black-2:#080a0e;
+    --black-3:#0d1015;
+    --black-4:#13171d;
+    --paper:#f2f3ef;
+    --paper-2:#e9ebe6;
+    --white:#fff;
+    --ink:#0b0f13;
+    --ink-2:#20252b;
+    --muted:#727983;
+    --muted-dark:#949aa2;
+    --line:#d9ddd8;
+    --line-dark:rgba(255,255,255,.105);
+    --red:#ed1c24;
+    --red-bright:#ff3b44;
+    --green:#4F8A73;
+    --green-soft:rgba(79,138,115,.11);
+    --max:1440px;
+    --reading:760px;
+    --gutter:16px;
+    --ease:cubic-bezier(.2,.7,.2,1);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--black);scroll-behavior:smooth}
+body{font-family:"Inter",sans-serif;background:var(--paper);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body.locked{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+button{cursor:pointer}
+img{display:block;max-width:100%}
+::selection{background:var(--red);color:#fff}
+
+.container{width:min(calc(100% - (var(--gutter)*2)),var(--max));margin-inline:auto}
+
+.progress{position:fixed;left:0;top:0;width:100%;height:3px;background:transparent;z-index:1000;pointer-events:none}
+.progress-bar{width:0;height:100%;background:var(--red);box-shadow:0 0 14px rgba(237,28,36,.32);transition:width .08s linear}
+
+.utility{min-height:29px;background:#020304;color:rgba(255,255,255,.56);border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;position:relative;z-index:100}
+.utility-inner{width:min(calc(100% - 20px),var(--max));margin:auto;display:flex;align-items:center;justify-content:space-between;gap:15px;font-size:6.5px;line-height:1.2;letter-spacing:.035em}
+.utility strong{color:#fff;font-weight:800}
+.utility a{color:rgba(255,255,255,.5)}
+
+.header{height:62px;position:sticky;top:0;z-index:900;background:rgba(5,6,9,.94);color:#fff;border-bottom:1px solid rgba(255,255,255,.09);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%)}
+.header:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,rgba(237,28,36,.45),transparent);pointer-events:none}
+.header-inner{height:100%;width:min(calc(100% - 24px),var(--max));margin:auto;display:flex;align-items:center;gap:10px}
+.brand-mark{width:41px;height:41px;flex:0 0 41px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.15);background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.015));overflow:hidden}
+.brand-mark img{width:35px;height:35px;object-fit:contain}
+.brand-copy{display:flex;flex-direction:column;gap:2px}
+.brand-copy strong{font-family:"Barlow Condensed",sans-serif;font-size:17px;line-height:.9;letter-spacing:.035em;text-transform:uppercase}
+.brand-copy span{color:#6e747d;font-size:5px;line-height:1;text-transform:uppercase;letter-spacing:.16em}
+.header-actions{margin-left:auto;display:flex;align-items:center;gap:5px}
+.icon-button{width:39px;height:39px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.025);color:#fff;display:grid;place-items:center;border-radius:50%;transition:.25s var(--ease)}
+.icon-button:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.28);transform:translateY(-1px)}
+.icon-button svg{width:16px;height:16px}
+.back-button{width:auto;border-radius:0;padding:0 11px;display:flex;align-items:center;gap:7px;font-size:6px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.back-button svg{width:13px;height:13px}
+
+.article-hero{background:#080a0d;color:#fff;position:relative;overflow:hidden}
+.article-hero-inner{position:relative;z-index:2;width:min(calc(100% - (var(--gutter)*2)),var(--max));margin:auto;padding:54px 0 0}
+.breadcrumbs{display:flex;align-items:center;gap:7px;flex-wrap:wrap;color:#707780;font-size:6px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+.breadcrumbs a:hover{color:#fff}
+.breadcrumbs .current{color:#b4bac0;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.breadcrumbs .sep{color:var(--red)}
+.article-kicker{display:flex;align-items:center;gap:8px;margin-top:26px;color:#9ba1a8;font-size:7px;font-weight:800;letter-spacing:.19em;text-transform:uppercase}
+.article-kicker:before{content:"";width:28px;height:1px;background:var(--red);flex:0 0 28px}
+.article-title{max-width:1060px;margin-top:14px;font-family:"Barlow Condensed",sans-serif;font-size:clamp(46px,12vw,112px);line-height:.87;letter-spacing:-.025em;font-weight:800;text-transform:uppercase;text-wrap:balance}
+.article-dek{max-width:780px;margin-top:21px;color:rgba(255,255,255,.67);font-family:"Source Serif 4",Georgia,serif;font-size:16px;line-height:1.65}
+.article-meta{margin-top:24px;padding:16px 0 21px;border-top:1px solid var(--line-dark);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;color:#7e858e;font-size:6px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.article-meta-main{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.article-meta-main strong{color:#fff}
+.article-meta-main .bullet{color:var(--red)}
+.severity{display:inline-flex;align-items:center;gap:6px;padding:7px 9px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.035);color:#d6d9dc}
+.severity i{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 10px rgba(79,138,115,.7)}
+.severity.high i,.severity.critical i{background:var(--red);box-shadow:0 0 10px rgba(237,28,36,.65)}
+.severity.medium i{background:#c49a43;box-shadow:0 0 10px rgba(196,154,67,.55)}
+
+.hero-media{position:relative;margin-top:0;background:#11151a;overflow:hidden}
+.hero-media img{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:center}
+.hero-media:after{content:"";position:absolute;inset:0;border:1px solid rgba(255,255,255,.1);pointer-events:none}
+.image-credit{position:absolute;left:10px;bottom:10px;z-index:2;padding:7px 9px;background:rgba(0,0,0,.68);color:#fff;font-size:5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+
+.article-shell{background:var(--paper);padding:36px 0 70px}
+.article-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:34px}
+.reading-column{min-width:0}
+.body-copy{max-width:var(--reading);margin:0 auto;font-family:"Source Serif 4",Georgia,serif;font-size:18px;line-height:1.86;overflow-wrap:anywhere;color:#252a2e}
+.body-copy>*:first-child{margin-top:0}
+.body-copy p{margin:0 0 1.45em}
+.body-copy h2,.body-copy h3,.body-copy h4{font-family:"Inter",sans-serif;color:#0a0e12;letter-spacing:-.025em;line-height:1.12}
+.body-copy h2{margin:2.15em 0 .75em;font-size:30px}
+.body-copy h3{margin:1.8em 0 .65em;font-size:22px}
+.body-copy h4{margin:1.5em 0 .55em;font-size:17px}
+.body-copy strong{color:#11161a;font-weight:700}
+.body-copy em{font-style:italic}
+.body-copy ul,.body-copy ol{margin:0 0 1.5em;padding-left:1.3em}
+.body-copy li{margin:.45em 0;padding-left:.2em}
+.body-copy blockquote{margin:2em 0;padding:18px 20px;border-left:3px solid var(--red);background:#e7e9e4;color:#30363b;font-size:20px;line-height:1.6}
+.body-copy a{color:#2e6b58;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.body-copy a:hover{color:#174d3c}
+.body-copy img{width:auto;max-width:100%;height:auto;margin:28px auto;border-radius:2px}
+.body-copy figure{margin:30px 0}
+.body-copy figure img{margin:0;width:100%}
+.body-copy figcaption{margin-top:8px;color:#7b838b;font-family:Inter,sans-serif;font-size:10px;line-height:1.5}
+.body-copy video,.body-copy iframe{display:block;width:100%;max-width:100%;margin:30px auto;border:0}
+.body-copy iframe{aspect-ratio:16/9}
+.body-copy table{width:100%;display:block;overflow-x:auto;border-collapse:collapse;margin:28px 0;font-family:Inter,sans-serif;font-size:13px;line-height:1.5}
+.body-copy th,.body-copy td{min-width:120px;padding:10px 12px;border:1px solid #ccd2cd;text-align:left;vertical-align:top}
+.body-copy th{background:#e5e8e3;font-weight:800}
+.body-copy pre{max-width:100%;overflow:auto;margin:28px 0;padding:18px;background:#0b0e12;color:#dfe4e8;border-radius:2px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.65}
+.body-copy code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em}
+.body-copy :not(pre)>code{padding:.15em .35em;background:#dfe3de;color:#18201c}
+.body-copy hr{height:1px;border:0;background:#d3d8d3;margin:42px 0}
+.body-copy [style*="width"],[style*="height"]{max-width:100%!important}
+.body-copy *{max-width:100%}
+
+.article-actions{max-width:var(--reading);margin:38px auto 0;padding-top:22px;border-top:1px solid #d1d6d1;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.action-group{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.action-button{min-height:39px;padding:0 12px;border:1px solid #cdd3ce;background:#fff;color:#151a1e;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-size:6px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;transition:.25s var(--ease)}
+.action-button:hover{border-color:#9ba59f;transform:translateY(-1px)}
+.action-button svg{width:14px;height:14px}
+.action-button.primary{background:#0a0d10;color:#fff;border-color:#0a0d10}
+.action-button.primary:hover{background:#20252a}
+
+.intel-panel{max-width:var(--reading);margin:34px auto 0;border:1px solid #cbd3ce;background:#e9ece7}
+.intel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 15px;border-bottom:1px solid #cbd3ce}
+.intel-head strong{font-size:7px;font-weight:900;letter-spacing:.17em;text-transform:uppercase}
+.intel-head span{color:var(--green);font-size:5.5px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.intel-grid{display:grid;grid-template-columns:repeat(2,1fr)}
+.intel-item{padding:13px 15px;border-bottom:1px solid #d4dad5;border-right:1px solid #d4dad5}
+.intel-item:nth-child(even){border-right:0}
+.intel-item:nth-last-child(-n+2){border-bottom:0}
+.intel-label{display:block;color:#7b8480;font-size:5.5px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+.intel-value{display:block;margin-top:5px;color:#19201d;font-size:11px;font-weight:700;line-height:1.45;overflow-wrap:anywhere}
+.intel-notes{padding:14px 15px;border-top:1px solid #d4dad5;color:#58635d;font-family:"Source Serif 4",Georgia,serif;font-size:13px;line-height:1.65}
+
+.source-box{max-width:var(--reading);margin:24px auto 0;padding:14px 15px;border:1px solid #d1d7d2;background:#f8f9f6;color:#69736d;font-size:10px;line-height:1.6}
+.source-box strong{color:#1a211e;font-size:6px;letter-spacing:.15em;text-transform:uppercase;display:block;margin-bottom:5px}
+.source-box a{color:#2e6b58;overflow-wrap:anywhere}
+
+.article-footer-meta{max-width:var(--reading);margin:25px auto 0;display:flex;gap:7px;flex-wrap:wrap}
+.tag{display:inline-flex;align-items:center;min-height:28px;padding:0 9px;border:1px solid #cfd5d0;background:#fff;color:#59635e;font-size:5.5px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
+
+.article-side{display:none}
+.side-card{border:1px solid #d2d8d3;background:#fff;padding:15px}
+.side-card+.side-card{margin-top:10px}
+.side-label{display:flex;align-items:center;gap:7px;color:#737c77;font-size:5.5px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+.side-label:before{content:"";width:19px;height:1px;background:var(--red)}
+.side-card h3{margin-top:11px;color:#10161a;font-family:"Barlow Condensed",sans-serif;font-size:26px;line-height:.93;text-transform:uppercase}
+.side-card p{margin-top:9px;color:#69736d;font-size:8px;line-height:1.65}
+.side-link{display:block;margin-top:11px;color:#1b241f;font-size:6px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.side-link:hover{color:var(--red)}
+
+.related{background:#e7e9e5;border-top:1px solid #d5dad5;padding:54px 0 70px}
+.related-header{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:22px}
+.eyebrow{display:flex;align-items:center;gap:8px;color:#747d78;font-size:6px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}
+.eyebrow:before{content:"";width:20px;height:1px;background:var(--red)}
+.related-title{margin-top:8px;color:#0c1115;font-family:"Barlow Condensed",sans-serif;font-size:42px;line-height:.85;text-transform:uppercase}
+.related-link{padding-bottom:6px;border-bottom:1px solid #161b1f;font-size:6px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.related-link:after{content:" →";color:var(--red)}
+.related-grid{display:grid;grid-template-columns:1fr;gap:8px}
+.related-card{display:grid;grid-template-columns:112px minmax(0,1fr);min-height:112px;border:1px solid #d2d7d2;background:#fff;overflow:hidden;transition:.25s var(--ease)}
+.related-card:hover{transform:translateY(-2px);border-color:#b7c0ba}
+.related-image{background:#11161a;overflow:hidden}
+.related-image img{width:100%;height:100%;object-fit:cover;transition:.7s var(--ease)}
+.related-card:hover .related-image img{transform:scale(1.05)}
+.related-content{padding:12px;min-width:0}
+.related-content small{color:var(--green);font-size:5px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.related-content h3{margin-top:6px;color:#11171b;font-family:"Barlow Condensed",sans-serif;font-size:23px;line-height:.93;text-transform:uppercase;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+.related-content p{margin-top:6px;color:#707974;font-size:7px;line-height:1.55;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.related-meta{margin-top:8px;color:#8a928d;font-size:5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+
+.footer{background:#050608;color:#fff;padding:50px 0 25px}
+.footer-main{display:grid;gap:35px}
+.footer-logo{width:45px;height:45px;object-fit:contain;margin-bottom:14px}
+.footer h3{max-width:340px;font-family:"Barlow Condensed",sans-serif;font-size:30px;line-height:.88;text-transform:uppercase}
+.footer p{max-width:480px;margin-top:12px;color:#727983;font-size:8px;line-height:1.8}
+.footer-bottom{display:flex;flex-wrap:wrap;gap:8px 17px;margin-top:40px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08);color:#5f666f;font-size:5.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.footer-bottom a:hover{color:#fff}
+
+.search-panel{position:fixed;inset:0;z-index:1100;background:rgba(4,5,7,.985);color:#fff;display:none;padding:24px var(--gutter);overflow:auto}
+.search-panel.open{display:block}
+.search-inner{width:min(100%,900px);margin:auto;padding-top:8vh}
+.search-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.search-label{display:flex;align-items:center;gap:8px;color:#757d86;font-size:6px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}
+.search-label:before{content:"";width:20px;height:1px;background:var(--red)}
+.search-close{width:39px;height:39px;border:1px solid rgba(255,255,255,.14);border-radius:50%;background:transparent;color:#fff;font-size:21px;line-height:1}
+.search-input{width:100%;height:64px;border:1px solid rgba(255,255,255,.15);outline:0;background:rgba(255,255,255,.035);color:#fff;padding:0 17px;font-size:14px}
+.search-input:focus{border-color:rgba(79,138,115,.65);box-shadow:0 0 0 1px rgba(79,138,115,.12)}
+.search-input::placeholder{color:#555d65}
+.search-results{margin-top:10px;display:grid;gap:1px;background:rgba(255,255,255,.08)}
+.search-result{padding:14px;background:#0a0d11}
+.search-result:hover{background:#11151a}
+.search-result small{display:block;color:#69717a;font-size:5px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.search-result strong{display:block;margin-top:6px;font-family:"Barlow Condensed",sans-serif;font-size:22px;line-height:.95;text-transform:uppercase}
+
+.state{position:fixed;right:9px;bottom:calc(9px + env(safe-area-inset-bottom));z-index:800;min-height:33px;padding:0 10px;display:flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.13);background:rgba(7,8,10,.88);color:rgba(255,255,255,.58);font-size:5px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.state i{width:5px;height:5px;border-radius:50%;background:#777}
+.state.live i{background:var(--green);box-shadow:0 0 10px rgba(79,138,115,.75)}
+.state.error i{background:var(--red);box-shadow:0 0 10px rgba(237,28,36,.7)}
+
+.loading{min-height:70vh;display:grid;place-items:center;background:var(--paper)}
+.loading-box{text-align:center}
+.loading-spinner{width:30px;height:30px;border:2px solid #cfd5d0;border-top-color:var(--green);border-radius:50%;animation:spin .75s linear infinite;margin:auto}
+.loading-box strong{display:block;margin-top:12px;font-size:7px;letter-spacing:.15em;text-transform:uppercase}
+.loading-box span{display:block;margin-top:6px;color:#7c8580;font-size:7px}
+.error-page{min-height:70vh;padding:70px var(--gutter);display:grid;place-items:center;text-align:center;background:var(--paper)}
+.error-page strong{font-family:"Barlow Condensed",sans-serif;font-size:50px;line-height:.9;text-transform:uppercase}
+.error-page p{max-width:480px;margin:13px auto 0;color:#68726c;font-size:10px;line-height:1.7}
+.error-page a{display:inline-flex;margin-top:18px;min-height:40px;padding:0 15px;align-items:center;background:#0a0d10;color:#fff;font-size:6px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(min-width:700px){
+    :root{--gutter:36px}
+    .utility-inner{width:min(calc(100% - 48px),var(--max));font-size:7px}
+    .header{height:72px}
+    .header-inner{width:min(calc(100% - 48px),var(--max))}
+    .brand-mark{width:46px;height:46px;flex-basis:46px}
+    .brand-mark img{width:40px;height:40px}
+    .back-button{min-height:39px}
+    .article-hero-inner{padding-top:72px}
+    .article-title{font-size:clamp(68px,9vw,112px)}
+    .article-dek{font-size:18px}
+    .article-meta{font-size:7px;padding-top:18px;padding-bottom:25px}
+    .hero-media{margin-inline:0}
+    .article-shell{padding:55px 0 90px}
+    .body-copy{font-size:19px;line-height:1.9}
+    .related{padding:75px 0 90px}
+    .related-title{font-size:52px}
+    .related-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+    .related-card{grid-template-columns:145px minmax(0,1fr);min-height:145px}
+    .footer-main{grid-template-columns:1fr 1fr;align-items:start}
+}
+
+@media(min-width:1050px){
+    .article-hero-inner{padding-top:88px}
+    .article-layout{grid-template-columns:minmax(0,var(--reading)) 270px;justify-content:center;gap:70px}
+    .article-side{display:block;position:sticky;top:104px;align-self:start}
+    .body-copy,.article-actions,.intel-panel,.source-box,.article-footer-meta{max-width:none}
+    .article-actions{margin-top:40px}
+    .article-title{font-size:clamp(84px,7.6vw,124px)}
+    .article-dek{font-size:20px}
+    .related-grid{grid-template-columns:repeat(4,1fr)}
+    .related-card{display:block;min-height:0}
+    .related-image{height:185px}
+    .related-content{padding:14px}
+    .related-content h3{font-size:25px}
+}
+
+@media(max-width:699px){
+    .utility-inner span:last-child{display:none}
+    .back-button span{display:none}
+    .article-hero-inner{width:calc(100% - 32px)}
+    .article-title{max-width:350px}
+    .article-dek{font-size:15px;line-height:1.65}
+    .article-meta{align-items:flex-start}
+    .article-meta-main{line-height:1.7}
+    .hero-media{margin-inline:-16px}
+    .hero-media img{aspect-ratio:16/10}
+    .article-shell{padding-top:30px}
+    .body-copy{font-size:17.5px;line-height:1.84}
+    .body-copy h2{font-size:27px}
+    .body-copy h3{font-size:21px}
+    .body-copy blockquote{font-size:18px;padding:15px 16px}
+    .intel-grid{grid-template-columns:1fr}
+    .intel-item,.intel-item:nth-child(even){border-right:0;border-bottom:1px solid #d4dad5}
+    .intel-item:last-child{border-bottom:0}
+    .related-header{align-items:flex-start}
+    .related-title{font-size:39px}
+    .related-link{margin-top:6px}
+    .footer{padding-top:48px}
+}
+
+@media(max-width:390px){
+    .article-title{font-size:43px}
+    .article-dek{font-size:14px}
+    .body-copy{font-size:17px}
+    .related-title{font-size:36px}
+}
+
+@media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*:before,*:after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+
+<body>
+
+<div class="progress" aria-hidden="true"><div class="progress-bar" id="progress-bar"></div></div>
+
+<div class="utility">
+    <div class="utility-inner">
+        <span><strong>DYVE CYBERSECURITY.</strong> Intelligence, threats, vulnerabilities and security analysis.</span>
+        <span><a href="/cybersecurity/">Return to intelligence feed →</a></span>
+    </div>
+</div>
+
+<header class="header">
+    <div class="header-inner">
+        <a href="/cybersecurity/" class="brand-mark" aria-label="Dyve Cybersecurity home">
+            <img src="/assets/hackax-logo.svg" alt="Dyve Cybersecurity" onerror="this.style.display='none'">
+        </a>
+        <div class="brand-copy">
+            <strong>Cybersecurity</strong>
+            <span>Cybersecurity Intelligence</span>
+        </div>
+
+        <div class="header-actions">
+            <button class="icon-button back-button" id="back-button" type="button" aria-label="Go back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
+                <span>Back</span>
+            </button>
+            <button class="icon-button" id="search-button" type="button" aria-label="Search cybersecurity intelligence">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l5 5"></path></svg>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="search-panel" id="search-panel" aria-hidden="true">
+    <div class="search-inner">
+        <div class="search-top">
+            <span class="search-label">Cybersecurity Intelligence Search</span>
+            <button class="search-close" id="search-close" type="button" aria-label="Close search">×</button>
+        </div>
+        <input class="search-input" id="search-input" type="search" autocomplete="off" placeholder="Search cybersecurity intelligence..." aria-label="Search">
+        <div class="search-results" id="search-results"></div>
+    </div>
+</div>
+
+<div class="state" id="state"><i></i><span id="state-text">Loading article</span></div>
+
+<main id="app">
+    <section class="loading" id="loading-state">
+        <div class="loading-box">
+            <div class="loading-spinner"></div>
+            <strong>Loading intelligence</strong>
+            <span>Resolving the published article record...</span>
+        </div>
+    </section>
+</main>
+
+<script>
+(function(){
+"use strict";
+
+/*
+============================================================
+ DYVE CYBERSECURITY ARTICLE RENDER ENGINE
+============================================================
+
+ Production publication boundary:
+   Data source: /assets/cyber-articles.json
+   Article route: /cybersecurity/<category>/<slug>.html
+   Category route: /cybersecurity/<category>/
+
+ The article template is designed to work in two modes:
+   1. Static generated article HTML published by the editor.
+   2. Standalone article.html template resolving the current
+      route against cyber-articles.json.
+
+ The editor's canonical fields are preserved:
+   title, category, slug, tag, desc, image, date, modified,
+   author, readTime, url, seoTitle, focusKeyword, keywords,
+   sourceUrl, cves, threatActor, severity, intelligenceNotes,
+   imageAlt, delta.
+============================================================
+*/
+
+const CONFIG = {
+    siteName: "Dyve Cybersecurity",
+    shortName: "Cybersecurity",
+    publisher: "Dyve HackaX Intelligence Unit",
+    siteUrl: "https://dyve.online",
+    home: "/cybersecurity/",
+    dataUrl: "/assets/cyber-articles.json",
+    logo: "/assets/hackax-logo.svg",
+    brandImage: "/assets/cyber.jpg",
+    rss: "/cyber-rss.xml",
+    articleRoot: "/cybersecurity/",
+    defaultDescription: "Cybersecurity intelligence, threat analysis, vulnerabilities, breaches and security reporting from Dyve Cybersecurity."
+};
+
+const state = {
+    articles: [],
+    article: null,
+    related: [],
+    categories: []
+};
+
+function cleanText(value){
+    return String(value ?? "")
+        .replace(/<[^>]*>/g," ")
+        .replace(/\s+/g," ")
+        .trim();
+}
+
+function escapeHTML(value){
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+function slugify(value){
+    return cleanText(value)
+        .toLowerCase()
+        .replace(/&/g,"and")
+        .replace(/[^a-z0-9]+/g,"-")
+        .replace(/^-+|-+$/g,"");
+}
+
+function firstValid(){
+    for(const value of arguments){
+        if(value === null || value === undefined) continue;
+        if(Array.isArray(value)){
+            if(value.length) return value;
+            continue;
+        }
+        if(String(value).trim()) return value;
+    }
+    return "";
+}
+
+function getDateValue(a){
+    return firstValid(
+        a.date,
+        a.publishedAt,
+        a.published_at,
+        a.datePublished,
+        a.date_published,
+        a.publishDate,
+        a.createdAt,
+        a.created_at,
+        a.updatedAt,
+        a.dateUpdated,
+        a.modified
+    );
+}
+
+function getTimestamp(a){
+    const value = Date.parse(getDateValue(a));
+    return Number.isFinite(value) ? value : 0;
+}
+
+function getModifiedTimestamp(a){
+    const value = Date.parse(firstValid(a.modified,a.updatedAt,a.dateModified,a.date,getDateValue(a)));
+    return Number.isFinite(value) ? value : getTimestamp(a);
+}
+
+function getImage(a){
+    return firstValid(a.image,a.imageUrl,a.coverImage,a.cover,a.thumbnail,a.ogImage);
+}
+
+function getDescription(a){
+    return cleanText(firstValid(a.desc,a.description,a.excerpt,a.summary,a.dek));
+}
+
+function getCategory(a){
+    return cleanText(firstValid(a.category,a.meta,a.section,a.topic,a.type)).toLowerCase();
+}
+
+function getAuthor(a){
+    return cleanText(firstValid(a.author,a.authorName,a.byline)) || CONFIG.publisher;
+}
+
+function getReadTime(a){
+    const raw = firstValid(a.readTime,a.readingTime,a.reading_time);
+    const match = String(raw || "").match(/\d+/);
+    return match ? Math.max(1,Number(match[0])) : 1;
+}
+
+function getKeywords(a){
+    if(Array.isArray(a.keywords)) return a.keywords.map(cleanText).filter(Boolean);
+    return cleanText(a.keywords).split(",").map(x=>x.trim()).filter(Boolean);
+}
+
+function absoluteUrl(value){
+    if(!value) return CONFIG.siteUrl + CONFIG.brandImage;
+    if(/^https?:\/\//i.test(String(value))) return String(value);
+    return CONFIG.siteUrl + "/" + String(value).replace(/^\/+/,"");
+}
+
+function normalizeArticle(raw){
+    if(!raw || typeof raw !== "object") return null;
+
+    const title = cleanText(firstValid(raw.title,raw.headline,raw.name));
+    const category = getCategory(raw);
+    const slug = slugify(firstValid(raw.slug,title));
+
+    if(!title || !category || !slug) return null;
+
+    const status = String(firstValid(raw.status,"published")).toLowerCase();
+    if(["draft","unpublished","archived","deleted"].includes(status)) return null;
+    if(raw.published === false) return null;
+
+    const canonicalUrl = String(firstValid(raw.url,`cybersecurity/${category}/${slug}.html`)).replace(/^\/+/,"");
+
+    return {
+        raw,
+        title,
+        category,
+        slug,
+        tag: cleanText(firstValid(raw.tag,raw.contentType,"News")) || "News",
+        contentType: cleanText(firstValid(raw.contentType,raw.tag,"News")) || "News",
+        desc: getDescription(raw),
+        image: getImage(raw),
+        imageAlt: cleanText(firstValid(raw.imageAlt,raw.alt,raw.image_alt,title)) || title,
+        date: getDateValue(raw),
+        modified: firstValid(raw.modified,raw.updatedAt,raw.dateModified,raw.date,getDateValue(raw)),
+        author: getAuthor(raw),
+        readTime: getReadTime(raw),
+        url: canonicalUrl,
+        seoTitle: cleanText(firstValid(raw.seoTitle,title)) || title,
+        focusKeyword: cleanText(raw.focusKeyword),
+        keywords: getKeywords(raw),
+        sourceUrl: cleanText(raw.sourceUrl),
+        cves: cleanText(raw.cves),
+        threatActor: cleanText(raw.threatActor),
+        severity: cleanText(firstValid(raw.severity,"Medium")) || "Medium",
+        intelligenceNotes: cleanText(raw.intelligenceNotes),
+        delta: cleanText(raw.delta),
+        body: firstValid(
+            raw.articleContent,
+            raw.content,
+            raw.body,
+            raw.articleBody,
+            raw.html,
+            raw.articleHTML,
+            raw.articleHtml,
+            ""
+        )
+    };
+}
+
+function sortArticles(list){
+    return list.slice().sort((a,b)=>getTimestamp(b.raw)-getTimestamp(a.raw));
+}
+
+function articleCanonical(a){
+    return absoluteUrl(a.url);
+}
+
+function formatDate(value,includeTime){
+    const date = new Date(value);
+    if(Number.isNaN(date.getTime())) return cleanText(value);
+
+    return new Intl.DateTimeFormat("en-US",{
+        month:"long",
+        day:"numeric",
+        year:"numeric",
+        ...(includeTime ? {hour:"numeric",minute:"2-digit"} : {})
+    }).format(date);
+}
+
+function formatRelative(value){
+    const timestamp = Date.parse(value);
+    if(!Number.isFinite(timestamp)) return formatDate(value,false);
+
+    const diff = Date.now() - timestamp;
+    if(diff < 0) return formatDate(value,false);
+
+    const minute = 60000;
+    const hour = 3600000;
+    const day = 86400000;
+
+    if(diff < hour){
+        const n = Math.max(1,Math.floor(diff/minute));
+        return `${n} ${n === 1 ? "minute" : "minutes"} ago`;
+    }
+
+    if(diff < day){
+        const n = Math.max(1,Math.floor(diff/hour));
+        return `${n} ${n === 1 ? "hour" : "hours"} ago`;
+    }
+
+    if(diff < 7 * day){
+        const n = Math.max(1,Math.floor(diff/day));
+        return `${n} ${n === 1 ? "day" : "days"} ago`;
+    }
+
+    return formatDate(value,false);
+}
+
+function normalizeRoute(value){
+    return decodeURIComponent(String(value || ""))
+        .replace(/^\/+/,"")
+        .replace(/\/$/,"")
+        .toLowerCase();
+}
+
+function getRequestedRoute(){
+    const params = new URLSearchParams(window.location.search);
+    const querySlug = cleanText(params.get("slug") || params.get("id"));
+
+    if(querySlug){
+        return {
+            slug: slugify(querySlug),
+            category: slugify(params.get("category") || "")
+        };
+    }
+
+    const path = normalizeRoute(window.location.pathname);
+    const marker = "cybersecurity/";
+    const index = path.indexOf(marker);
+
+    if(index < 0) return {slug:"",category:""};
+
+    const tail = path.slice(index + marker.length).replace(/\/index\.html?$/i,"");
+    const parts = tail.split("/").filter(Boolean);
+
+    if(!parts.length) return {slug:"",category:""};
+
+    if(parts.length >= 2){
+        return {
+            category: slugify(parts[0]),
+            slug: slugify(parts[1].replace(/\.html?$/i,""))
+        };
+    }
+
+    const single = parts[0].replace(/\.html?$/i,"");
+    return {slug:slugify(single),category:""};
+}
+
+function resolveArticle(list){
+    const route = getRequestedRoute();
+    const requestedSlug = route.slug;
+    const requestedCategory = route.category;
+
+    if(requestedSlug){
+        const exact = list.find(a=>
+            a.slug === requestedSlug &&
+            (!requestedCategory || a.category === requestedCategory)
+        );
+        if(exact) return exact;
+    }
+
+    if(requestedSlug){
+        const byUrl = list.find(a=>normalizeRoute(a.url).endsWith(`${requestedCategory ? requestedCategory + "/" : ""}${requestedSlug}`));
+        if(byUrl) return byUrl;
+    }
+
+    return null;
+}
+
+function safeArticleBody(body){
+    const html = String(body || "").trim();
+    if(!html) return `<p>This article has been published without article body content.</p>`;
+
+    const template = document.createElement("template");
+    template.innerHTML = html;
+
+    template.content.querySelectorAll("script,style,link,meta,base,object,embed,form,input,button,textarea,select").forEach(el=>el.remove());
+
+    template.content.querySelectorAll("*").forEach(el=>{
+        [...el.attributes].forEach(attr=>{
+            const name = attr.name.toLowerCase();
+            const value = attr.value;
+
+            if(name.startsWith("on") || name === "srcdoc"){
+                el.removeAttribute(attr.name);
+                return;
+            }
+
+            if((name === "href" || name === "src" || name === "poster") && /^\s*javascript:/i.test(value)){
+                el.removeAttribute(attr.name);
+                return;
+            }
+        });
+    });
+
+    return template.innerHTML;
+}
+
+function setMeta(selector,attribute,value){
+    const el = document.querySelector(selector);
+    if(el && value) el.setAttribute(attribute,value);
+}
+
+function updateHead(article){
+    const title = article.seoTitle || article.title;
+    const description = article.desc || CONFIG.defaultDescription;
+    const canonical = articleCanonical(article);
+    const image = absoluteUrl(article.image || CONFIG.brandImage);
+
+    document.title = `${title} | Dyve Cybersecurity`;
+    setMeta('meta[name="description"]','content',description);
+    setMeta('meta[name="author"]','content',article.author || CONFIG.publisher);
+    setMeta('meta[property="og:title"]','content',title);
+    setMeta('meta[property="og:description"]','content',description);
+    setMeta('meta[property="og:url"]','content',canonical);
+    setMeta('meta[property="og:image"]','content',image);
+    setMeta('meta[property="og:image:alt"]','content',article.imageAlt || article.title);
+    setMeta('meta[name="twitter:title"]','content',title);
+    setMeta('meta[name="twitter:description"]','content',description);
+    setMeta('meta[name="twitter:image"]','content',image);
+    setMeta('meta[name="twitter:image:alt"]','content',article.imageAlt || article.title);
+
+    const canonicalLink = document.querySelector('link[rel="canonical"]');
+    if(canonicalLink) canonicalLink.href = canonical;
+}
+
+function injectSchema(article){
+    document.querySelectorAll("script[data-article-schema]").forEach(el=>el.remove());
+
+    const canonical = articleCanonical(article);
+    const image = absoluteUrl(article.image || CONFIG.brandImage);
+    const schema = {
+        "@context":"https://schema.org",
+        "@type":"NewsArticle",
+        "@id":canonical + "#article",
+        "headline":article.title,
+        "description":article.desc || CONFIG.defaultDescription,
+        "image":[image],
+        "datePublished":article.date || undefined,
+        "dateModified":article.modified || article.date || undefined,
+        "author":{
+            "@type":"Organization",
+            "name":article.author || CONFIG.publisher
+        },
+        "publisher":{
+            "@type":"Organization",
+            "name":CONFIG.siteName,
+            "url":CONFIG.siteUrl,
+            "logo":{
+                "@type":"ImageObject",
+                "url":absoluteUrl(CONFIG.brandImage)
+            }
+        },
+        "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":canonical
+        },
+        "articleSection":article.category,
+        "keywords":article.keywords.join(", ") || undefined,
+        "isPartOf":{
+            "@type":"WebSite",
+            "name":CONFIG.siteName,
+            "url":CONFIG.siteUrl + CONFIG.home
+        }
+    };
+
+    Object.keys(schema).forEach(key=>{
+        if(schema[key] === undefined || schema[key] === "") delete schema[key];
+    });
+
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.dataset.articleSchema = "true";
+    script.textContent = JSON.stringify(schema).replace(/</g,"\\u003c");
+    document.head.appendChild(script);
+}
+
+function buildCategories(){
+    const map = new Map();
+    state.articles.forEach(article=>{
+        if(!map.has(article.category)) map.set(article.category,{name:article.category,count:0});
+        map.get(article.category).count++;
+    });
+    state.categories = [...map.values()].sort((a,b)=>b.count-a.count);
+}
+
+function categoryLabel(value){
+    return String(value || "Cybersecurity")
+        .split("-")
+        .map(word=>word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+}
+
+function render(article){
+    state.article = article;
+    updateHead(article);
+    injectSchema(article);
+
+    const app = document.getElementById("app");
+    const image = article.image || CONFIG.brandImage;
+    const severity = article.severity.toLowerCase().replace(/\s+/g,"-");
+    const canonical = articleCanonical(article);
+    const categoryUrl = `${CONFIG.articleRoot}${encodeURIComponent(article.category)}/`;
+    const body = safeArticleBody(article.body);
+
+    app.innerHTML = `
+        <section class="article-hero">
+            <div class="article-hero-inner">
+                <div class="breadcrumbs" aria-label="Breadcrumb">
+                    <a href="${CONFIG.home}">Cybersecurity</a>
+                    <span class="sep">/</span>
+                    <a href="${categoryUrl}">${escapeHTML(categoryLabel(article.category))}</a>
+                    <span class="sep">/</span>
+                    <span class="current">${escapeHTML(article.title)}</span>
+                </div>
+
+                <div class="article-kicker">
+                    ${escapeHTML(categoryLabel(article.category))} / ${escapeHTML(article.tag)}
+                </div>
+
+                <h1 class="article-title">${escapeHTML(article.title)}</h1>
+                <p class="article-dek">${escapeHTML(article.desc || CONFIG.defaultDescription)}</p>
+
+                <div class="article-meta">
+                    <div class="article-meta-main">
+                        <strong>${escapeHTML(article.author)}</strong>
+                        <span class="bullet">•</span>
+                        <span>${escapeHTML(formatDate(article.date || article.modified,false))}</span>
+                        <span class="bullet">•</span>
+                        <span>${escapeHTML(article.readTime)} min read</span>
+                        <span class="bullet">•</span>
+                        <span>${escapeHTML(formatRelative(article.date || article.modified))}</span>
+                    </div>
+                    <span class="severity ${escapeHTML(severity)}"><i></i>${escapeHTML(article.severity)}</span>
+                </div>
+
+                <div class="hero-media">
+                    <img id="article-hero-image" src="${escapeHTML(image)}" alt="${escapeHTML(article.imageAlt)}" fetchpriority="high" decoding="async">
+                    <span class="image-credit">Dyve Cybersecurity</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="article-shell">
+            <div class="container">
+                <div class="article-layout">
+                    <div class="reading-column">
+                        <article class="body-copy" id="article-body">
+                            ${body}
+                        </article>
+
+                        ${renderIntelligencePanel(article)}
+                        ${renderSource(article)}
+
+                        <div class="article-actions">
+                            <div class="action-group">
+                                <button class="action-button primary" id="share-button" type="button">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="19" r="2.5"></circle><path d="m8.2 10.8 7.6-4.5"></path><path d="m8.2 13.2 7.6 4.5"></path></svg>
+                                    Share Intelligence
+                                </button>
+                                <button class="action-button" id="copy-button" type="button">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="8" width="11" height="11" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg>
+                                    Copy Link
+                                </button>
+                            </div>
+                            <span class="tag">${escapeHTML(article.tag)}</span>
+                        </div>
+
+                        <div class="article-footer-meta">
+                            <span class="tag">${escapeHTML(categoryLabel(article.category))}</span>
+                            ${article.focusKeyword ? `<span class="tag">${escapeHTML(article.focusKeyword)}</span>` : ""}
+                            ${article.keywords.slice(0,5).map(k=>`<span class="tag">${escapeHTML(k)}</span>`).join("")}
+                        </div>
+                    </div>
+
+                    <aside class="article-side" aria-label="Article tools">
+                        <div class="side-card">
+                            <div class="side-label">Reading progress</div>
+                            <h3 id="side-progress">0%</h3>
+                            <p>Stay oriented as you move through the intelligence report.</p>
+                        </div>
+                        <div class="side-card">
+                            <div class="side-label">Publication</div>
+                            <h3>${escapeHTML(categoryLabel(article.category))}</h3>
+                            <p>${escapeHTML(article.readTime)} minute read · ${escapeHTML(article.author)}</p>
+                            <a class="side-link" href="${categoryUrl}">Explore category →</a>
+                        </div>
+                        <div class="side-card">
+                            <div class="side-label">Article URL</div>
+                            <p style="margin-top:10px;overflow-wrap:anywhere">${escapeHTML(canonical)}</p>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <section class="related" id="related">
+            <div class="container">
+                <div class="related-header">
+                    <div>
+                        <div class="eyebrow">Continue intelligence</div>
+                        <h2 class="related-title">Related reporting</h2>
+                    </div>
+                    <a class="related-link" href="${CONFIG.home}">Full intelligence feed</a>
+                </div>
+                <div class="related-grid" id="related-grid"></div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-main">
+                    <div>
+                        <img class="footer-logo" src="${CONFIG.logo}" alt="Dyve Cybersecurity" onerror="this.style.display='none'">
+                        <h3>Dyve Cybersecurity Intelligence</h3>
+                        <p>Cybersecurity reporting, threat intelligence, vulnerability coverage and security analysis published by Dyve.</p>
+                    </div>
+                    <div>
+                        <p style="margin-top:0">Publication boundary: cybersecurity. The article database is maintained by the Cybersecurity editorial pipeline and published through the production intelligence feed.</p>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <span><a href="${CONFIG.home}">Cybersecurity</a></span>
+                    <span><a href="/cybersecurity/about/">About</a></span>
+                    <span><a href="/cybersecurity/editorial-policy/">Editorial Policy</a></span>
+                    <span><a href="/cybersecurity/methodology/">Methodology</a></span>
+                    <span><a href="/privacy/">Privacy</a></span>
+                    <span><a href="/terms/">Terms</a></span>
+                    <span>© ${new Date().getFullYear()} Dyve Cybersecurity</span>
+                </div>
+            </div>
+        </footer>
+    `;
+
+    renderRelated();
+    bindArticleActions();
+    bindImageFallback();
+    initProgress();
+    setState("live","Article live");
+}
+
+function renderIntelligencePanel(article){
+    const hasContext = article.threatActor || article.cves || article.severity || article.intelligenceNotes;
+    if(!hasContext) return "";
+
+    const items = [];
+    if(article.threatActor) items.push(["Threat actor",article.threatActor]);
+    if(article.cves) items.push(["Vulnerability IDs",article.cves]);
+    if(article.severity) items.push(["Severity",article.severity]);
+    if(article.contentType) items.push(["Content type",article.contentType]);
+
+    return `
+        <aside class="intel-panel" aria-label="Cyber intelligence context">
+            <div class="intel-head">
+                <strong>Cyber Intelligence Context</strong>
+                <span>Editorial record</span>
+            </div>
+            <div class="intel-grid">
+                ${items.map(item=>`
+                    <div class="intel-item">
+                        <span class="intel-label">${escapeHTML(item[0])}</span>
+                        <span class="intel-value">${escapeHTML(item[1])}</span>
+                    </div>
+                `).join("")}
+            </div>
+            ${article.intelligenceNotes ? `<div class="intel-notes"><strong>Analyst notes:</strong> ${escapeHTML(article.intelligenceNotes)}</div>` : ""}
+        </aside>
+    `;
+}
+
+function renderSource(article){
+    if(!article.sourceUrl) return "";
+    let href = article.sourceUrl;
+    if(!/^https?:\/\//i.test(href)) href = "https://" + href.replace(/^\/+/,"");
+
+    return `
+        <div class="source-box">
+            <strong>Source / reference</strong>
+            <a href="${escapeHTML(href)}" target="_blank" rel="noopener noreferrer nofollow">${escapeHTML(article.sourceUrl)}</a>
+        </div>
+    `;
+}
+
+function renderRelated(){
+    const grid = document.getElementById("related-grid");
+    if(!grid || !state.article) return;
+
+    const current = state.article;
+    const sameCategory = state.articles.filter(a=>a.slug !== current.slug && a.category === current.category);
+    const others = state.articles.filter(a=>a.slug !== current.slug && a.category !== current.category);
+    state.related = sameCategory.concat(others).slice(0,4);
+
+    if(!state.related.length){
+        grid.innerHTML = `<div class="error-state" style="grid-column:1/-1;padding:24px;color:#67716b">No additional published intelligence is available yet.</div>`;
+        return;
+    }
+
+    grid.innerHTML = state.related.map(article=>{
+        const href = "/" + article.url.replace(/^\/+/,"");
+        const image = article.image || CONFIG.brandImage;
+        return `
+            <a class="related-card" href="${escapeHTML(href)}">
+                <div class="related-image"><img src="${escapeHTML(image)}" alt="${escapeHTML(article.imageAlt)}" loading="lazy" decoding="async"></div>
+                <div class="related-content">
+                    <small>${escapeHTML(categoryLabel(article.category))}</small>
+                    <h3>${escapeHTML(article.title)}</h3>
+                    <p>${escapeHTML(article.desc || CONFIG.defaultDescription)}</p>
+                    <div class="related-meta">${escapeHTML(formatDate(article.date || article.modified,false))} · ${escapeHTML(article.readTime)} min read</div>
+                </div>
+            </a>
+        `;
+    }).join("");
+}
+
+function bindImageFallback(){
+    const image = document.getElementById("article-hero-image");
+    if(!image) return;
+
+    image.addEventListener("error",()=>{
+        if(image.dataset.fallbackApplied === "true") return;
+        image.dataset.fallbackApplied = "true";
+        image.src = CONFIG.brandImage;
+        image.alt = CONFIG.siteName;
+    });
+}
+
+function bindArticleActions(){
+    const share = document.getElementById("share-button");
+    const copy = document.getElementById("copy-button");
+    const back = document.getElementById("back-button");
+
+    if(back){
+        back.addEventListener("click",()=>{
+            if(document.referrer && new URL(document.referrer).origin === window.location.origin){
+                history.back();
+            }else{
+                window.location.href = CONFIG.home;
+            }
+        });
+    }
+
+    if(share){
+        share.addEventListener("click",async()=>{
+            const payload = {
+                title: state.article.title,
+                text: state.article.desc || state.article.title,
+                url: articleCanonical(state.article)
+            };
+
+            try{
+                if(navigator.share){
+                    await navigator.share(payload);
+                    share.innerHTML = "Shared";
+                    setTimeout(()=>{share.innerHTML = shareDefaultMarkup();},1800);
+                }else{
+                    await navigator.clipboard.writeText(payload.url);
+                    share.innerHTML = "Link copied";
+                    setTimeout(()=>{share.innerHTML = shareDefaultMarkup();},1800);
+                }
+            }catch(error){
+                if(error && error.name === "AbortError") return;
+                share.innerHTML = "Unable to share";
+                setTimeout(()=>{share.innerHTML = shareDefaultMarkup();},1800);
+            }
+        });
+    }
+
+    if(copy){
+        copy.addEventListener("click",async()=>{
+            try{
+                await navigator.clipboard.writeText(articleCanonical(state.article));
+                copy.textContent = "Copied";
+                setTimeout(()=>copy.textContent = "Copy Link",1800);
+            }catch(error){
+                copy.textContent = "Copy unavailable";
+                setTimeout(()=>copy.textContent = "Copy Link",1800);
+            }
+        });
+    }
+}
+
+function shareDefaultMarkup(){
+    return `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="19" r="2.5"></circle><path d="m8.2 10.8 7.6-4.5"></path><path d="m8.2 13.2 7.6 4.5"></path></svg>
+        Share Intelligence
+    `;
+}
+
+function initProgress(){
+    const bar = document.getElementById("progress-bar");
+    const body = document.getElementById("article-body");
+    const side = document.getElementById("side-progress");
+    if(!bar || !body) return;
+
+    const update = ()=>{
+        const rect = body.getBoundingClientRect();
+        const top = window.scrollY + rect.top;
+        const height = Math.max(1,body.offsetHeight);
+        const viewport = window.innerHeight;
+        const denominator = Math.max(1,height - viewport * .55);
+        const progress = Math.min(100,Math.max(0,((window.scrollY - top + viewport * .35) / denominator) * 100));
+        bar.style.width = `${progress}%`;
+        if(side) side.textContent = `${Math.round(progress)}%`;
+    };
+
+    update();
+    window.addEventListener("scroll",update,{passive:true});
+    window.addEventListener("resize",update,{passive:true});
+}
+
+function setState(mode,text){
+    const el = document.getElementById("state");
+    const label = document.getElementById("state-text");
+    if(!el || !label) return;
+    el.className = `state ${mode || ""}`;
+    label.textContent = text;
+}
+
+async function fetchArticles(){
+    const response = await fetch(`${CONFIG.dataUrl}?v=${Date.now()}`,{
+        cache:"no-store",
+        headers:{Accept:"application/json"}
+    });
+
+    if(!response.ok){
+        throw new Error(`HTTP ${response.status} while loading ${CONFIG.dataUrl}`);
+    }
+
+    const payload = await response.json();
+    const raw = Array.isArray(payload)
+        ? payload
+        : Array.isArray(payload.articles)
+            ? payload.articles
+            : Array.isArray(payload.data)
+                ? payload.data
+                : Array.isArray(payload.items)
+                    ? payload.items
+                    : [];
+
+    return sortArticles(raw.map(normalizeArticle).filter(Boolean));
+}
+
+async function load(){
+    setState("","Resolving article");
+
+    try{
+        state.articles = await fetchArticles();
+        buildCategories();
+
+        if(!state.articles.length){
+            throw new Error("The cybersecurity article database contains no published records.");
+        }
+
+        const article = resolveArticle(state.articles);
+        if(!article){
+            renderNotFound();
+            return;
+        }
+
+        render(article);
+    }catch(error){
+        console.error("Dyve Cybersecurity article renderer:",error);
+        setState("error","Article unavailable");
+        renderError(error);
+    }
+}
+
+function renderNotFound(){
+    const app = document.getElementById("app");
+    app.innerHTML = `
+        <section class="error-page">
+            <div>
+                <strong>Intelligence not found.</strong>
+                <p>The requested cybersecurity article is not present in the current production publication database. Check the article URL or return to the intelligence feed.</p>
+                <a href="${CONFIG.home}">Return to Cybersecurity</a>
+            </div>
+        </section>
+    `;
+    document.title = "Article Not Found | Dyve Cybersecurity";
+}
+
+function renderError(error){
+    const app = document.getElementById("app");
+    app.innerHTML = `
+        <section class="error-page">
+            <div>
+                <strong>Publication unavailable.</strong>
+                <p>The article renderer could not resolve the production cybersecurity publication data. Please retry or return to the intelligence feed.</p>
+                <a href="${CONFIG.home}">Return to Cybersecurity</a>
+            </div>
+        </section>
+    `;
+}
+
+function initSearch(){
+    const button = document.getElementById("search-button");
+    const panel = document.getElementById("search-panel");
+    const close = document.getElementById("search-close");
+    const input = document.getElementById("search-input");
+    const results = document.getElementById("search-results");
+
+    if(!button || !panel || !close || !input || !results) return;
+
+    function openSearch(){
+        panel.classList.add("open");
+        panel.setAttribute("aria-hidden","false");
+        document.body.classList.add("locked");
+        setTimeout(()=>input.focus(),70);
+    }
+
+    function shutSearch(){
+        panel.classList.remove("open");
+        panel.setAttribute("aria-hidden","true");
+        document.body.classList.remove("locked");
+    }
+
+    button.addEventListener("click",openSearch);
+    close.addEventListener("click",shutSearch);
+
+    input.addEventListener("input",()=>{
+        const query = cleanText(input.value).toLowerCase();
+        if(!query){
+            results.innerHTML = "";
+            return;
+        }
+
+        const matches = state.articles.filter(article=>[
+            article.title,
+            article.desc,
+            article.category,
+            article.tag,
+            article.author,
+            article.threatActor,
+            article.cves,
+            article.intelligenceNotes,
+            article.keywords.join(" ")
+        ].join(" ").toLowerCase().includes(query)).slice(0,15);
+
+        results.innerHTML = matches.length
+            ? matches.map(article=>`
+                <a class="search-result" href="/${escapeHTML(article.url)}">
+                    <small>${escapeHTML(categoryLabel(article.category))}</small>
+                    <strong>${escapeHTML(article.title)}</strong>
+                </a>
+            `).join("")
+            : `<div class="search-result"><small>Cybersecurity</small><strong>No matching intelligence found.</strong></div>`;
+    });
+
+    document.addEventListener("keydown",event=>{
+        if(event.key === "Escape") shutSearch();
+    });
+}
+
+initSearch();
+load();
+
+})();
+</script>
+
+</body>
+</html>
