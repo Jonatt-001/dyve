@@ -191,12 +191,251 @@ function sorted(a){return a.map(normalize).filter(Boolean).sort((x,y)=>new Date(
 function validatedSorted(a){return validSet(a).sort((x,y)=>new Date(y.date)-new Date(x.date))}
 function canonical(c,a){return `${c.siteUrl}/${a.url}`}
 function absoluteAssetUrl(c,v){const s=String(v||'').trim();if(!s)return`${c.siteUrl}/assets/cyber.jpg`;return/^https?:\/\//i.test(s)?s:`${c.siteUrl}/${s.replace(/^\/+/,'')}`}
+
+function isCloudinaryImageUrl(url){
+    return /^https?:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\//i.test(String(url||''));
+}
+
+function cloudinaryTransformUrl(url,transformation){
+    const value=String(url||'').trim();
+
+    if(!isCloudinaryImageUrl(value))return value;
+
+    const marker='/image/upload/';
+
+    if(!value.includes(marker))return value;
+
+    return value.replace(
+        marker,
+        `${marker}${transformation}/`
+    );
+}
+
+function cloudinaryOptimizedUrl(url,width=1200){
+    if(!isCloudinaryImageUrl(url))return url;
+
+    return cloudinaryTransformUrl(
+        url,
+        `c_limit,w_${Math.max(320,Math.round(width))}/f_auto/q_auto`
+    );
+}
+
+function cloudinaryLqipUrl(url){
+    if(!isCloudinaryImageUrl(url))return url;
+
+    return cloudinaryTransformUrl(
+        url,
+        'c_limit,w_30/e_blur:1000/f_auto/q_auto:low'
+    );
+}
+
+function cloudinaryResponsiveUrl(url,width){
+    return cloudinaryOptimizedUrl(url,width);
+}
+
+function imageWidthSet(url){
+    return [
+        320,
+        480,
+        640,
+        768,
+        960,
+        1200,
+        1440,
+        1800
+    ]
+    .map(width=>`${cloudinaryResponsiveUrl(url,width)} ${width}w`)
+    .join(',');
+}
+
+function imageSizesForCards(){
+    return '(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw';
+}
+
+function imageSizesForArticle(){
+    return '(max-width: 700px) calc(100vw - 40px), 900px';
+}
+
+function responsiveImageMarkup(a,options={}){
+    const url=String(a.image||'').trim();
+    const alt=String(a.imageAlt||a.title||'').trim();
+
+    if(!url)return '';
+
+    const hero=Boolean(options.hero);
+    const loading=hero?'eager':'lazy';
+    const priority=hero?' fetchpriority="high"':'';
+    const sizes=options.sizes||imageSizesForCards();
+
+    if(!isCloudinaryImageUrl(url)){
+        return `<img src="${attr(url)}" alt="${attr(alt)}" loading="${loading}" decoding="async"${priority}>`;
+    }
+
+    const lqip=cloudinaryLqipUrl(url);
+    const full=cloudinaryOptimizedUrl(url,hero?1440:1200);
+    const srcset=imageWidthSet(url);
+
+    return `
+<img
+    class="hackax-lazy-image${hero?' hackax-hero-image':''}"
+    src="${attr(lqip)}"
+    data-src="${attr(full)}"
+    data-srcset="${attr(srcset)}"
+    data-lqip="${attr(lqip)}"
+    sizes="${attr(sizes)}"
+    alt="${attr(alt)}"
+    loading="${loading}"
+    decoding="async"${priority}
+>`;
+}
+
+function optimizeArticleBodyImages(body){
+    const parser=new DOMParser();
+    const doc=parser.parseFromString(
+        `<div id="hackax-article-body">${body||''}</div>`,
+        'text/html'
+    );
+
+    const root=doc.getElementById('hackax-article-body');
+
+    if(!root)return body||'';
+
+    root.querySelectorAll('img').forEach((img,index)=>{
+        const src=img.getAttribute('src')||'';
+
+        if(!src)return;
+
+        if(isCloudinaryImageUrl(src)){
+            const lqip=cloudinaryLqipUrl(src);
+            const full=cloudinaryOptimizedUrl(src,1200);
+            const srcset=imageWidthSet(src);
+
+            img.setAttribute('src',lqip);
+            img.setAttribute('data-src',full);
+            img.setAttribute('data-srcset',srcset);
+            img.setAttribute(
+                'sizes',
+                '(max-width: 700px) calc(100vw - 40px), 700px'
+            );
+            img.setAttribute('data-lqip',lqip);
+        }
+
+        img.setAttribute('loading','lazy');
+        img.setAttribute('decoding','async');
+
+        if(index===0){
+            img.setAttribute('fetchpriority','auto');
+        }
+
+        img.classList.add('hackax-lazy-image');
+    });
+
+    return root.innerHTML;
+}
+function imageRuntimeScript(){
+    return `
+<script>
+(function(){
+    const images=document.querySelectorAll('.hackax-lazy-image');
+
+    if(!images.length)return;
+
+    function loadImage(img){
+        if(img.dataset.loaded==='true')return;
+
+        const src=img.dataset.src;
+        const srcset=img.dataset.srcset;
+
+        if(!src)return;
+
+        const preloader=new Image();
+
+        if(srcset){
+            preloader.srcset=srcset;
+            preloader.sizes=img.sizes||'100vw';
+        }
+
+        preloader.onload=function(){
+            if(srcset){
+                img.srcset=srcset;
+            }
+
+            img.src=src;
+            img.classList.add('is-loaded');
+            img.dataset.loaded='true';
+        };
+
+        preloader.onerror=function(){
+            img.src=src;
+            img.classList.add('is-loaded');
+            img.dataset.loaded='true';
+        };
+
+        preloader.src=src;
+    }
+
+    document
+        .querySelectorAll('.hackax-hero-image')
+        .forEach(loadImage);
+
+    const lazyImages=[
+        ...document.querySelectorAll(
+            '.hackax-lazy-image:not(.hackax-hero-image)'
+        )
+    ];
+
+    if('IntersectionObserver' in window){
+        const observer=new IntersectionObserver(
+            entries=>{
+                entries.forEach(entry=>{
+                    if(!entry.isIntersecting)return;
+
+                    loadImage(entry.target);
+                    observer.unobserve(entry.target);
+                });
+            },
+            {
+                rootMargin:'300px 0px'
+            }
+        );
+
+        lazyImages.forEach(img=>observer.observe(img));
+    }else{
+        lazyImages.forEach(loadImage);
+    }
+})();
+<\/script>`;
+}
 function formatDate(v){const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}
-function buildCss(){return `:root{--bg:#f7faf8;--ink:#0b1511;--muted:#6a7671;--accent:#4F8A73;--line:#dfe8e3}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#252b28;font-family:Inter,system-ui,sans-serif}a{color:inherit;text-decoration:none}.top{position:sticky;top:0;z-index:20;background:rgba(247,250,248,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.top-in,.wrap{max-width:1180px;margin:auto}.top-in{display:flex;align-items:center;justify-content:space-between;padding:14px 20px}.brand{color:var(--ink);font-family:Michroma,sans-serif;font-weight:900;letter-spacing:.08em}.brand span{color:var(--accent)}.hero{padding:54px 20px 32px;border-bottom:1px solid var(--line)}.eyebrow{margin-bottom:17px;color:var(--accent);font-size:.68rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase}.hero h1{max-width:950px;margin:0;color:var(--ink);font-family:Michroma,sans-serif;font-size:clamp(2rem,5vw,4rem);line-height:1.12}.hero p{max-width:790px;color:var(--muted);line-height:1.7}.strip{display:flex;gap:8px;overflow:auto;padding:18px 20px}.strip a{white-space:nowrap;padding:8px 11px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:.66rem;font-weight:800}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:10px 20px 60px}.card{overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#fff}.thumb{aspect-ratio:16/10;overflow:hidden;background:#dde7e2}.thumb img{width:100%;height:100%;object-fit:cover}.tag{position:absolute;left:12px;bottom:12px;padding:7px 9px;background:#fff;font-size:.61rem;font-weight:900;text-transform:uppercase}.body{padding:17px}.category{color:var(--accent);font-size:.62rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase}.card h2{color:var(--ink);font-family:Michroma,sans-serif;font-size:1rem;line-height:1.4}.card p{color:#6d7571;font-size:.83rem;line-height:1.55}.meta{display:flex;gap:8px;color:#89928e;font-size:.62rem;text-transform:uppercase}footer{padding:44px 20px;background:#0b1511;color:#fff;text-align:center}@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:640px){.grid{grid-template-columns:1fr}}` }
-function cardMarkup(a,href,categoryLabel){return `<article class="card"><a href="${attr(href)}"><div class="thumb" style="position:relative"><img src="${attr(a.image)}" alt="${attr(a.imageAlt||a.title)}" loading="lazy"><span class="tag">${esc(a.tag)}</span></div><div class="body"><div class="category">${esc(categoryLabel)}</div><h2>${esc(a.title)}</h2><p>${esc(a.desc)}</p><div class="meta"><span>${esc(a.author)}</span><span>${esc(a.date)}</span><span>${a.readTime} min read</span></div></div></a></article>`}
+function buildCss(){return `:root{--bg:#f7faf8;--ink:#0b1511;--muted:#6a7671;--accent:#4F8A73;--line:#dfe8e3}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#252b28;font-family:Inter,system-ui,sans-serif}a{color:inherit;text-decoration:none}.top{position:sticky;top:0;z-index:20;background:rgba(247,250,248,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.top-in,.wrap{max-width:1180px;margin:auto}.top-in{display:flex;align-items:center;justify-content:space-between;padding:14px 20px}.brand{color:var(--ink);font-family:Michroma,sans-serif;font-weight:900;letter-spacing:.08em}.brand span{color:var(--accent)}.hero{padding:54px 20px 32px;border-bottom:1px solid var(--line)}.eyebrow{margin-bottom:17px;color:var(--accent);font-size:.68rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase}.hero h1{max-width:950px;margin:0;color:var(--ink);font-family:Michroma,sans-serif;font-size:clamp(2rem,5vw,4rem);line-height:1.12}.hero p{max-width:790px;color:var(--muted);line-height:1.7}.strip{display:flex;gap:8px;overflow:auto;padding:18px 20px}.strip a{white-space:nowrap;padding:8px 11px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:.66rem;font-weight:800}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:10px 20px 60px}.card{overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#fff}.thumb{aspect-ratio:16/10;overflow:hidden;background:#dde7e2}.thumb img{width:100%;height:100%;object-fit:cover}.hackax-lazy-image{display:block;width:100%;height:auto;background:#dfe8e3;object-fit:cover;opacity:.92;filter:blur(0);transition:opacity .28s ease,filter .28s ease}.hackax-lazy-image.is-loaded{opacity:1;filter:none}.hackax-hero-image{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}@media(prefers-reduced-motion:reduce){.hackax-lazy-image{transition:none}}.tag{position:absolute;left:12px;bottom:12px;padding:7px 9px;background:#fff;font-size:.61rem;font-weight:900;text-transform:uppercase}.body{padding:17px}.category{color:var(--accent);font-size:.62rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase}.card h2{color:var(--ink);font-family:Michroma,sans-serif;font-size:1rem;line-height:1.4}.card p{color:#6d7571;font-size:.83rem;line-height:1.55}.meta{display:flex;gap:8px;color:#89928e;font-size:.62rem;text-transform:uppercase}footer{padding:44px 20px;background:#0b1511;color:#fff;text-align:center}@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:640px){.grid{grid-template-columns:1fr}}` }
+function cardMarkup(a,href,categoryLabel){
+    const image=responsiveImageMarkup(a,{
+        hero:false,
+        sizes:imageSizesForCards()
+    });
+
+    return `<article class="card">
+        <a href="${attr(href)}">
+            <div class="thumb" style="position:relative">
+                ${image}
+                <span class="tag">${esc(a.tag)}</span>
+            </div>
+            <div class="body">
+                <div class="category">${esc(categoryLabel)}</div>
+                <h2>${esc(a.title)}</h2>
+                <p>${esc(a.desc)}</p>
+                <div class="meta">
+                    <span>${esc(a.author)}</span>
+                    <span>${esc(a.date)}</span>
+                    <span>${a.readTime} min read</span>
+                </div>
+            </div>
+        </a>
+    </article>`;
+}
 function indexHtml(c,a){const sa=sorted(a),cats=Object.entries(CATEGORY_CONFIG).map(([k,v])=>`<a href="./${k}/">${esc(v.label)}</a>`).join(''),cards=sa.slice(0,100).map(x=>cardMarkup(x,`./${x.category}/${x.slug}.html`,CATEGORY_CONFIG[x.category].label)).join('');return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cybersecurity News, Threat Intelligence & Analysis | Dyve HackaX</title><meta name="description" content="Cybersecurity news, threat intelligence, vulnerabilities, breaches, operations and cyber risk analysis from Dyve HackaX."><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="${attr(c.siteUrl)}/cybersecurity/"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Michroma&display=swap" rel="stylesheet"><style>${buildCss()}</style></head><body><header class="top"><div class="top-in"><a class="brand" href="./">DYVE<span>|</span>HACKAX</a><a href="../">DYVE</a></div></header><main class="wrap"><section class="hero"><div class="eyebrow">Dyve HackaX / Cybersecurity Intelligence</div><h1>Cybersecurity Intelligence.</h1><p>Cybersecurity news, threat intelligence, vulnerabilities, breaches, operations and cyber risk analysis from Dyve HackaX.</p></section><nav class="strip" aria-label="Cybersecurity categories">${cats}</nav><section class="grid">${cards||'<div style="grid-column:1/-1;padding:40px;background:#fff;border:1px solid #dfe8e3;border-radius:14px;color:#6a7671">No published cybersecurity articles yet.</div>'}</section></main><footer><div class="brand">DYVE<span>|</span>HACKAX</div><p>© ${new Date().getFullYear()} Dyve HackaX Intelligence Unit.</p></footer></body></html>`}
 function categoryHtml(c,a,k){const m=CATEGORY_CONFIG[k],items=sorted(a).filter(x=>x.category===k),cards=items.slice(0,100).map(x=>cardMarkup(x,`../${x.slug}.html`,m.label)).join('');return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(m.label)} | Dyve HackaX</title><meta name="description" content="${attr(m.label+' cybersecurity coverage from Dyve HackaX.')}"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="${attr(c.siteUrl)}/cybersecurity/${k}/"><link rel="alternate" type="application/rss+xml" title="Dyve HackaX Cybersecurity RSS" href="${attr(c.siteUrl)}/cyber-rss.xml"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Michroma&display=swap" rel="stylesheet"><style>${buildCss()}</style></head><body><header class="top"><div class="top-in"><a class="brand" href="../">DYVE<span>|</span>HACKAX</a><a href="../../">DYVE</a></div></header><main class="wrap"><section class="hero"><div class="eyebrow">Cybersecurity / ${esc(m.label)}</div><h1>${esc(m.label)}</h1><p>Coverage and intelligence for ${esc(m.label.toLowerCase())}.</p></section><section class="grid">${cards||'<div style="grid-column:1/-1;padding:40px;background:#fff;border:1px solid #dfe8e3;border-radius:14px;color:#6a7671">No articles in this category.</div>'}</section></main><footer><div class="brand">DYVE<span>|</span>HACKAX</div></footer></body></html>`}
-function articleHtml(c,a,body,all){const m=CATEGORY_CONFIG[a.category],url=canonical(c,a),related=sorted(all).filter(x=>x.slug!==a.slug).slice(0,4),relatedMarkup=related.map(x=>`<a href="../../${esc(x.category)}/${esc(x.slug)}.html" style="display:block;background:#fff;border:1px solid #dfe8e3;border-radius:10px;padding:12px"><strong>${esc(x.title)}</strong><div style="font-size:.75rem;color:#718079;margin-top:5px">${esc(x.desc)}</div></a>`).join(''),schema=JSON.stringify({'@context':'https://schema.org','@type':'NewsArticle',headline:a.title,description:a.desc,image:[a.image],datePublished:a.date,dateModified:a.modified,author:{'@type':'Organization',name:a.author},publisher:{'@type':'Organization',name:'Dyve HackaX',logo:{'@type':'ImageObject',url:`${c.siteUrl}/assets/cyber.jpg`}},mainEntityOfPage:{'@type':'WebPage','@id':url},articleSection:m.label,keywords:a.keywords.join(', ')});return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${attr(a.seoTitle||a.title)} | Dyve HackaX</title><meta name="description" content="${attr(a.desc)}"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="${attr(url)}"><link rel="alternate" type="application/rss+xml" title="Dyve HackaX Cybersecurity RSS" href="${attr(c.siteUrl)}/cyber-rss.xml"><meta property="og:type" content="article"><meta property="og:title" content="${attr(a.seoTitle||a.title)}"><meta property="og:description" content="${attr(a.desc)}"><meta property="og:url" content="${attr(url)}"><meta property="og:image" content="${attr(a.image)}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${attr(a.seoTitle||a.title)}"><meta name="twitter:description" content="${attr(a.desc)}"><meta name="twitter:image" content="${attr(a.image)}"><script type="application/ld+json">${schema.replace(/</g,'\\\\u003c')}<\\/script><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Michroma&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet"><style>body{margin:0;background:#f7faf8;color:#1e2723;font-family:Inter,system-ui,sans-serif}.top{position:sticky;top:0;z-index:20;background:rgba(247,250,248,.93);backdrop-filter:blur(12px);border-bottom:1px solid #dfe8e3}.top-in,.page{max-width:900px;margin:auto}.top-in{display:flex;justify-content:space-between;padding:14px 20px}.brand{color:#0b1511;font-family:Michroma,sans-serif;font-weight:900}.brand span{color:#4F8A73}.page{padding:44px 20px}.kicker{color:#4F8A73;font-size:.7rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase}.page h1{color:#0b1511;font-family:Michroma,sans-serif;font-size:clamp(2rem,5vw,3.7rem);line-height:1.14}.dek{color:#5b655f;font-family:'Source Serif 4',Georgia,serif;font-size:1.28rem;line-height:1.7}.meta{margin:18px 0 30px;color:#7b8782;font-size:.72rem;text-transform:uppercase}.hero img{display:block;width:100%;aspect-ratio:16/9;border-radius:10px;object-fit:cover}.body{max-width:700px;margin:40px auto;font-family:'Source Serif 4',Georgia,serif;font-size:1.15rem;line-height:1.9;overflow-wrap:anywhere}.body *{max-width:100%!important}.body img,.body video,.body iframe{max-width:100%!important;height:auto}.body table{display:block;max-width:100%;overflow-x:auto}.body p{margin:0 0 1.45em}.body h2,.body h3{color:#0b1511;font-family:Inter,sans-serif}.body img{max-width:100%;height:auto;border-radius:7px}.body a{color:#4F8A73;text-decoration:underline;text-underline-offset:3px}.intel{max-width:700px;margin:35px auto;padding:16px;border:1px solid #dfe8e3;border-radius:10px;background:#fff;color:#5f6c66;font-size:.8rem}.tag{display:inline-block;padding:7px 10px;border:1px solid #dfe8e3;border-radius:999px;background:#fff;font-size:.65rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.related{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:860px;margin:60px auto;padding:0 20px}@media(max-width:700px){.related{grid-template-columns:1fr}}</style></head><body><header class="top"><div class="top-in"><a href="../">← ${esc(m.label)}</a><a class="brand" href="../../">DYVE<span>|</span>HACKAX</a></div></header><main class="page"><div class="kicker">${esc(m.label)} / ${esc(a.tag)}</div><h1>${esc(a.title)}</h1><div class="dek">${esc(a.desc)}</div><div class="meta">By ${esc(a.author)} · ${esc(formatDate(a.date))} · ${a.readTime} min read${a.severity?` · ${esc(a.severity)}`:''}</div><div class="hero"><img src="${attr(a.image)}" alt="${attr(a.imageAlt||a.title)}"></div><div class="body">${body}</div>${a.cves||a.threatActor||a.intelligenceNotes?`<aside class="intel"><strong>Cyber Intelligence Context</strong><div style="margin-top:7px">${a.threatActor?`<div><strong>Threat actor:</strong> ${esc(a.threatActor)}</div>`:''}${a.cves?`<div><strong>Vulnerability IDs:</strong> ${esc(a.cves)}</div>`:''}${a.intelligenceNotes?`<div style="margin-top:6px"><strong>Analyst notes:</strong> ${esc(a.intelligenceNotes)}</div>`:''}</div></aside>`:''}<div style="margin-top:28px;display:flex;gap:8px;flex-wrap:wrap"><span class="tag">${esc(m.label)}</span><span class="tag">${esc(a.tag)}</span></div></main><section class="related">${relatedMarkup}</section><footer style="background:#0b1511;color:#fff;text-align:center;padding:44px 20px;margin-top:60px"><div class="brand" style="color:#fff">DYVE<span>|</span>HACKAX</div></footer></body></html>`}
+function articleHtml(c,a,body,all){const m=CATEGORY_CONFIG[a.category],url=canonical(c,a),related=sorted(all).filter(x=>x.slug!==a.slug).slice(0,4),relatedMarkup=related.map(x=>`<a href="../../${esc(x.category)}/${esc(x.slug)}.html" style="display:block;background:#fff;border:1px solid #dfe8e3;border-radius:10px;padding:12px"><strong>${esc(x.title)}</strong><div style="font-size:.75rem;color:#718079;margin-top:5px">${esc(x.desc)}</div></a>`).join(''),schema=JSON.stringify({'@context':'https://schema.org','@type':'NewsArticle',headline:a.title,description:a.desc,image:[a.image],datePublished:a.date,dateModified:a.modified,author:{'@type':'Organization',name:a.author},publisher:{'@type':'Organization',name:'Dyve HackaX',logo:{'@type':'ImageObject',url:`${c.siteUrl}/assets/cyber.jpg`}},mainEntityOfPage:{'@type':'WebPage','@id':url},articleSection:m.label,keywords:a.keywords.join(', ')});return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${attr(a.seoTitle||a.title)} | Dyve HackaX</title><meta name="description" content="${attr(a.desc)}"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="${attr(url)}"><link rel="alternate" type="application/rss+xml" title="Dyve HackaX Cybersecurity RSS" href="${attr(c.siteUrl)}/cyber-rss.xml"><meta property="og:type" content="article"><meta property="og:title" content="${attr(a.seoTitle||a.title)}"><meta property="og:description" content="${attr(a.desc)}"><meta property="og:url" content="${attr(url)}"><meta property="og:image" content="${attr(a.image)}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${attr(a.seoTitle||a.title)}"><meta name="twitter:description" content="${attr(a.desc)}"><meta name="twitter:image" content="${attr(a.image)}"><script type="application/ld+json">${schema.replace(/</g,'\\\\u003c')}<\\/script><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Michroma&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet"><style>body{margin:0;background:#f7faf8;color:#1e2723;font-family:Inter,system-ui,sans-serif}.top{position:sticky;top:0;z-index:20;background:rgba(247,250,248,.93);backdrop-filter:blur(12px);border-bottom:1px solid #dfe8e3}.top-in,.page{max-width:900px;margin:auto}.top-in{display:flex;justify-content:space-between;padding:14px 20px}.brand{color:#0b1511;font-family:Michroma,sans-serif;font-weight:900}.brand span{color:#4F8A73}.page{padding:44px 20px}.kicker{color:#4F8A73;font-size:.7rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase}.page h1{color:#0b1511;font-family:Michroma,sans-serif;font-size:clamp(2rem,5vw,3.7rem);line-height:1.14}.dek{color:#5b655f;font-family:'Source Serif 4',Georgia,serif;font-size:1.28rem;line-height:1.7}.meta{margin:18px 0 30px;color:#7b8782;font-size:.72rem;text-transform:uppercase}.hero img{display:block;width:100%;aspect-ratio:16/9;border-radius:10px;object-fit:cover}.body{max-width:700px;margin:40px auto;font-family:'Source Serif 4',Georgia,serif;font-size:1.15rem;line-height:1.9;overflow-wrap:anywhere}.body *{max-width:100%!important}.body img,.body video,.body iframe{max-width:100%!important;height:auto}.body table{display:block;max-width:100%;overflow-x:auto}.body p{margin:0 0 1.45em}.body h2,.body h3{color:#0b1511;font-family:Inter,sans-serif}.body img{max-width:100%;height:auto;border-radius:7px}.body a{color:#4F8A73;text-decoration:underline;text-underline-offset:3px}.intel{max-width:700px;margin:35px auto;padding:16px;border:1px solid #dfe8e3;border-radius:10px;background:#fff;color:#5f6c66;font-size:.8rem}.tag{display:inline-block;padding:7px 10px;border:1px solid #dfe8e3;border-radius:999px;background:#fff;font-size:.65rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.related{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:860px;margin:60px auto;padding:0 20px}@media(max-width:700px){.related{grid-template-columns:1fr}}</style></head><body><header class="top"><div class="top-in"><a href="../">← ${esc(m.label)}</a><a class="brand" href="../../">DYVE<span>|</span>HACKAX</a></div></header><main class="page"><div class="kicker">${esc(m.label)} / ${esc(a.tag)}</div><h1>${esc(a.title)}</h1><div class="dek">${esc(a.desc)}</div><div class="meta">By ${esc(a.author)} · ${esc(formatDate(a.date))} · ${a.readTime} min read${a.severity?` · ${esc(a.severity)}`:''}</div> <div class="hero">${responsiveImageMarkup(a,{hero:true,sizes:imageSizesForArticle()})}</div><div class="body">${optimizeArticleBodyImages(body)}</div>${a.cves||a.threatActor||a.intelligenceNotes?`<aside class="intel"><strong>Cyber Intelligence Context</strong><div style="margin-top:7px">${a.threatActor?`<div><strong>Threat actor:</strong> ${esc(a.threatActor)}</div>`:''}${a.cves?`<div><strong>Vulnerability IDs:</strong> ${esc(a.cves)}</div>`:''}${a.intelligenceNotes?`<div style="margin-top:6px"><strong>Analyst notes:</strong> ${esc(a.intelligenceNotes)}</div>`:''}</div></aside>`:''}<div style="margin-top:28px;display:flex;gap:8px;flex-wrap:wrap"><span class="tag">${esc(m.label)}</span><span class="tag">${esc(a.tag)}</span></div></main><section class="related">${relatedMarkup}</section><footer style="background:#0b1511;color:#fff;text-align:center;padding:44px 20px;margin-top:60px"><div class="brand" style="color:#fff">DYVE<span>|</span>HACKAX</div></footer></body></html>`}
 function cyberArticlesSitemap(c,a){return`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${sorted(a).map(x=>`<url><loc>${esc(canonical(c,x))}</loc><lastmod>${esc(x.modified||x.date)}</lastmod><changefreq>weekly</changefreq></url>`).join('')}</urlset>`}
 function cyberImageSitemap(c,a){return`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">${sorted(a).filter(x=>x.image).map(x=>`<url><loc>${esc(canonical(c,x))}</loc><image:image><image:loc>${esc(absoluteAssetUrl(c,x.image))}</image:loc><image:title>${esc(x.title)}</image:title></image:image></url>`).join('')}</urlset>`}
 function cyberSitemapIndex(c){return`<?xml version="1.0" encoding="UTF-8"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><sitemap><loc>${esc(c.siteUrl)}/cyber-articles-sitemap.xml</loc></sitemap><sitemap><loc>${esc(c.siteUrl)}/cyber-image-sitemap.xml</loc></sitemap></sitemapindex>`}
@@ -209,7 +448,116 @@ function setActivity(state,title,detail,percent){const bar=$('activityBar');bar.
 function hideActivity(delay=1200){setTimeout(()=>$('activityBar').classList.remove('show'),delay)}
 function setUploadStatus(state,stage,detail,percent){const box=$('uploadStatus');box.classList.add('show');box.classList.remove('done','error');if(state==='done')box.classList.add('done');if(state==='error')box.classList.add('error');$('uploadStage').textContent=stage;$('uploadDetail').textContent=detail||'';$('uploadProgress').style.width=`${Math.max(0,Math.min(100,percent||0))}%`;$('uploadPercent').textContent=`${Math.round(Math.max(0,Math.min(100,percent||0)))}%`;setActivity(state,state==='done'?'Image ready':state==='error'?'Image processing failed':stage,detail,percent)}
 async function brandImage(file,onProgress=()=>{}){setUploadStatus('busy','Reading source image','Decoding the selected image locally...',8);onProgress(8);const image=await loadFileImage(file);setUploadStatus('busy','Preparing homepage-safe output','Calculating the final processing dimensions...',18);onProgress(18);const sw=image.naturalWidth||image.width,sh=image.naturalHeight||image.height;if(!sw||!sh)throw new Error('Image has invalid dimensions.');const scale=Math.min(1,WATERMARK.maxWidthPx/Math.max(sw,sh)),w=Math.max(1,Math.round(sw*scale)),h=Math.max(1,Math.round(sh*scale));const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d',{alpha:true});if(!ctx)throw new Error('Browser image processing is unavailable.');ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';setUploadStatus('busy','Applying Cyber watermark','Branding with /assets/cyber.jpg before any network upload...',30);ctx.drawImage(image,0,0,w,h);const logo=await loadLogo();const lw=Math.max(WATERMARK.minWidth,Math.min(WATERMARK.maxWidth,w*WATERMARK.widthRatio)),ratio=(logo.naturalWidth||logo.width)/(logo.naturalHeight||logo.height),lh=lw/ratio,p=Math.max(WATERMARK.minPadding,Math.min(WATERMARK.maxPadding,w*WATERMARK.paddingRatio));ctx.save();ctx.globalAlpha=WATERMARK.opacity;ctx.drawImage(logo,Math.max(0,w-lw-p),Math.max(0,h-lh-p),lw,lh);ctx.restore();onProgress(46);setUploadStatus('busy','Converting to WebP','Encoding the exact upload output in the browser...',55);const out=await blob(canvas,'image/webp',WATERMARK.webpQuality);const name=`${file.name.replace(/\.[^.]+$/,'')}-hackax.webp`;const branded=new File([out],name,{type:'image/webp',lastModified:Date.now()});onProgress(68);setUploadStatus('busy','WebP output ready','Review the exact asset before committing it to Cloudinary.',68);return{file:branded,width:w,height:h,originalWidth:sw,originalHeight:sh}}
-function uploadImageXHR(file,tag,onProgress=()=>{}){return new Promise((resolve,reject)=>{const c=getCloudinary(),xhr=new XMLHttpRequest(),fd=new FormData();fd.append('file',file);fd.append('upload_preset',c.preset);fd.append('tags',tag);xhr.open('POST',c.endpoint,true);xhr.setRequestHeader('Accept','application/json');xhr.upload.addEventListener('progress',e=>{if(e.lengthComputable){const pct=68+Math.round((e.loaded/e.total)*30);onProgress(pct);setUploadStatus('busy','Uploading to Cloudinary',`${formatBytes(e.loaded)} of ${formatBytes(e.total)} sent...`,pct)}});xhr.onerror=()=>reject(new Error('Cloudinary upload failed: network error.'));xhr.ontimeout=()=>reject(new Error('Cloudinary upload timed out.'));xhr.onload=()=>{let d={};try{d=JSON.parse(xhr.responseText||'{}')}catch{}if(xhr.status<200||xhr.status>=300){reject(new Error(d.error?.message||`Cloudinary upload failed (${xhr.status}).`));return}if(!d.secure_url){reject(new Error(d.error?.message||'Cloudinary returned no secure URL.'));return}const format=String(d.format||'').toLowerCase(),url=String(d.secure_url||'').toLowerCase();if(format&&format!=='webp'&&!url.includes('.webp')){reject(new Error(`Cloudinary returned format ${format.toUpperCase()}, not WebP. The asset was not committed to the editor.`));return}onProgress(100);resolve(d)};xhr.send(fd)})}
+function uploadImageXHR(file,tag,onProgress=()=>{}){
+    return new Promise((resolve,reject)=>{
+        const c=getCloudinary();
+        const xhr=new XMLHttpRequest();
+        const fd=new FormData();
+
+        if(!(file instanceof File||file instanceof Blob)){
+            reject(new Error('Invalid image payload.'));
+            return;
+        }
+
+        if(!c.cloudName){
+            reject(new Error('Cloudinary cloud name is missing.'));
+            return;
+        }
+
+        if(!c.preset){
+            reject(new Error('Cloudinary upload preset is missing.'));
+            return;
+        }
+
+        fd.append('file',file,file.name||'hackax-image.webp');
+        fd.append('upload_preset',c.preset);
+        fd.append('tags',tag);
+
+        xhr.open('POST',c.endpoint,true);
+        xhr.setRequestHeader('Accept','application/json');
+        xhr.timeout=120000;
+
+        xhr.upload.addEventListener('progress',e=>{
+            if(!e.lengthComputable)return;
+
+            const pct=68+Math.round((e.loaded/e.total)*30);
+
+            onProgress(pct);
+
+            setUploadStatus(
+                'busy',
+                'Uploading to Cloudinary',
+                `${formatBytes(e.loaded)} of ${formatBytes(e.total)} sent...`,
+                pct
+            );
+        });
+
+        xhr.onerror=()=>{
+            reject(new Error('Cloudinary upload failed: network error.'));
+        };
+
+        xhr.ontimeout=()=>{
+            reject(new Error('Cloudinary upload timed out.'));
+        };
+
+        xhr.onload=()=>{
+            let d={};
+
+            try{
+                d=JSON.parse(xhr.responseText||'{}');
+            }catch{
+                d={};
+            }
+
+            if(xhr.status<200||xhr.status>=300){
+                reject(new Error(
+                    d.error?.message||
+                    `Cloudinary upload failed (${xhr.status}).`
+                ));
+                return;
+            }
+
+            if(!d.secure_url){
+                reject(new Error(
+                    d.error?.message||
+                    'Cloudinary returned no secure URL.'
+                ));
+                return;
+            }
+
+            const format=String(d.format||'').toLowerCase();
+            const resourceType=String(d.resource_type||'').toLowerCase();
+
+            if(resourceType&&resourceType!=='image'){
+                reject(new Error(
+                    `Cloudinary returned resource type "${resourceType}", not an image.`
+                ));
+                return;
+            }
+
+            const supportedFormats=[
+                'png',
+                'webp',
+                'jpeg',
+                'jpg',
+                'avif',
+                'gif'
+            ];
+
+            if(format&&!supportedFormats.includes(format)){
+                reject(new Error(
+                    `Cloudinary returned unsupported image format: ${format.toUpperCase()}.`
+                ));
+                return;
+            }
+
+            onProgress(100);
+            resolve(d);
+        };
+
+        xhr.send(fd);
+    });
+}
 async function uploadImage(file,tag,onProgress=()=>{}){return uploadImageXHR(file,tag,onProgress)}
 function resetFeaturedState(){if(pendingFeaturedObjectUrl){URL.revokeObjectURL(pendingFeaturedObjectUrl);pendingFeaturedObjectUrl=null}pendingFeaturedBlob=null;pendingFeaturedFile=null;$('processedCard').classList.remove('show');$('uploadStatus').classList.remove('show','done','error');$('uploadProgress').style.width='0%';$('uploadPercent').textContent='0%';$('uploadCommitBtn').disabled=true;$('imageDimensions').textContent='—';$('imageSize').textContent='—';$('imageState').textContent='Not uploaded';$('imageState').className='image-state pending';$('featuredImagePreviewImg').src='';}
 async function prepareFeaturedFile(file){if(!file)return;if(featuredUploadInProgress)return toast('An image operation is already running.');if(!/^image\/(jpeg|png|webp|gif|avif)$/i.test(file.type||'')){return toast('Select a JPG, PNG, WebP, GIF or AVIF image.')}if(file.size>25*1024*1024)return toast('Image must be 25MB or smaller.');resetFeaturedState();featuredUploadInProgress=true;try{const result=await brandImage(file,p=>setActivity('busy','Processing image locally','Optimizing and watermarking the image...',p));pendingFeaturedBlob=result.file;pendingFeaturedFile=file;pendingFeaturedObjectUrl=URL.createObjectURL(result.file);$('featuredImagePreviewImg').src=pendingFeaturedObjectUrl;$('imageDimensions').textContent=`${result.width} × ${result.height}`;$('imageSize').textContent=formatBytes(result.file.size);$('imageFormat').textContent='WEBP';$('imageState').textContent='Not uploaded';$('imageState').className='image-state pending';$('processedTitle').textContent='Processed image ready for review';$('processedSub').textContent='The exact WebP asset below is the file that will be uploaded.';$('imageAltInput').value=$('imageAltInput').value.trim()||$('titleInput').value.trim();$('processedCard').classList.add('show');$('uploadCommitBtn').disabled=false;setUploadStatus('done','WebP conversion complete','Review the exact output, then commit it to Cloudinary.',70);setActivity('done','Image ready for review',`${result.width} × ${result.height} · WebP · ${formatBytes(result.file.size)}`,70);hideActivity(1800);autoSave()}catch(e){setUploadStatus('error','Processing failed',e.message||'Unable to process image.',0);setActivity('error','Image processing failed',e.message||'Unable to process image.',0);hideActivity(3000);toast(e.message||'Image processing failed.',7000)}finally{featuredUploadInProgress=false}}
