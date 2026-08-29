@@ -5,10 +5,22 @@
     <link>https://dyve.online/tech/</link>
     <description>Technology news, analysis and intelligence from Dyve Tech.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 29 Aug 2026 16:55:23 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 29 Aug 2026 22:47:51 GMT</lastBuildDate>
     <generator>Dyve Tech Editorial Publisher</generator>
     <atom:link href="https://dyve.online/tech/rss.xml" rel="self" type="application/rss+xml" />
 
+    <item>
+        <title>Five Critical WordPress Plugin and Theme Flaws Enable Site Takeover or RCE</title>
+        <link>https://dyve.online/tech/five-critical-wordpress-plugin-and-theme-flaws-enable-site-takeover-or-rce.html</link>
+        <guid isPermaLink="true">https://dyve.online/tech/five-critical-wordpress-plugin-and-theme-flaws-enable-site-takeover-or-rce.html</guid>
+        <description>Five Critical WordPress Plugin and Theme Flaws Enable Site Takeover or RCE: Multiple critical security flaws have been disclosed in WordPress plugins and the...</description>
+        <pubDate>Sat, 29 Aug 2026 22:47:39 GMT</pubDate>
+        <dc:creator>Dyve Tech Editorial Unit</dc:creator>
+        <category>Developer Tools</category>
+        <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788043546/dyve-tech/five-critical-wordpress-plugin-and-theme-flaws-enable-site-takeover-or-rce-featured.png" medium="image" />
+        <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788043546/dyve-tech/five-critical-wordpress-plugin-and-theme-flaws-enable-site-takeover-or-rce-featured.png" />
+        <content:encoded><![CDATA[<p>Five Critical WordPress Plugin and Theme Flaws Enable Site Takeover or RCE: Multiple critical security flaws have been disclosed in WordPress plugins and the...</p>]]></content:encoded>
+    </item>
     <item>
         <title>Nigeria Under Cyber Threat: Major Cyber Breaches and Attacks Making Headlines in 2026</title>
         <link>https://dyve.online/tech/nigeria-under-cyber-threat-major-cyber-breaches-and-attacks-making-headlines-in-2026.html</link>
