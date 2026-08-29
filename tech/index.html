@@ -2,7 +2,7 @@
 <!-- DYVE_TECH_HOMEPAGE_TEMPLATE_VERSION: 6.0.0 -->
 <html lang="en">
 <head>
-<!-- DYVE TECH: Reference visual system preserved; backend/data/SEO wired to Tech. -->
+<!-- DYVE TECH: Exact reference visual system; Tech backend/data/SEO only. -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Technology News &amp; Intelligence | Dyve Tech</title>
@@ -456,7 +456,7 @@ const SITE_CONFIG = {
     logo: "/favicon.ico",
     fallbackLogo: "/assets/tech-hero.png",
     favicon: "/favicon.ico",
-    dataUrl: "/assets/tech-articles.json",
+    dataUrl: "/assets/assets/tech-articles.json",
     articleRoot: "/tech/",
     refreshInterval: 60000,
     navigation: [
@@ -1046,7 +1046,7 @@ function renderBrief() {
     setText(
         "brief-copy",
         article.excerpt ||
-        "The current technology editorial brief is available from the production feed."
+        "The current Dyve Tech editorial brief is available from the production feed."
     );
     setHref("brief-link",article.url);
 
