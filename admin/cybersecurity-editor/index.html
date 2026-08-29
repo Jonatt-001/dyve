@@ -588,8 +588,261 @@ function openFabDrawer(){$('fabDrawer').classList.add('active');$('fabOverlay').
 async function checkGitHub(){const c=getGitHubConfig(),chip=$('githubStatus'),dot=chip.querySelector('.dot'),text=$('statusText');text.textContent='Checking...';chip.classList.remove('ok','bad');dot.style.background='#eab308';if(!c.token||!c.repo){text.textContent='Not Configured';chip.classList.add('bad');dot.style.background='#ef4444';return}if(!/^[^/]+\/[^/]+$/.test(c.repo)){text.textContent='Invalid Repository';chip.classList.add('bad');dot.style.background='#ef4444';return}try{const parts=c.repo.split('/'),owner=encodeURIComponent(parts[0]),name=encodeURIComponent(parts[1]);const base=`https://api.github.com/repos/${owner}/${name}`;const repoResponse=await retry(base,{headers:headers(c)});if(repoResponse.status===401||repoResponse.status===403){text.textContent='Auth Failed';chip.classList.add('bad');dot.style.background='#ef4444';return}if(repoResponse.status===404){text.textContent='Repo Not Found';chip.classList.add('bad');dot.style.background='#ef4444';return}if(!repoResponse.ok){text.textContent=`Error ${repoResponse.status}`;chip.classList.add('bad');dot.style.background='#ef4444';return}const branchResponse=await retry(`${base}/branches/${encodeURIComponent(c.branch)}`,{headers:headers(c)});if(branchResponse.status===404){text.textContent='Branch Missing';chip.classList.add('bad');dot.style.background='#ef4444';return}if(!branchResponse.ok){text.textContent=`Branch Error ${branchResponse.status}`;chip.classList.add('bad');dot.style.background='#ef4444';return}const contentResponse=await retry(`${base}/contents/assets/cyber-articles.json?ref=${encodeURIComponent(c.branch)}`,{headers:headers(c)});if(contentResponse.status===401||contentResponse.status===403){text.textContent='Write Access Needed';chip.classList.add('bad');dot.style.background='#ef4444';return}if(![200,404].includes(contentResponse.status)){text.textContent=`Content Error ${contentResponse.status}`;chip.classList.add('bad');dot.style.background='#ef4444';return}text.textContent=contentResponse.status===404?'Connected · DB New':'Connected';chip.classList.add('ok');dot.style.background='#22c55e'}catch(error){console.warn('[HackaX Editor] GitHub status check failed:',error);text.textContent='Offline';chip.classList.add('bad');dot.style.background='#ef4444'}}
 async function checkGroq(){const c=getGitHubConfig(),chip=$('groqStatus'),dot=chip.querySelector('.dot'),text=$('groqStatusText');text.textContent='Checking...';chip.classList.remove('ok','bad');dot.style.background='#eab308';if(!c.groqKey){text.textContent='Not Configured';chip.classList.add('bad');dot.style.background='#ef4444';return}try{const r=await fetch('https://api.groq.com/openai/v1/models',{headers:{Authorization:`Bearer ${c.groqKey}`}});if(r.ok){text.textContent='Connected';chip.classList.add('ok');dot.style.background='#22c55e'}else{text.textContent=r.status===401||r.status===403?'Invalid Key':`Error ${r.status}`;chip.classList.add('bad');dot.style.background='#ef4444'}}catch{text.textContent='Offline';chip.classList.add('bad');dot.style.background='#ef4444'}}
 function collectAgent(){const p=parse(localStorage.getItem(STORAGE_KEYS.agent)||'null',null);if(!p)return false;fill({title:p.title,description:p.desc,category:p.category,contentType:p.contentType,imageUrl:p.image,ogImagePrompt:p.ogPrompt,seoTitle:p.seoTitle,focusKeyword:p.focusKeyword,keywords:Array.isArray(p.keywords)?p.keywords.join(', '):p.keywords,sourceUrl:p.sourceUrl,cves:p.cves,threatActor:p.threatActor,severity:p.severity,intelligenceNotes:p.intelligenceNotes,content:p.delta||{ops:[]}});if(p.html&&quill)quill.clipboard.dangerouslyPasteHTML(p.html);localStorage.removeItem(STORAGE_KEYS.agent);return true}
-function sanitizePastedHTML(html){const parser=new DOMParser(),doc=parser.parseFromString(String(html||''),'text/html');doc.querySelectorAll('script,style,noscript,template,iframe,object,embed,form,button,input,textarea,select,meta,link,base,head,body').forEach(el=>el.remove());doc.querySelectorAll('*').forEach(el=>{el.removeAttribute('id');el.removeAttribute('class');el.removeAttribute('contenteditable');el.removeAttribute('dir');el.removeAttribute('width');el.removeAttribute('height');el.removeAttribute('align');el.removeAttribute('style');[...el.attributes].forEach(a=>{if(/^on/i.test(a.name)||a.name==='srcset')el.removeAttribute(a.name)});if(el.tagName==='A'){const href=el.getAttribute('href')||'';if(!/^https?:\/\//i.test(href)&&!href.startsWith('/'))el.removeAttribute('href')}if(el.tagName==='IMG'){const src=el.getAttribute('src')||'';if(!/^https?:\/\//i.test(src)&&!src.startsWith('data:image/'))el.remove()}});const root=doc.body||doc.documentElement;root.querySelectorAll('div,section,article,main,header,footer,aside').forEach(el=>{if(el.children.length===1&&!el.textContent.trim())el.replaceWith(...el.childNodes)});return root.innerHTML.replace(/\s{2,}/g,' ').trim()}
-function installPasteGuard(){const editor=document.querySelector('#editor .ql-editor');if(!editor)return;editor.addEventListener('paste',e=>{const html=e.clipboardData?.getData('text/html');if(!html)return;e.preventDefault();const clean=sanitizePastedHTML(html);const range=quill.getSelection(true)||{index:Math.max(0,quill.getLength()-1)};quill.clipboard.dangerouslyPasteHTML(range.index,clean,'user');quill.setSelection(range.index+Math.max(0,quill.getLength()-range.index-1));updateMetrics();autoSave();toast('Pasted article content was normalized for the mobile editor.')})}
+
+function sanitizePastedHTML(html){
+    const parser=new DOMParser();
+    const doc=parser.parseFromString(String(html||''),'text/html');
+
+    /*
+     * IMPORTANT:
+     * Never remove doc.body itself.
+     *
+     * Clipboard HTML is parsed into:
+     *
+     *   document
+     *     └── body
+     *          └── pasted content
+     *
+     * Removing <body> deletes the entire pasted article.
+     */
+
+    doc.querySelectorAll(
+        'script,style,noscript,template,iframe,object,embed,form,button,input,textarea,select,meta,link,base'
+    ).forEach(el=>{
+        el.remove();
+    });
+
+    const root=doc.body||doc.documentElement;
+
+    if(!root){
+        return '';
+    }
+
+    /*
+     * Remove dangerous/event attributes while preserving
+     * legitimate editorial HTML.
+     */
+    root.querySelectorAll('*').forEach(el=>{
+        el.removeAttribute('id');
+        el.removeAttribute('class');
+        el.removeAttribute('contenteditable');
+        el.removeAttribute('dir');
+        el.removeAttribute('width');
+        el.removeAttribute('height');
+        el.removeAttribute('align');
+        el.removeAttribute('style');
+
+        [...el.attributes].forEach(a=>{
+            if(/^on/i.test(a.name)){
+                el.removeAttribute(a.name);
+                return;
+            }
+
+            if(a.name.toLowerCase()==='srcset'){
+                el.removeAttribute(a.name);
+            }
+        });
+
+        if(el.tagName==='A'){
+            const href=el.getAttribute('href')||'';
+
+            /*
+             * Preserve safe absolute URLs and site-relative URLs.
+             * Remove javascript:, data:, vbscript:, etc.
+             */
+            if(
+                !/^https?:\/\//i.test(href) &&
+                !href.startsWith('/') &&
+                !href.startsWith('#')
+            ){
+                el.removeAttribute('href');
+            }
+        }
+
+        if(el.tagName==='IMG'){
+            const src=el.getAttribute('src')||'';
+
+            /*
+             * Keep normal remote images and data images.
+             * Remove unsupported image sources.
+             */
+            if(
+                !/^https?:\/\//i.test(src) &&
+                !/^data:image\//i.test(src)
+            ){
+                el.remove();
+                return;
+            }
+
+            /*
+             * Preserve useful image metadata but remove
+             * potentially unsafe attributes.
+             */
+            el.removeAttribute('srcset');
+            el.removeAttribute('sizes');
+        }
+    });
+
+    /*
+     * Remove empty structural wrappers without destroying
+     * text/content inside them.
+     */
+    root.querySelectorAll(
+        'div,section,article,main,header,footer,aside'
+    ).forEach(el=>{
+        if(
+            el.children.length===1 &&
+            !el.textContent.trim()
+        ){
+            el.replaceWith(...el.childNodes);
+        }
+    });
+
+    /*
+     * Remove completely empty wrapper elements where safe.
+     */
+    root.querySelectorAll(
+        'div,section,article,main,header,footer,aside'
+    ).forEach(el=>{
+        if(
+            !el.textContent.trim() &&
+            !el.querySelector('img,video,iframe,table,br')
+        ){
+            el.remove();
+        }
+    });
+
+    return root.innerHTML
+        .replace(/\u00a0/g,' ')
+        .replace(/[ \t]{2,}/g,' ')
+        .trim();
+}
+
+function installPasteGuard(){
+    const editor=document.querySelector('#editor .ql-editor');
+
+    if(!editor){
+        console.warn('[HackaX Editor] Quill editor element not found.');
+        return;
+    }
+
+    editor.addEventListener('paste',e=>{
+        /*
+         * Capture both representations because iOS Safari and
+         * other mobile browsers do not always provide clipboard
+         * HTML consistently.
+         */
+        const clipboard=e.clipboardData;
+
+        if(!clipboard){
+            return;
+        }
+
+        const html=clipboard.getData('text/html');
+        const plain=clipboard.getData('text/plain');
+
+        /*
+         * If HTML exists, normalize it.
+         * Otherwise fall back to plain text.
+         */
+        if(html){
+            e.preventDefault();
+
+            const clean=sanitizePastedHTML(html);
+
+            /*
+             * If sanitization produced nothing, do NOT silently
+             * insert an empty string. Fall back to the clipboard
+             * plain-text representation.
+             */
+            const content=clean||plain||'';
+
+            if(!content){
+                toast('Nothing readable was found in the pasted content.');
+                return;
+            }
+
+            /*
+             * Capture the insertion point BEFORE changing Quill.
+             */
+            const currentRange=quill.getSelection(true);
+
+            const range=currentRange||{
+                index:Math.max(0,quill.getLength()-1),
+                length:0
+            };
+
+            /*
+             * Insert the normalized HTML at the current cursor.
+             */
+            const beforeLength=quill.getLength();
+
+            quill.clipboard.dangerouslyPasteHTML(
+                range.index,
+                content,
+                'user'
+            );
+
+            /*
+             * Calculate the amount of content inserted and put
+             * the cursor immediately after it.
+             */
+            const afterLength=quill.getLength();
+
+            const insertedLength=Math.max(
+                0,
+                afterLength-beforeLength
+            );
+
+            quill.setSelection(
+                range.index+insertedLength,
+                0,
+                'silent'
+            );
+
+            updateMetrics();
+            autoSave();
+
+            toast(
+                clean
+                    ? 'Pasted article content was normalized for the mobile editor.'
+                    : 'Pasted article text into the mobile editor.'
+            );
+
+            return;
+        }
+
+        /*
+         * Plain-text-only clipboard.
+         */
+        if(plain){
+            e.preventDefault();
+
+            const range=quill.getSelection(true)||{
+                index:Math.max(0,quill.getLength()-1),
+                length:0
+            };
+
+            quill.insertText(
+                range.index,
+                plain,
+                'user'
+            );
+
+            quill.setSelection(
+                range.index+plain.length,
+                0,
+                'silent'
+            );
+
+            updateMetrics();
+            autoSave();
+
+            toast('Pasted article text into the mobile editor.');
+        }
+    });
+}
+
 function setupQuill(){
     quill=new Quill('#editor',{
         theme:'snow',
