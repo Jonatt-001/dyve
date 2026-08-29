@@ -1,1 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"><url><loc>https://dyve.online/cybersecurity/attacks-data-breaches/berlin-refuses-to-pay-hackers-who-stole-data-from-the-citys-state-network/</loc><image:image><image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788005597/fvzyd4ggev5ojppudskl.png</image:loc><image:title>Berlin Refuses to Pay Hackers Who Stole Data From the City&#39;s State Network</image:title></image:image></url><url><loc>https://dyve.online/cybersecurity/cyber-risk/frontier-ai-tipping-the-scales-toward-cyber-adversaries/</loc><image:image><image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788003535/igqxxyxcruujf95bmfhs.png</image:loc><image:title>Frontier AI tipping the scales toward cyber adversaries</image:title></image:image></url><url><loc>https://dyve.online/cybersecurity/threat-intelligence/fake-apple-support-ai-calls-target-stolen-device-owners-for-passcodes-and-2fa-codes/</loc><image:image><image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787967809/e9xosiu2ypgutmhvsvu0.jpg</image:loc><image:title>Fake Apple Support AI Calls Target Stolen-Device Owners for Passcodes and 2FA Codes</image:title></image:image></url></urlset>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+>
+<url>
+<loc>https://dyve.online/cybersecurity/attacks-data-breaches/berlin-refuses-to-pay-hackers-who-stole-data-from-the-citys-state-network/</loc>
+<image:image>
+<image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788005597/fvzyd4ggev5ojppudskl.png</image:loc>
+<image:title>Berlin Refuses to Pay Hackers Who Stole Data From the City&#39;s State Network</image:title>
+</image:image>
+</url><url>
+<loc>https://dyve.online/cybersecurity/cyber-risk/frontier-ai-tipping-the-scales-toward-cyber-adversaries/</loc>
+<image:image>
+<image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788003535/igqxxyxcruujf95bmfhs.png</image:loc>
+<image:title>Frontier AI tipping the scales toward cyber adversaries</image:title>
+</image:image>
+</url><url>
+<loc>https://dyve.online/cybersecurity/threat-intelligence/fake-apple-support-ai-calls-target-stolen-device-owners-for-passcodes-and-2fa-codes/</loc>
+<image:image>
+<image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787967809/e9xosiu2ypgutmhvsvu0.jpg</image:loc>
+<image:title>Fake Apple Support AI Calls Target Stolen-Device Owners for Passcodes and 2FA Codes</image:title>
+</image:image>
+</url>
+</urlset>

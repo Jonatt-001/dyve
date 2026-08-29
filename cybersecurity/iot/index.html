@@ -1,1 +1,477 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IoT | Dyve HackaX</title><meta name="description" content="IoT cybersecurity coverage from Dyve HackaX."><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://dyve.online/cybersecurity/iot/"><link rel="alternate" type="application/rss+xml" href="https://dyve.online/cyber-rss.xml"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Michroma&display=swap" rel="stylesheet"><style>:root{--bg:#f7faf8;--ink:#0b1511;--muted:#6a7671;--accent:#4F8A73;--line:#dfe8e3}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#252b28;font-family:Inter,system-ui,sans-serif}a{color:inherit;text-decoration:none}.top{position:sticky;top:0;z-index:20;background:rgba(247,250,248,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.top-in,.wrap{max-width:1180px;margin:auto}.top-in{display:flex;align-items:center;justify-content:space-between;padding:14px 20px}.brand{font-family:Michroma,sans-serif;font-weight:900;letter-spacing:.08em;color:var(--ink)}.brand span{color:var(--accent)}.hero{padding:54px 20px 32px;border-bottom:1px solid var(--line)}.eyebrow{margin-bottom:17px;color:var(--accent);font-size:.68rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase}.hero h1{max-width:950px;margin:0;color:var(--ink);font-family:Michroma,sans-serif;font-size:clamp(2rem,5vw,4rem);line-height:1.12}.hero p{max-width:790px;color:var(--muted);line-height:1.7}.strip{display:flex;gap:8px;overflow:auto;padding:18px 20px}.strip a{white-space:nowrap;padding:8px 11px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:.66rem;font-weight:800}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:10px 20px 60px}.card{overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#fff}.thumb{aspect-ratio:16/10;overflow:hidden;background:#dde7e2}.thumb img{width:100%;height:100%;object-fit:cover}.hackax-lazy-image{display:block;width:100%;height:auto;background:#dfe8e3;object-fit:cover;opacity:.92;transition:opacity .28s ease}.hackax-lazy-image.is-loaded{opacity:1}.hackax-hero-image{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}.tag{position:absolute;left:12px;bottom:12px;padding:7px 9px;background:#fff;font-size:.61rem;font-weight:900;text-transform:uppercase}.body{padding:17px}.category{color:var(--accent);font-size:.62rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase}.card h2{color:var(--ink);font-family:Michroma,sans-serif;font-size:1rem;line-height:1.4}.card p{color:#6d7571;font-size:.83rem;line-height:1.55}.meta{display:flex;gap:8px;color:#89928e;font-size:.62rem;text-transform:uppercase}footer{padding:44px 20px;background:#0b1511;color:#fff;text-align:center}@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:640px){.grid{grid-template-columns:1fr}}</style></head><body><header class="top"><div class="top-in"><a class="brand" href="../">DYVE<span>|</span>HACKAX</a><a href="../../">DYVE</a></div></header><main class="wrap"><section class="hero"><div class="eyebrow">Cybersecurity / IoT</div><h1>IoT</h1><p>Coverage and intelligence for iot.</p></section><section class="grid"><div style="grid-column:1/-1;padding:40px">No articles in this category.</div></section></main><footer><div class="brand">DYVE<span>|</span>HACKAX</div></footer><script>(function(){const imgs=document.querySelectorAll('.hackax-lazy-image');if(!imgs.length)return;function load(img){if(img.dataset.loaded==='true')return;const src=img.dataset.src;if(!src)return;const p=new Image();if(img.dataset.srcset){p.srcset=img.dataset.srcset;p.sizes=img.sizes||'100vw'}p.onload=function(){if(img.dataset.srcset)img.srcset=img.dataset.srcset;img.src=src;img.classList.add('is-loaded');img.dataset.loaded='true'};p.onerror=function(){img.src=src;img.dataset.loaded='true'};p.src=src}document.querySelectorAll('.hackax-hero-image').forEach(load);const lazy=[...document.querySelectorAll('.hackax-lazy-image:not(.hackax-hero-image)')];if('IntersectionObserver' in window){const o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){load(e.target);o.unobserve(e.target)}}),{rootMargin:'300px 0px'});lazy.forEach(i=>o.observe(i))}else lazy.forEach(load)})();</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1"
+>
+
+<title>
+IoT | Dyve HackaX
+</title>
+
+<meta
+name="description"
+content="IoT cybersecurity coverage from Dyve HackaX."
+>
+
+<meta
+name="robots"
+content="index,follow,max-image-preview:large"
+>
+
+<link
+rel="canonical"
+href="https://dyve.online/cybersecurity/iot/"
+>
+
+<link
+rel="alternate"
+type="application/rss+xml"
+href="https://dyve.online/cyber-rss.xml"
+>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Michroma&display=swap"
+rel="stylesheet"
+>
+
+<style>
+:root{
+--bg:#f7faf8;
+--ink:#0b1511;
+--muted:#6a7671;
+--accent:#4F8A73;
+--line:#dfe8e3
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+background:var(--bg);
+color:#252b28;
+font-family:Inter,system-ui,sans-serif
+}
+
+a{
+color:inherit;
+text-decoration:none
+}
+
+.top{
+position:sticky;
+top:0;
+z-index:20;
+background:rgba(247,250,248,.94);
+backdrop-filter:blur(12px);
+border-bottom:1px solid var(--line)
+}
+
+.top-in,.wrap{
+max-width:1180px;
+margin:auto
+}
+
+.top-in{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:14px 20px
+}
+
+.brand{
+font-family:Michroma,sans-serif;
+font-weight:900;
+letter-spacing:.08em;
+color:var(--ink)
+}
+
+.brand span{
+color:var(--accent)
+}
+
+.hero{
+padding:54px 20px 32px;
+border-bottom:1px solid var(--line)
+}
+
+.eyebrow{
+margin-bottom:17px;
+color:var(--accent);
+font-size:.68rem;
+font-weight:900;
+letter-spacing:.22em;
+text-transform:uppercase
+}
+
+.hero h1{
+max-width:950px;
+margin:0;
+color:var(--ink);
+font-family:Michroma,sans-serif;
+font-size:clamp(2rem,5vw,4rem);
+line-height:1.12
+}
+
+.hero p{
+max-width:790px;
+color:var(--muted);
+line-height:1.7
+}
+
+.strip{
+display:flex;
+gap:8px;
+overflow:auto;
+padding:18px 20px
+}
+
+.strip a{
+white-space:nowrap;
+padding:8px 11px;
+border:1px solid var(--line);
+border-radius:999px;
+background:#fff;
+font-size:.66rem;
+font-weight:800
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+padding:10px 20px 60px
+}
+
+.card{
+overflow:hidden;
+border:1px solid var(--line);
+border-radius:14px;
+background:#fff
+}
+
+.thumb{
+aspect-ratio:16/10;
+overflow:hidden;
+background:#dde7e2
+}
+
+.thumb img{
+width:100%;
+height:100%;
+object-fit:cover
+}
+
+.hackax-lazy-image{
+display:block;
+width:100%;
+height:auto;
+background:#dfe8e3;
+object-fit:cover;
+opacity:.92;
+transition:opacity .28s ease
+}
+
+.hackax-lazy-image.is-loaded{
+opacity:1
+}
+
+.tag{
+position:absolute;
+left:12px;
+bottom:12px;
+padding:7px 9px;
+background:#fff;
+font-size:.61rem;
+font-weight:900;
+text-transform:uppercase
+}
+
+.body{
+padding:17px
+}
+
+.category{
+color:var(--accent);
+font-size:.62rem;
+font-weight:900;
+letter-spacing:.16em;
+text-transform:uppercase
+}
+
+.card h2{
+color:var(--ink);
+font-family:Michroma,sans-serif;
+font-size:1rem;
+line-height:1.4
+}
+
+.card p{
+color:#6d7571;
+font-size:.83rem;
+line-height:1.55
+}
+
+.meta{
+display:flex;
+gap:8px;
+color:#89928e;
+font-size:.62rem;
+text-transform:uppercase
+}
+
+footer{
+padding:44px 20px;
+background:#0b1511;
+color:#fff;
+text-align:center
+}
+
+@media(max-width:900px){
+.grid{
+grid-template-columns:repeat(2,1fr)
+}
+}
+
+@media(max-width:640px){
+.grid{
+grid-template-columns:1fr
+}
+}
+</style>
+
+</head>
+
+<body>
+
+<header class="top">
+
+<div class="top-in">
+
+<a class="brand" href="../">
+DYVE<span>|</span>HACKAX
+</a>
+
+<a href="../../">
+DYVE
+</a>
+
+</div>
+
+</header>
+
+<main class="wrap">
+
+<section class="hero">
+
+<div class="eyebrow">
+Cybersecurity / IoT
+</div>
+
+<h1>
+IoT
+</h1>
+
+<p>
+Coverage and intelligence for iot.
+</p>
+
+</section>
+
+<section class="grid">
+
+<div style="grid-column:1/-1;padding:40px">No articles in this category.</div>
+
+</section>
+
+</main>
+
+<footer>
+
+<div class="brand">
+DYVE<span>|</span>HACKAX
+</div>
+
+</footer>
+
+<script>
+(function(){
+
+const imgs=
+document.querySelectorAll(
+'.hackax-lazy-image'
+);
+
+if(imgs.length){
+
+function load(img){
+
+if(img.dataset.loaded==='true'){
+return;
+}
+
+const src=img.dataset.src;
+
+if(!src){
+return;
+}
+
+const p=new Image();
+
+if(img.dataset.srcset){
+p.srcset=img.dataset.srcset;
+p.sizes=img.sizes||'100vw';
+}
+
+p.onload=function(){
+
+if(img.dataset.srcset){
+img.srcset=img.dataset.srcset;
+}
+
+img.src=src;
+img.classList.add('is-loaded');
+img.dataset.loaded='true';
+
+};
+
+p.onerror=function(){
+
+img.src=src;
+img.dataset.loaded='true';
+
+};
+
+p.src=src;
+}
+
+document
+.querySelectorAll('.hackax-hero-image')
+.forEach(load);
+
+const lazy=[
+...document.querySelectorAll(
+'.hackax-lazy-image:not(.hackax-hero-image)'
+)
+];
+
+if(
+'IntersectionObserver' in window
+){
+
+const o=
+new IntersectionObserver(
+es=>es.forEach(e=>{
+
+if(e.isIntersecting){
+
+load(e.target);
+o.unobserve(e.target);
+
+}
+
+}),
+{
+rootMargin:'300px 0px'
+}
+);
+
+lazy.forEach(i=>o.observe(i));
+
+}else{
+
+lazy.forEach(load);
+
+}
+
+}
+
+const progress=
+document.querySelector(
+'.article-reading-progress span'
+);
+
+if(progress){
+
+const update=()=>{
+
+const doc=document.documentElement;
+
+const max=
+doc.scrollHeight-
+window.innerHeight;
+
+const pct=
+max>0
+?(window.scrollY/max)*100
+:0;
+
+progress.style.width=
+Math.max(
+0,
+Math.min(100,pct)
+)+'%';
+
+};
+
+window.addEventListener(
+'scroll',
+update,
+{
+passive:true
+}
+);
+
+update();
+
+}
+
+const copy=
+document.querySelector(
+'[data-copy-article]'
+);
+
+if(copy){
+
+copy.addEventListener(
+'click',
+async()=>{
+
+try{
+
+await navigator.clipboard.writeText(
+location.href
+);
+
+copy.textContent='Link copied';
+
+setTimeout(
+()=>copy.textContent='Copy link',
+1800
+);
+
+}catch{
+
+copy.textContent='Copy unavailable';
+
+setTimeout(
+()=>copy.textContent='Copy link',
+1800
+);
+
+}
+
+}
+);
+
+}
+
+})();
+</script>
+
+</body>
+</html>
