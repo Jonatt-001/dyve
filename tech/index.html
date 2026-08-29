@@ -952,39 +952,105 @@ function renderHero() {
     const article = articles[0];
     if (!article) return;
 
-    setText("hero-kicker",SITE_CONFIG.shortName + " / " + article.category);
-    setText("hero-title",article.title);
+    /*
+     * Use the latest published Tech article image
+     * as the actual hero background.
+     *
+     * The existing hero CSS, red treatment, grid,
+     * overlays and typography remain unchanged.
+     */
+    setBackground(
+        $("hero"),
+        article.image,
+        article.title
+    );
+
+    setText(
+        "hero-kicker",
+        SITE_CONFIG.shortName +
+        " / " +
+        article.category
+    );
+
+    setText(
+        "hero-title",
+        article.title
+    );
+
     setText(
         "hero-copy",
         article.excerpt ||
         "Latest technology intelligence from the production editorial feed."
     );
 
-    setHref("hero-primary-link",article.url);
+    setHref(
+        "hero-primary-link",
+        article.url
+    );
 
-    const heroMeta = $("hero-meta");
+    const heroMeta =
+        $("hero-meta");
 
     if (heroMeta) {
+
         heroMeta.innerHTML =
-            '<span class="accent">' + escapeHTML(article.author) + '</span>' +
+            '<span class="accent">' +
+                escapeHTML(article.author) +
+            '</span>' +
+
             '<span aria-hidden="true">•</span>' +
-            '<span>' + escapeHTML(formatRelative(article)) + '</span>' +
+
+            '<span>' +
+                escapeHTML(
+                    formatRelative(article)
+                ) +
+            '</span>' +
+
             '<span aria-hidden="true">•</span>' +
-            '<span>' + article.readTime + ' min read</span>';
+
+            '<span>' +
+                article.readTime +
+                ' min read' +
+            '</span>';
+
     }
 
-    const heroIndex = $("hero-index");
+    const heroIndex =
+        $("hero-index");
 
     if (heroIndex) {
+
         heroIndex.innerHTML =
-            articles.slice(0,3).map(function (item,index) {
-                return (
-                    '<a class="hero-index-item" href="' + escapeAttr(item.url) + '">' +
-                        '<span>0' + (index + 1) + ' / ' + escapeHTML(item.category) + '</span>' +
-                        '<strong>' + escapeHTML(item.title) + '</strong>' +
-                    '</a>'
-                );
-            }).join("");
+            articles
+                .slice(0, 3)
+                .map(function (item, index) {
+
+                    return (
+                        '<a class="hero-index-item" href="' +
+                            escapeAttr(item.url) +
+                        '">' +
+
+                            '<span>' +
+                                '0' +
+                                (index + 1) +
+                                ' / ' +
+                                escapeHTML(
+                                    item.category
+                                ) +
+                            '</span>' +
+
+                            '<strong>' +
+                                escapeHTML(
+                                    item.title
+                                ) +
+                            '</strong>' +
+
+                        '</a>'
+                    );
+
+                })
+                .join("");
+
     }
 }
 
