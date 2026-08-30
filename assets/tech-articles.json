@@ -1,5 +1,36 @@
 [
   {
+    "title": "Claude Code Can Be Tricked Into Running Malicious Code",
+    "desc": "Claude Code Can Be Tricked Into Running Malicious Code: A malicious website, a poisoned Python module and a seemingly harmless request to “summarize this pag...",
+    "image": "https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788053571/dyve-tech/claude-codes-auto-mode-was-designed-to-stop-prompt-injection-a-researcher-found-a-way-around-it-featured.jpg",
+    "imageAlt": "A malicious website, a poisoned Python module and a seemingly harmless request to “summarize this page” were enough to turn an AI coding...",
+    "url": "tech/claude-code-can-be-tricked-into-running-malicious-code.html",
+    "tag": "News",
+    "meta": "trends",
+    "category": "trends",
+    "date": "2026-08-30",
+    "page": "tech",
+    "delta": "assets/deltas/tech-claude-code-can-be-tricked-into-running-malicious-code.json",
+    "readTime": 15,
+    "author": "Dyve Tech Editorial Unit",
+    "modified": "2026-08-30T01:36:11.593Z",
+    "createdAt": "2026-08-30T01:36:11.593Z",
+    "seoTitle": "Claude Code Can Be Tricked Into Running Malicious Code",
+    "focusKeyword": "malicious",
+    "keywords": [
+      "malicious",
+      "website",
+      "poisoned",
+      "python",
+      "module",
+      "seemingly",
+      "harmless",
+      "request"
+    ],
+    "sourceUrl": "",
+    "ogPrompt": "Modern technology visualization of Claude Code Can Be Tricked Into Running Malicious Code. Focus on malicious,website,poisoned,python,module,seemingly,harmless,request. Editorial, premium, high-tech aesthetic, clean composition, no text."
+  },
+  {
     "title": "Five Critical WordPress Plugin and Theme Flaws Enable Site Takeover or RCE",
     "desc": "Five Critical WordPress Plugin and Theme Flaws Enable Site Takeover or RCE: Multiple critical security flaws have been disclosed in WordPress plugins and the...",
     "image": "https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788043546/dyve-tech/five-critical-wordpress-plugin-and-theme-flaws-enable-site-takeover-or-rce-featured.png",

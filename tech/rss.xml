@@ -5,10 +5,22 @@
     <link>https://dyve.online/tech/</link>
     <description>Technology news, analysis and intelligence from Dyve Tech.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 29 Aug 2026 22:47:51 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 30 Aug 2026 01:36:12 GMT</lastBuildDate>
     <generator>Dyve Tech Editorial Publisher</generator>
     <atom:link href="https://dyve.online/tech/rss.xml" rel="self" type="application/rss+xml" />
 
+    <item>
+        <title>Claude Code Can Be Tricked Into Running Malicious Code</title>
+        <link>https://dyve.online/tech/claude-code-can-be-tricked-into-running-malicious-code.html</link>
+        <guid isPermaLink="true">https://dyve.online/tech/claude-code-can-be-tricked-into-running-malicious-code.html</guid>
+        <description>Claude Code Can Be Tricked Into Running Malicious Code: A malicious website, a poisoned Python module and a seemingly harmless request to “summarize this pag...</description>
+        <pubDate>Sun, 30 Aug 2026 01:36:11 GMT</pubDate>
+        <dc:creator>Dyve Tech Editorial Unit</dc:creator>
+        <category>Tech Trends</category>
+        <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788053571/dyve-tech/claude-codes-auto-mode-was-designed-to-stop-prompt-injection-a-researcher-found-a-way-around-it-featured.jpg" medium="image" />
+        <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788053571/dyve-tech/claude-codes-auto-mode-was-designed-to-stop-prompt-injection-a-researcher-found-a-way-around-it-featured.jpg" />
+        <content:encoded><![CDATA[<p>Claude Code Can Be Tricked Into Running Malicious Code: A malicious website, a poisoned Python module and a seemingly harmless request to “summarize this pag...</p>]]></content:encoded>
+    </item>
     <item>
         <title>Five Critical WordPress Plugin and Theme Flaws Enable Site Takeover or RCE</title>
         <link>https://dyve.online/tech/five-critical-wordpress-plugin-and-theme-flaws-enable-site-takeover-or-rce.html</link>
