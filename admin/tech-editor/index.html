@@ -562,7 +562,7 @@
 /* ============================================================
    DYVE|TECH EDITOR
    Static publishing architecture:
-   editor -> tech-articles.json -> article HTML -> category HTML
+   editor -> assets/tech-articles.json -> tech/articles.html -> article HTML
    -> /tech/index.html -> /tech/sitemap.xml (root sitemap/robots remain site-level)
    ============================================================ */
 
@@ -767,7 +767,6 @@ async function prepareImageForCloudinary(file, contextLabel = 'image') {
 const STATIC_BUILD_CONFIG = {
     generateTechIndex: false,
     updateHomepageOnPublish: false,
-    updateHomepageOnPublish: false,
     generateCategoryPages: false,
     generateSitemap: true,
     generateRss: true,
@@ -783,8 +782,8 @@ const STATIC_BUILD_CONFIG = {
     techSitemapPath: 'tech/sitemap.xml',
     techRssPath: 'tech/rss.xml',
     cloudinaryFolder: 'dyve-tech',
-    homepageTemplatePath: 'tech-editor/tech-homepage-template.html',
-    articleTemplatePath: 'tech-editor/article-template.html',
+    homepageTemplatePath: 'admin/tech-editor/tech-homepage-template.html',
+    articleTemplatePath: 'tech/articles.html'
 };
 
 const SECTION_CONFIG = {
@@ -1977,14 +1976,14 @@ function buildTechIndexHTML(siteUrl, articles, templateHTML = '') {
      * Tech Editor is a content publisher, not the homepage template builder.
      *
      * The production homepage template is installed by:
-     *     /tech-editor/update-system.html
+     *     /admin/tech-editor/update-system.html
      *
      * Once installed, Tech Editor ONLY replaces the three dynamic publishing
      * regions. It never regenerates or replaces the homepage shell.
      */
     if (!hasDyveTechTemplateMarkers(templateHTML)) {
         throw new Error(
-            'TECH HOMEPAGE TEMPLATE IS NOT INSTALLED. Open tech-editor/update-system.html, run Check for Updates, then run the homepage update before publishing Tech content.'
+            'TECH HOMEPAGE TEMPLATE IS NOT INSTALLED. Open admin/tech-editor/update-system.html, run Check for Updates, then run the homepage update before publishing Tech content.'
         );
     }
 
@@ -2389,7 +2388,8 @@ async function prepareLegacyRouteMigration(config, migration) {
                 keywords: article.keywords || [],
                 sourceUrl: article.sourceUrl || '',
                 modified: article.modified || article.date
-            }
+            },
+            config
         );
 
         files.push({
@@ -3679,7 +3679,8 @@ async function publishArticle() {
                 sourceUrl: articleObject.sourceUrl,
                 modified: articleObject.modified,
                 imageAlt: generatedImageAlt
-            }
+            },
+            config
         );
 
         const files = [
@@ -3764,27 +3765,99 @@ async function publishArticle() {
    ARTICLE HTML GENERATION
    ============================================================ */
 
-async function generateTechArticleHTML(siteUrl, title, desc, image, tag, category, slug, date, articleHTML, ogPrompt = '', allArticles = [], seoMeta = {}) {
+const ARTICLE_TEMPLATE_REQUIRED_TOKENS = [
+    'SEO_TITLE',
+    'DESCRIPTION_ATTR',
+    'ROBOTS_DIRECTIVE',
+    'CANONICAL_URL',
+    'RSS_URL',
+    'IMAGE_URL',
+    'IMAGE_ALT',
+    'DATE_PUBLISHED',
+    'DATE_MODIFIED',
+    'PUBLISHER_NAME',
+    'CATEGORY_LABEL_ATTR',
+    'ARTICLE_SCHEMA',
+    'RELATED_SCHEMA',
+    'TAG',
+    'HEADLINE',
+    'FORMATTED_DATE',
+    'READ_TIME',
+    'DESCRIPTION_TEXT',
+    'ARTICLE_BODY',
+    'TAG_ESCAPED',
+    'CATEGORY_LABEL',
+    'CURRENT_YEAR',
+    'ARTICLE_RUNTIME_JSON',
+    'RELATED_ARTICLES_JSON'
+];
+
+function articleTemplateTokensPresent(templateHTML) {
+    return ARTICLE_TEMPLATE_REQUIRED_TOKENS.every(token =>
+        String(templateHTML || '').includes(`{{${token}}}`)
+    );
+}
+
+function replaceArticleTemplateTokens(templateHTML, values) {
+    let output = String(templateHTML || '');
+
+    Object.entries(values).forEach(([token, value]) => {
+        output = output.split(`{{${token}}}`).join(String(value ?? ''));
+    });
+
+    return output;
+}
+
+async function loadArticleTemplate(config) {
+    const templatePath = STATIC_BUILD_CONFIG.articleTemplatePath;
+    const templateHTML = await fetchGitHubText(config, templatePath, { optional: true });
+
+    if (!templateHTML || !templateHTML.trim()) {
+        throw new Error(
+            `ARTICLE TEMPLATE NOT FOUND: ${templatePath}. Create the standalone Tech article template before publishing.`
+        );
+    }
+
+    if (!articleTemplateTokensPresent(templateHTML)) {
+        const missing = ARTICLE_TEMPLATE_REQUIRED_TOKENS
+            .filter(token => !templateHTML.includes(`{{${token}}}`));
+        throw new Error(
+            `ARTICLE TEMPLATE CONTRACT FAILED: ${templatePath} is missing required token(s): ${missing.map(token => `{{${token}}}`).join(', ')}`
+        );
+    }
+
+    return templateHTML;
+}
+
+async function generateTechArticleHTML(siteUrl, title, desc, image, tag, category, slug, date, articleHTML, ogPrompt = '', allArticles = [], seoMeta = {}, config = null) {
+    if (!config) {
+        throw new Error('GitHub configuration is required to render the standalone Tech article template.');
+    }
+
+    const templateHTML = await loadArticleTemplate(config);
     const categoryMeta = getCategoryMeta(category);
     const categoryLabel = categoryMeta.label;
     const canonicalUrl = `${siteUrl}/tech/${slug}.html`;
 
     const effectiveSeoTitle = String(seoMeta.seoTitle || title).trim() || title;
     const effectiveFocusKeyword = String(seoMeta.focusKeyword || '').trim();
-    const effectiveKeywords = Array.isArray(seoMeta.keywords) ? seoMeta.keywords.map(k => String(k).trim()).filter(Boolean) : String(seoMeta.keywords || '').split(',').map(k => k.trim()).filter(Boolean);
+    const effectiveKeywords = Array.isArray(seoMeta.keywords)
+        ? seoMeta.keywords.map(k => String(k).trim()).filter(Boolean)
+        : String(seoMeta.keywords || '').split(',').map(k => k.trim()).filter(Boolean);
     const effectiveSourceUrl = String(seoMeta.sourceUrl || '').trim();
     const modifiedDate = String(seoMeta.modified || date).trim() || date;
-    const safeTitle = escapeHtml(effectiveSeoTitle);
-    const safeHeadline = escapeHtml(title);
-    const safeDesc = escapeAttr(desc);
-    const safeImage = escapeAttr(image);
-    const safeTag = escapeHtml(tag);
-    const safeImageAlt = escapeAttr(seoMeta.imageAlt || deriveImageAltText(title, desc, articleHTML, category));
+    const imageAlt = String(
+        seoMeta.imageAlt || deriveImageAltText(title, desc, articleHTML, category)
+    ).trim();
 
     const dObj = new Date(date);
     const formattedDate = isNaN(dObj)
         ? date
-        : dObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        : dObj.toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+        });
 
     const words = (articleHTML || '')
         .replace(/<[^>]+>/g, ' ')
@@ -3792,15 +3865,21 @@ async function generateTechArticleHTML(siteUrl, title, desc, image, tag, categor
         .filter(Boolean).length;
 
     const readTime = Math.max(1, Math.round(words / 200));
+    const articleBody = articleHTML && articleHTML.trim() && articleHTML !== '<p><br></p>'
+        ? articleHTML
+        : '<p><em>No content available.</em></p>';
 
-    let articleBody = '<p><em>No content available.</em></p>';
+    const derivedKeywords = `${title} ${desc} ${categoryLabel} ${tag}`
+        .toLowerCase()
+        .match(/\b[a-z0-9][a-z0-9-]{3,}\b/g) || [];
 
-    if (articleHTML && articleHTML.trim() && articleHTML !== '<p><br></p>') {
-        articleBody = articleHTML;
-    }
-
-    const derivedKeywords = `${title} ${desc} ${categoryLabel} ${tag}`.toLowerCase().match(/\b[a-z0-9][a-z0-9-]{3,}\b/g) || [];
-    const uniqueKeywords = [...new Set([...effectiveKeywords, ...(effectiveFocusKeyword ? [effectiveFocusKeyword] : []), ...derivedKeywords])].slice(0, 20);
+    const uniqueKeywords = [
+        ...new Set([
+            ...effectiveKeywords,
+            ...(effectiveFocusKeyword ? [effectiveFocusKeyword] : []),
+            ...derivedKeywords
+        ])
+    ].slice(0, 20);
 
     const schema = {
         '@context': 'https://schema.org',
@@ -3810,33 +3889,46 @@ async function generateTechArticleHTML(siteUrl, title, desc, image, tag, categor
         url: canonicalUrl,
         inLanguage: 'en',
         image: [image],
-        author: { '@type': 'Organization', name: STATIC_BUILD_CONFIG.publisherName, url: `${siteUrl}/tech/`, parentOrganization: { '@type': 'Organization', '@id': `${siteUrl}/#organization`, name: 'Dyve' } },
+        author: {
+            '@type': 'Organization',
+            name: STATIC_BUILD_CONFIG.publisherName,
+            url: `${siteUrl}/tech/`,
+            parentOrganization: {
+                '@type': 'Organization',
+                '@id': `${siteUrl}/#organization`,
+                name: 'Dyve'
+            }
+        },
         publisher: {
             '@type': 'Organization',
             '@id': `${siteUrl}/#dyve-tech`,
             name: STATIC_BUILD_CONFIG.siteName,
             url: `${siteUrl}/tech/`,
-            parentOrganization: { '@type': 'Organization', '@id': `${siteUrl}/#organization`, name: 'Dyve' },
-            logo: { '@type': 'ImageObject', url: `${siteUrl}/logo.png` }
+            parentOrganization: {
+                '@type': 'Organization',
+                '@id': `${siteUrl}/#organization`,
+                name: 'Dyve'
+            },
+            logo: {
+                '@type': 'ImageObject',
+                url: `${siteUrl}/logo.png`
+            }
         },
         datePublished: date,
         dateModified: modifiedDate,
         wordCount: words,
         timeRequired: `PT${readTime}M`,
         isAccessibleForFree: true,
-        mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+        mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': canonicalUrl
+        },
         articleSection: categoryLabel,
         keywords: uniqueKeywords.join(', '),
-        ...(effectiveFocusKeyword ? { about: [{ '@type': 'Thing', name: effectiveFocusKeyword }] } : {}),
+        ...(effectiveFocusKeyword
+            ? { about: [{ '@type': 'Thing', name: effectiveFocusKeyword }] }
+            : {}),
         ...(effectiveSourceUrl ? { citation: [effectiveSourceUrl] } : {})
-    };
-
-    const relatedSchema = {
-        '@context': 'https://schema.org',
-        '@type': 'ItemList',
-        name: `Related Articles for ${title}`,
-        numberOfItems: 0,
-        itemListElement: []
     };
 
     const relatedCandidates = sortArticles(allArticles)
@@ -3854,128 +3946,108 @@ async function generateTechArticleHTML(siteUrl, title, desc, image, tag, categor
                 .toLowerCase()
                 .match(/[a-z0-9]{4,}/g) || [];
 
-            const overlap = haystack.reduce((score, word) => score + (currentTokens.has(word) ? 1 : 0), 0);
+            const overlap = haystack.reduce(
+                (score, word) => score + (currentTokens.has(word) ? 1 : 0),
+                0
+            );
             const sameCategory = article.category === category || article.meta === category ? 3 : 0;
-            return { article, score: overlap + sameCategory };
+
+            return {
+                article,
+                score: overlap + sameCategory
+            };
         })
         .sort((a, b) => b.score - a.score || new Date(b.article.date) - new Date(a.article.date))
         .slice(0, 6)
         .map(item => item.article);
 
-    relatedSchema.numberOfItems = related.length;
-    relatedSchema.itemListElement = related.map((article, index) => ({
-        '@type': 'ListItem',
-        position: index + 1,
-        url: articleUrl(siteUrl, article),
-        name: article.title
-    }));
-
-    const relatedMarkup = related.length
-        ? related.map((article, index) => `
-<a class="ymal-item" href="./${escapeAttr(String(article.url).replace(/^tech\//, ''))}">
-    <div class="ymal-thumb">
-        <img src="${escapeAttr(article.image || STATIC_BUILD_CONFIG.defaultImage)}" alt="${escapeAttr(article.title)}" loading="lazy">
-        <div class="ymal-tags">
-            <span class="ymal-tag${index % 2 ? ' alt' : ''}">${escapeHtml(article.tag || 'News')}</span>
-        </div>
-    </div>
-    <div>
-        <div class="ymal-title">${escapeHtml(article.title)}</div>
-        <div class="ymal-meta">
-            <span class="author">${escapeHtml(article.author || STATIC_BUILD_CONFIG.publisherName)}</span>
-            <span>${escapeHtml(article.date || '')} | ${Math.max(1, Number(article.readTime || 4))} MINS READ</span>
-        </div>
-    </div>
-</a>`).join('')
-        : '<p style="color:#6d7078;padding:20px 0">No related articles are currently available.</p>';
-
-    const relatedMid = related.slice(0, 2).length
-        ? related.slice(0, 2).map(article => `
-<a class="related-mid-card" href="./${escapeAttr(String(article.url).replace(/^tech\//, ''))}">
-    <img src="${escapeAttr(article.image || STATIC_BUILD_CONFIG.defaultImage)}" alt="${escapeAttr(article.title)}" loading="lazy">
-    <div class="content">
-        <div class="tag">${escapeHtml(article.tag || 'News')}</div>
-        <h3>${escapeHtml(article.title)}</h3>
-        <time>${escapeHtml(article.date || '')}</time>
-    </div>
-</a>`).join('')
-        : '';
-
-    const relatedMidMarkup = relatedMid
-        ? `<div class="related-mid">
-    <h2>Continue Reading</h2>
-    <p class="subtitle">Deepen your understanding with these related insights.</p>
-    <div class="related-mid-grid">${relatedMid}</div>
-</div>`
-        : '';
-
-
-    const templatePath = STATIC_BUILD_CONFIG.articleTemplatePath;
-
-    if (!templatePath) {
-        throw new Error('Article template path is not configured.');
-    }
-
-    const articleTemplate = await fetchGitHubText(
-        { ...getGitHubConfig(), siteUrl },
-        templatePath
-    );
-
-    if (!articleTemplate || !articleTemplate.trim()) {
-        throw new Error(`Article template is empty: ${templatePath}`);
-    }
-
-    const sourceBlock = effectiveSourceUrl
-        ? `<div style="margin:0 4px 22px;font-family:Inter,system-ui,sans-serif;font-size:.78rem;color:#6d7078">Source: <a href="${escapeAttr(effectiveSourceUrl)}" rel="nofollow noopener noreferrer" target="_blank" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">${escapeHtml(effectiveSourceUrl)}</a></div>`
-        : '';
-
-    const updatedMeta = modifiedDate !== date
-        ? `<span class="dot">•</span><span>Updated ${escapeHtml(formatDate(modifiedDate))}</span>`
-        : '';
-
-    const templateData = {
-        SEO_TITLE: safeTitle,
-        DESCRIPTION_ATTR: safeDesc,
-        DESCRIPTION: escapeHtml(desc),
-        CANONICAL_URL: escapeAttr(canonicalUrl),
-        RSS_URL: escapeAttr(`${siteUrl}/${STATIC_BUILD_CONFIG.techRssPath}`),
-        IMAGE: safeImage,
-        IMAGE_ALT: safeImageAlt,
-        DATE_PUBLISHED: escapeAttr(date),
-        DATE_MODIFIED: escapeAttr(modifiedDate),
-        PUBLISHER: escapeAttr(STATIC_BUILD_CONFIG.publisherName),
-        CATEGORY_LABEL: escapeHtml(categoryLabel),
-        TAG: safeTag,
-        HEADLINE: safeHeadline,
-        FORMATTED_DATE: escapeHtml(formattedDate),
-        READ_TIME: String(readTime),
-        UPDATED_META: updatedMeta,
-        SOURCE_BLOCK: sourceBlock,
-        ARTICLE_BODY: articleBody,
-        RELATED_MID_MARKUP: relatedMidMarkup,
-        RELATED_MARKUP: relatedMarkup,
-        SCHEMA_JSON: JSON.stringify(schema).replace(/</g, '\\u003c'),
-        RELATED_SCHEMA_JSON: JSON.stringify(relatedSchema).replace(/</g, '\\u003c'),
-        ROBOTS: 'index, follow, max-image-preview:large, max-snippet:-1',
-        YEAR: String(new Date().getFullYear())
+    const relatedSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: `Related Articles for ${title}`,
+        numberOfItems: related.length,
+        itemListElement: related.map((article, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            url: articleUrl(siteUrl, article),
+            name: article.title
+        }))
     };
 
-    let rendered = articleTemplate;
+    const articleRuntimeData = {
+        title,
+        description: desc,
+        image,
+        imageAlt,
+        tag,
+        category,
+        categoryLabel,
+        slug,
+        url: canonicalUrl,
+        date,
+        modified: modifiedDate,
+        modifiedFormatted: formatDate(modifiedDate),
+        readTime,
+        author: STATIC_BUILD_CONFIG.publisherName,
+        publisherName: STATIC_BUILD_CONFIG.publisherName,
+        sourceUrl: effectiveSourceUrl,
+        seoTitle: effectiveSeoTitle,
+        focusKeyword: effectiveFocusKeyword,
+        keywords: uniqueKeywords
+    };
 
-    Object.entries(templateData).forEach(([key, value]) => {
-        rendered = rendered.split(`{{${key}}}`).join(String(value ?? ''));
-    });
+    const relatedData = {
+        items: related.map(article => ({
+            title: article.title,
+            image: article.image || STATIC_BUILD_CONFIG.defaultImage,
+            tag: article.tag || 'News',
+            author: article.author || STATIC_BUILD_CONFIG.publisherName,
+            date: article.date || '',
+            readTime: Math.max(1, Number(article.readTime || 4)),
+            url: article.url
+        })),
+        mid: related.slice(0, 2).map(article => ({
+            title: article.title,
+            image: article.image || STATIC_BUILD_CONFIG.defaultImage,
+            tag: article.tag || 'News',
+            date: article.date || '',
+            url: article.url
+        }))
+    };
 
-    const unresolved = [...rendered.matchAll(/{{[A-Z0-9_]+}}/g)].map(match => match[0]);
+    const values = {
+        SEO_TITLE: escapeHtml(effectiveSeoTitle),
+        DESCRIPTION_ATTR: escapeAttr(desc),
+        ROBOTS_DIRECTIVE: 'index, follow, max-image-preview:large, max-snippet:-1',
+        CANONICAL_URL: escapeAttr(canonicalUrl),
+        RSS_URL: escapeAttr(`${siteUrl}/${STATIC_BUILD_CONFIG.techRssPath}`),
+        IMAGE_URL: escapeAttr(image),
+        IMAGE_ALT: escapeAttr(imageAlt),
+        DATE_PUBLISHED: escapeAttr(date),
+        DATE_MODIFIED: escapeAttr(modifiedDate),
+        PUBLISHER_NAME: escapeHtml(STATIC_BUILD_CONFIG.publisherName),
+        CATEGORY_LABEL_ATTR: escapeAttr(categoryLabel),
+        ARTICLE_SCHEMA: safeJson(schema),
+        RELATED_SCHEMA: safeJson(relatedSchema),
+        TAG: escapeHtml(tag),
+        HEADLINE: escapeHtml(title),
+        FORMATTED_DATE: escapeHtml(formattedDate),
+        READ_TIME: readTime,
+        DESCRIPTION_TEXT: escapeHtml(desc),
+        ARTICLE_BODY: articleBody,
+        TAG_ESCAPED: escapeHtml(tag),
+        CATEGORY_LABEL: escapeHtml(categoryLabel),
+        CURRENT_YEAR: new Date().getFullYear(),
+        ARTICLE_RUNTIME_JSON: safeJson(articleRuntimeData),
+        RELATED_ARTICLES_JSON: safeJson(relatedData)
+    };
 
-    if (unresolved.length) {
-        throw new Error(
-            `Article template contains unresolved tokens: ${[...new Set(unresolved)].join(', ')}`
-        );
-    }
-
-    return rendered;
+    return replaceArticleTemplateTokens(templateHTML, values);
 }
+
+/* ============================================================
+   SEO
+   ============================================================ */
 
 function autoGenerateMetaDescription() {
     const title = document.getElementById('titleInput').value.trim();
