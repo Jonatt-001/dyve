@@ -189,6 +189,7 @@
         .live-stat-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
         .live-stat{border:1px solid #e5e7eb;border-radius:10px;padding:10px;background:#fff}.live-stat strong{display:block;color:#111827;font-size:16px}.live-stat span{display:block;margin-top:2px;color:#94a3b8;font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
         .publish-gate-note{margin-top:10px;font-size:11px;color:#64748b;line-height:1.55}
+        .taxonomy-suggestion{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 10px;border:1px solid rgba(255,255,255,.08);border-radius:8px;background:rgba(255,255,255,.035);color:#e5e7eb;text-align:left;transition:.2s}.taxonomy-suggestion:hover,.taxonomy-suggestion.recommended{border-color:rgba(241,94,80,.55);background:rgba(241,94,80,.09)}.taxonomy-suggestion-main{display:flex;flex-direction:column;gap:2px;min-width:0}.taxonomy-suggestion-main strong{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#f15e50}.taxonomy-suggestion-main span{font-size:11px}.taxonomy-confidence{font-size:10px;font-weight:800;color:#9ca3af;white-space:nowrap}.taxonomy-manager-category{border:1px solid #e5e7eb;border-radius:12px;padding:13px;background:#fafafa}.taxonomy-manager-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.taxonomy-manager-head div{display:flex;flex-direction:column}.taxonomy-manager-head strong{font-size:14px;color:#111827}.taxonomy-manager-head span{font-size:9px;color:#9ca3af;font-family:ui-monospace,monospace}.taxonomy-add-sub{font-size:11px;font-weight:800;color:#f15e50;border:1px solid #f15e50;border-radius:7px;padding:6px 9px;background:white}.taxonomy-manager-subs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:10px}.taxonomy-manager-sub{display:flex;justify-content:space-between;gap:6px;padding:7px 8px;background:white;border:1px solid #eceef2;border-radius:7px;font-size:11px;color:#374151}.taxonomy-manager-sub code{color:#9ca3af;font-size:8px}.
         @media(max-width:768px){.intel-grid{grid-template-columns:1fr}.intel-field.full{grid-column:auto}.live-stat-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
         @media (max-width: 768px) {
@@ -331,11 +332,11 @@
                 <div class="flex items-start justify-between gap-4 mb-4">
                     <div>
                         <h3 class="text-base font-extrabold text-[#00001a]">Static SEO Build Engine</h3>
-                        <p class="text-xs text-gray-500 mt-1">Publishing uses <code>assets/tech-articles.json</code> as the only Tech article database. Article pages are rendered from <code>tech/articles.html</code> into <code>tech/&lt;slug&gt;.html</code>; <code>tech/index.html</code> remains the production homepage and is never replaced by article publication. This editor never reads or writes another article database.</p>
+                        <p class="text-xs text-gray-500 mt-1">Publishing reads and updates only <code>assets/tech-articles.json</code>. Published Tech article pages and editor deltas remain independent content assets.</p>
                     </div>
                     <div class="flex flex-wrap justify-end gap-2">
-                        <button id="restoreTechDbBtn" class="shrink-0 px-3 py-2 text-xs font-bold text-emerald-700 border border-emerald-300 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
-                            Restore &amp; Normalize Tech DB
+                        <button id="migrateRoutesBtn" class="shrink-0 px-3 py-2 text-xs font-bold text-amber-700 border border-amber-300 bg-amber-50 rounded-lg hover:bg-amber-100 transition">
+                            Migrate &amp; Publish Legacy Routes
                         </button>
                         <button id="previewBuildBtn" class="shrink-0 px-3 py-2 text-xs font-bold text-[#f15e50] border border-[#f15e50] rounded-lg hover:bg-[#fef3f2] transition">
                             Preview Build
@@ -359,39 +360,39 @@
                 <div class="flex items-start justify-between gap-4 mb-4">
                     <div>
                         <div class="text-[10px] uppercase tracking-[.18em] font-extrabold text-[#f15e50]">Tech database recovery</div>
-                        <h3 class="text-base font-extrabold text-[#00001a] mt-1">Restore &amp; Normalize <code>tech-articles.json</code></h3>
+                        <h3 class="text-base font-extrabold text-[#00001a] mt-1">Restore <code>tech-articles.json</code></h3>
                         <p class="text-xs text-gray-500 mt-1 leading-relaxed">
-                            This editor owns only <code>assets/tech-articles.json</code>. Restore reads the current Tech database and, when available, previous versions of that same file from Git history, recovers missing Tech records, normalizes taxonomy/routes/metadata, removes duplicates, validates the result, and writes only the Tech database plus required Tech redirects.
+                            Recovers the Tech database from <code>assets/deltas/tech-articles.json</code>, merges any currently published <code>tech/*.html</code> article pages that are missing from the database, and writes the complete result back to <code>assets/tech-articles.json</code>. It never reads, writes, or depends on <code>assets/articles.json</code>.
                         </p>
                     </div>
                     <span id="migrationState" class="migration-state">
                         <span class="dot"></span>
-                        <span id="migrationStateText">Ready</span>
+                        <span id="migrationStateText">Not run</span>
                     </span>
                 </div>
 
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
-                    <div class="migration-stat"><strong id="migrationSourceCount">0</strong><span>Current records</span></div>
-                    <div class="migration-stat"><strong id="migrationTechCount">0</strong><span>Restored records</span></div>
-                    <div class="migration-stat"><strong id="migrationHackaXCount">0</strong><span>Recovered</span></div>
-                    <div class="migration-stat"><strong id="migrationSkippedCount">0</strong><span>Duplicates removed</span></div>
+                    <div class="migration-stat"><strong id="migrationSourceCount">0</strong><span>Backup records</span></div>
+                    <div class="migration-stat"><strong id="migrationTechCount">0</strong><span>Current records</span></div>
+                    <div class="migration-stat"><strong id="migrationHackaXCount">0</strong><span>Published pages</span></div>
+                    <div class="migration-stat"><strong id="migrationSkippedCount">0</strong><span>Recovered</span></div>
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-2">
                     <button id="runDataMigrationBtn" class="flex-1 px-4 py-3 text-sm font-extrabold text-white bg-[#00001a] rounded-lg hover:bg-[#17172e] transition">
-                        Restore &amp; Normalize Tech Database
+                        Recover Tech Database
                     </button>
                     <button id="migrationPreviewBtn" class="px-4 py-3 text-sm font-bold text-[#f15e50] border border-[#f15e50] bg-[#fef3f2] rounded-lg hover:bg-[#f15e50] hover:text-white transition">
-                        Inspect Tech Database
+                        Inspect Recovery
                     </button>
                 </div>
 
                 <div id="migrationLog" class="build-log bg-slate-950 text-slate-200 rounded-lg p-3 mt-3">
-                    <div class="info">[tech-db] Ready. This panel reads only assets/tech-articles.json.</div>
+                    <div class="info">[migration] Recovery is optional. Run it now to restore the Tech database before publishing again.</div>
                 </div>
 
                 <p class="text-[11px] text-gray-500 mt-3 leading-relaxed">
-                    Restore is Tech-only. It never reads, writes, merges, deletes, or depends on any other article database.
+                    Recovery is idempotent. It preserves existing published article HTML and per-article editor deltas. After a successful recovery, the backup database is removed from <code>assets/deltas/</code> because <code>assets/tech-articles.json</code> becomes the single Tech metadata source of truth.
                 </p>
             </div>
         </div>
@@ -401,33 +402,36 @@
                 <h3 class="text-sm font-bold text-[#f15e50] mb-4 uppercase tracking-wider">Tech Metadata</h3>
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-2">Primary Category</label>
-                        <select id="categorySelect" class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f15e50] text-white appearance-none cursor-pointer">
-                            <option value="" disabled selected>Select Primary Category</option>
-                            <option value="technology">Technology</option>
-                            <option value="cyber-intelligence">Cyber Intelligence</option>
-                            <option value="cyber-safety">Cyber Safety</option>
-                            <option value="global-intelligence">Global Intelligence</option>
+                        <div class="flex items-center justify-between gap-3 mb-2">
+                            <label class="block text-xs font-medium text-gray-400">Publication Taxonomy</label>
+                            <button type="button" id="manageTaxonomyBtn" class="text-[10px] font-bold text-[#f15e50] hover:underline">Manage</button>
+                        </div>
+                        <select id="categorySelect" class="w-full px-4 py-3 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f15e50] text-white appearance-none cursor-pointer">
+                            <option value="">Select category</option>
                         </select>
+                        <select id="subcategorySelect" class="w-full mt-2 px-4 py-3 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f15e50] text-white appearance-none cursor-pointer" disabled>
+                            <option value="">Select sub-category</option>
+                        </select>
+                        <p id="taxonomySummary" class="mt-2 text-[11px] leading-relaxed text-gray-400">Choose the broad editorial desk first.</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
+                            <button type="button" id="suggestTaxonomyBtn" class="px-3 py-2.5 text-xs font-extrabold text-[#f15e50] border border-[#f15e50]/40 bg-[#f15e50]/10 rounded-lg hover:bg-[#f15e50] hover:text-white transition">
+                                Analyze &amp; Suggest
+                            </button>
+                            <button type="button" id="aiTaxonomyBtn" class="px-3 py-2.5 text-xs font-extrabold text-white bg-[#f15e50] rounded-lg hover:bg-[#d94a3e] transition">
+                                AI Taxonomy Review
+                            </button>
+                        </div>
+                        <div id="taxonomySuggestions" class="mt-2 space-y-1.5"><div class="text-xs text-gray-500">The editor will suggest the best category and sub-category from the article.</div></div>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-2">Subcategory</label>
-                        <select id="subcategorySelect" disabled class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f15e50] text-white appearance-none cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
-                            <option value="" selected>Select a primary category first</option>
+                        <div class="flex items-center justify-between gap-3 mb-2">
+                            <label class="block text-xs font-medium text-gray-400">Story Format</label>
+                            <span class="text-[10px] text-gray-500">How the article is presented</span>
+                        </div>
+                        <select id="contentTypeSelect" class="w-full px-4 py-3 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f15e50] text-white appearance-none cursor-pointer">
+                            <option value="">Select story format</option>
                         </select>
-                        <p id="subcategoryHint" class="mt-2 text-[10px] text-gray-500">Choose the editorial pillar first; available subsections will appear here.</p>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-2">Content Type</label>
-                        <select id="contentTypeSelect" class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f15e50] text-white appearance-none cursor-pointer">
-                            <option value="" disabled selected>Select Type</option>
-                            <option value="News">News</option>
-                            <option value="Tutorial">Tutorial</option>
-                            <option value="Analysis">Analysis</option>
-                            <option value="Review">Review</option>
-                            <option value="Guide">Guide</option>
-                            <option value="Opinion">Opinion</option>
-                        </select>
+                        <p id="contentTypeHelp" class="mt-2 text-[11px] leading-relaxed text-gray-400">Story format is separate from taxonomy. For example: Tech → Artificial Intelligence + News Report.</p>
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-400 mb-2">Featured Image</label>
@@ -551,6 +555,25 @@
     </div>
 </div>
 
+<div id="taxonomyManagerModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-[1003] p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[88vh] overflow-hidden fade-in">
+        <div class="p-5 border-b border-gray-200 flex items-start justify-between gap-4">
+            <div>
+                <div class="text-[10px] uppercase tracking-[.18em] font-extrabold text-[#f15e50]">Editorial taxonomy</div>
+                <h3 class="text-xl font-extrabold text-[#00001a] mt-1">Manage Tech categories</h3>
+                <p class="text-xs text-gray-500 mt-1">Add a top-level category or sub-category. Saving publishes the taxonomy and generates its category pages.</p>
+            </div>
+            <button type="button" onclick="closeTaxonomyManager()" class="text-gray-400 hover:text-gray-800 text-2xl leading-none">×</button>
+        </div>
+        <div id="taxonomyManagerList" class="p-5 space-y-3 overflow-y-auto max-h-[58vh]"></div>
+        <div class="p-5 border-t border-gray-200 flex flex-col sm:flex-row gap-2">
+            <button type="button" id="addCategoryBtn" class="flex-1 px-4 py-3 text-sm font-extrabold text-[#00001a] border border-gray-300 rounded-lg hover:bg-gray-50">+ Add Category</button>
+            <button type="button" id="saveTaxonomyBtn" class="flex-1 px-4 py-3 text-sm font-extrabold text-white bg-[#f15e50] rounded-lg hover:bg-[#d94a3e]">Save Taxonomy &amp; Generate Pages</button>
+            <button type="button" onclick="closeTaxonomyManager()" class="px-4 py-3 text-sm font-bold text-gray-600 border border-gray-200 rounded-lg">Close</button>
+        </div>
+    </div>
+</div>
+
 <div id="toast" class="fixed bottom-6 right-6 bg-[#00001a] text-white border border-[#f15e50]/30 px-6 py-3 rounded-lg shadow-2xl hidden z-[1001] flex items-center gap-2 transition-all duration-300">
     <span id="toastMessage"></span>
 </div>
@@ -559,18 +582,14 @@
 /* ============================================================
    DYVE|TECH EDITOR
    Static publishing architecture:
-   admin/tech-editor/index.html
-       -> assets/tech-articles.json (ONLY Tech article database)
-       -> tech/articles.html (standalone article template)
-       -> tech/<slug>.html (generated article pages)
-       -> tech/index.html (production homepage; NEVER rebuilt by this editor)
-       -> tech/category-template.html -> Tech category/subcategory indexes
-       -> tech/sitemap.xml + tech/rss.xml
-   Other Dyve article databases are outside this editor's ownership.
+   editor -> assets/tech-articles.json + assets/tech-categories.json -> tech/articles.html -> article HTML
+   -> tech/category/* -> tech/sitemap.xml (tech/index.html remains publisher-owned)
    ============================================================ */
 
 let currentDraftId = null;
 let quill = null;
+let buildCategoryPageCount = 0;
+let taxonomySuggestionTimer = null;
 let editingArticleIndex = null;
 let editingOriginalSlug = null;
 let autoSaveTimeout = null;
@@ -767,43 +786,6 @@ async function prepareImageForCloudinary(file, contextLabel = 'image') {
 }
 
 
-/*
- * ============================================================
- * DYVE TECH PATH CONTRACT
- * ============================================================
- * This editor lives at:
- *     admin/tech-editor/index.html
- *
- * Tech production files live at:
- *     tech/index.html
- *     tech/articles.html              (standalone article template)
- *     tech/category-template.html
- *     tech/<slug>.html                (generated article pages)
- *     tech/sitemap.xml
- *     tech/rss.xml
- *
- * Tech data lives at:
- *     assets/tech-articles.json       (ONLY article database)
- *     assets/deltas/<article>.json    (ONLY Tech article deltas)
- *
- * These are repository paths used by the GitHub API. They are NOT
- * browser-relative paths from admin/tech-editor/.
- *
- * The editor must never substitute articles.json, another section's
- * database, or another system's content source for tech-articles.json.
- * ============================================================
- */
-const TECH_PATH_CONTRACT = Object.freeze({
-    editorFile: 'admin/tech-editor/index.html',
-    indexFile: 'tech/index.html',
-    articleTemplate: 'tech/articles.html',
-    categoryTemplate: 'tech/category-template.html',
-    articleData: 'assets/tech-articles.json',
-    deltaDirectory: 'assets/deltas/',
-    sitemap: 'tech/sitemap.xml',
-    rss: 'tech/rss.xml'
-});
-
 const STATIC_BUILD_CONFIG = {
     generateTechIndex: false,
     updateHomepageOnPublish: false,
@@ -818,14 +800,13 @@ const STATIC_BUILD_CONFIG = {
     organizationName: 'Dyve',
     publicationName: 'Dyve Tech',
     defaultImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop',
-    articleDataPath: TECH_PATH_CONTRACT.articleData,
-    techIndexPath: TECH_PATH_CONTRACT.indexFile,
-    techSitemapPath: TECH_PATH_CONTRACT.sitemap,
-    techRssPath: TECH_PATH_CONTRACT.rss,
+    articleDataPath: 'assets/tech-articles.json',
+    categoryDataPath: 'assets/tech-categories.json',
+    techSitemapPath: 'tech/sitemap.xml',
+    techRssPath: 'tech/rss.xml',
     cloudinaryFolder: 'dyve-tech',
-    homepageTemplatePath: 'admin/tech-editor/tech-homepage-template.html',
-    articleTemplatePath: TECH_PATH_CONTRACT.articleTemplate,
-    categoryTemplatePath: TECH_PATH_CONTRACT.categoryTemplate
+    articleTemplatePath: 'tech/articles.html',
+    categoryRootPath: 'tech/category'
 };
 
 const SECTION_CONFIG = {
@@ -838,150 +819,1150 @@ const SECTION_CONFIG = {
     }
 };
 
-const CATEGORY_TAXONOMY = {
-    technology: {
-        label: 'Technology',
-        title: 'Technology News & Intelligence',
-        description: 'Technology news, AI, software, devices, internet platforms, startups and emerging digital systems from Dyve Tech.',
-        route: 'technology',
-        subcategories: {
-            'tech-news': { label: 'Tech News', description: 'Major technology news, product launches and important developments.' },
-            'ai': { label: 'AI & Machine Learning', description: 'Artificial intelligence, machine learning, models, agents and AI research.' },
-            'software': { label: 'Software & Apps', description: 'Software products, applications, operating systems and digital tools.' },
-            'gadgets': { label: 'Gadgets & Devices', description: 'Smartphones, computers, wearables, consumer electronics and connected devices.' },
-            'internet': { label: 'Internet & Platforms', description: 'Internet platforms, social networks, cloud services and digital ecosystems.' },
-            'startups': { label: 'Startups & Innovation', description: 'Startups, technology companies, funding, products and emerging innovation.' }
+const DEFAULT_TAXONOMY = {
+    version: 1,
+    categories: [
+        {
+            id: 'tech',
+            label: 'Tech',
+            title: 'Tech News & Intelligence',
+            description: 'Technology news, software, artificial intelligence, computing, developer tools, mobile technology, cloud platforms and emerging technology.',
+            subcategories: [
+                { id: 'artificial-intelligence', label: 'Artificial Intelligence', keywords: ['ai', 'artificial intelligence', 'machine learning', 'llm', 'generative ai', 'agentic ai', 'ai agents', 'neural network', 'model'] },
+                { id: 'software', label: 'Software', keywords: ['software', 'app', 'application', 'operating system', 'platform', 'saas'] },
+                { id: 'developer-tools', label: 'Developer Tools', keywords: ['developer tool', 'sdk', 'api', 'framework', 'library', 'ide', 'developer platform'] },
+                { id: 'coding-programming', label: 'Coding & Programming', keywords: ['coding', 'programming', 'programming language', 'javascript', 'python', 'typescript', 'php', 'compiler', 'repository'] },
+                { id: 'developers-engineering', label: 'Developers & Engineering', keywords: ['developer', 'software engineer', 'engineering', 'devops', 'developer workflow', 'software development'] },
+                { id: 'hardware-computing', label: 'Hardware & Computing', keywords: ['hardware', 'processor', 'cpu', 'gpu', 'computer', 'computing', 'chip', 'semiconductor', 'server'] },
+                { id: 'mobile-technology', label: 'Mobile Technology', keywords: ['mobile', 'smartphone', 'android', 'ios', 'iphone', 'mobile app', 'tablet'] },
+                { id: 'gadgets-devices', label: 'Gadgets & Devices', keywords: ['gadget', 'wearable', 'device', 'smartwatch', 'earbuds', 'consumer electronics'] },
+                { id: 'cloud-infrastructure', label: 'Cloud & Infrastructure', keywords: ['cloud', 'aws', 'azure', 'google cloud', 'infrastructure', 'serverless', 'kubernetes', 'data center'] },
+                { id: 'startups-industry', label: 'Startups & Industry', keywords: ['startup', 'venture', 'funding', 'acquisition', 'technology company', 'industry', 'ipo'] },
+                { id: 'emerging-technology', label: 'Emerging Technology', keywords: ['emerging technology', 'quantum', 'robotics', 'spatial computing', 'blockchain', 'web3', 'future technology'] }
+            ]
+        },
+        {
+            id: 'cyber-news',
+            label: 'Cyber News',
+            title: 'Cyber News & Security Intelligence',
+            description: 'Cybersecurity news covering attacks, breaches, vulnerabilities, malware, threat actors, privacy and digital defense.',
+            subcategories: [
+                { id: 'attacks-breaches', label: 'Attacks & Breaches', keywords: ['cyberattack', 'attack', 'breach', 'hacked', 'compromised', 'intrusion'] },
+                { id: 'ransomware', label: 'Ransomware', keywords: ['ransomware', 'extortion', 'double extortion', 'encrypt files'] },
+                { id: 'vulnerabilities-exploits', label: 'Vulnerabilities & Exploits', keywords: ['vulnerability', 'cve', 'exploit', 'zero-day', 'zero day', 'patch'] },
+                { id: 'threat-actors', label: 'Threat Actors', keywords: ['threat actor', 'hacker group', 'cybercriminal', 'apt', 'criminal group'] },
+                { id: 'malware-phishing', label: 'Malware & Phishing', keywords: ['malware', 'trojan', 'infostealer', 'phishing', 'botnet', 'spyware'] },
+                { id: 'data-leaks-privacy', label: 'Data Leaks & Privacy', keywords: ['data leak', 'data breach', 'exposed data', 'privacy', 'credentials', 'passwords', 'personal data'] },
+                { id: 'identity-fraud', label: 'Identity & Fraud', keywords: ['identity theft', 'fraud', 'account takeover', 'scam', 'financial fraud'] },
+                { id: 'cyber-defense', label: 'Cyber Defense', keywords: ['cyber defense', 'security product', 'security update', 'incident response', 'defense', 'soc'] },
+                { id: 'cyber-policy', label: 'Cyber Policy & Regulation', keywords: ['cyber policy', 'cyber law', 'regulation', 'cybersecurity agency', 'government cybersecurity'] }
+            ]
+        },
+        {
+            id: 'global-intelligence',
+            label: 'Global Intelligence',
+            title: 'Global Intelligence & Digital Risk',
+            description: 'Global intelligence on geopolitical technology risk, state activity, espionage, critical infrastructure and emerging digital threats.',
+            subcategories: [
+                { id: 'geopolitics-technology', label: 'Geopolitics & Technology', keywords: ['geopolitics', 'geopolitical', 'technology policy', 'tech rivalry', 'strategic competition'] },
+                { id: 'state-nation-threats', label: 'State & Nation Threats', keywords: ['nation state', 'state-sponsored', 'government-backed', 'state actor', 'national security'] },
+                { id: 'digital-espionage', label: 'Digital Espionage', keywords: ['espionage', 'cyber espionage', 'spying', 'intelligence operation', 'surveillance'] },
+                { id: 'critical-infrastructure', label: 'Critical Infrastructure', keywords: ['critical infrastructure', 'power grid', 'telecom', 'water system', 'transportation infrastructure'] },
+                { id: 'disinformation-influence', label: 'Disinformation & Influence', keywords: ['disinformation', 'misinformation', 'influence operation', 'information warfare', 'propaganda'] },
+                { id: 'surveillance-intelligence', label: 'Surveillance & Intelligence', keywords: ['surveillance', 'intelligence', 'signals intelligence', 'osint', 'reconnaissance'] },
+                { id: 'global-risk-security', label: 'Global Risk & Security', keywords: ['global risk', 'security risk', 'national security', 'digital risk', 'threat assessment'] },
+                { id: 'emerging-threats', label: 'Emerging Threats', keywords: ['emerging threat', 'future threat', 'hybrid threat', 'strategic threat'] }
+            ]
         }
-    },
-    'cyber-intelligence': {
-        label: 'Cyber Intelligence',
-        title: 'Cyber Intelligence & Threat Reporting',
-        description: 'Cyber attacks, data breaches, ransomware, malware, vulnerabilities, threat actors and cybercrime intelligence.',
-        route: 'cyber-intelligence',
-        subcategories: {
-            attacks: { label: 'Cyber Attacks', description: 'Reported cyber attacks, compromises and intrusion activity.' },
-            breaches: { label: 'Data Breaches', description: 'Data exposures, stolen databases, credential leaks and breach investigations.' },
-            ransomware: { label: 'Ransomware', description: 'Ransomware campaigns, extortion operations and ransomware groups.' },
-            'threat-actors': { label: 'Threat Actors', description: 'Hacking groups, cybercrime groups and advanced persistent threat activity.' },
-            vulnerabilities: { label: 'Vulnerabilities', description: 'Critical vulnerabilities, CVEs, zero-days and actively exploited flaws.' },
-            malware: { label: 'Malware', description: 'Malware families, infostealers, spyware, trojans, botnets and malicious campaigns.' },
-            cybercrime: { label: 'Cybercrime', description: 'Cybercrime operations, fraud infrastructure and underground activity.' }
-        }
-    },
-    'cyber-safety': {
-        label: 'Cyber Safety',
-        title: 'Cyber Safety & Digital Security',
-        description: 'Practical cybersecurity guidance covering privacy, accounts, scams, phishing, devices and safer digital habits.',
-        route: 'cyber-safety',
-        subcategories: {
-            'security-tips': { label: 'Security Tips', description: 'Practical steps for improving everyday digital security.' },
-            privacy: { label: 'Privacy', description: 'Privacy controls, tracking, data protection and safer online practices.' },
-            'account-security': { label: 'Account Security', description: 'Protecting email, social, cloud and other online accounts.' },
-            'scam-alerts': { label: 'Scam Alerts', description: 'Online scams, fraud patterns, impersonation and deceptive schemes.' },
-            phishing: { label: 'Phishing', description: 'Phishing techniques, suspicious messages, malicious links and credential theft.' },
-            'device-security': { label: 'Device Security', description: 'Security guidance for phones, computers, routers and connected devices.' },
-            'digital-safety': { label: 'Digital Safety', description: 'Broader personal and organizational digital safety guidance.' }
-        }
-    },
-    'global-intelligence': {
-        label: 'Global Intelligence',
-        title: 'Global Technology & Intelligence',
-        description: 'Global technology developments, emerging systems, policy, geopolitics, cybersecurity and industry signals.',
-        route: 'global-intelligence',
-        subcategories: {
-            'global-tech': { label: 'Global Tech', description: 'Major technology developments and industry movements around the world.' },
-            'emerging-tech': { label: 'Emerging Technology', description: 'Emerging technologies with potential to reshape industries and society.' },
-            'technology-policy': { label: 'Technology Policy', description: 'Technology regulation, digital policy, AI governance and data laws.' },
-            'geopolitics-tech': { label: 'Geopolitics & Technology', description: 'The intersection of technology, national security and geopolitics.' },
-            'global-cybersecurity': { label: 'Global Cybersecurity', description: 'International cybersecurity developments and cross-border threat activity.' },
-            'industry-signals': { label: 'Industry Signals', description: 'Strategic market movements, corporate technology shifts and industry signals.' },
-            'future-intelligence': { label: 'Future Intelligence', description: 'Longer-term technology signals, scenarios and developments to watch.' }
+    ]
+};
+
+const LEGACY_TAXONOMY_MAP = {
+    ai: ['tech', 'artificial-intelligence'],
+    software: ['tech', 'software'],
+    tools: ['tech', 'developer-tools'],
+    coding: ['tech', 'coding-programming'],
+    developers: ['tech', 'developers-engineering'],
+    hardware: ['tech', 'hardware-computing'],
+    mobile: ['tech', 'mobile-technology'],
+    gadgets: ['tech', 'gadgets-devices'],
+    cloud: ['tech', 'cloud-infrastructure'],
+    startups: ['tech', 'startups-industry'],
+    analysis: ['tech', 'emerging-technology'],
+    trends: ['tech', 'emerging-technology'],
+    tutorials: ['tech', 'developer-tools'],
+    reviews: ['tech', 'gadgets-devices']
+};
+
+const CONTENT_TYPES = [
+    { id: 'News Report', label: 'News Report', description: 'Factual reporting of a current development or event.' },
+    { id: 'Breaking News', label: 'Breaking News', description: 'Time-sensitive reporting where speed is editorially important.' },
+    { id: 'Explainer', label: 'Explainer', description: 'Explains a technology, event or concept clearly for readers.' },
+    { id: 'Analysis', label: 'Analysis', description: 'Adds interpretation, implications, evidence and context.' },
+    { id: 'Tutorial', label: 'Tutorial / How-to', description: 'Step-by-step practical instruction.' },
+    { id: 'Review', label: 'Review', description: 'Editorial evaluation of a product, service, tool or technology.' },
+    { id: 'Opinion', label: 'Opinion', description: 'Clearly attributed editorial viewpoint or argument.' },
+    { id: 'Interview', label: 'Interview', description: 'Q&A or reported conversation with a source or expert.' },
+    { id: 'Case Study', label: 'Case Study', description: 'Detailed examination of a real implementation, incident or outcome.' },
+    { id: 'Research Brief', label: 'Research Brief', description: 'Evidence-led summary of research, findings or technical intelligence.' }
+];
+
+let TECH_TAXONOMY = JSON.parse(JSON.stringify(DEFAULT_TAXONOMY));
+let CATEGORY_CONFIG = {};
+let SUBCATEGORY_CONFIG = {};
+
+function slugifyTaxonomy(value) {
+    return generateSlug(value).slice(0, 80) || `category-${Date.now()}`;
+}
+
+function rebuildTaxonomyIndexes() {
+    CATEGORY_CONFIG = {};
+    SUBCATEGORY_CONFIG = {};
+    for (const category of Array.isArray(TECH_TAXONOMY.categories) ? TECH_TAXONOMY.categories : []) {
+        const parent = String(category.id || '').trim().toLowerCase();
+        if (!parent) continue;
+        CATEGORY_CONFIG[parent] = category;
+        for (const sub of Array.isArray(category.subcategories) ? category.subcategories : []) {
+            const child = String(sub.id || '').trim().toLowerCase();
+            if (!child) continue;
+            SUBCATEGORY_CONFIG[`${parent}/${child}`] = { ...sub, parentId: parent };
         }
     }
-};
+}
 
-const CATEGORY_CONFIG = Object.fromEntries(
-    Object.entries(CATEGORY_TAXONOMY).map(([key, value]) => [key, {
-        label: value.label,
-        title: value.title,
-        description: value.description,
-        route: value.route
-    }])
-);
+rebuildTaxonomyIndexes();
 
-const LEGACY_CATEGORY_MAP = {
-    ai: ['technology', 'ai'],
-    software: ['technology', 'software'],
-    tools: ['technology', 'tech-news'],
-    coding: ['technology', 'software'],
-    developers: ['technology', 'tech-news'],
-    hardware: ['technology', 'gadgets'],
-    mobile: ['technology', 'gadgets'],
-    gadgets: ['technology', 'gadgets'],
-    cloud: ['technology', 'internet'],
-    startups: ['technology', 'startups'],
-    analysis: ['global-intelligence', 'industry-signals'],
-    trends: ['global-intelligence', 'future-intelligence'],
-    tutorials: ['cyber-safety', 'security-tips'],
-    reviews: ['technology', 'gadgets']
-};
+function taxonomyCategory(categoryId) {
+    return CATEGORY_CONFIG[String(categoryId || '').trim().toLowerCase()] || null;
+}
+
+function taxonomySubcategory(categoryId, subcategoryId) {
+    return SUBCATEGORY_CONFIG[`${String(categoryId || '').trim().toLowerCase()}/${String(subcategoryId || '').trim().toLowerCase()}`] || null;
+}
+
+function taxonomyPairForArticle(article) {
+    const rawCategory = String(article?.category || article?.meta || '').trim().toLowerCase();
+    const rawSubcategory = String(article?.subcategory || '').trim().toLowerCase();
+
+    if (CATEGORY_CONFIG[rawCategory]) {
+        if (rawSubcategory && taxonomySubcategory(rawCategory, rawSubcategory)) {
+            return { category: rawCategory, subcategory: rawSubcategory };
+        }
+        return { category: rawCategory, subcategory: '' };
+    }
+
+    if (rawCategory.includes('/') && SUBCATEGORY_CONFIG[rawCategory]) {
+        const [category, subcategory] = rawCategory.split('/');
+        return { category, subcategory };
+    }
+
+    const hierarchyLabelMatch = Object.entries(CATEGORY_CONFIG).find(([categoryId, category]) => {
+        const parentLabel = String(category.label || '').trim().toLowerCase();
+        return rawCategory === parentLabel || rawCategory.startsWith(`${parentLabel} /`);
+    });
+    if (hierarchyLabelMatch) {
+        const [categoryId, category] = hierarchyLabelMatch;
+        const remainder = rawCategory.slice(String(category.label || '').trim().length).replace(/^\s*\/\s*/, '').trim();
+        const child = (category.subcategories || []).find(sub => String(sub.label || '').trim().toLowerCase() === remainder);
+        return { category: categoryId, subcategory: child ? child.id : '' };
+    }
+
+    if (LEGACY_TAXONOMY_MAP[rawCategory]) {
+        const [category, subcategory] = LEGACY_TAXONOMY_MAP[rawCategory];
+        return { category, subcategory };
+    }
+
+    const labelMatch = Object.entries(CATEGORY_CONFIG).find(([id, item]) =>
+        String(item.label || '').trim().toLowerCase() === rawCategory
+    );
+    if (labelMatch) return { category: labelMatch[0], subcategory: rawSubcategory };
+
+    for (const [key, item] of Object.entries(SUBCATEGORY_CONFIG)) {
+        if (String(item.label || '').trim().toLowerCase() === rawCategory) {
+            const [category, subcategory] = key.split('/');
+            return { category, subcategory };
+        }
+    }
+
+    return { category: '', subcategory: '' };
+}
+
+function getCategoryMeta(category) {
+    const item = taxonomyCategory(category);
+    if (item) return item;
+    return {
+        label: 'Technology',
+        title: 'Technology Intelligence',
+        description: 'Technology news, analysis and intelligence from Dyve.'
+    };
+}
 
 function getSubcategoryMeta(category, subcategory) {
-    const parent = CATEGORY_TAXONOMY[category];
-    return parent?.subcategories?.[subcategory] || { label: 'Latest', description: parent?.description || '' };
+    return taxonomySubcategory(category, subcategory) || null;
 }
 
-function syncSubcategorySelect(category, selected = '') {
-    const select = document.getElementById('subcategorySelect');
-    const hint = document.getElementById('subcategoryHint');
-    const categorySelect = document.getElementById('categorySelect');
-    if (!select) return;
+function getTaxonomyLabel(category, subcategory = '') {
+    const parent = getCategoryMeta(category);
+    const child = getSubcategoryMeta(category, subcategory);
+    return child ? `${parent.label} / ${child.label}` : parent.label;
+}
 
-    const taxonomy = normalizeTaxonomy(category, selected);
-    const parent = CATEGORY_TAXONOMY[taxonomy.category];
-
-    if (categorySelect && taxonomy.category && categorySelect.value !== taxonomy.category) {
-        categorySelect.value = taxonomy.category;
+function categoryPagePath(category, subcategory = '') {
+    const parent = String(category || '').trim().toLowerCase();
+    const child = String(subcategory || '').trim().toLowerCase();
+    if (!parent || !CATEGORY_CONFIG[parent]) throw new Error(`Unknown Tech category: ${category}`);
+    if (child) {
+        if (!taxonomySubcategory(parent, child)) throw new Error(`Unknown Tech subcategory: ${parent}/${child}`);
+        return `${STATIC_BUILD_CONFIG.categoryRootPath}/${parent}/${child}.html`;
     }
+    return `${STATIC_BUILD_CONFIG.categoryRootPath}/${parent}.html`;
+}
 
-    select.innerHTML = '';
+async function fetchTechTaxonomy(config, options = {}) {
+    const path = STATIC_BUILD_CONFIG.categoryDataPath;
+    const response = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
+        { headers: authHeaders(config) }
+    );
+    if (response.status === 404) {
+        if (options.optional) return { exists: false, sha: '', taxonomy: JSON.parse(JSON.stringify(DEFAULT_TAXONOMY)) };
+        throw new Error(`Tech taxonomy not found at ${path}.`);
+    }
+    if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(`Unable to read ${path}: ${err.message || response.status}`);
+    }
+    const meta = await response.json();
+    let text = meta.content ? b64ToUtf8(meta.content) : '';
+    if (!text && meta.download_url) {
+        const rawRes = await fetchWithRetry(meta.download_url, { headers: authHeaders(config) });
+        if (rawRes.ok) text = await rawRes.text();
+    }
+    let taxonomy;
+    try { taxonomy = text.trim() ? JSON.parse(text) : DEFAULT_TAXONOMY; }
+    catch { throw new Error(`${path} is not valid JSON.`); }
+    if (!taxonomy || !Array.isArray(taxonomy.categories)) throw new Error(`${path} must contain a categories array.`);
+    return { exists: true, sha: meta.sha || '', taxonomy };
+}
 
+async function loadTaxonomyFromRepository(config) {
+    try {
+        const result = await fetchTechTaxonomy(config, { optional: true });
+        TECH_TAXONOMY = result.taxonomy;
+        rebuildTaxonomyIndexes();
+        renderTaxonomyControls();
+        return result;
+    } catch (error) {
+        console.warn('Tech taxonomy load failed; using built-in taxonomy:', error);
+        TECH_TAXONOMY = JSON.parse(JSON.stringify(DEFAULT_TAXONOMY));
+        rebuildTaxonomyIndexes();
+        renderTaxonomyControls();
+        return { exists: false, sha: '', taxonomy: TECH_TAXONOMY };
+    }
+}
+
+function normalizeContentType(value) {
+    const raw = String(value || '').trim();
+    const map = { News: 'News Report', Guide: 'Explainer' };
+    return map[raw] || raw || 'News Report';
+}
+
+function renderContentTypeOptions(selected = '') {
+    const select = document.getElementById('contentTypeSelect');
+    if (!select) return;
+    select.innerHTML = '<option value="">Select story format</option>' + CONTENT_TYPES.map(item =>
+        `<option value="${escapeAttr(item.id)}" ${item.id === selected ? 'selected' : ''}>${escapeHtml(item.label)}</option>`
+    ).join('');
+}
+
+function renderTaxonomyControls(selectedCategory = '', selectedSubcategory = '') {
+    const parent = document.getElementById('categorySelect');
+    const child = document.getElementById('subcategorySelect');
+    if (!parent || !child) return;
+    const currentParent = String(selectedCategory || parent.value || '').trim().toLowerCase();
+    const currentChild = String(selectedSubcategory || child.value || '').trim().toLowerCase();
+    parent.innerHTML = '<option value="">Select category</option>' +
+        Object.values(CATEGORY_CONFIG).map(item =>
+            `<option value="${escapeAttr(item.id)}" ${item.id === currentParent ? 'selected' : ''}>${escapeHtml(item.label)}</option>`
+        ).join('');
+    const category = taxonomyCategory(currentParent);
+    child.innerHTML = '<option value="">Select sub-category</option>' +
+        (category?.subcategories || []).map(item =>
+            `<option value="${escapeAttr(item.id)}" ${item.id === currentChild ? 'selected' : ''}>${escapeHtml(item.label)}</option>`
+        ).join('');
+    child.disabled = !(category && category.subcategories?.length);
+    updateTaxonomySummary();
+}
+
+function updateTaxonomySummary() {
+    const parent = document.getElementById('categorySelect')?.value || '';
+    const child = document.getElementById('subcategorySelect')?.value || '';
+    const summary = document.getElementById('taxonomySummary');
+    if (!summary) return;
     if (!parent) {
-        select.disabled = true;
-        select.innerHTML = '<option value="" selected>Select a primary category first</option>';
-        if (hint) hint.textContent = 'Choose the editorial pillar first; available subsections will appear here.';
+        summary.textContent = 'Choose the broad editorial desk first.';
         return;
     }
-
-    select.disabled = false;
-    select.insertAdjacentHTML('beforeend', '<option value="" disabled>Select Subcategory</option>');
-    Object.entries(parent.subcategories).forEach(([key, meta]) => {
-        const option = document.createElement('option');
-        option.value = key;
-        option.textContent = meta.label;
-        if (key === taxonomy.subcategory) option.selected = true;
-        select.appendChild(option);
-    });
-
-    if (!taxonomy.subcategory || !parent.subcategories[taxonomy.subcategory]) select.selectedIndex = 0;
-    if (hint) hint.textContent = `${parent.label}: ${Object.keys(parent.subcategories).length} editorial subsections available.`;
+    const category = getCategoryMeta(parent);
+    const sub = getSubcategoryMeta(parent, child);
+    summary.textContent = sub
+        ? `${category.label} → ${sub.label}. This controls classification, category pages, internal discovery and article schema.`
+        : `${category.label}. Select a sub-category for precise classification.`;
 }
 
-function normalizeTaxonomy(category, subcategory = '') {
-    let parent = String(category || '').trim().toLowerCase();
-    let child = String(subcategory || '').trim().toLowerCase();
+function collectTaxonomySuggestions() {
+    const title = document.getElementById('titleInput')?.value || '';
+    const description = document.getElementById('descriptionInput')?.value || '';
+    const keywords = document.getElementById('keywordsInput')?.value || '';
+    const body = quill ? quill.getText() : '';
+    const haystack = `${title} ${description} ${keywords} ${body}`.toLowerCase();
+    const scores = [];
+    for (const category of Object.values(CATEGORY_CONFIG)) {
+        let categoryScore = 0;
+        const allKeywords = new Set();
+        (category.subcategories || []).forEach(sub => (sub.keywords || []).forEach(k => allKeywords.add(k.toLowerCase())));
+        for (const keyword of allKeywords) {
+            if (!keyword) continue;
+            const occurrences = haystack.split(keyword).length - 1;
+            if (occurrences > 0) categoryScore += Math.min(8, occurrences * (keyword.includes(' ') ? 3 : 1));
+        }
+        const subScores = (category.subcategories || []).map(sub => {
+            let score = 0;
+            for (const keyword of sub.keywords || []) {
+                const k = keyword.toLowerCase();
+                const occurrences = haystack.split(k).length - 1;
+                if (occurrences > 0) score += Math.min(12, occurrences * (k.includes(' ') ? 4 : 1));
+            }
+            return { sub, score };
+        }).sort((a,b) => b.score - a.score);
+        if (subScores[0]?.score) categoryScore += subScores[0].score;
+        scores.push({ category, categoryScore, sub: subScores[0]?.sub || null, subScore: subScores[0]?.score || 0 });
+    }
+    return scores.sort((a,b) => (b.categoryScore + b.subScore) - (a.categoryScore + a.subScore)).slice(0, 4);
+}
 
-    if (LEGACY_CATEGORY_MAP[parent]) {
-        const mapped = LEGACY_CATEGORY_MAP[parent];
-        parent = mapped[0];
-        if (!child || !CATEGORY_TAXONOMY[parent]?.subcategories?.[child]) child = mapped[1];
+function scheduleTaxonomySuggestions() {
+    clearTimeout(taxonomySuggestionTimer);
+    taxonomySuggestionTimer = setTimeout(() => {
+        const title = document.getElementById('titleInput')?.value?.trim() || '';
+        const body = quill ? quill.getText().trim() : '';
+        if (title.length >= 20 || body.length >= 120) renderTaxonomySuggestions();
+    }, 500);
+}
+
+function renderTaxonomySuggestions() {
+    const box = document.getElementById('taxonomySuggestions');
+    if (!box) return;
+    const suggestions = collectTaxonomySuggestions();
+    if (!suggestions.length || !suggestions[0].categoryScore) {
+        box.innerHTML = '<div class="text-xs text-gray-500">Add a title and article content to receive classification suggestions.</div>';
+        return;
+    }
+    box.innerHTML = suggestions.map((item, index) => {
+        const confidence = Math.min(98, Math.round(45 + item.categoryScore * 4 + item.subScore * 3));
+        const sub = item.sub;
+        return `<button type="button" class="taxonomy-suggestion ${index === 0 ? 'recommended' : ''}" data-category="${escapeAttr(item.category.id)}" data-subcategory="${escapeAttr(sub?.id || '')}">
+            <span class="taxonomy-suggestion-main"><strong>${index === 0 ? 'Recommended' : 'Suggested'}</strong><span>${escapeHtml(item.category.label)}${sub ? ` <b>›</b> ${escapeHtml(sub.label)}` : ''}</span></span>
+            <span class="taxonomy-confidence">${confidence}%</span>
+        </button>`;
+    }).join('');
+    box.querySelectorAll('.taxonomy-suggestion').forEach(btn => btn.addEventListener('click', () => {
+        const category = btn.dataset.category || '';
+        const subcategory = btn.dataset.subcategory || '';
+        renderTaxonomyControls(category, subcategory);
+        updateTaxonomySummary();
+        autoSaveDraft();
+        showToast(`Suggested taxonomy selected: ${getTaxonomyLabel(category, subcategory)}.`);
+    }));
+}
+
+async function runAiTaxonomyReview() {
+    const box = document.getElementById('taxonomySuggestions');
+    if (!box) return;
+    const config = getGitHubConfig();
+    const text = `${document.getElementById('titleInput')?.value || ''}\n${document.getElementById('descriptionInput')?.value || ''}\n${quill ? quill.getText() : ''}`.trim();
+    if (text.length < 80) return showToast('Add more article content before running AI classification.');
+    if (!config.groqKey) {
+        renderTaxonomySuggestions();
+        return showToast('Groq is not configured. Local taxonomy analysis was used instead.');
+    }
+    box.innerHTML = '<div class="text-xs text-gray-400 py-2">AI is reviewing the article against the current taxonomy...</div>';
+    const taxonomy = TECH_TAXONOMY.categories.map(category => ({
+        id: category.id,
+        label: category.label,
+        subcategories: (category.subcategories || []).map(sub => ({ id: sub.id, label: sub.label }))
+    }));
+    const prompt = `Classify this Dyve Tech article. Choose the single best existing category and sub-category from the supplied taxonomy. If no existing sub-category is genuinely appropriate, return proposedSubcategory with a concise new name. If no top-level category is genuinely appropriate, return proposedCategory with a concise new name. Never invent an existing id. Prefer precision over broad matching. Also classify the story format. Return JSON only with keys: categoryId, subcategoryId, proposedCategory, proposedSubcategory, contentType, confidence, reason.\n\nTAXONOMY:\n${JSON.stringify(taxonomy)}\n\nARTICLE:\n${text.slice(0, 12000)}`;
+    try {
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.groqKey}` },
+            body: JSON.stringify({
+                model: 'llama-3.3-70b-versatile',
+                temperature: 0.1,
+                max_tokens: 500,
+                messages: [
+                    { role: 'system', content: 'You are a precise editorial taxonomy classifier. Output valid JSON only.' },
+                    { role: 'user', content: prompt }
+                ]
+            })
+        });
+        if (!response.ok) throw new Error(`AI request failed (${response.status}).`);
+        const payload = await response.json();
+        const content = payload?.choices?.[0]?.message?.content || '';
+        const match = content.match(/\{[\s\S]*\}/);
+        if (!match) throw new Error('AI returned no JSON classification.');
+        const result = JSON.parse(match[0]);
+        const category = taxonomyCategory(result.categoryId);
+        const subcategory = taxonomySubcategory(result.categoryId, result.subcategoryId);
+        const proposed = result.proposedSubcategory || result.proposedCategory || '';
+        box.innerHTML = `<div class="taxonomy-suggestion recommended" style="cursor:default"><span class="taxonomy-suggestion-main"><strong>AI recommendation · ${escapeHtml(String(result.confidence || 'review'))}</strong><span>${category ? escapeHtml(category.label) : escapeHtml(result.proposedCategory || 'New category candidate')}${subcategory ? ` <b>›</b> ${escapeHtml(subcategory.label)}` : proposed ? ` <b>›</b> ${escapeHtml(proposed)} <em>(new)</em>` : ''}</span><small style="color:#9ca3af;margin-top:3px">${escapeHtml(result.reason || 'AI classification based on article context.')}</small></span><span class="taxonomy-confidence">AI</span></div>`;
+        if (category && subcategory) {
+            const apply = document.createElement('button');
+            apply.type = 'button'; apply.className = 'taxonomy-suggestion recommended'; apply.textContent = 'Use AI recommendation';
+            apply.addEventListener('click', () => { renderTaxonomyControls(category.id, subcategory.id); if (result.contentType) renderContentTypeOptions(normalizeContentType(result.contentType)); autoSaveDraft(); showToast('AI taxonomy applied.'); });
+            box.appendChild(apply);
+        } else if (result.proposedSubcategory && category) {
+            const apply = document.createElement('button');
+            apply.type = 'button'; apply.className = 'taxonomy-suggestion recommended'; apply.textContent = `Add "${result.proposedSubcategory}" under ${category.label}`;
+            apply.addEventListener('click', () => {
+                const exists = (category.subcategories || []).some(sub => sub.label.toLowerCase() === String(result.proposedSubcategory).toLowerCase());
+                if (!exists) category.subcategories.push({ id: slugifyTaxonomy(result.proposedSubcategory), label: String(result.proposedSubcategory).trim(), keywords: String(result.proposedSubcategory).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean) });
+                rebuildTaxonomyIndexes(); renderTaxonomyControls(category.id, slugifyTaxonomy(result.proposedSubcategory)); renderTaxonomyManager(); showToast('New sub-category staged. Save Taxonomy to publish it.');
+            });
+            box.appendChild(apply);
+        } else if (result.proposedCategory) {
+            const apply = document.createElement('button');
+            apply.type = 'button'; apply.className = 'taxonomy-suggestion recommended'; apply.textContent = `Add category "${result.proposedCategory}"`;
+            apply.addEventListener('click', () => { const id = slugifyTaxonomy(result.proposedCategory); if (!CATEGORY_CONFIG[id]) TECH_TAXONOMY.categories.push({ id, label: String(result.proposedCategory).trim(), title: `${String(result.proposedCategory).trim()} News & Intelligence`, description: `${String(result.proposedCategory).trim()} news and intelligence from Dyve Tech.`, subcategories: [] }); rebuildTaxonomyIndexes(); renderTaxonomyControls(id, ''); renderTaxonomyManager(); showToast('New category staged. Add a sub-category, then save taxonomy.'); });
+            box.appendChild(apply);
+        }
+        if (result.contentType) renderContentTypeOptions(normalizeContentType(result.contentType));
+    } catch (error) {
+        console.error('AI taxonomy review failed:', error);
+        renderTaxonomySuggestions();
+        showToast(`AI classification failed: ${error.message}. Local suggestions remain available.`);
+    }
+}
+
+function openTaxonomyManager() {
+    const modal = document.getElementById('taxonomyManagerModal');
+    if (!modal) return;
+    renderTaxonomyManager();
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+function closeTaxonomyManager() {
+    const modal = document.getElementById('taxonomyManagerModal');
+    if (!modal) return;
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+function renderTaxonomyManager() {
+    const list = document.getElementById('taxonomyManagerList');
+    if (!list) return;
+    list.innerHTML = TECH_TAXONOMY.categories.map(category => `
+        <div class="taxonomy-manager-category">
+            <div class="taxonomy-manager-head"><div><strong>${escapeHtml(category.label)}</strong><span>${escapeHtml(category.id)}</span></div><button type="button" class="taxonomy-add-sub" data-parent="${escapeAttr(category.id)}">+ Sub-category</button></div>
+            <div class="taxonomy-manager-subs">${(category.subcategories || []).map(sub => `<div class="taxonomy-manager-sub"><span>${escapeHtml(sub.label)}</span><code>${escapeHtml(sub.id)}</code></div>`).join('')}</div>
+        </div>`).join('');
+    list.querySelectorAll('.taxonomy-add-sub').forEach(btn => btn.addEventListener('click', () => addSubcategory(btn.dataset.parent)));
+}
+
+function addCategory() {
+    const label = window.prompt('New top-level category name:');
+    if (!label || !label.trim()) return;
+    const id = slugifyTaxonomy(label);
+    if (CATEGORY_CONFIG[id]) return showToast('That category already exists.');
+    TECH_TAXONOMY.categories.push({ id, label: label.trim(), title: `${label.trim()} News & Intelligence`, description: `${label.trim()} news and intelligence from Dyve Tech.`, subcategories: [] });
+    rebuildTaxonomyIndexes();
+    renderTaxonomyControls(id, '');
+    renderTaxonomyManager();
+    showToast(`Added ${label.trim()}. Click Save Taxonomy to publish it.`);
+}
+
+function addSubcategory(parentId) {
+    const parent = taxonomyCategory(parentId);
+    if (!parent) return;
+    const label = window.prompt(`New sub-category under ${parent.label}:`);
+    if (!label || !label.trim()) return;
+    const id = slugifyTaxonomy(label);
+    if (taxonomySubcategory(parentId, id)) return showToast('That sub-category already exists.');
+    parent.subcategories = Array.isArray(parent.subcategories) ? parent.subcategories : [];
+    parent.subcategories.push({ id, label: label.trim(), keywords: label.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean) });
+    rebuildTaxonomyIndexes();
+    renderTaxonomyControls(parentId, id);
+    renderTaxonomyManager();
+    showToast(`Added ${label.trim()} under ${parent.label}. Click Save Taxonomy to publish it.`);
+}
+
+async function saveTaxonomy() {
+    const config = getGitHubConfig();
+    if (!config.token || !config.repo) return showToast('Configure GitHub before saving the taxonomy.');
+    if (!navigator.onLine) return showToast('You appear offline — taxonomy cannot be published.');
+    try {
+        rebuildTaxonomyIndexes();
+        const errors = [];
+        const ids = new Set();
+        for (const category of TECH_TAXONOMY.categories || []) {
+            if (!category.id || !category.label) errors.push('Every category needs an id and label.');
+            if (ids.has(category.id)) errors.push(`Duplicate category id: ${category.id}`);
+            ids.add(category.id);
+            const subIds = new Set();
+            for (const sub of category.subcategories || []) {
+                if (!sub.id || !sub.label) errors.push(`Invalid sub-category under ${category.label}.`);
+                if (subIds.has(sub.id)) errors.push(`Duplicate sub-category id: ${category.id}/${sub.id}`);
+                subIds.add(sub.id);
+            }
+        }
+        if (errors.length) throw new Error(errors.join('\n'));
+        const { articles } = await fetchArticlesJson(config);
+        const normalized = validateArticleSet(sortArticles(articles));
+        const categoryOutputs = buildAllCategoryPages(config.siteUrl, normalized);
+        const files = [
+            { path: STATIC_BUILD_CONFIG.categoryDataPath, content: JSON.stringify(TECH_TAXONOMY, null, 2) },
+            ...categoryOutputs,
+            { path: STATIC_BUILD_CONFIG.techSitemapPath, content: buildSitemapXML(config.siteUrl, normalized, categoryOutputs) }
+        ];
+        const commit = await githubCommitFiles(config, files, 'chore: update Dyve Tech editorial taxonomy');
+        showToast(`Taxonomy saved. ${categoryOutputs.length} category pages generated.`);
+        logBuild(`Taxonomy published atomically: ${commit.sha.slice(0, 7)}.`, 'ok');
+        logBuild(`Generated ${categoryOutputs.length} category/sub-category pages.`, 'ok');
+        closeTaxonomyManager();
+    } catch (error) {
+        showToast(`Taxonomy save failed: ${error.message}`, 8000);
+    }
+}
+
+function closeTaxonomyManagerAndReset() {
+    closeTaxonomyManager();
+    loadTaxonomyFromRepository(getGitHubConfig());
+}
+
+
+
+function b64ToUtf8(b64) {
+    const bin = atob(b64.replace(/\s/g, ''));
+    const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+}
+
+function utf8ToBase64(str) {
+    const bytes = new TextEncoder().encode(str);
+    let bin = '';
+    const CHUNK = 0x8000;
+    for (let i = 0; i < bytes.length; i += CHUNK) {
+        bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
+    }
+    return btoa(bin);
+}
+
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function escapeAttr(value) {
+    return escapeHtml(value);
+}
+
+function safeJson(value) {
+    return JSON.stringify(value)
+        .replace(/</g, '\\u003c')
+        .replace(/>/g, '\\u003e')
+        .replace(/&/g, '\\u0026');
+}
+
+function generateSlug(title) {
+    return String(title || '')
+        .toLowerCase()
+        .normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .trim();
+}
+
+function showToast(message, duration = 4000) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastMessage').textContent = message;
+    toast.classList.remove('hidden');
+    setTimeout(() => toast.classList.add('hidden'), duration);
+}
+
+function setBuildStatus(state, text) {
+    const badge = document.getElementById('buildStatusBadge');
+    const label = document.getElementById('buildStatusText');
+    badge.classList.remove('ready', 'busy', 'error');
+    if (state) badge.classList.add(state);
+    label.textContent = text;
+}
+
+function logBuild(message, type = 'info') {
+    const log = document.getElementById('buildLog');
+    if (!log) return;
+    const row = document.createElement('div');
+    row.className = type;
+    row.textContent = `[build] ${message}`;
+    log.appendChild(row);
+    log.scrollTop = log.scrollHeight;
+}
+
+function resetBuildLog() {
+    const log = document.getElementById('buildLog');
+    if (log) log.innerHTML = '';
+}
+
+function getGitHubConfig() {
+    try {
+        const settings = JSON.parse(localStorage.getItem('dyve-tech-settings') || '{}');
+        return {
+            token: settings.githubToken || '',
+            repo: settings.githubRepo || '',
+            branch: settings.githubBranch || 'main',
+            siteUrl: String(settings.siteUrl || 'https://dyve.online').replace(/\/+$/, ''),
+            groqKey: settings.groqKey || ''
+        };
+    } catch (e) {
+        console.error('Error reading settings:', e);
+        return { token: '', repo: '', branch: 'main', siteUrl: 'https://dyve.online', groqKey: '' };
+    }
+}
+
+async function fetchWithRetry(url, options = {}, retries = 2) {
+    let lastErr;
+    for (let i = 0; i <= retries; i++) {
+        try {
+            const res = await fetch(url, options);
+            if (res.status === 404 || res.status === 401 || res.status === 403) return res;
+            if (!res.ok && i < retries) {
+                await new Promise(r => setTimeout(r, 1200 * (i + 1)));
+                continue;
+            }
+            return res;
+        } catch (e) {
+            lastErr = e;
+            if (i < retries) await new Promise(r => setTimeout(r, 1200 * (i + 1)));
+        }
+    }
+    throw lastErr || new Error('Network error');
+}
+
+function authHeaders(config, extra = {}) {
+    return Object.assign({
+        'Authorization': `Bearer ${config.token}`,
+        'Accept': 'application/vnd.github+json'
+    }, extra);
+}
+
+async function fetchArticlesJson(config) {
+    const techPath = STATIC_BUILD_CONFIG.articleDataPath;
+    const request = path => fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
+        { headers: authHeaders(config) }
+    );
+
+    const metaRes = await request(techPath);
+
+    if (metaRes.status === 404) {
+        throw new Error(
+            `Tech database not found at ${techPath}. Publication is blocked to prevent overwriting the Tech database. ` +
+            `Run "Recover Tech Database" first to restore ${techPath} from assets/deltas/tech-articles.json.`
+        );
     }
 
-    if (!CATEGORY_TAXONOMY[parent]) return { category: '', subcategory: '' };
-    if (!CATEGORY_TAXONOMY[parent].subcategories[child]) child = Object.keys(CATEGORY_TAXONOMY[parent].subcategories)[0];
-    return { category: parent, subcategory: child };
+    if (!metaRes.ok) {
+        const err = await metaRes.json().catch(() => ({}));
+        throw new Error(`tech-articles.json fetch failed: ${err.message || metaRes.status}`);
+    }
+
+    const meta = await metaRes.json();
+    const sha = meta.sha || '';
+    let text = '';
+
+    if (meta.content) {
+        text = b64ToUtf8(meta.content);
+    } else if (meta.download_url) {
+        const rawRes = await fetchWithRetry(
+            meta.download_url,
+            { headers: authHeaders(config) }
+        );
+
+        if (rawRes.ok) text = await rawRes.text();
+    }
+
+    text = (text || '').trim();
+
+    if (!text) {
+        return {
+            articles: [],
+            sha,
+            migratedFromLegacy: false
+        };
+    }
+
+    let articles;
+
+    try {
+        articles = JSON.parse(text);
+    } catch (e) {
+        throw new Error('tech-articles.json is corrupt. Restore it as a JSON array before publishing.');
+    }
+
+    if (!Array.isArray(articles)) {
+        throw new Error('tech-articles.json is invalid. Expected a JSON array of Dyve Tech records.');
+    }
+
+    /*
+     * Hard publishing boundary:
+     * assets/tech-articles.json belongs exclusively to Dyve Tech.
+     * There is intentionally NO fallback to assets/articles.json.
+     */
+    const techArticles = articles
+        .filter(article => article && typeof article === 'object')
+        .map(article => normalizeArticle(article))
+        .filter(Boolean);
+
+    return {
+        articles: techArticles,
+        sha,
+        migratedFromLegacy: false
+    };
 }
 
+async function githubCommitFiles(config, files, message) {
+    const protectedPaths = new Set(['tech/index.html', 'tech/articles.html']);
+    const attemptedProtectedWrite = (Array.isArray(files) ? files : []).some(file => {
+        const path = String(file?.path || '').replace(/^\/+/, '');
+        return protectedPaths.has(path);
+    });
+    if (attemptedProtectedWrite) {
+        throw new Error('Tech Editor safety lock: tech/index.html and tech/articles.html are publisher-owned and cannot be modified by this editor.');
+    }
+
+    const refRes = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/git/ref/heads/${encodeURIComponent(config.branch)}`,
+        { headers: authHeaders(config) }
+    );
+    if (!refRes.ok) throw new Error(`Unable to resolve branch ${config.branch}.`);
+
+    const ref = await refRes.json();
+    const parentSha = ref.object && ref.object.sha;
+    if (!parentSha) throw new Error('GitHub returned no branch commit SHA.');
+
+    const commitRes = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/git/commits/${parentSha}`,
+        { headers: authHeaders(config) }
+    );
+    if (!commitRes.ok) throw new Error('Unable to resolve current Git tree.');
+
+    const parentCommit = await commitRes.json();
+    const baseTree = parentCommit.tree && parentCommit.tree.sha;
+    if (!baseTree) throw new Error('GitHub returned no base tree SHA.');
+
+    const entries = [];
+
+    for (const file of files) {
+        if (!file || !file.path) continue;
+
+        if (file.delete) {
+            entries.push({
+                path: file.path,
+                mode: '100644',
+                type: 'blob',
+                sha: null
+            });
+            continue;
+        }
+
+        const blobRes = await fetchWithRetry(
+            `https://api.github.com/repos/${config.repo}/git/blobs`,
+            {
+                method: 'POST',
+                headers: authHeaders(config, { 'Content-Type': 'application/json' }),
+                body: JSON.stringify({
+                    content: String(file.content ?? ''),
+                    encoding: 'utf-8'
+                })
+            }
+        );
+
+        if (!blobRes.ok) {
+            const err = await blobRes.json().catch(() => ({}));
+            throw new Error(`Unable to create Git blob for ${file.path}: ${err.message || blobRes.status}`);
+        }
+
+        const blob = await blobRes.json();
+        entries.push({
+            path: file.path,
+            mode: '100644',
+            type: 'blob',
+            sha: blob.sha
+        });
+    }
+
+    const treeRes = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/git/trees`,
+        {
+            method: 'POST',
+            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
+            body: JSON.stringify({
+                base_tree: baseTree,
+                tree: entries
+            })
+        }
+    );
+
+    if (!treeRes.ok) {
+        const err = await treeRes.json().catch(() => ({}));
+        throw new Error(`Unable to create Git tree: ${err.message || treeRes.status}`);
+    }
+
+    const tree = await treeRes.json();
+
+    const newCommitRes = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/git/commits`,
+        {
+            method: 'POST',
+            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
+            body: JSON.stringify({
+                message,
+                tree: tree.sha,
+                parents: [parentSha]
+            })
+        }
+    );
+
+    if (!newCommitRes.ok) {
+        const err = await newCommitRes.json().catch(() => ({}));
+        throw new Error(`Unable to create Git commit: ${err.message || newCommitRes.status}`);
+    }
+
+    const newCommit = await newCommitRes.json();
+
+    const updateRefRes = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/git/refs/heads/${encodeURIComponent(config.branch)}`,
+        {
+            method: 'PATCH',
+            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
+            body: JSON.stringify({
+                sha: newCommit.sha,
+                force: false
+            })
+        }
+    );
+
+    if (!updateRefRes.ok) {
+        const err = await updateRefRes.json().catch(() => ({}));
+        throw new Error(`Unable to publish atomic commit: ${err.message || updateRefRes.status}`);
+    }
+
+    return newCommit;
+}
+
+async function githubPutFile(config, path, text, message) {
+    const cleanPath = String(path || '').replace(/^\/+/, '');
+    if (cleanPath === 'tech/index.html' || cleanPath === 'tech/articles.html') {
+        throw new Error('Tech Editor safety lock: tech/index.html and tech/articles.html cannot be modified by this editor.');
+    }
+    let sha = '';
+    const metaRes = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
+        { headers: authHeaders(config) }
+    );
+
+    if (metaRes.ok) {
+        const data = await metaRes.json();
+        sha = data.sha || '';
+    }
+
+    const body = {
+        message,
+        content: utf8ToBase64(text),
+        branch: config.branch
+    };
+
+    if (sha) body.sha = sha;
+
+    const res = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/contents/${path}`,
+        {
+            method: 'PUT',
+            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
+            body: JSON.stringify(body)
+        }
+    );
+
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(`Upload failed (${res.status}): ${err.message || path}`);
+    }
+
+    return await res.json();
+}
+
+async function githubDeleteFile(config, path, message) {
+    const metaRes = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
+        { headers: authHeaders(config) }
+    );
+
+    if (metaRes.status === 404) return true;
+    if (!metaRes.ok) throw new Error(`Unable to inspect ${path}`);
+
+    const meta = await metaRes.json();
+
+    const res = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/contents/${path}`,
+        {
+            method: 'DELETE',
+            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
+            body: JSON.stringify({
+                message,
+                sha: meta.sha,
+                branch: config.branch
+            })
+        }
+    );
+
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(`Delete failed (${res.status}): ${err.message || path}`);
+    }
+
+    return true;
+}
+
+function deltaPathFor(url) {
+    const key = (url || '')
+        .replace(/\.html$/i, '')
+        .replace(/[^\w-]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'article';
+    return `assets/deltas/${key}.json`;
+}
+
+function normalizeArticle(article) {
+    if (!article || typeof article !== 'object') return null;
+
+    const title = String(article.title || '').trim();
+    const url = String(article.url || '').replace(/^\/+/, '').trim();
+    const page = 'tech';
+    const pair = taxonomyPairForArticle(article);
+    const category = pair.category;
+    const subcategory = pair.subcategory;
+    const contentType = normalizeContentType(article.contentType || article.tag || 'News Report');
+    const date = String(article.date || new Date().toISOString().slice(0, 10)).slice(0, 10);
+
+    if (!title || !url) return null;
+
+    return {
+        ...article,
+        title,
+        url,
+        desc: String(article.desc || '').trim(),
+        image: String(article.image || STATIC_BUILD_CONFIG.defaultImage),
+        imageAlt: String(article.imageAlt || '').trim(),
+        tag: contentType,
+        contentType,
+        meta: category,
+        category,
+        subcategory,
+        date,
+        modified: String(article.modified || article.date || date).trim(),
+        page,
+        author: String(article.author || STATIC_BUILD_CONFIG.publisherName),
+        readTime: Math.max(1, Number(article.readTime || 4)),
+        seoTitle: String(article.seoTitle || article.title || '').trim(),
+        focusKeyword: String(article.focusKeyword || '').trim(),
+        keywords: Array.isArray(article.keywords) ? article.keywords.map(k => String(k).trim()).filter(Boolean) : String(article.keywords || '').split(',').map(k => k.trim()).filter(Boolean),
+        sourceUrl: String(article.sourceUrl || '').trim(),
+        ogPrompt: String(article.ogPrompt || '').trim()
+    };
+}
+
+function validateArticleSet(articles) {
+    if (!Array.isArray(articles)) {
+        throw new Error('BUILD FAILED: tech-articles.json must contain a JSON array.');
+    }
+
+    const errors = [];
+    const normalized = [];
+    const seenUrls = new Map();
+
+    articles.forEach((raw, index) => {
+        const number = index + 1;
+        if (!raw || typeof raw !== 'object') {
+            errors.push(`Record #${number}: article must be an object.`);
+            return;
+        }
+
+        const article = normalizeArticle(raw);
+
+        if (!article) {
+            errors.push(`Record #${number}: missing required title or url.`);
+            return;
+        }
+
+        if (!SECTION_CONFIG[article.page]) {
+            errors.push(`Record #${number} "${article.title}": invalid publication page "${article.page}". Tech Editor can publish only to /tech/.`);
+        }
+
+        if (!CATEGORY_CONFIG[article.category]) {
+            errors.push(`Record #${number} "${article.title}": category "${article.category}" is not a valid Dyve Tech top-level category.`);
+        }
+
+        if (article.subcategory && !taxonomySubcategory(article.category, article.subcategory)) {
+            errors.push(`Record #${number} "${article.title}": sub-category "${article.subcategory}" does not belong to category "${article.category}".`);
+        }
+
+        const expectedPrefix = 'tech/';
+        const validCanonicalRoute =
+            article.url.startsWith(expectedPrefix) &&
+            article.url.endsWith('.html') &&
+            !article.url.includes('//') &&
+            !article.url.includes('?') &&
+            !article.url.includes('#');
+
+        if (!validCanonicalRoute) {
+            errors.push(
+                `Record #${number} "${article.title}": page/url mismatch. page="${article.page}" requires url="${expectedPrefix}<slug>.html", received "${article.url}". Run "Migrate legacy routes" once if this is an old article URL.`
+            );
+        }
+
+        if (seenUrls.has(article.url)) {
+            errors.push(`Record #${number} "${article.title}": duplicate URL "${article.url}" also used by record #${seenUrls.get(article.url)}.`);
+        } else {
+            seenUrls.set(article.url, number);
+        }
+
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(article.date) || Number.isNaN(new Date(article.date).getTime())) {
+            errors.push(`Record #${number} "${article.title}": invalid date "${article.date}". Expected YYYY-MM-DD.`);
+        }
+
+        if (!article.image) {
+            errors.push(`Record #${number} "${article.title}": image is required.`);
+        }
+
+        normalized.push(article);
+    });
+
+    if (errors.length) {
+        const message = `BUILD FAILED — ${errors.length} validation error${errors.length === 1 ? '' : 's'}:\n\n${errors.map((e, i) => `${i + 1}. ${e}`).join('\n')}`;
+        throw new Error(message);
+    }
+
+    return normalized;
+}
+
+function migrateLegacyRoutes(articles) {
+    if (!Array.isArray(articles)) {
+        throw new Error('Cannot migrate: tech-articles.json is not an array.');
+    }
+
+    const migrated = [];
+    const redirects = [];
+    const seenCanonicalUrls = new Set(
+        articles
+            .map(article => String(article && article.url || '').replace(/^\/+/, '').trim())
+            .filter(Boolean)
+    );
+
+    const usedNewUrls = new Set();
+
+    for (const raw of articles) {
+        const article = normalizeArticle(raw);
+
+        if (!article) {
+            migrated.push(raw);
+            continue;
+        }
+
+        const next = { ...article };
+        const isLegacyTechRoute =
+            article.page === 'tech' &&
+            /^article\//i.test(article.url);
+
+        if (isLegacyTechRoute) {
+            const oldUrl = article.url;
+            const oldPath = oldUrl
+                .replace(/^article\//i, '')
+                .replace(/\/index\.html$/i, '.html');
+
+            let slug = oldPath
+                .replace(/\.html$/i, '')
+                .split('/')
+                .filter(Boolean)
+                .pop() || generateSlug(article.title);
+
+            slug = generateSlug(slug) || generateSlug(article.title) || `article-${Date.now()}`;
+
+            let newUrl = `tech/${slug}.html`;
+            let suffix = 2;
+
+            while (
+                usedNewUrls.has(newUrl) ||
+                (
+                    seenCanonicalUrls.has(newUrl) &&
+                    newUrl !== article.url
+                )
+            ) {
+                newUrl = `tech/${slug}-${suffix}.html`;
+                suffix++;
+            }
+
+            next.url = newUrl;
+            next.legacyUrls = Array.from(new Set([
+                ...(Array.isArray(article.legacyUrls) ? article.legacyUrls : []),
+                oldUrl
+            ]));
+
+            redirects.push({
+                from: `/${oldUrl}`,
+                to: `/${newUrl}`
+            });
+
+            usedNewUrls.add(newUrl);
+        }
+
+        (next.legacyUrls || []).forEach(oldUrl => {
+            const cleanOld = String(oldUrl || '').replace(/^\/+/, '').trim();
+
+            if (
+                cleanOld &&
+                cleanOld !== next.url &&
+                !redirects.some(redirect => redirect.from === `/${cleanOld}`)
+            ) {
+                redirects.push({
+                    from: `/${cleanOld}`,
+                    to: `/${next.url}`
+                });
+            }
+        });
+
+        migrated.push(next);
+    }
+
+    return {
+        articles: migrated,
+        redirects
+    };
+}
+
+
+function sortArticles(articles) {
+    return articles
+        .map(normalizeArticle)
+        .filter(Boolean)
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+}
 
 function getCategoryMeta(category) {
     return CATEGORY_CONFIG[category] || {
@@ -1324,662 +2305,6 @@ ${buildStaticHead(title, description, canonical, schema)}
 </html>`;
 }
 
-function b64ToUtf8(b64) {
-    const bin = atob(b64.replace(/\s/g, ''));
-    const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
-    return new TextDecoder().decode(bytes);
-}
-
-function utf8ToBase64(str) {
-    const bytes = new TextEncoder().encode(str);
-    let bin = '';
-    const CHUNK = 0x8000;
-    for (let i = 0; i < bytes.length; i += CHUNK) {
-        bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
-    }
-    return btoa(bin);
-}
-
-function escapeHtml(value) {
-    return String(value ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
-
-function escapeAttr(value) {
-    return escapeHtml(value);
-}
-
-function safeJson(value) {
-    return JSON.stringify(value)
-        .replace(/</g, '\\u003c')
-        .replace(/>/g, '\\u003e')
-        .replace(/&/g, '\\u0026');
-}
-
-function generateSlug(title) {
-    return String(title || '')
-        .toLowerCase()
-        .normalize('NFKD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-+|-+$/g, '')
-        .trim();
-}
-
-function showToast(message, duration = 4000) {
-    const toast = document.getElementById('toast');
-    document.getElementById('toastMessage').textContent = message;
-    toast.classList.remove('hidden');
-    setTimeout(() => toast.classList.add('hidden'), duration);
-}
-
-function setBuildStatus(state, text) {
-    const badge = document.getElementById('buildStatusBadge');
-    const label = document.getElementById('buildStatusText');
-    badge.classList.remove('ready', 'busy', 'error');
-    if (state) badge.classList.add(state);
-    label.textContent = text;
-}
-
-function logBuild(message, type = 'info') {
-    const log = document.getElementById('buildLog');
-    if (!log) return;
-    const row = document.createElement('div');
-    row.className = type;
-    row.textContent = `[build] ${message}`;
-    log.appendChild(row);
-    log.scrollTop = log.scrollHeight;
-}
-
-function resetBuildLog() {
-    const log = document.getElementById('buildLog');
-    if (log) log.innerHTML = '';
-}
-
-function getGitHubConfig() {
-    try {
-        const settings = JSON.parse(localStorage.getItem('dyve-tech-settings') || '{}');
-        return {
-            token: settings.githubToken || '',
-            repo: settings.githubRepo || '',
-            branch: settings.githubBranch || 'main',
-            siteUrl: String(settings.siteUrl || 'https://dyve.online').replace(/\/+$/, ''),
-            groqKey: settings.groqKey || ''
-        };
-    } catch (e) {
-        console.error('Error reading settings:', e);
-        return { token: '', repo: '', branch: 'main', siteUrl: 'https://dyve.online', groqKey: '' };
-    }
-}
-
-async function fetchWithRetry(url, options = {}, retries = 2) {
-    let lastErr;
-    for (let i = 0; i <= retries; i++) {
-        try {
-            const res = await fetch(url, options);
-            if (res.status === 404 || res.status === 401 || res.status === 403) return res;
-            if (!res.ok && i < retries) {
-                await new Promise(r => setTimeout(r, 1200 * (i + 1)));
-                continue;
-            }
-            return res;
-        } catch (e) {
-            lastErr = e;
-            if (i < retries) await new Promise(r => setTimeout(r, 1200 * (i + 1)));
-        }
-    }
-    throw lastErr || new Error('Network error');
-}
-
-function authHeaders(config, extra = {}) {
-    return Object.assign({
-        'Authorization': `Bearer ${config.token}`,
-        'Accept': 'application/vnd.github+json'
-    }, extra);
-}
-
-async function fetchArticlesJson(config) {
-    if (STATIC_BUILD_CONFIG.articleDataPath !== TECH_PATH_CONTRACT.articleData) {
-        throw new Error('Tech data ownership violation: the editor must use assets/tech-articles.json.');
-    }
-    /*
-     * HARD DATA OWNERSHIP BOUNDARY
-     * -----------------------------
-     * The Dyve Tech Editor has exactly one article database:
-     *
-     *     assets/tech-articles.json
-     *
-     * Never fall back to, read from, merge with, or inspect another
-     * article database. Other Dyve systems own their own data.
-     */
-    const techPath = STATIC_BUILD_CONFIG.articleDataPath;
-
-    const metaRes = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/contents/${techPath}?ref=${encodeURIComponent(config.branch)}`,
-        { headers: authHeaders(config) }
-    );
-
-    if (metaRes.status === 404) {
-        return { articles: [], sha: '', exists: false };
-    }
-
-    if (!metaRes.ok) {
-        const err = await metaRes.json().catch(() => ({}));
-        throw new Error(`tech-articles.json fetch failed: ${err.message || metaRes.status}`);
-    }
-
-    const meta = await metaRes.json();
-    const sha = meta.sha || '';
-    let text = '';
-
-    if (meta.content) {
-        text = b64ToUtf8(meta.content);
-    } else if (meta.download_url) {
-        const rawRes = await fetchWithRetry(
-            meta.download_url,
-            { headers: authHeaders(config) }
-        );
-
-        if (rawRes.ok) text = await rawRes.text();
-    }
-
-    text = (text || '').trim();
-
-    if (!text) {
-        return { articles: [], sha, exists: true };
-    }
-
-    let articles;
-
-    try {
-        articles = JSON.parse(text);
-    } catch (e) {
-        throw new Error('tech-articles.json is corrupt. Use Restore & Normalize Tech Database after confirming the file history.');
-    }
-
-    if (!Array.isArray(articles)) {
-        throw new Error('tech-articles.json must contain a JSON array.');
-    }
-
-    return {
-        articles,
-        sha,
-        exists: true
-    };
-}
-
-async function githubCommitFiles(config, files, message) {
-    const refRes = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/git/ref/heads/${encodeURIComponent(config.branch)}`,
-        { headers: authHeaders(config) }
-    );
-    if (!refRes.ok) throw new Error(`Unable to resolve branch ${config.branch}.`);
-
-    const ref = await refRes.json();
-    const parentSha = ref.object && ref.object.sha;
-    if (!parentSha) throw new Error('GitHub returned no branch commit SHA.');
-
-    const commitRes = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/git/commits/${parentSha}`,
-        { headers: authHeaders(config) }
-    );
-    if (!commitRes.ok) throw new Error('Unable to resolve current Git tree.');
-
-    const parentCommit = await commitRes.json();
-    const baseTree = parentCommit.tree && parentCommit.tree.sha;
-    if (!baseTree) throw new Error('GitHub returned no base tree SHA.');
-
-    const entries = [];
-
-    for (const file of files) {
-        if (!file || !file.path) continue;
-
-        if (file.delete) {
-            entries.push({
-                path: file.path,
-                mode: '100644',
-                type: 'blob',
-                sha: null
-            });
-            continue;
-        }
-
-        const blobRes = await fetchWithRetry(
-            `https://api.github.com/repos/${config.repo}/git/blobs`,
-            {
-                method: 'POST',
-                headers: authHeaders(config, { 'Content-Type': 'application/json' }),
-                body: JSON.stringify({
-                    content: String(file.content ?? ''),
-                    encoding: 'utf-8'
-                })
-            }
-        );
-
-        if (!blobRes.ok) {
-            const err = await blobRes.json().catch(() => ({}));
-            throw new Error(`Unable to create Git blob for ${file.path}: ${err.message || blobRes.status}`);
-        }
-
-        const blob = await blobRes.json();
-        entries.push({
-            path: file.path,
-            mode: '100644',
-            type: 'blob',
-            sha: blob.sha
-        });
-    }
-
-    const treeRes = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/git/trees`,
-        {
-            method: 'POST',
-            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
-            body: JSON.stringify({
-                base_tree: baseTree,
-                tree: entries
-            })
-        }
-    );
-
-    if (!treeRes.ok) {
-        const err = await treeRes.json().catch(() => ({}));
-        throw new Error(`Unable to create Git tree: ${err.message || treeRes.status}`);
-    }
-
-    const tree = await treeRes.json();
-
-    const newCommitRes = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/git/commits`,
-        {
-            method: 'POST',
-            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
-            body: JSON.stringify({
-                message,
-                tree: tree.sha,
-                parents: [parentSha]
-            })
-        }
-    );
-
-    if (!newCommitRes.ok) {
-        const err = await newCommitRes.json().catch(() => ({}));
-        throw new Error(`Unable to create Git commit: ${err.message || newCommitRes.status}`);
-    }
-
-    const newCommit = await newCommitRes.json();
-
-    const updateRefRes = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/git/refs/heads/${encodeURIComponent(config.branch)}`,
-        {
-            method: 'PATCH',
-            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
-            body: JSON.stringify({
-                sha: newCommit.sha,
-                force: false
-            })
-        }
-    );
-
-    if (!updateRefRes.ok) {
-        const err = await updateRefRes.json().catch(() => ({}));
-        throw new Error(`Unable to publish atomic commit: ${err.message || updateRefRes.status}`);
-    }
-
-    return newCommit;
-}
-
-async function githubPutFile(config, path, text, message) {
-    let sha = '';
-    const metaRes = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
-        { headers: authHeaders(config) }
-    );
-
-    if (metaRes.ok) {
-        const data = await metaRes.json();
-        sha = data.sha || '';
-    }
-
-    const body = {
-        message,
-        content: utf8ToBase64(text),
-        branch: config.branch
-    };
-
-    if (sha) body.sha = sha;
-
-    const res = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/contents/${path}`,
-        {
-            method: 'PUT',
-            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
-            body: JSON.stringify(body)
-        }
-    );
-
-    if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(`Upload failed (${res.status}): ${err.message || path}`);
-    }
-
-    return await res.json();
-}
-
-async function githubDeleteFile(config, path, message) {
-    const metaRes = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
-        { headers: authHeaders(config) }
-    );
-
-    if (metaRes.status === 404) return true;
-    if (!metaRes.ok) throw new Error(`Unable to inspect ${path}`);
-
-    const meta = await metaRes.json();
-
-    const res = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/contents/${path}`,
-        {
-            method: 'DELETE',
-            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
-            body: JSON.stringify({
-                message,
-                sha: meta.sha,
-                branch: config.branch
-            })
-        }
-    );
-
-    if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(`Delete failed (${res.status}): ${err.message || path}`);
-    }
-
-    return true;
-}
-
-function deltaPathFor(url) {
-    const key = (url || '')
-        .replace(/\.html$/i, '')
-        .replace(/[^\w-]+/g, '-')
-        .replace(/^-+|-+$/g, '') || 'article';
-    return `${TECH_PATH_CONTRACT.deltaDirectory}${key}.json`;
-}
-
-function normalizeArticle(article) {
-    if (!article || typeof article !== 'object') return null;
-
-    const title = String(article.title || '').trim();
-    const url = String(article.url || '').replace(/^\/+/, '').trim();
-    const page = 'tech';
-    const category = String(article.category || article.meta || 'ai').trim();
-    const tag = String(article.tag || 'News').trim();
-    const date = String(article.date || new Date().toISOString().slice(0, 10)).slice(0, 10);
-
-    if (!title || !url) return null;
-
-    return {
-        ...article,
-        title,
-        url,
-        desc: String(article.desc || '').trim(),
-        image: String(article.image || STATIC_BUILD_CONFIG.defaultImage),
-        imageAlt: String(article.imageAlt || '').trim(),
-        tag,
-        meta: category,
-        category,
-        date,
-        modified: String(article.modified || article.date || date).trim(),
-        page,
-        author: String(article.author || STATIC_BUILD_CONFIG.publisherName),
-        readTime: Math.max(1, Number(article.readTime || 4)),
-        seoTitle: String(article.seoTitle || article.title || '').trim(),
-        focusKeyword: String(article.focusKeyword || '').trim(),
-        keywords: Array.isArray(article.keywords) ? article.keywords.map(k => String(k).trim()).filter(Boolean) : String(article.keywords || '').split(',').map(k => k.trim()).filter(Boolean),
-        sourceUrl: String(article.sourceUrl || '').trim(),
-        ogPrompt: String(article.ogPrompt || '').trim()
-    };
-}
-
-function validateArticleSet(articles) {
-    if (!Array.isArray(articles)) {
-        throw new Error('BUILD FAILED: tech-articles.json must contain a JSON array.');
-    }
-
-    const errors = [];
-    const normalized = [];
-    const seenUrls = new Map();
-
-    articles.forEach((raw, index) => {
-        const number = index + 1;
-        if (!raw || typeof raw !== 'object') {
-            errors.push(`Record #${number}: article must be an object.`);
-            return;
-        }
-
-        const article = normalizeArticle(raw);
-
-        if (!article) {
-            errors.push(`Record #${number}: missing required title or url.`);
-            return;
-        }
-
-        if (!SECTION_CONFIG[article.page]) {
-            errors.push(`Record #${number} "${article.title}": invalid publication page "${article.page}". Tech Editor can publish only to /tech/.`);
-        }
-
-        if (!CATEGORY_CONFIG[article.category]) {
-            errors.push(`Record #${number} "${article.title}": category "${article.category}" is outside the Dyve Tech publishing boundary. Remove it from tech-articles.json or run the One-Time Data Migration.`);
-        }
-
-        const expectedPrefix = 'tech/';
-        const validCanonicalRoute =
-            article.url.startsWith(expectedPrefix) &&
-            article.url.endsWith('.html') &&
-            !article.url.includes('//') &&
-            !article.url.includes('?') &&
-            !article.url.includes('#');
-
-        if (!validCanonicalRoute) {
-            errors.push(
-                `Record #${number} "${article.title}": page/url mismatch. page="${article.page}" requires url="${expectedPrefix}<slug>.html", received "${article.url}". Run "Migrate legacy routes" once if this is an old article URL.`
-            );
-        }
-
-        if (seenUrls.has(article.url)) {
-            errors.push(`Record #${number} "${article.title}": duplicate URL "${article.url}" also used by record #${seenUrls.get(article.url)}.`);
-        } else {
-            seenUrls.set(article.url, number);
-        }
-
-        if (!/^\d{4}-\d{2}-\d{2}$/.test(article.date) || Number.isNaN(new Date(article.date).getTime())) {
-            errors.push(`Record #${number} "${article.title}": invalid date "${article.date}". Expected YYYY-MM-DD.`);
-        }
-
-        if (!article.image) {
-            errors.push(`Record #${number} "${article.title}": image is required.`);
-        }
-
-        normalized.push(article);
-    });
-
-    if (errors.length) {
-        const message = `BUILD FAILED — ${errors.length} validation error${errors.length === 1 ? '' : 's'}:\n\n${errors.map((e, i) => `${i + 1}. ${e}`).join('\n')}`;
-        throw new Error(message);
-    }
-
-    return normalized;
-}
-
-function normalizeTechDatabaseRecords(articles) {
-    if (!Array.isArray(articles)) {
-        throw new Error('Cannot normalize Tech database: tech-articles.json must contain a JSON array.');
-    }
-
-    const normalized = [];
-    const redirects = [];
-    const seenKeys = new Set();
-    const usedUrls = new Set();
-
-    const addRedirect = (from, to) => {
-        const cleanFrom = String(from || '').replace(/^\/+/, '').trim();
-        const cleanTo = String(to || '').replace(/^\/+/, '').trim();
-
-        if (!cleanFrom || !cleanTo || cleanFrom === cleanTo) return;
-
-        if (redirects.some(item =>
-            item.from.replace(/^\/+/, '') === cleanFrom &&
-            item.to.replace(/^\/+/, '') === cleanTo
-        )) return;
-
-        redirects.push({
-            from: `/${cleanFrom}`,
-            to: `/${cleanTo}`
-        });
-    };
-
-    const normalizeUrl = (rawUrl, title, index) => {
-        const original = String(rawUrl || '').replace(/^\/+/, '').trim();
-
-        if (/^https?:\/\//i.test(original)) {
-            throw new Error(`Tech record "${title}" has an absolute article URL. Expected tech/<slug>.html.`);
-        }
-
-        if (original && /^article\//i.test(original)) {
-            let slug = original
-                .replace(/^article\//i, '')
-                .replace(/\/index\.html$/i, '.html')
-                .replace(/\.html$/i, '')
-                .split('/')
-                .filter(Boolean)
-                .pop() || generateSlug(title);
-
-            slug = generateSlug(slug) || generateSlug(title) || `article-${index + 1}`;
-            let candidate = `tech/${slug}.html`;
-            let suffix = 2;
-
-            while (usedUrls.has(candidate)) {
-                candidate = `tech/${slug}-${suffix}.html`;
-                suffix++;
-            }
-
-            addRedirect(original, candidate);
-            return candidate;
-        }
-
-        if (original) {
-            let cleaned = original
-                .replace(/^tech\//i, 'tech/')
-                .replace(/\/index\.html$/i, '.html');
-
-            if (/^tech\/.+\.html$/i.test(cleaned)) {
-                return cleaned;
-            }
-        }
-
-        let slug = generateSlug(title) || `article-${index + 1}`;
-        let candidate = `tech/${slug}.html`;
-        let suffix = 2;
-
-        while (usedUrls.has(candidate)) {
-            candidate = `tech/${slug}-${suffix}.html`;
-            suffix++;
-        }
-
-        return candidate;
-    };
-
-    articles.forEach((raw, index) => {
-        if (!raw || typeof raw !== 'object') return;
-
-        const title = String(raw.title || raw.headline || raw.name || '').trim();
-
-        if (!title) return;
-
-        const rawCategory = String(raw.category || raw.meta || '').trim().toLowerCase();
-        const rawSubcategory = String(raw.subcategory || '').trim().toLowerCase();
-        const taxonomy = normalizeTaxonomy(rawCategory, rawSubcategory);
-
-        if (!taxonomy.category) {
-            throw new Error(
-                `Tech record #${index + 1} "${title}" has an unsupported category "${rawCategory}". Restore stopped without publishing changes.`
-            );
-        }
-
-        const nextUrl = normalizeUrl(raw.url, title, index);
-
-        const article = normalizeArticle({
-            ...raw,
-            title,
-            page: 'tech',
-            category: taxonomy.category,
-            meta: taxonomy.category,
-            subcategory: taxonomy.subcategory,
-            url: nextUrl
-        });
-
-        if (!article) return;
-
-        const oldUrl = String(raw.url || '').replace(/^\/+/, '').trim();
-
-        if (oldUrl && oldUrl !== article.url) {
-            addRedirect(oldUrl, article.url);
-        }
-
-        if (Array.isArray(raw.legacyUrls)) {
-            raw.legacyUrls.forEach(oldUrlValue => {
-                addRedirect(oldUrlValue, article.url);
-            });
-        }
-
-        article.legacyUrls = Array.from(new Set([
-            ...(Array.isArray(raw.legacyUrls)
-                ? raw.legacyUrls
-                    .map(url => String(url || '').replace(/^\/+/, '').trim())
-                    .filter(Boolean)
-                : []),
-            ...(oldUrl && oldUrl !== article.url ? [oldUrl] : [])
-        ])).filter(url => url !== article.url);
-
-        const key =
-            String(article.url || '').toLowerCase() ||
-            String(article.title || '').trim().toLowerCase();
-
-        if (!key || seenKeys.has(key)) return;
-
-        if (usedUrls.has(article.url)) {
-            throw new Error(
-                `Tech database normalization found a canonical URL collision: ${article.url}. Restore stopped without publishing changes.`
-            );
-        }
-
-        seenKeys.add(key);
-        usedUrls.add(article.url);
-        normalized.push(article);
-    });
-
-    return {
-        articles: sortArticles(normalized),
-        redirects
-    };
-}
-
-
-function sortArticles(articles) {
-    return articles
-        .map(normalizeArticle)
-        .filter(Boolean)
-        .sort((a, b) => new Date(b.date) - new Date(a.date));
-}
-
-
-
 const DYVE_TECH_TEMPLATE_MARKERS = Object.freeze({
     head: ['<!-- DYVE_TECH_HEAD_START -->', '<!-- DYVE_TECH_HEAD_END -->'],
     featured: ['<!-- DYVE_TECH_FEATURED_START -->', '<!-- DYVE_TECH_FEATURED_END -->'],
@@ -2105,26 +2430,98 @@ function buildTechIndexHTML(siteUrl, articles, templateHTML = '') {
 function buildAllSectionIndexes(siteUrl, articles, templates = {}) {
     const normalized = validateArticleSet(articles);
     return {
-        [STATIC_BUILD_CONFIG.techIndexPath]: buildTechIndexHTML(
+        'tech/index.html': buildTechIndexHTML(
             siteUrl,
             normalized,
-            templates[STATIC_BUILD_CONFIG.techIndexPath] || ''
+            templates['tech/index.html'] || ''
         )
     };
 }
 
-function buildSitemapXML(siteUrl, articles) {
+function buildCategoryPageHTML(siteUrl, categoryId, subcategoryId, articles) {
+    const category = taxonomyCategory(categoryId);
+    const subcategory = taxonomySubcategory(categoryId, subcategoryId);
+    if (!category) throw new Error(`Cannot generate category page: unknown category ${categoryId}`);
+    if (subcategoryId && !subcategory) throw new Error(`Cannot generate category page: unknown sub-category ${categoryId}/${subcategoryId}`);
+
+    const filtered = sortArticles(articles).filter(article => {
+        if (article.category !== categoryId) return false;
+        return subcategoryId ? article.subcategory === subcategoryId : true;
+    }).slice(0, STATIC_BUILD_CONFIG.maxArticlesPerIndex);
+
+    const articleBase = subcategoryId ? '../../' : '../';
+    const label = subcategory ? `${category.label} / ${subcategory.label}` : category.label;
+    const title = subcategory ? `${subcategory.label} | ${category.label} | Dyve Tech` : `${category.title} | Dyve Tech`;
+    const description = subcategory
+        ? `${subcategory.label} coverage from Dyve Tech, including news, analysis, intelligence and developments across ${category.label.toLowerCase()}.`
+        : category.description;
+    const canonicalPath = categoryPagePath(categoryId, subcategoryId);
+    const canonicalUrl = `${siteUrl}/${canonicalPath}`;
+    const parentPath = categoryPagePath(categoryId);
+    const cards = filtered.map(article => `
+        <article class="card">
+            <a href="${articleBase}${String(article.url).replace(/^tech\//, '')}">
+                <img src="${escapeAttr(article.image || STATIC_BUILD_CONFIG.defaultImage)}" alt="${escapeAttr(article.imageAlt || article.title)}" loading="lazy" decoding="async">
+                <div class="card-body">
+                    <div class="kicker">${escapeHtml(getTaxonomyLabel(article.category, article.subcategory))}</div>
+                    <h2>${escapeHtml(article.title)}</h2>
+                    <p>${escapeHtml(article.desc || '')}</p>
+                    <div class="meta">${escapeHtml(article.contentType || article.tag || 'News Report')} · ${escapeHtml(formatDate(article.date))} · ${escapeHtml(String(article.readTime || 4))} min</div>
+                </div>
+            </a>
+        </article>`).join('');
+
+    const schema = {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: label,
+        headline: title,
+        description,
+        url: canonicalUrl,
+        isPartOf: { '@type': 'WebSite', name: STATIC_BUILD_CONFIG.siteName, url: `${siteUrl}/tech/` },
+        mainEntity: {
+            '@type': 'ItemList',
+            numberOfItems: filtered.length,
+            itemListElement: filtered.map((article, index) => ({
+                '@type': 'ListItem', position: index + 1, url: articleUrl(siteUrl, article), name: article.title
+            }))
+        }
+    };
+
+    const childBase = subcategoryId ? './' : `./${escapeAttr(category.id)}/`;
+    const childNav = (category.subcategories || []).map(sub => `<a href="${sub.id === subcategoryId ? '#' : `${childBase}${escapeAttr(sub.id)}.html`}">${escapeHtml(sub.label)}</a>`).join('');
+
+    return `<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>${escapeHtml(title)}</title><meta name="description" content="${escapeAttr(description)}"><meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="${escapeAttr(canonicalUrl)}"><meta property="og:type" content="website"><meta property="og:title" content="${escapeAttr(title)}"><meta property="og:description" content="${escapeAttr(description)}"><meta property="og:url" content="${escapeAttr(canonicalUrl)}"><meta property="og:site_name" content="Dyve Tech">
+<script type="application/ld+json">${safeJson(schema)}<\/script>
+<style>
+:root{--bg:#050806;--surface:#0a100d;--line:rgba(255,255,255,.09);--text:rgba(255,255,255,.92);--muted:rgba(255,255,255,.52);--green:#4F8A73}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,rgba(79,138,115,.11),transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif}a{color:inherit;text-decoration:none}.wrap{width:min(1180px,calc(100% - 32px));margin:auto}.top{padding:24px 0;border-bottom:1px solid var(--line)}.brand{font-weight:900;letter-spacing:.08em}.brand b{color:var(--green)}.crumb{margin-top:42px;color:var(--muted);font-size:11px}.hero{padding:18px 0 34px}.eyebrow{color:var(--green);font-size:9px;font-weight:900;letter-spacing:.15em;text-transform:uppercase}.hero h1{font-size:clamp(2rem,5vw,4.2rem);line-height:1.02;letter-spacing:-.045em;max-width:850px;margin:10px 0}.hero p{max-width:760px;color:var(--muted);font-size:13px;line-height:1.75}.subnav{display:flex;gap:8px;overflow:auto;padding:2px 0 24px}.subnav a{white-space:nowrap;padding:8px 11px;border:1px solid var(--line);border-radius:8px;font-size:9px;color:var(--muted)}.subnav a:hover{border-color:rgba(79,138,115,.45);color:var(--green)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding-bottom:70px}.card{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}.card img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;opacity:.86}.card-body{padding:15px}.kicker{font-size:8px;color:var(--green);font-weight:900;text-transform:uppercase;letter-spacing:.08em}.card h2{font-size:17px;line-height:1.22;margin:8px 0}.card p{color:var(--muted);font-size:10px;line-height:1.6;margin:0}.meta{margin-top:13px;color:rgba(255,255,255,.3);font-size:8px;text-transform:uppercase;letter-spacing:.05em}@media(max-width:760px){.wrap{width:min(100% - 24px,680px)}.grid{grid-template-columns:1fr}.hero h1{font-size:2.4rem}}
+</style></head><body><header class="top"><div class="wrap"><a class="brand" href="${subcategoryId ? '../../index.html' : '../index.html'}">DYVE <b>|</b> TECH</a></div></header><main class="wrap"><div class="crumb"><a href="${subcategoryId ? '../../index.html' : '../index.html'}">Tech</a> / ${escapeHtml(label)}</div><section class="hero"><div class="eyebrow">Dyve Tech Intelligence</div><h1>${escapeHtml(label)}</h1><p>${escapeHtml(description)}</p></section><nav class="subnav"><a href="${subcategoryId ? `../${escapeAttr(parentPath.split('/').pop())}` : '../index.html'}">All ${escapeHtml(category.label)}</a>${childNav}</nav><section class="grid">${cards || '<p style="color:var(--muted);font-size:12px">No published articles in this classification yet.</p>'}</section></main></body></html>`;
+}
+
+function buildAllCategoryPages(siteUrl, articles) {
+    const outputs = [];
+    for (const category of Object.values(CATEGORY_CONFIG)) {
+        outputs.push({ path: categoryPagePath(category.id), content: buildCategoryPageHTML(siteUrl, category.id, '', articles) });
+        for (const sub of category.subcategories || []) {
+            outputs.push({ path: categoryPagePath(category.id, sub.id), content: buildCategoryPageHTML(siteUrl, category.id, sub.id, articles) });
+        }
+    }
+    return outputs;
+}
+
+function buildSitemapXML(siteUrl, articles, categoryOutputs = []) {
     const normalized = validateArticleSet(sortArticles(articles));
     const today = new Date().toISOString().slice(0, 10);
     const urls = new Map();
     urls.set(`${siteUrl}/tech/`, normalized[0]?.date || today);
-    Object.entries(CATEGORY_TAXONOMY).forEach(([category, meta]) => {
-        urls.set(categoryPageUrl(siteUrl, category), today);
-        Object.keys(meta.subcategories).forEach(subcategory => {
-            urls.set(categoryPageUrl(siteUrl, category, subcategory), today);
-        });
-    });
     normalized.forEach(article => urls.set(articleUrl(siteUrl, article), String(article.modified || article.date).slice(0, 10)));
+    categoryOutputs.forEach(output => {
+        if (output && output.path) urls.set(`${siteUrl}/${String(output.path).replace(/^\/+/, '')}`, today);
+    });
     const body = [...urls.entries()].map(([loc, lastmod]) => {
         const article = normalized.find(item => articleUrl(siteUrl, item) === loc);
         const image = article?.image ? `
@@ -2180,199 +2577,14 @@ async function migrateLegacyContent(config, articles) {
 function updateBuildStats(articles) {
     const normalized = sortArticles(articles);
     const categories = new Set(normalized.map(a => a.category).filter(Boolean));
-    const taxonomyPageCount = Object.values(CATEGORY_TAXONOMY).reduce((total, meta) => total + 1 + Object.keys(meta.subcategories).length, 0);
+    const categoryPageCount = Object.values(CATEGORY_CONFIG).reduce((count, category) => count + 1 + (category.subcategories || []).length, 0);
     const sitemapUrls = new Set(['/tech/']);
-    Object.entries(CATEGORY_TAXONOMY).forEach(([category, meta]) => {
-        sitemapUrls.add('/tech/' + meta.route + '/');
-        Object.keys(meta.subcategories).forEach(subcategory => sitemapUrls.add('/tech/' + meta.route + '/' + subcategory + '/'));
-    });
     normalized.forEach(a => sitemapUrls.add('/' + a.url));
+    buildCategoryPageCount = categoryPageCount;
     document.getElementById('buildArticleCount').textContent = normalized.length;
-    document.getElementById('buildCategoryCount').textContent = categories.size + '/' + Object.keys(CATEGORY_TAXONOMY).length;
-    document.getElementById('buildSitemapCount').textContent = sitemapUrls.size;
-    document.getElementById('buildPageCount').textContent = taxonomyPageCount + normalized.length + 1;
-}
-
-async function loadCategoryTemplate(config) {
-    const templatePath = STATIC_BUILD_CONFIG.categoryTemplatePath;
-    const templateHTML = await fetchGitHubText(config, templatePath, { optional: true });
-
-    if (!templateHTML || !templateHTML.trim()) {
-        throw new Error(`CATEGORY TEMPLATE NOT FOUND: ${templatePath}. Create the standalone Tech category template before publishing.`);
-    }
-
-    const required = [
-        'PAGE_TITLE',
-        'PAGE_DESCRIPTION_ATTR',
-        'CANONICAL_URL',
-        'OG_IMAGE',
-        'PAGE_SCHEMA',
-        'CATEGORY_LABEL',
-        'PAGE_HEADING',
-        'PAGE_DESCRIPTION',
-        'SUBCATEGORY_CRUMB',
-        'SUBCATEGORY_NAV',
-        'LIST_HEADING',
-        'ARTICLE_COUNT',
-        'ARTICLE_LIST'
-    ];
-
-    const missing = required.filter(token => !templateHTML.includes(`{{${token}}}`));
-    if (missing.length) {
-        throw new Error(`CATEGORY TEMPLATE CONTRACT FAILED: ${templatePath} is missing required token(s): ${missing.map(token => `{{${token}}}`).join(', ')}`);
-    }
-
-    return templateHTML;
-}
-
-function categoryPageUrl(siteUrl, category, subcategory = '') {
-    const parent = CATEGORY_TAXONOMY[category];
-    if (!parent) return `${siteUrl}/tech/`;
-    return subcategory
-        ? `${siteUrl}/tech/${parent.route}/${subcategory}/`
-        : `${siteUrl}/tech/${parent.route}/`;
-}
-
-function relativeArticleUrlFromCategoryPage(article, category, subcategory = '') {
-    const depth = subcategory ? '../../' : '../';
-    return `${depth}${String(article.url || '').replace(/^tech\//, '')}`;
-}
-
-function buildCategoryArticleCard(article, category, subcategory = '') {
-    const href = relativeArticleUrlFromCategoryPage(article, category, subcategory);
-    const categoryMeta = getCategoryMeta(category);
-    const childMeta = getSubcategoryMeta(category, subcategory || article.subcategory);
-    return `<a class="card" href="${escapeAttr(href)}">
-    <div class="thumb"><img src="${escapeAttr(article.image || STATIC_BUILD_CONFIG.defaultImage)}" alt="${escapeAttr(article.imageAlt || article.title)}" loading="lazy" width="800" height="500"></div>
-    <div class="body">
-        <div class="tag">${escapeHtml(childMeta.label || categoryMeta.label)}</div>
-        <h3>${escapeHtml(article.title)}</h3>
-        <p class="desc">${escapeHtml(truncate(article.desc || '', 180))}</p>
-        <div class="meta">${escapeHtml(formatDate(article.date))} · ${Math.max(1, Number(article.readTime || 4))} MIN READ</div>
-    </div>
-</a>`;
-}
-
-async function buildCategoryPages(config, articles) {
-    if (!STATIC_BUILD_CONFIG.generateCategoryPages) return [];
-
-    const template = await loadCategoryTemplate(config);
-    const normalized = validateArticleSet(sortArticles(articles));
-    const outputs = [];
-    const latestImage = normalized[0]?.image || STATIC_BUILD_CONFIG.defaultImage;
-
-    for (const [category, meta] of Object.entries(CATEGORY_TAXONOMY)) {
-        const categoryArticles = normalized.filter(article => article.category === category);
-        const parentUrl = categoryPageUrl(config.siteUrl, category);
-        const subNav = [
-            `<a class="active" href="./">Latest</a>`,
-            ...Object.entries(meta.subcategories).map(([key, child]) => `<a href="${escapeAttr(`${key}/`)}">${escapeHtml(child.label)}</a>`)
-        ].join('');
-
-        const parentSchema = safeJson({
-            '@context': 'https://schema.org',
-            '@type': 'CollectionPage',
-            '@id': `${parentUrl}#webpage`,
-            name: meta.title,
-            headline: meta.title,
-            description: meta.description,
-            url: parentUrl,
-            isPartOf: { '@type': 'WebSite', '@id': `${config.siteUrl}/#website`, name: 'Dyve', url: `${config.siteUrl}/` },
-            publisher: { '@type': 'Organization', '@id': `${config.siteUrl}/tech/#organization`, name: 'Dyve Tech', url: `${config.siteUrl}/tech/` },
-            breadcrumb: {
-                '@type': 'BreadcrumbList',
-                itemListElement: [
-                    { '@type': 'ListItem', position: 1, name: 'Dyve', item: `${config.siteUrl}/` },
-                    { '@type': 'ListItem', position: 2, name: 'Dyve Tech', item: `${config.siteUrl}/tech/` },
-                    { '@type': 'ListItem', position: 3, name: meta.label, item: parentUrl }
-                ]
-            },
-            mainEntity: {
-                '@type': 'ItemList',
-                numberOfItems: categoryArticles.length,
-                itemListElement: categoryArticles.slice(0, 100).map((article, index) => ({
-                    '@type': 'ListItem', position: index + 1, name: article.title, url: articleUrl(config.siteUrl, article)
-                }))
-            }
-        });
-
-        const parentValues = {
-            PAGE_TITLE: escapeHtml(`${meta.title} | Dyve Tech`),
-            PAGE_DESCRIPTION_ATTR: escapeAttr(meta.description),
-            CANONICAL_URL: escapeAttr(parentUrl),
-            OG_IMAGE: escapeAttr(latestImage),
-            PAGE_SCHEMA: parentSchema,
-            CATEGORY_LABEL: escapeHtml(meta.label),
-            PAGE_HEADING: escapeHtml(meta.title),
-            PAGE_DESCRIPTION: escapeHtml(meta.description),
-            SUBCATEGORY_CRUMB: '',
-            SUBCATEGORY_NAV: subNav,
-            LIST_HEADING: escapeHtml(`Latest ${meta.label}`),
-            ARTICLE_COUNT: categoryArticles.length,
-            ARTICLE_LIST: categoryArticles.length
-                ? categoryArticles.slice(0, STATIC_BUILD_CONFIG.maxArticlesPerIndex).map(a => buildCategoryArticleCard(a, category)).join('')
-                : '<div class="empty"><strong>No stories published in this pillar yet.</strong></div>'
-        };
-
-        outputs.push({ path: `tech/${meta.route}/index.html`, content: replaceArticleTemplateTokens(template, parentValues) });
-
-        for (const [subcategory, child] of Object.entries(meta.subcategories)) {
-            const childArticles = categoryArticles.filter(article => article.subcategory === subcategory);
-            const childUrl = categoryPageUrl(config.siteUrl, category, subcategory);
-            const childNav = [
-                `<a href="../">Latest</a>`,
-                ...Object.entries(meta.subcategories).map(([key, item]) => `<a class="${key === subcategory ? 'active' : ''}" href="../${key}/">${escapeHtml(item.label)}</a>`)
-            ].join('');
-            const schema = safeJson({
-                '@context': 'https://schema.org',
-                '@type': 'CollectionPage',
-                '@id': `${childUrl}#webpage`,
-                name: `${child.label} | ${meta.label} | Dyve Tech`,
-                headline: child.label,
-                description: child.description,
-                url: childUrl,
-                isPartOf: { '@type': 'CollectionPage', '@id': parentUrl, name: meta.title, url: parentUrl },
-                breadcrumb: {
-                    '@type': 'BreadcrumbList',
-                    itemListElement: [
-                        { '@type': 'ListItem', position: 1, name: 'Dyve', item: `${config.siteUrl}/` },
-                        { '@type': 'ListItem', position: 2, name: 'Dyve Tech', item: `${config.siteUrl}/tech/` },
-                        { '@type': 'ListItem', position: 3, name: meta.label, item: parentUrl },
-                        { '@type': 'ListItem', position: 4, name: child.label, item: childUrl }
-                    ]
-                },
-                mainEntity: {
-                    '@type': 'ItemList',
-                    numberOfItems: childArticles.length,
-                    itemListElement: childArticles.slice(0, 100).map((article, index) => ({
-                        '@type': 'ListItem', position: index + 1, name: article.title, url: articleUrl(config.siteUrl, article)
-                    }))
-                }
-            });
-
-            const childValues = {
-                PAGE_TITLE: escapeHtml(`${child.label} | ${meta.label} | Dyve Tech`),
-                PAGE_DESCRIPTION_ATTR: escapeAttr(child.description),
-                CANONICAL_URL: escapeAttr(childUrl),
-                OG_IMAGE: escapeAttr(childArticles[0]?.image || latestImage),
-                PAGE_SCHEMA: schema,
-                CATEGORY_LABEL: escapeHtml(meta.label),
-                PAGE_HEADING: escapeHtml(child.label),
-                PAGE_DESCRIPTION: escapeHtml(child.description),
-                SUBCATEGORY_CRUMB: ` <span> / </span>${escapeHtml(child.label)}`,
-                SUBCATEGORY_NAV: childNav,
-                LIST_HEADING: escapeHtml(`Latest ${child.label}`),
-                ARTICLE_COUNT: childArticles.length,
-                ARTICLE_LIST: childArticles.length
-                    ? childArticles.slice(0, STATIC_BUILD_CONFIG.maxArticlesPerIndex).map(a => buildCategoryArticleCard(a, category, subcategory)).join('')
-                    : '<div class="empty"><strong>No stories published in this subsection yet.</strong></div>'
-            };
-
-            outputs.push({ path: `tech/${meta.route}/${subcategory}/index.html`, content: replaceArticleTemplateTokens(template, childValues) });
-        }
-    }
-
-    return outputs;
+    document.getElementById('buildCategoryCount').textContent = categoryPageCount;
+    document.getElementById('buildSitemapCount').textContent = sitemapUrls.size + categoryPageCount;
+    document.getElementById('buildPageCount').textContent = 1 + normalized.length + categoryPageCount;
 }
 
 async function buildStaticSite(config, articles, options = {}) {
@@ -2391,27 +2603,16 @@ async function buildStaticSite(config, articles, options = {}) {
 
         const files = [];
 
-        if (STATIC_BUILD_CONFIG.generateCategoryPages) {
-            const categoryFiles = await buildCategoryPages(config, normalized);
-            files.push(...categoryFiles);
-            logBuild(`Generated ${categoryFiles.length} category and subsection index pages from the four-pillar taxonomy.`, 'ok');
-        }
-
-        if (STATIC_BUILD_CONFIG.updateHomepageOnPublish) {
-            const existingTechIndex = await fetchGitHubText(config, STATIC_BUILD_CONFIG.techIndexPath, { optional: true });
-            if (!existingTechIndex || !hasDyveTechTemplateMarkers(existingTechIndex)) {
-                throw new Error(`Homepage publishing is enabled but ${STATIC_BUILD_CONFIG.techIndexPath} is not a valid Dyve Tech template.`);
-            }
-            const sectionOutputs = buildAllSectionIndexes(config.siteUrl, normalized, { [STATIC_BUILD_CONFIG.techIndexPath]: existingTechIndex });
-            Object.entries(sectionOutputs).forEach(([path, content]) => files.push({ path, content }));
-        } else {
-            logBuild(`Homepage safety lock active: ${STATIC_BUILD_CONFIG.techIndexPath} remains untouched.`, 'ok');
-        }
+        logBuild('Homepage safety lock active: tech/index.html remains untouched.', 'ok');
+        logBuild('Standalone article template safety lock active: tech/articles.html remains untouched.', 'ok');
+        const categoryOutputs = buildAllCategoryPages(config.siteUrl, normalized);
+        categoryOutputs.forEach(output => files.push(output));
+        logBuild(`Generated ${categoryOutputs.length} Tech category/sub-category page(s).`, 'ok');
 
         if (STATIC_BUILD_CONFIG.generateSitemap) {
             files.push({
                 path: STATIC_BUILD_CONFIG.techSitemapPath,
-                content: buildSitemapXML(config.siteUrl, normalized)
+                content: buildSitemapXML(config.siteUrl, normalized, categoryOutputs)
             });
             logBuild('Generated tech/sitemap.xml from canonical article routes.', 'ok');
         }
@@ -2633,19 +2834,224 @@ async function mergeRedirectsWithExistingFile(config, redirects) {
     return merged.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
 }
 
-async function fetchTechDatabaseAtRef(config, ref) {
-    const path = STATIC_BUILD_CONFIG.articleDataPath;
+async function prepareLegacyRouteMigration(config, migration) {
+    const files = [];
+    const deletePaths = [];
+    const migratedArticles = [];
 
+    for (let index = 0; index < migration.articles.length; index++) {
+        const article = normalizeArticle(migration.articles[index]);
+
+        if (!article) {
+            migratedArticles.push(migration.articles[index]);
+            continue;
+        }
+
+        const oldUrl = Array.isArray(article.legacyUrls)
+            ? article.legacyUrls.find(url => /^article\//i.test(String(url || '')))
+            : null;
+
+        if (!oldUrl) {
+            migratedArticles.push(article);
+            continue;
+        }
+
+        const newSlug = String(article.url)
+            .replace(/^tech\//i, '')
+            .replace(/\.html$/i, '');
+
+        let articleBody = '';
+        let legacyHTML = null;
+
+        try {
+            legacyHTML = await fetchGitHubText(config, oldUrl, { optional: true });
+        } catch (error) {
+            logBuild(`Could not fetch legacy HTML ${oldUrl}: ${error.message}`, 'warn');
+        }
+
+        if (legacyHTML) {
+            articleBody = extractLegacyArticleBody(legacyHTML, article.desc);
+            logBuild(`Recovered article content from ${oldUrl}.`, 'ok');
+        } else {
+            articleBody = `<p>${escapeHtml(article.desc || 'Legacy article content could not be recovered from the repository.')}</p>`;
+            logBuild(`No legacy HTML found for ${oldUrl}; using the stored description as fallback content.`, 'warn');
+        }
+
+        const articleDocument = await generateTechArticleHTML(
+            config.siteUrl,
+            article.title,
+            article.desc,
+            article.image,
+            article.tag || 'News',
+            article.category || article.meta || 'trends',
+            newSlug,
+            article.date,
+            articleBody,
+            article.ogPrompt || '',
+            migration.articles,
+            {
+                seoTitle: article.seoTitle || article.title,
+                focusKeyword: article.focusKeyword || '',
+                keywords: article.keywords || [],
+                sourceUrl: article.sourceUrl || '',
+                modified: article.modified || article.date
+            },
+            config
+        );
+
+        files.push({
+            path: article.url,
+            content: articleDocument
+        });
+
+        const newDeltaPath = deltaPathFor(article.url);
+        let deltaContent = null;
+
+        if (article.delta) {
+            try {
+                deltaContent = await fetchGitHubText(config, article.delta, { optional: true });
+
+                if (deltaContent) {
+                    logBuild(`Migrating existing content delta ${article.delta} → ${newDeltaPath}.`, 'ok');
+                }
+            } catch (error) {
+                logBuild(`Could not fetch legacy delta ${article.delta}: ${error.message}`, 'warn');
+            }
+        }
+
+        if (!deltaContent) {
+            deltaContent = JSON.stringify(
+                createMigrationDelta(articleBody),
+                null,
+                2
+            );
+            logBuild(`Generated a new editor delta for ${article.url}.`, 'info');
+        }
+
+        files.push({
+            path: newDeltaPath,
+            content: deltaContent
+        });
+
+        if (article.delta && article.delta !== newDeltaPath) {
+            deletePaths.push(article.delta);
+        }
+
+        deletePaths.push(oldUrl);
+
+        migratedArticles.push({
+            ...article,
+            delta: newDeltaPath
+        });
+    }
+
+    return {
+        articles: migratedArticles,
+        files,
+        deletePaths
+    };
+}
+
+function setMigrationState(state, textValue) {
+    const badge = document.getElementById('migrationState');
+    const label = document.getElementById('migrationStateText');
+
+    if (!badge || !label) return;
+
+    badge.classList.remove('ready', 'busy', 'error');
+
+    if (state) badge.classList.add(state);
+
+    label.textContent = textValue;
+}
+
+function logMigration(message, type = 'info') {
+    const log = document.getElementById('migrationLog');
+
+    if (!log) return;
+
+    const row = document.createElement('div');
+    row.className = type;
+    row.textContent = `[migration] ${message}`;
+
+    log.appendChild(row);
+    log.scrollTop = log.scrollHeight;
+}
+
+function resetMigrationLog() {
+    const log = document.getElementById('migrationLog');
+
+    if (log) {
+        log.innerHTML = '';
+    }
+}
+
+function updateMigrationStats(sourceCount, techCount, hackaXCount, skippedCount) {
+    const values = {
+        migrationSourceCount: sourceCount,
+        migrationTechCount: techCount,
+        migrationHackaXCount: hackaXCount,
+        migrationSkippedCount: skippedCount
+    };
+
+    Object.entries(values).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+
+        if (element) {
+            element.textContent = String(value);
+        }
+    });
+}
+
+function isDyveTechRecord(article) {
+    if (!article || typeof article !== 'object') return false;
+
+    const pair = taxonomyPairForArticle(article);
+    return Boolean(pair.category && CATEGORY_CONFIG[pair.category]);
+}
+
+function dedupeArticleRecords(records) {
+    const seen = new Set();
+    const result = [];
+
+    for (const raw of Array.isArray(records) ? records : []) {
+        if (!raw || typeof raw !== 'object') continue;
+
+        const url = String(raw.url || '').replace(/^\/+/, '').trim().toLowerCase();
+        const title = String(raw.title || '').trim().toLowerCase();
+
+        const key = url || title;
+
+        if (!key || seen.has(key)) continue;
+
+        seen.add(key);
+        result.push(raw);
+    }
+
+    return result;
+}
+
+async function fetchJsonArrayFile(config, path, options = {}) {
     const response = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(ref)}`,
+        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
         { headers: authHeaders(config) }
     );
 
-    if (response.status === 404) return [];
+    if (response.status === 404) {
+        if (options.optional) {
+            return {
+                exists: false,
+                sha: '',
+                articles: []
+            };
+        }
+
+        throw new Error(`GitHub file not found: ${path}`);
+    }
 
     if (!response.ok) {
         const error = await response.json().catch(() => ({}));
-        throw new Error(`Unable to read historical tech-articles.json at ${ref}: ${error.message || response.status}`);
+        throw new Error(`Unable to read ${path}: ${error.message || response.status}`);
     }
 
     const meta = await response.json();
@@ -2660,38 +3066,206 @@ async function fetchTechDatabaseAtRef(config, ref) {
         if (rawRes.ok) content = await rawRes.text();
     }
 
-    if (!content.trim()) return [];
+    let articles;
 
-    const parsed = JSON.parse(content);
-
-    if (!Array.isArray(parsed)) {
-        throw new Error(`Historical tech-articles.json at ${ref} is not a JSON array.`);
+    try {
+        articles = content.trim() ? JSON.parse(content) : [];
+    } catch (error) {
+        throw new Error(`${path} is not valid JSON. Expected a JSON array.`);
     }
 
-    return parsed;
+    if (!Array.isArray(articles)) {
+        throw new Error(`${path} is not a JSON array.`);
+    }
+
+    return {
+        exists: true,
+        sha: meta.sha || '',
+        articles
+    };
 }
 
-async function fetchTechDatabaseHistory(config) {
-    const path = STATIC_BUILD_CONFIG.articleDataPath;
-
+async function fetchPublishedTechArticlePaths(config) {
     const response = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/commits?path=${encodeURIComponent(path)}&sha=${encodeURIComponent(config.branch)}&per_page=12`,
+        `https://api.github.com/repos/${config.repo}/contents/tech?ref=${encodeURIComponent(config.branch)}`,
         { headers: authHeaders(config) }
     );
 
+    if (response.status === 404) return [];
+
     if (!response.ok) {
         const error = await response.json().catch(() => ({}));
-        throw new Error(`Unable to inspect Tech database history: ${error.message || response.status}`);
+        throw new Error(`Unable to inspect published Tech pages: ${error.message || response.status}`);
     }
 
-    const commits = await response.json();
+    const entries = await response.json();
 
-    return Array.isArray(commits)
-        ? commits.filter(commit => commit && commit.sha)
-        : [];
+    if (!Array.isArray(entries)) {
+        throw new Error('GitHub returned an unexpected response while inspecting the tech/ directory.');
+    }
+
+    return entries
+        .filter(entry => {
+            const name = String(entry && entry.name || '').toLowerCase();
+            const type = String(entry && entry.type || '').toLowerCase();
+            return type === 'file' && name.endsWith('.html') && name !== 'index.html' && name !== 'articles.html';
+        })
+        .map(entry => String(entry.path || '').replace(/^\/+/, '').trim())
+        .filter(Boolean);
 }
 
-async function inspectTechDatabase() {
+function extractArticleMetadataFromPublishedHTML(html, path) {
+    if (!html || typeof html !== 'string') return null;
+
+    try {
+        const parser = new DOMParser();
+        const document = parser.parseFromString(html, 'text/html');
+        const getMeta = (...selectors) => {
+            for (const selector of selectors) {
+                const element = document.querySelector(selector);
+                if (element) {
+                    const value = String(element.getAttribute('content') || '').trim();
+                    if (value) return value;
+                }
+            }
+            return '';
+        };
+
+        const canonical = getMeta('meta[property="og:url"]') ||
+            String(document.querySelector('link[rel="canonical"]')?.getAttribute('href') || '').trim();
+
+        let canonicalPath = '';
+        if (canonical) {
+            try {
+                canonicalPath = new URL(canonical, 'https://dyve.online').pathname.replace(/^\/+/, '');
+            } catch (e) {
+                canonicalPath = canonical.replace(/^\/+/, '').split(/[?#]/)[0];
+            }
+        }
+
+        if (!canonicalPath) canonicalPath = path.replace(/^\/+/, '');
+        if (!/^tech\/[^/]+\.html$/i.test(canonicalPath)) return null;
+
+        let jsonLd = [];
+        document.querySelectorAll('script[type="application/ld+json"]').forEach(script => {
+            try {
+                const parsed = JSON.parse(script.textContent || '');
+                if (Array.isArray(parsed)) jsonLd.push(...parsed);
+                else if (parsed && typeof parsed === 'object' && Array.isArray(parsed['@graph'])) jsonLd.push(...parsed['@graph']);
+                else if (parsed && typeof parsed === 'object') jsonLd.push(parsed);
+            } catch (e) {}
+        });
+
+        const articleLd = jsonLd.find(item => {
+            const type = item && item['@type'];
+            return type === 'NewsArticle' || type === 'Article' || type === 'TechArticle';
+        }) || {};
+
+        const title = String(
+            articleLd.headline ||
+            getMeta('meta[property="og:title"]') ||
+            document.querySelector('h1')?.textContent ||
+            document.title ||
+            ''
+        ).trim();
+
+        const desc = String(
+            articleLd.description ||
+            getMeta('meta[name="description"]', 'meta[property="og:description"]') ||
+            ''
+        ).trim();
+
+        const imageValue = articleLd.image && typeof articleLd.image === 'object'
+            ? (articleLd.image.url || articleLd.image.contentUrl || '')
+            : (Array.isArray(articleLd.image) ? articleLd.image[0] : articleLd.image || '');
+
+        const image = String(
+            imageValue ||
+            getMeta('meta[property="og:image"]') ||
+            document.querySelector('article img')?.getAttribute('src') ||
+            ''
+        ).trim();
+
+        const imageAlt = String(
+            getMeta('meta[property="og:image:alt"]') ||
+            document.querySelector('article img')?.getAttribute('alt') ||
+            ''
+        ).trim();
+
+        const authorValue = articleLd.author && typeof articleLd.author === 'object'
+            ? articleLd.author.name
+            : (Array.isArray(articleLd.author) ? articleLd.author[0]?.name : articleLd.author || '');
+
+        const author = String(
+            authorValue ||
+            getMeta('meta[name="author"]') ||
+            STATIC_BUILD_CONFIG.publisherName
+        ).trim();
+
+        const published = String(
+            articleLd.datePublished ||
+            getMeta('meta[property="article:published_time"]') ||
+            ''
+        ).trim();
+
+        const modified = String(
+            articleLd.dateModified ||
+            getMeta('meta[property="article:modified_time"]') ||
+            published ||
+            ''
+        ).trim();
+
+        const categoryRaw = String(
+            articleLd.articleSection ||
+            getMeta('meta[property="article:section"]', 'meta[name="category"]') ||
+            ''
+        ).trim().toLowerCase();
+
+        const pair = taxonomyPairForArticle({ category: categoryRaw });
+        const category = pair.category;
+        const subcategory = pair.subcategory;
+
+        const slug = canonicalPath
+            .replace(/^tech\//i, '')
+            .replace(/\.html$/i, '');
+
+        if (!title || !slug) return null;
+
+        const date = /^\d{4}-\d{2}-\d{2}/.test(published)
+            ? published.slice(0, 10)
+            : new Date().toISOString().slice(0, 10);
+
+        return {
+            title,
+            desc,
+            image: image || STATIC_BUILD_CONFIG.defaultImage,
+            imageAlt,
+            url: canonicalPath,
+            tag: getMeta('meta[property="article:section"]') || 'News',
+            meta: category || 'tech',
+            category: category || 'tech',
+            subcategory: subcategory || '',
+            contentType: 'News Report',
+            date,
+            page: 'tech',
+            delta: deltaPathFor(canonicalPath),
+            readTime: 4,
+            author: author || STATIC_BUILD_CONFIG.publisherName,
+            modified: modified || published || date,
+            createdAt: published || date,
+            seoTitle: String(document.title || title).trim(),
+            focusKeyword: '',
+            keywords: [],
+            sourceUrl: '',
+            ogPrompt: ''
+        };
+    } catch (error) {
+        console.warn(`Unable to extract metadata from ${path}:`, error);
+        return null;
+    }
+}
+
+async function inspectDataMigration() {
     const config = getGitHubConfig();
 
     if (!config.token || !config.repo) {
@@ -2700,7 +3274,7 @@ async function inspectTechDatabase() {
     }
 
     if (!navigator.onLine) {
-        showToast('You appear offline — Tech database inspection cannot run.');
+        showToast('You appear offline — recovery inspection cannot run.');
         return;
     }
 
@@ -2708,30 +3282,53 @@ async function inspectTechDatabase() {
     setMigrationState('busy', 'Inspecting');
 
     try {
-        const current = await fetchArticlesJson(config);
-        const result = normalizeTechDatabaseRecords(current.articles);
-
-        updateMigrationStats(
-            current.articles.length,
-            result.articles.length,
-            0,
-            Math.max(0, current.articles.length - result.articles.length)
+        const backup = await fetchJsonArrayFile(
+            config,
+            'assets/deltas/tech-articles.json',
+            { optional: true }
         );
 
-        logMigration(`Read ${current.articles.length} record(s) from assets/tech-articles.json.`, 'ok');
-        logMigration(`Normalization result: ${result.articles.length} canonical Tech record(s).`, 'ok');
-        logMigration(`Routes requiring redirects: ${result.redirects.length}.`, 'info');
+        const current = await fetchJsonArrayFile(
+            config,
+            STATIC_BUILD_CONFIG.articleDataPath,
+            { optional: true }
+        );
+
+        const publishedPaths = await fetchPublishedTechArticlePaths(config);
+        const backupTech = backup.articles.filter(isDyveTechRecord);
+        const currentTech = current.articles.filter(isDyveTechRecord);
+
+        updateMigrationStats(
+            backupTech.length,
+            currentTech.length,
+            publishedPaths.length,
+            Math.max(0, backupTech.length - currentTech.length)
+        );
+
+        logMigration(
+            backup.exists
+                ? `Found ${backupTech.length} Tech record(s) in assets/deltas/tech-articles.json.`
+                : 'No backup database found at assets/deltas/tech-articles.json.',
+            backup.exists ? 'ok' : 'warn'
+        );
+        logMigration(
+            current.exists
+                ? `Found ${currentTech.length} Tech record(s) in assets/tech-articles.json.`
+                : 'assets/tech-articles.json is currently missing.',
+            current.exists ? 'ok' : 'warn'
+        );
+        logMigration(`Found ${publishedPaths.length} published Tech article page(s) under tech/.`, 'ok');
         logMigration('Inspection only. No files were changed.', 'info');
 
         setMigrationState('ready', 'Ready');
     } catch (error) {
         setMigrationState('error', 'Inspection failed');
-        logMigration(error.message || 'Unable to inspect the Tech database.', 'error');
-        showToast(`Tech database inspection failed: ${error.message}`, 7000);
+        logMigration(error.message || 'Unable to inspect the Tech recovery sources.', 'error');
+        showToast(`Recovery inspection failed: ${error.message}`, 7000);
     }
 }
 
-async function restoreTechDatabase() {
+async function runOneTimeDataMigration() {
     const config = getGitHubConfig();
 
     if (!config.token || !config.repo) {
@@ -2740,7 +3337,7 @@ async function restoreTechDatabase() {
     }
 
     if (!navigator.onLine) {
-        showToast('You appear offline — Tech database restore cannot run.');
+        showToast('You appear offline — Tech database recovery cannot run.');
         return;
     }
 
@@ -2750,166 +3347,383 @@ async function restoreTechDatabase() {
     }
 
     const confirmed = window.confirm(
-        'Restore and normalize the Dyve Tech database?\\n\\n' +
-        'This operation uses ONLY:\\n' +
-        '• assets/tech-articles.json\\n' +
-        '• previous Git versions of assets/tech-articles.json, when available\\n\\n' +
-        'It will:\\n' +
-        '• recover missing Tech records from Tech database history\\n' +
-        '• normalize categories and subcategories\\n' +
-        '• normalize article routes to tech/<slug>.html\\n' +
-        '• remove duplicate Tech records\\n' +
-        '• preserve existing article data and legacy URLs\\n' +
-        '• write only assets/tech-articles.json and required Tech redirects\\n\\n' +
-        'It will NOT read, write, merge, or delete any other article database.\\n\\n' +
+        'Recover the Dyve Tech database now?\n\n' +
+        'This will:\n' +
+        '• read assets/deltas/tech-articles.json as the legacy Tech database\n' +
+        '• read the current assets/tech-articles.json when present\n' +
+        '• inspect published tech/*.html article pages\n' +
+        '• merge and deduplicate all valid Tech records\n' +
+        '• write the complete database to assets/tech-articles.json\n' +
+        '• preserve published article HTML and per-article editor deltas\n' +
+        '• remove only assets/deltas/tech-articles.json after a successful recovery\n\n' +
+        'assets/articles.json is NOT read, written, moved, or used.\n\n' +
         'No changes will be published if validation fails.'
     );
 
     if (!confirmed) {
         resetMigrationLog();
-        logMigration('Restore cancelled. No files changed.', 'info');
+        logMigration('Recovery cancelled. No files changed.', 'info');
         setMigrationState('ready', 'Cancelled');
         return;
     }
 
-    setBuildStatus('busy', 'Restoring Tech database');
-    setMigrationState('busy', 'Restoring');
+    setBuildStatus('busy', 'Recovering Tech database');
+    setMigrationState('busy', 'Recovering');
     resetMigrationLog();
 
     try {
-        const current = await fetchArticlesJson(config);
-        const currentRecords = Array.isArray(current.articles) ? current.articles : [];
+        const taxonomyResult = await fetchTechTaxonomy(config, { optional: true });
+        TECH_TAXONOMY = taxonomyResult.taxonomy;
+        rebuildTaxonomyIndexes();
+        renderTaxonomyControls();
+        const backup = await fetchJsonArrayFile(
+            config,
+            'assets/deltas/tech-articles.json',
+            { optional: true }
+        );
 
-        logMigration(`Current Tech database: ${currentRecords.length} record(s).`, 'info');
+        const current = await fetchJsonArrayFile(
+            config,
+            STATIC_BUILD_CONFIG.articleDataPath,
+            { optional: true }
+        );
 
-        let recoveryRecords = [];
-        let historyCommits = [];
+        const publishedPaths = await fetchPublishedTechArticlePaths(config);
 
-        try {
-            historyCommits = await fetchTechDatabaseHistory(config);
-        } catch (historyError) {
-            logMigration(`Tech history could not be inspected: ${historyError.message}`, 'warn');
-        }
-
-        for (let index = 1; index < historyCommits.length; index++) {
-            const commit = historyCommits[index];
-
-            try {
-                const snapshot = await fetchTechDatabaseAtRef(config, commit.sha);
-
-                if (Array.isArray(snapshot) && snapshot.length > currentRecords.length) {
-                    recoveryRecords = snapshot;
-
-                    logMigration(
-                        `Found a previous Tech database snapshot with ${snapshot.length} record(s) at ${commit.sha.slice(0, 7)}.`,
-                        'ok'
-                    );
-
-                    break;
-                }
-            } catch (historyError) {
-                logMigration(
-                    `Skipped Tech history snapshot ${commit.sha.slice(0, 7)}: ${historyError.message}`,
-                    'warn'
-                );
-            }
-        }
-
-        const combined = dedupeTechRecordsForRecovery([
-            ...currentRecords,
-            ...recoveryRecords
-        ]);
-
-        const normalizedResult = normalizeTechDatabaseRecords(combined);
-        const normalized = validateArticleSet(normalizedResult.articles);
-
-        if (normalized.length < currentRecords.length) {
+        if (!backup.exists && !current.exists && !publishedPaths.length) {
             throw new Error(
-                `Restore safety check failed: normalization would reduce the Tech database from ${currentRecords.length} to ${normalized.length} records. Nothing was published.`
+                'No Tech recovery source was found. Expected assets/deltas/tech-articles.json, assets/tech-articles.json, or published tech/*.html files.'
             );
         }
 
-        const recoveredCount = Math.max(0, normalized.length - currentRecords.length);
-        const duplicateCount = Math.max(0, combined.length - normalized.length);
+        const backupTech = backup.articles.filter(isDyveTechRecord);
+        const currentTech = current.articles.filter(isDyveTechRecord);
+        const publishedArticles = [];
+        const publishedUrls = new Set();
+
+        for (const path of publishedPaths) {
+            try {
+                const html = await fetchGitHubText(config, path, { optional: true });
+                const article = extractArticleMetadataFromPublishedHTML(html, path);
+
+                if (!article) {
+                    logMigration(`Could not recover metadata from ${path}; existing JSON records will remain authoritative.`, 'warn');
+                    continue;
+                }
+
+                publishedArticles.push(article);
+                publishedUrls.add(article.url);
+                logMigration(`Recovered published page ${path}.`, 'ok');
+            } catch (error) {
+                logMigration(`Could not inspect ${path}: ${error.message}`, 'warn');
+            }
+        }
+
+        /*
+         * Precedence is deliberate:
+         * 1. Current Tech DB — preserves a newer edit if it already exists.
+         * 2. Backup Tech DB — restores the old complete database.
+         * 3. Published HTML — fills database gaps when a record is missing.
+         */
+        const mergedTech = dedupeArticleRecords([
+            ...currentTech,
+            ...backupTech,
+            ...publishedArticles
+        ]).map(article => {
+            const normalized = normalizeArticle({
+                ...article,
+                page: 'tech',
+                category: taxonomyPairForArticle(article).category || 'tech',
+                subcategory: taxonomyPairForArticle(article).subcategory || '',
+                meta: taxonomyPairForArticle(article).category || 'tech',
+                contentType: article.contentType || article.tag || 'News Report',
+                tag: article.contentType || article.tag || 'News Report',
+                delta: article.delta || deltaPathFor(article.url)
+            });
+
+            return normalized || article;
+        });
+
+        const invalidTech = mergedTech.filter(article => !isDyveTechRecord(article));
+
+        if (invalidTech.length) {
+            throw new Error(
+                `Recovery validation failed: ${invalidTech.length} record(s) do not belong to a valid Dyve Tech category.`
+            );
+        }
+
+        const duplicateTechUrls = new Set();
+        const duplicateTechErrors = [];
+
+        mergedTech.forEach((article, index) => {
+            const url = String(article.url || '').replace(/^\/+/, '').trim();
+
+            if (!/^tech\/[^/]+\.html$/i.test(url)) {
+                duplicateTechErrors.push(`Tech record #${index + 1} has an invalid canonical URL: ${url || '(empty)'}`);
+                return;
+            }
+
+            if (duplicateTechUrls.has(url)) {
+                duplicateTechErrors.push(`Duplicate Tech URL: ${url}`);
+                return;
+            }
+
+            duplicateTechUrls.add(url);
+        });
+
+        if (duplicateTechErrors.length) {
+            throw new Error(
+                `Recovery validation failed:\n\n${duplicateTechErrors.join('\n')}`
+            );
+        }
+
+        const normalized = validateArticleSet(sortArticles(mergedTech));
 
         updateMigrationStats(
-            currentRecords.length,
-            normalized.length,
-            recoveredCount,
-            duplicateCount
+            backupTech.length,
+            currentTech.length,
+            publishedPaths.length,
+            Math.max(0, normalized.length - currentTech.length)
         );
 
-        logMigration(`Recovered ${recoveredCount} missing Tech record(s).`, recoveredCount ? 'ok' : 'info');
-        logMigration(`Removed/merged ${duplicateCount} duplicate record(s).`, duplicateCount ? 'ok' : 'info');
-        logMigration(`Final Tech database: ${normalized.length} canonical record(s).`, 'ok');
-        logMigration(`Tech redirects prepared: ${normalizedResult.redirects.length}.`, 'info');
+        logMigration(`Backup Tech records: ${backupTech.length}.`, 'ok');
+        logMigration(`Current Tech records: ${currentTech.length}.`, 'ok');
+        logMigration(`Published Tech pages inspected: ${publishedPaths.length}.`, 'ok');
+        logMigration(`Recovered Tech records: ${normalized.length}.`, 'ok');
+        logMigration(`Final Tech database: ${normalized.length} record(s).`, 'ok');
 
         const files = [
             {
                 path: STATIC_BUILD_CONFIG.articleDataPath,
                 content: JSON.stringify(normalized, null, 2)
+            },
+            {
+                path: STATIC_BUILD_CONFIG.categoryDataPath,
+                content: JSON.stringify(TECH_TAXONOMY, null, 2)
             }
         ];
 
-        if (normalizedResult.redirects.length) {
-            const existingRedirects = await mergeRedirectsWithExistingFile(
-                config,
-                normalizedResult.redirects
-            );
+        const categoryOutputs = buildAllCategoryPages(config.siteUrl, normalized);
+        categoryOutputs.forEach(output => files.push(output));
+        files.push({
+            path: STATIC_BUILD_CONFIG.techSitemapPath,
+            content: buildSitemapXML(config.siteUrl, normalized, categoryOutputs)
+        });
 
+        if (backup.exists) {
             files.push({
-                path: '_redirects',
-                content: existingRedirects
+                path: 'assets/deltas/tech-articles.json',
+                delete: true
             });
         }
 
-        logMigration('Tech-only ownership boundary verified.', 'ok');
-        logMigration('No other article database will be read or written.', 'ok');
-        logMigration('Publishing normalized Tech database atomically...', 'info');
+        logMigration(`Generated ${categoryOutputs.length} Tech category/sub-category page(s).`, 'ok');
+        logMigration('Safety validation passed.', 'ok');
+        logMigration('Prepared assets/tech-articles.json as the single Tech metadata database.', 'info');
+        logMigration('Prepared assets/tech-categories.json as the Tech taxonomy database.', 'info');
+        logMigration('Published article HTML files will not be modified.', 'info');
+        logMigration('Per-article editor delta files will not be modified.', 'info');
+        logMigration('assets/articles.json is completely outside this workflow.', 'info');
+        logMigration('Publishing recovery atomically...', 'info');
 
         const commit = await githubCommitFiles(
             config,
             files,
-            'chore: restore and normalize Dyve Tech database'
+            'chore: restore Dyve Tech article database'
         );
 
-        setBuildStatus('ready', 'Tech database restored');
+        setBuildStatus('ready', 'Tech database recovered');
         setMigrationState('ready', 'Complete');
 
-        logMigration(`Tech database restored atomically: ${commit.sha.slice(0, 7)}.`, 'ok');
-        logMigration(`assets/tech-articles.json now contains ${normalized.length} canonical record(s).`, 'ok');
-
-        showToast(`Tech database restored: ${normalized.length} article records.`);
-
-        if (typeof loadPublishedArticles === 'function') {
-            await loadPublishedArticles();
+        logMigration(`Atomic recovery published: ${commit.sha.slice(0, 7)}.`, 'ok');
+        logMigration('assets/tech-articles.json is now the authoritative Tech database.', 'ok');
+        if (backup.exists) {
+            logMigration('Removed assets/deltas/tech-articles.json after successful recovery.', 'ok');
         }
+        logMigration('No assets/articles.json operation was performed.', 'ok');
+
+        showToast(`Tech database recovered: ${normalized.length} article record(s).`);
     } catch (error) {
-        setBuildStatus('error', 'Tech restore failed');
-        setMigrationState('error', 'Restore failed');
-        logMigration(error.message || 'Tech database restore failed.', 'error');
-        showToast(`Tech database restore failed: ${error.message}`, 8000);
+        setBuildStatus('error', 'Tech recovery failed');
+        setMigrationState('error', 'Failed');
+        logMigration(error.message || 'Tech database recovery failed.', 'error');
+        logMigration('Nothing was published after this validation failure.', 'error');
+        showToast(`Tech database recovery failed: ${error.message}`, 9000);
     }
 }
 
-function dedupeTechRecordsForRecovery(records) {
-    const seen = new Set();
-    const result = [];
+async function rebuildStaticIndex() {
+    const config = getGitHubConfig();
 
-    for (const raw of Array.isArray(records) ? records : []) {
-        if (!raw || typeof raw !== 'object') continue;
-
-        const title = String(raw.title || raw.headline || raw.name || '').trim().toLowerCase();
-        const url = String(raw.url || '').replace(/^\/+/, '').trim().toLowerCase();
-        const key = url || title;
-
-        if (!key || seen.has(key)) continue;
-
-        seen.add(key);
-        result.push(raw);
+    if (!config.token || !config.repo) {
+        showToast('GitHub is not configured. Open Settings first.');
+        return;
     }
 
-    return result;
+    if (!navigator.onLine) {
+        showToast('You appear offline — static build cannot run.');
+        return;
+    }
+
+    try {
+        const { articles } = await fetchArticlesJson(config);
+        const migration = migrateLegacyRoutes(articles);
+
+        if (migration.redirects.length) {
+            logBuild(`Detected ${migration.redirects.length} legacy routes. They will be migrated automatically during this rebuild.`, 'warn');
+        }
+
+        await buildStaticSite(config, migration.articles, {
+            migrated: migration,
+            extraFiles: [{
+                path: 'assets/tech-articles.json',
+                content: JSON.stringify(migration.articles, null, 2)
+            }, {
+                path: STATIC_BUILD_CONFIG.categoryDataPath,
+                content: JSON.stringify(TECH_TAXONOMY, null, 2)
+            }],
+            commitMessage: migration.redirects.length
+                ? 'build: migrate routes and rebuild Dyve static publishing system'
+                : 'build: rebuild Dyve static publishing system'
+        });
+
+        showToast(
+            migration.redirects.length
+                ? `Static rebuild complete. Migrated ${migration.redirects.length} legacy route(s).`
+                : 'Static publishing data rebuilt successfully. The homepage template was preserved.'
+        );
+    } catch (error) {
+        console.error('Static build error:', error);
+        showToast(`Static build failed: ${error.message}`);
+    }
+}
+
+async function migrateLegacyRoutesAndPublish() {
+    const config = getGitHubConfig();
+
+    if (!config.token || !config.repo) {
+        showToast('GitHub is not configured. Open Settings first.');
+        return;
+    }
+
+    if (!navigator.onLine) {
+        showToast('You appear offline — migration cannot run.');
+        return;
+    }
+
+    if (buildInProgress) {
+        showToast('A static build is already running.');
+        return;
+    }
+
+    try {
+        const { articles } = await fetchArticlesJson(config);
+        const migration = migrateLegacyRoutes(articles);
+
+        resetBuildLog();
+
+        if (!migration.redirects.length) {
+            logBuild('No legacy Tech routes require migration.', 'ok');
+            showToast('No legacy routes found.');
+            setBuildStatus('ready', 'No migration required');
+            return;
+        }
+
+        const confirmed = window.confirm(
+            `Migrate ${migration.redirects.length} legacy route(s) to canonical /tech/ URLs?\n\n` +
+            `The CMS will:\n` +
+            `• generate canonical article pages\n` +
+            `• migrate editor deltas where available\n` +
+            `• preserve old URLs with 301 redirects\n` +
+            `• leave tech/index.html and tech/articles.html untouched\n` +
+            `• regenerate tech/sitemap.xml\n` +
+            `• publish everything as one atomic commit\n\n` +
+            `No changes will be published if validation fails.`
+        );
+
+        if (!confirmed) {
+            logBuild('Migration cancelled. No files changed.', 'info');
+            setBuildStatus('ready', 'Migration cancelled');
+            return;
+        }
+
+        migration.redirects.forEach(redirect => {
+            logBuild(`${redirect.from} → ${redirect.to}`, 'info');
+        });
+
+        const prepared = await prepareLegacyRouteMigration(config, migration);
+        const normalized = validateArticleSet(prepared.articles);
+
+        const existingRedirects = await mergeRedirectsWithExistingFile(
+            config,
+            migration.redirects
+        );
+
+        const files = [
+            ...prepared.files,
+            {
+                path: 'assets/tech-articles.json',
+                content: JSON.stringify(normalized, null, 2)
+            },
+            {
+                path: STATIC_BUILD_CONFIG.categoryDataPath,
+                content: JSON.stringify(TECH_TAXONOMY, null, 2)
+            },
+            {
+                path: '_redirects',
+                content: existingRedirects
+            }
+        ];
+
+        logBuild('Homepage safety lock active: tech/index.html remains untouched.', 'ok');
+        logBuild('Standalone article template safety lock active: tech/articles.html remains untouched.', 'ok');
+        const categoryOutputs = buildAllCategoryPages(config.siteUrl, normalized);
+        categoryOutputs.forEach(output => files.push(output));
+
+        if (STATIC_BUILD_CONFIG.generateSitemap) {
+            files.push({
+                path: STATIC_BUILD_CONFIG.techSitemapPath,
+                content: buildSitemapXML(config.siteUrl, normalized, categoryOutputs)
+            });
+        }
+
+
+        prepared.deletePaths.forEach(path => {
+            if (path && !files.some(file => file.path === path)) {
+                files.push({
+                    path,
+                    delete: true
+                });
+            }
+        });
+
+        updateBuildStats(normalized);
+
+        setBuildStatus('busy', 'Publishing canonical route migration');
+        logBuild(`Prepared ${prepared.files.length} migrated article/content file(s).`, 'ok');
+        logBuild(`Prepared ${prepared.deletePaths.length} legacy file deletion(s).`, 'info');
+        logBuild(`Prepared ${files.length} total Git tree changes.`, 'info');
+        logBuild('Validation passed. Publishing migration atomically...', 'info');
+
+        const commit = await githubCommitFiles(
+            config,
+            files,
+            'chore: migrate legacy Tech routes to canonical URLs'
+        );
+
+        setBuildStatus('ready', 'Migration complete');
+        logBuild(`Migration published atomically: ${commit.sha.slice(0, 7)}.`, 'ok');
+        logBuild('Legacy URLs now redirect permanently to their canonical /tech/ URLs.', 'ok');
+        logBuild('Tech index and sitemap were regenerated from the migrated tech-articles.json.', 'ok');
+
+        showToast(
+            `Successfully migrated ${migration.redirects.length} legacy route(s).`
+        );
+    } catch (error) {
+        setBuildStatus('error', 'Migration failed');
+        logBuild(error.message, 'error');
+        showToast(`Migration failed: ${error.message}`, 8000);
+    }
 }
 
 
@@ -2923,21 +3737,20 @@ async function previewBuild() {
 
     try {
         const { articles } = await fetchArticlesJson(config);
-        const normalizedResult = normalizeTechDatabaseRecords(articles);
-        const normalized = validateArticleSet(normalizedResult.articles);
+        const migration = migrateLegacyRoutes(articles);
+        const normalized = validateArticleSet(migration.articles);
 
         updateBuildStats(normalized);
         resetBuildLog();
 
         logBuild(`Preview: ${normalized.length} valid canonical article records.`, 'ok');
 
-        Object.keys(SECTION_CONFIG).forEach(page => {
-            const count = normalized.filter(a => a.page === page).length;
-            logBuild(`Would generate ${SECTION_CONFIG[page].indexFile}: ${count} articles where page="${page}".`, 'info');
-        });
+        logBuild('tech/index.html will remain untouched.', 'ok');
+        logBuild('tech/articles.html will remain untouched and is used only as the standalone article template.', 'ok');
+        logBuild(`Would generate ${buildCategoryPageCount} category/sub-category pages from the taxonomy.`, 'info');
 
-        if (normalizedResultAfterPublication.redirects.length) {
-            logBuild(`Would preserve ${normalizedResult.redirects.length} Tech legacy route redirect(s) in _redirects.`, 'warn');
+        if (migration.redirects.length) {
+            logBuild(`Would migrate ${migration.redirects.length} legacy route(s) and generate _redirects.`, 'warn');
         }
 
         logBuild('Would generate tech/sitemap.xml.', 'info');
@@ -3011,7 +3824,7 @@ function initQuill() {
         }
     });
 
-    quill.on('text-change', () => { autoSaveDraft(); updateLiveEditorMetrics(); if (lastPreflight) runPublicationPreflight(); });
+    quill.on('text-change', () => { autoSaveDraft(); updateLiveEditorMetrics(); scheduleTaxonomySuggestions(); if (lastPreflight) runPublicationPreflight(); });
 }
 
 function collectCurrentDraft() {
@@ -3019,7 +3832,7 @@ function collectCurrentDraft() {
         title: document.getElementById('titleInput').value.trim(),
         description: document.getElementById('descriptionInput').value.trim(),
         category: document.getElementById('categorySelect').value,
-        subcategory: document.getElementById('subcategorySelect')?.value || '',
+        subcategory: document.getElementById('subcategorySelect').value,
         contentType: document.getElementById('contentTypeSelect').value,
         imageUrl: document.getElementById('imageUrlInput').value,
         imageAlt: document.getElementById('imageAltInput').value.trim(),
@@ -3062,9 +3875,8 @@ function loadCurrentDraft() {
 
         document.getElementById('titleInput').value = draft.title || '';
         document.getElementById('descriptionInput').value = draft.description || '';
-        document.getElementById('categorySelect').value = draft.category || '';
-        syncSubcategorySelect(draft.category || '', draft.subcategory || '');
-        document.getElementById('contentTypeSelect').value = draft.contentType || '';
+        renderTaxonomyControls(draft.category || '', draft.subcategory || '');
+        renderContentTypeOptions(normalizeContentType(draft.contentType || ''));
         document.getElementById('imageUrlInput').value = draft.imageUrl || '';
         document.getElementById('imageAltInput').value = draft.imageAlt || '';
         document.getElementById('ogImagePrompt').value = draft.ogImagePrompt || '';
@@ -3090,9 +3902,8 @@ function loadCurrentDraft() {
 function clearForm() {
     document.getElementById('titleInput').value = '';
     document.getElementById('descriptionInput').value = '';
-    document.getElementById('categorySelect').value = '';
-    syncSubcategorySelect('');
-    document.getElementById('contentTypeSelect').value = '';
+    renderTaxonomyControls('', '');
+    renderContentTypeOptions('');
     document.getElementById('imageUrlInput').value = '';
     document.getElementById('imageAltInput').value = '';
     document.getElementById('ogImagePrompt').value = '';
@@ -3138,8 +3949,8 @@ function loadAgentPayload() {
     document.getElementById('titleInput').value = payload.title || '';
     document.getElementById('descriptionInput').value = payload.desc || '';
 
-    if (payload.category) { document.getElementById('categorySelect').value = payload.category; syncSubcategorySelect(payload.category, payload.subcategory || ''); }
-    if (payload.contentType) document.getElementById('contentTypeSelect').value = payload.contentType;
+    if (payload.category || payload.subcategory) renderTaxonomyControls(payload.category || '', payload.subcategory || '');
+    if (payload.contentType) renderContentTypeOptions(payload.contentType);
 
     if (payload.image) {
         document.getElementById('imageUrlInput').value = payload.image;
@@ -3194,9 +4005,9 @@ async function loadEditData() {
         document.getElementById('keywordsInput').value = Array.isArray(edit.keywords) ? edit.keywords.join(', ') : (edit.keywords || '');
         document.getElementById('sourceUrlInput').value = edit.sourceUrl || '';
 
-        const catId = edit.meta || edit.category || '';
-        if (catId) { document.getElementById('categorySelect').value = catId; syncSubcategorySelect(catId, edit.subcategory || ''); }
-        if (edit.tag) document.getElementById('contentTypeSelect').value = edit.tag;
+        const pair = taxonomyPairForArticle(edit);
+        renderTaxonomyControls(pair.category || '', edit.subcategory || pair.subcategory || '');
+        renderContentTypeOptions(normalizeContentType(edit.contentType || edit.tag || ''));
 
         if (edit.image) {
             document.getElementById('featuredImagePreviewImg').src = edit.image;
@@ -3438,7 +4249,6 @@ function saveDraft() {
         title,
         description: document.getElementById('descriptionInput').value.trim(),
         category: document.getElementById('categorySelect').value,
-        subcategory: document.getElementById('subcategorySelect')?.value || '',
         contentType: document.getElementById('contentTypeSelect').value,
         imageUrl: document.getElementById('imageUrlInput').value,
         ogImagePrompt: document.getElementById('ogImagePrompt').value.trim(),
@@ -3490,7 +4300,7 @@ async function publishArticle() {
     const title = document.getElementById('titleInput').value.trim();
     const description = document.getElementById('descriptionInput').value.trim();
     const category = document.getElementById('categorySelect').value;
-    const subcategory = document.getElementById('subcategorySelect')?.value || '';
+    const subcategory = document.getElementById('subcategorySelect').value;
     const contentType = document.getElementById('contentTypeSelect').value;
     const imageUrl = document.getElementById('imageUrlInput').value.trim();
 
@@ -3503,11 +4313,15 @@ async function publishArticle() {
 
     if (!title) return showToast('Article Title is required.');
     if (!description) return showToast('Meta Description is required.');
-    if (!category) return showToast('Please select a primary category.');
-    if (!subcategory) return showToast('Please select a subcategory.');
+    if (!category) return showToast('Please select a category.');
+    if (!subcategory) return showToast('Please select a sub-category for precise classification.');
 
     if (!CATEGORY_CONFIG[String(category).trim().toLowerCase()]) {
         showToast('This category is not part of Dyve Tech. Choose a valid Tech category.');
+        return;
+    }
+    if (!taxonomySubcategory(category, subcategory)) {
+        showToast('The selected sub-category does not belong to that category.');
         return;
     }
 
@@ -3532,7 +4346,22 @@ async function publishArticle() {
         const finalImage = imageUrl || STATIC_BUILD_CONFIG.defaultImage;
 
         const { articles } = await fetchArticlesJson(config);
-        const normalizedResult = normalizeTechDatabaseRecords(articles);
+
+        if (!articles.length) {
+            const backupCheck = await fetchJsonArrayFile(
+                config,
+                'assets/deltas/tech-articles.json',
+                { optional: true }
+            );
+
+            if (backupCheck.exists && backupCheck.articles.length) {
+                throw new Error(
+                    'assets/tech-articles.json is empty while assets/deltas/tech-articles.json still contains Tech records. Publication is blocked to prevent data loss. Run "Recover Tech Database" first.'
+                );
+            }
+        }
+
+        const migration = migrateLegacyRoutes(articles);
 
         const articleWords = (articleHTML || '')
             .replace(/<[^>]+>/g, ' ')
@@ -3545,7 +4374,8 @@ async function publishArticle() {
             image: finalImage,
             imageAlt: generatedImageAlt,
             url: articleUrl,
-            tag: contentType || 'News',
+            tag: contentType || 'News Report',
+            contentType: contentType || 'News Report',
             meta: category,
             category,
             subcategory,
@@ -3563,38 +4393,30 @@ async function publishArticle() {
             ogPrompt
         });
 
-        const techArticles = Array.isArray(normalizedResult.articles)
-            ? [...normalizedResult.articles]
-            : [];
-
-        if (isUpdate && editingArticleIndex !== null && editingArticleIndex < techArticles.length) {
-            const previous = techArticles[editingArticleIndex];
-
-            techArticles[editingArticleIndex] = {
+        if (isUpdate && editingArticleIndex < migration.articles.length) {
+            const previous = migration.articles[editingArticleIndex];
+            migration.articles[editingArticleIndex] = {
                 ...articleObject,
                 legacyUrls: Array.from(new Set([
                     ...(previous && Array.isArray(previous.legacyUrls) ? previous.legacyUrls : []),
                     ...(previous && previous.url && previous.url !== articleUrl ? [previous.url] : [])
                 ])),
-                createdAt: previous && previous.createdAt
-                    ? previous.createdAt
-                    : (previous && previous.date ? previous.date : today)
+                createdAt: previous && previous.createdAt ? previous.createdAt : (previous && previous.date ? previous.date : today)
             };
         } else {
-            techArticles.unshift(articleObject);
+            migration.articles.unshift(articleObject);
         }
 
-        const normalizedResultAfterPublication = normalizeTechDatabaseRecords(techArticles);
-        const normalized = validateArticleSet(normalizedResultAfterPublication.articles);
+        const nextArticles = sortArticles(migration.articles);
+        const normalized = validateArticleSet(nextArticles);
 
         const articleHTMLDocument = await generateTechArticleHTML(
             config.siteUrl,
             title,
             description,
             finalImage,
-            contentType || 'News',
+            contentType || 'News Report',
             category,
-            subcategory,
             slug,
             today,
             articleHTML,
@@ -3606,7 +4428,8 @@ async function publishArticle() {
                 keywords: articleObject.keywords,
                 sourceUrl: articleObject.sourceUrl,
                 modified: articleObject.modified,
-                imageAlt: generatedImageAlt
+                imageAlt: generatedImageAlt,
+                subcategory: articleObject.subcategory
             },
             config
         );
@@ -3621,15 +4444,19 @@ async function publishArticle() {
                 content: JSON.stringify(quillDelta)
             },
             {
-                path: STATIC_BUILD_CONFIG.articleDataPath,
+                path: 'assets/tech-articles.json',
                 content: JSON.stringify(normalized, null, 2)
+            },
+            {
+                path: STATIC_BUILD_CONFIG.categoryDataPath,
+                content: JSON.stringify(TECH_TAXONOMY, null, 2)
             }
         ];
 
-        if (normalizedResultAfterPublication.redirects.length) {
+        if (migration.redirects.length) {
             const mergedRedirects = await mergeRedirectsWithExistingFile(
                 config,
-                normalizedResultAfterPublication.redirects
+                migration.redirects
             );
 
             files.push({
@@ -3642,11 +4469,15 @@ async function publishArticle() {
          * Never generate a new Tech homepage from the editor.
          * Read the production homepage and update only its publishing markers.
          */
-        logBuild(`Homepage safety lock active: ${STATIC_BUILD_CONFIG.techIndexPath} will NOT be modified by article publication.`, 'ok');
+        logBuild('Homepage safety lock active: tech/index.html will NOT be modified by article publication.', 'ok');
+
+        const categoryOutputs = buildAllCategoryPages(config.siteUrl, normalized);
+        categoryOutputs.forEach(output => files.push(output));
+        logBuild(`Generated ${categoryOutputs.length} Tech category/sub-category page(s).`, 'ok');
 
         files.push({
             path: STATIC_BUILD_CONFIG.techSitemapPath,
-            content: buildSitemapXML(config.siteUrl, normalized)
+            content: buildSitemapXML(config.siteUrl, normalized, categoryOutputs)
         });
 
         if (STATIC_BUILD_CONFIG.generateRss) {
@@ -3705,9 +4536,6 @@ const ARTICLE_TEMPLATE_REQUIRED_TOKENS = [
     'DATE_MODIFIED',
     'PUBLISHER_NAME',
     'CATEGORY_LABEL_ATTR',
-    'SUBCATEGORY_LABEL_ATTR',
-    'CATEGORY_URL',
-    'SUBCATEGORY_URL',
     'ARTICLE_SCHEMA',
     'RELATED_SCHEMA',
     'TAG',
@@ -3760,18 +4588,16 @@ async function loadArticleTemplate(config) {
     return templateHTML;
 }
 
-async function generateTechArticleHTML(siteUrl, title, desc, image, tag, category, subcategory, slug, date, articleHTML, ogPrompt = '', allArticles = [], seoMeta = {}, config = null) {
+async function generateTechArticleHTML(siteUrl, title, desc, image, tag, category, slug, date, articleHTML, ogPrompt = '', allArticles = [], seoMeta = {}, config = null) {
     if (!config) {
         throw new Error('GitHub configuration is required to render the standalone Tech article template.');
     }
 
     const templateHTML = await loadArticleTemplate(config);
     const categoryMeta = getCategoryMeta(category);
+    const subcategory = String(seoMeta.subcategory || '').trim().toLowerCase();
     const subcategoryMeta = getSubcategoryMeta(category, subcategory);
-    const categoryLabel = categoryMeta.label;
-    const subcategoryLabel = subcategoryMeta.label;
-    const categoryUrl = `${siteUrl}/tech/${categoryMeta.route}/`;
-    const subcategoryUrl = `${categoryUrl}${subcategory}/`;
+    const categoryLabel = getTaxonomyLabel(category, subcategory);
     const canonicalUrl = `${siteUrl}/tech/${slug}.html`;
 
     const effectiveSeoTitle = String(seoMeta.seoTitle || title).trim() || title;
@@ -3818,7 +4644,7 @@ async function generateTechArticleHTML(siteUrl, title, desc, image, tag, categor
 
     const schema = {
         '@context': 'https://schema.org',
-        '@type': tag.toLowerCase() === 'news' ? 'NewsArticle' : 'TechArticle',
+        '@type': ['news', 'news report', 'breaking news'].includes(tag.toLowerCase()) ? 'NewsArticle' : 'TechArticle',
         headline: title,
         description: desc,
         url: canonicalUrl,
@@ -3858,11 +4684,11 @@ async function generateTechArticleHTML(siteUrl, title, desc, image, tag, categor
             '@type': 'WebPage',
             '@id': canonicalUrl
         },
-        articleSection: `${categoryLabel} > ${subcategoryLabel}`,
-        isPartOf: { '@type': 'CollectionPage', '@id': categoryUrl, name: categoryMeta.title, url: categoryUrl },
+        articleSection: categoryLabel,
+        ...(subcategoryMeta ? { about: [{ '@type': 'Thing', name: subcategoryMeta.label }] } : {}),
         keywords: uniqueKeywords.join(', '),
         ...(effectiveFocusKeyword
-            ? { about: [{ '@type': 'Thing', name: effectiveFocusKeyword }] }
+            ? { mentions: [{ '@type': 'Thing', name: effectiveFocusKeyword }] }
             : {}),
         ...(effectiveSourceUrl ? { citation: [effectiveSourceUrl] } : {})
     };
@@ -3919,9 +4745,7 @@ async function generateTechArticleHTML(siteUrl, title, desc, image, tag, categor
         category,
         categoryLabel,
         subcategory,
-        subcategoryLabel,
-        categoryUrl,
-        subcategoryUrl,
+        subcategoryLabel: subcategoryMeta?.label || '',
         slug,
         url: canonicalUrl,
         date,
@@ -3967,9 +4791,6 @@ async function generateTechArticleHTML(siteUrl, title, desc, image, tag, categor
         DATE_MODIFIED: escapeAttr(modifiedDate),
         PUBLISHER_NAME: escapeHtml(STATIC_BUILD_CONFIG.publisherName),
         CATEGORY_LABEL_ATTR: escapeAttr(categoryLabel),
-        SUBCATEGORY_LABEL_ATTR: escapeAttr(subcategoryLabel),
-        CATEGORY_URL: escapeAttr(categoryUrl),
-        SUBCATEGORY_URL: escapeAttr(subcategoryUrl),
         ARTICLE_SCHEMA: safeJson(schema),
         RELATED_SCHEMA: safeJson(relatedSchema),
         TAG: escapeHtml(tag),
@@ -3980,7 +4801,6 @@ async function generateTechArticleHTML(siteUrl, title, desc, image, tag, categor
         ARTICLE_BODY: articleBody,
         TAG_ESCAPED: escapeHtml(tag),
         CATEGORY_LABEL: escapeHtml(categoryLabel),
-        SUBCATEGORY_LABEL: escapeHtml(subcategoryLabel),
         CURRENT_YEAR: new Date().getFullYear(),
         ARTICLE_RUNTIME_JSON: safeJson(articleRuntimeData),
         RELATED_ARTICLES_JSON: safeJson(relatedData)
@@ -4109,14 +4929,13 @@ function runPublicationPreflight(){
     else warn('Source attribution','No primary source URL supplied. Recommended for news, breach and research reporting.');
     const proposedSlug=generateSlug(m.title);if(!proposedSlug)fail('Canonical route','A valid canonical slug cannot be generated from this headline.');else pass('Canonical route',`Will publish at /tech/${proposedSlug}.html.`);
     const selectedCategory=String(document.getElementById('categorySelect').value||'').trim().toLowerCase();
+    const selectedSubcategory=String(document.getElementById('subcategorySelect').value||'').trim().toLowerCase();
     if(!selectedCategory)fail('Category','Select a publication category.');
     else if(!CATEGORY_CONFIG[selectedCategory])fail('Category','The selected category is not a valid Dyve Tech category.');
-    else pass('Category',`Publication category "${selectedCategory}" is valid for Dyve Tech.`);
-    const selectedSubcategory=String(document.getElementById('subcategorySelect')?.value||'').trim().toLowerCase();
-    if(!selectedSubcategory)fail('Subcategory','Select a subsection within the primary category.');
-    else if(!CATEGORY_TAXONOMY[selectedCategory]?.subcategories?.[selectedSubcategory])fail('Subcategory','The selected subcategory is not valid for the chosen primary category.');
-    else pass('Subcategory',`Publication subsection "${getSubcategoryMeta(selectedCategory,selectedSubcategory).label}" is valid.`);
-    if(!document.getElementById('contentTypeSelect').value)warn('Content type','Select News, Analysis, Guide, Tutorial, Review or Opinion.');
+    else if(!selectedSubcategory)fail('Sub-category','Select a precise sub-category.');
+    else if(!taxonomySubcategory(selectedCategory, selectedSubcategory))fail('Sub-category','The selected sub-category does not belong to the selected category.');
+    else pass('Taxonomy',`Publication taxonomy is ${getTaxonomyLabel(selectedCategory,selectedSubcategory)}.`);
+    if(!document.getElementById('contentTypeSelect').value)warn('Story format','Select a story format such as News Report, Explainer, Analysis or Tutorial.');
     if(!document.getElementById('imageUrlInput').value.trim())warn('Featured image','No custom featured image; the static builder will use its default image.');
     const score=Math.max(0,Math.min(100,Math.round(checks.reduce((t,i)=>t+(i.type==='pass'?1:i.type==='warn'?.45:0),0)/Math.max(1,checks.length)*100)));
     const result={score,blocked:checks.some(i=>i.type==='fail'),warnings:checks.some(i=>i.type==='warn'),checks,metrics:m};
@@ -4306,35 +5125,76 @@ async function checkGitHubConnection() {
     const statusText = document.getElementById('statusText');
     const refreshIcon = document.getElementById('refreshIcon');
 
-    refreshIcon.classList.add('animate-spin');
+    if (!statusDot || !statusText) return false;
+
+    if (refreshIcon) refreshIcon.classList.add('animate-spin');
     statusText.textContent = 'Checking...';
     statusDot.className = 'w-2 h-2 rounded-full bg-yellow-500';
 
     if (!config.token || !config.repo) {
         statusDot.className = 'w-2 h-2 rounded-full bg-red-500';
         statusText.textContent = 'Not Configured';
-        refreshIcon.classList.remove('animate-spin');
+        if (refreshIcon) refreshIcon.classList.remove('animate-spin');
         return false;
     }
 
+    const repoParts = String(config.repo).trim().replace(/^https?:\/\/github\.com\//i, '').replace(/\/+$/, '').split('/').filter(Boolean);
+
+    if (repoParts.length !== 2) {
+        statusDot.className = 'w-2 h-2 rounded-full bg-red-500';
+        statusText.textContent = 'Invalid Repo';
+        if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+        return false;
+    }
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
     try {
-        const response = await fetchWithRetry(
-            `https://api.github.com/repos/${config.repo}`,
-            { headers: authHeaders(config), signal: AbortSignal.timeout(10000) }
-        );
+        const owner = encodeURIComponent(repoParts[0]);
+        const repo = encodeURIComponent(repoParts[1]);
+        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+            method: 'GET',
+            headers: authHeaders(config),
+            cache: 'no-store',
+            signal: controller.signal
+        });
 
         if (response.ok) {
             statusDot.className = 'w-2 h-2 rounded-full bg-green-500';
             statusText.textContent = 'Connected';
-        } else {
-            statusDot.className = 'w-2 h-2 rounded-full bg-red-500';
-            statusText.textContent = 'Connection Failed';
+            return true;
         }
+
+        if (response.status === 401) {
+            statusDot.className = 'w-2 h-2 rounded-full bg-red-500';
+            statusText.textContent = 'Invalid Token';
+            return false;
+        }
+
+        if (response.status === 403) {
+            statusDot.className = 'w-2 h-2 rounded-full bg-red-500';
+            statusText.textContent = 'Access Denied';
+            return false;
+        }
+
+        if (response.status === 404) {
+            statusDot.className = 'w-2 h-2 rounded-full bg-red-500';
+            statusText.textContent = 'Repo Not Found';
+            return false;
+        }
+
+        statusDot.className = 'w-2 h-2 rounded-full bg-red-500';
+        statusText.textContent = `Error ${response.status}`;
+        return false;
     } catch (error) {
         statusDot.className = 'w-2 h-2 rounded-full bg-red-500';
-        statusText.textContent = 'Offline';
+        statusText.textContent = error && error.name === 'AbortError' ? 'Timeout' : 'Offline';
+        console.error('GitHub connection check failed:', error);
+        return false;
     } finally {
-        refreshIcon.classList.remove('animate-spin');
+        clearTimeout(timeoutId);
+        if (refreshIcon) refreshIcon.classList.remove('animate-spin');
     }
 }
 
@@ -4437,26 +5297,39 @@ function setupFab() {
 document.addEventListener('DOMContentLoaded', () => {
     initQuill();
     setupFab();
-    syncSubcategorySelect('');
 
     checkGitHubConnection();
     checkGroqConnection();
-
-    document.getElementById('categorySelect').addEventListener('change', e => {
-        syncSubcategorySelect(e.target.value, '');
-        autoSaveDraft();
-        if (lastPreflight) runPublicationPreflight();
-    });
-    document.getElementById('subcategorySelect')?.addEventListener('change', () => {
-        autoSaveDraft();
-        if (lastPreflight) runPublicationPreflight();
-    });
+    renderContentTypeOptions('');
+    renderTaxonomyControls('', '');
+    loadTaxonomyFromRepository(getGitHubConfig());
 
     document.getElementById('titleInput').addEventListener('input', e => {
         document.getElementById('slugPreview').textContent =
             generateSlug(e.target.value) || 'your-article-slug';
         autoSaveDraft();
+        scheduleTaxonomySuggestions();
     });
+
+    document.getElementById('categorySelect').addEventListener('change', () => {
+        renderTaxonomyControls(document.getElementById('categorySelect').value, '');
+        renderTaxonomySuggestions();
+        autoSaveDraft();
+        if (lastPreflight) runPublicationPreflight();
+    });
+    document.getElementById('subcategorySelect').addEventListener('change', () => { updateTaxonomySummary(); autoSaveDraft(); if (lastPreflight) runPublicationPreflight(); });
+    document.getElementById('contentTypeSelect').addEventListener('change', () => {
+        const item = CONTENT_TYPES.find(type => type.id === document.getElementById('contentTypeSelect').value);
+        const help = document.getElementById('contentTypeHelp');
+        if (help) help.textContent = item ? item.description : 'Story format is separate from taxonomy. For example: Tech → Artificial Intelligence + News Report.';
+        autoSaveDraft();
+        if (lastPreflight) runPublicationPreflight();
+    });
+    document.getElementById('suggestTaxonomyBtn').addEventListener('click', renderTaxonomySuggestions);
+    document.getElementById('aiTaxonomyBtn').addEventListener('click', runAiTaxonomyReview);
+    document.getElementById('manageTaxonomyBtn').addEventListener('click', openTaxonomyManager);
+    document.getElementById('addCategoryBtn').addEventListener('click', addCategory);
+    document.getElementById('saveTaxonomyBtn').addEventListener('click', saveTaxonomy);
 
     ['seoTitleInput','focusKeywordInput','keywordsInput','sourceUrlInput'].forEach(id=>{
         const el=document.getElementById(id);if(!el)return;
@@ -4480,6 +5353,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         autoSaveDraft();
+        scheduleTaxonomySuggestions();
     });
 
     document.getElementById('featuredImageInput').addEventListener('change', handleFeaturedImageUpload);
@@ -4489,9 +5363,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('refreshStatusBtn').addEventListener('click', checkGitHubConnection);
     document.getElementById('groqRefreshBtn').addEventListener('click', checkGroqConnection);
     document.getElementById('previewBuildBtn').addEventListener('click', previewBuild);
-    document.getElementById('restoreTechDbBtn').addEventListener('click', restoreTechDatabase);
-    document.getElementById('runDataMigrationBtn').addEventListener('click', restoreTechDatabase);
-    document.getElementById('migrationPreviewBtn').addEventListener('click', inspectTechDatabase);
+    document.getElementById('migrateRoutesBtn').addEventListener('click', migrateLegacyRoutesAndPublish);
+    document.getElementById('runDataMigrationBtn').addEventListener('click', runOneTimeDataMigration);
+    document.getElementById('migrationPreviewBtn').addEventListener('click', inspectDataMigration);
 
     document.getElementById('fabBuild').addEventListener('click', () => {
         closeFabDrawer();
