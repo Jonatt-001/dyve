@@ -401,24 +401,21 @@
                 <h3 class="text-sm font-bold text-[#f15e50] mb-4 uppercase tracking-wider">Tech Metadata</h3>
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-2">Article Category</label>
+                        <label class="block text-xs font-medium text-gray-400 mb-2">Primary Category</label>
                         <select id="categorySelect" class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f15e50] text-white appearance-none cursor-pointer">
-                            <option value="" disabled selected>Select Category</option>
-                            <option value="ai">Artificial Intelligence</option>
-                            <option value="software">Software</option>
-                            <option value="tools">Developer Tools</option>
-                            <option value="coding">Coding &amp; Programming</option>
-                            <option value="developers">Developers &amp; Engineering</option>
-                            <option value="hardware">Hardware &amp; Computing</option>
-                            <option value="mobile">Mobile Technology</option>
-                            <option value="gadgets">Gadgets &amp; Devices</option>
-                            <option value="cloud">Cloud &amp; Infrastructure</option>
-                            <option value="startups">Startups &amp; Industry</option>
-                            <option value="analysis">Deep Dive Analysis</option>
-                            <option value="trends">Tech Trends</option>
-                            <option value="tutorials">Tutorials &amp; Guides</option>
-                            <option value="reviews">Reviews</option>
+                            <option value="" disabled selected>Select Primary Category</option>
+                            <option value="technology">Technology</option>
+                            <option value="cyber-intelligence">Cyber Intelligence</option>
+                            <option value="cyber-safety">Cyber Safety</option>
+                            <option value="global-intelligence">Global Intelligence</option>
                         </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-2">Subcategory</label>
+                        <select id="subcategorySelect" disabled class="w-full px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f15e50] text-white appearance-none cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
+                            <option value="" selected>Select a primary category first</option>
+                        </select>
+                        <p id="subcategoryHint" class="mt-2 text-[10px] text-gray-500">Choose the editorial pillar first; available subsections will appear here.</p>
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-400 mb-2">Content Type</label>
@@ -563,6 +560,7 @@
    DYVE|TECH EDITOR
    Static publishing architecture:
    editor -> assets/tech-articles.json -> tech/articles.html -> article HTML
+   editor -> category-template.html -> category/subcategory indexes
    -> /tech/index.html -> /tech/sitemap.xml (root sitemap/robots remain site-level)
    ============================================================ */
 
@@ -767,7 +765,7 @@ async function prepareImageForCloudinary(file, contextLabel = 'image') {
 const STATIC_BUILD_CONFIG = {
     generateTechIndex: false,
     updateHomepageOnPublish: false,
-    generateCategoryPages: false,
+    generateCategoryPages: true,
     generateSitemap: true,
     generateRss: true,
     rssItemLimit: 50,
@@ -783,7 +781,8 @@ const STATIC_BUILD_CONFIG = {
     techRssPath: 'tech/rss.xml',
     cloudinaryFolder: 'dyve-tech',
     homepageTemplatePath: 'admin/tech-editor/tech-homepage-template.html',
-    articleTemplatePath: 'tech/articles.html'
+    articleTemplatePath: 'tech/articles.html',
+    categoryTemplatePath: 'tech/category-template.html'
 };
 
 const SECTION_CONFIG = {
@@ -796,741 +795,150 @@ const SECTION_CONFIG = {
     }
 };
 
-const CATEGORY_CONFIG = {
-    ai: {
-        label: 'Artificial Intelligence',
-        title: 'Artificial Intelligence News & Analysis',
-        description: 'AI news, models, agents, research, products, tools and emerging artificial intelligence developments from Dyve Tech.'
+const CATEGORY_TAXONOMY = {
+    technology: {
+        label: 'Technology',
+        title: 'Technology News & Intelligence',
+        description: 'Technology news, AI, software, devices, internet platforms, startups and emerging digital systems from Dyve Tech.',
+        route: 'technology',
+        subcategories: {
+            'tech-news': { label: 'Tech News', description: 'Major technology news, product launches and important developments.' },
+            'ai': { label: 'AI & Machine Learning', description: 'Artificial intelligence, machine learning, models, agents and AI research.' },
+            'software': { label: 'Software & Apps', description: 'Software products, applications, operating systems and digital tools.' },
+            'gadgets': { label: 'Gadgets & Devices', description: 'Smartphones, computers, wearables, consumer electronics and connected devices.' },
+            'internet': { label: 'Internet & Platforms', description: 'Internet platforms, social networks, cloud services and digital ecosystems.' },
+            'startups': { label: 'Startups & Innovation', description: 'Startups, technology companies, funding, products and emerging innovation.' }
+        }
     },
-    tools: {
-        label: 'Developer Tools',
-        title: 'Developer Tools & Software',
-        description: 'Developer tools, platforms, frameworks, APIs and software engineering products covered by Dyve Tech.'
+    'cyber-intelligence': {
+        label: 'Cyber Intelligence',
+        title: 'Cyber Intelligence & Threat Reporting',
+        description: 'Cyber attacks, data breaches, ransomware, malware, vulnerabilities, threat actors and cybercrime intelligence.',
+        route: 'cyber-intelligence',
+        subcategories: {
+            attacks: { label: 'Cyber Attacks', description: 'Reported cyber attacks, compromises and intrusion activity.' },
+            breaches: { label: 'Data Breaches', description: 'Data exposures, stolen databases, credential leaks and breach investigations.' },
+            ransomware: { label: 'Ransomware', description: 'Ransomware campaigns, extortion operations and ransomware groups.' },
+            'threat-actors': { label: 'Threat Actors', description: 'Hacking groups, cybercrime groups and advanced persistent threat activity.' },
+            vulnerabilities: { label: 'Vulnerabilities', description: 'Critical vulnerabilities, CVEs, zero-days and actively exploited flaws.' },
+            malware: { label: 'Malware', description: 'Malware families, infostealers, spyware, trojans, botnets and malicious campaigns.' },
+            cybercrime: { label: 'Cybercrime', description: 'Cybercrime operations, fraud infrastructure and underground activity.' }
+        }
     },
-    coding: {
-        label: 'Coding & Programming',
-        title: 'Coding & Programming',
-        description: 'Programming languages, development practices, software engineering and coding technology from Dyve Tech.'
+    'cyber-safety': {
+        label: 'Cyber Safety',
+        title: 'Cyber Safety & Digital Security',
+        description: 'Practical cybersecurity guidance covering privacy, accounts, scams, phishing, devices and safer digital habits.',
+        route: 'cyber-safety',
+        subcategories: {
+            'security-tips': { label: 'Security Tips', description: 'Practical steps for improving everyday digital security.' },
+            privacy: { label: 'Privacy', description: 'Privacy controls, tracking, data protection and safer online practices.' },
+            'account-security': { label: 'Account Security', description: 'Protecting email, social, cloud and other online accounts.' },
+            'scam-alerts': { label: 'Scam Alerts', description: 'Online scams, fraud patterns, impersonation and deceptive schemes.' },
+            phishing: { label: 'Phishing', description: 'Phishing techniques, suspicious messages, malicious links and credential theft.' },
+            'device-security': { label: 'Device Security', description: 'Security guidance for phones, computers, routers and connected devices.' },
+            'digital-safety': { label: 'Digital Safety', description: 'Broader personal and organizational digital safety guidance.' }
+        }
     },
-    software: {
-        label: 'Software',
-        title: 'Software News & Intelligence',
-        description: 'Software products, platforms, releases, applications and software industry developments from Dyve Tech.'
-    },
-    hardware: {
-        label: 'Hardware',
-        title: 'Hardware & Computing',
-        description: 'Computing hardware, processors, devices, infrastructure and hardware innovation from Dyve Tech.'
-    },
-    mobile: {
-        label: 'Mobile Technology',
-        title: 'Mobile Technology News',
-        description: 'Smartphones, mobile platforms, apps, operating systems and mobile technology developments from Dyve Tech.'
-    },
-    gadgets: {
-        label: 'Gadgets & Devices',
-        title: 'Gadgets & Devices',
-        description: 'Consumer devices, gadgets, wearables and connected technology covered by Dyve Tech.'
-    },
-    cloud: {
-        label: 'Cloud & Infrastructure',
-        title: 'Cloud & Digital Infrastructure',
-        description: 'Cloud platforms, infrastructure, developer services and digital systems shaping modern technology.'
-    },
-    developers: {
-        label: 'Developers',
-        title: 'Developer News & Engineering',
-        description: 'Developer platforms, APIs, frameworks, engineering workflows and software development intelligence from Dyve Tech.'
-    },
-    analysis: {
-        label: 'Deep Dive Analysis',
-        title: 'Technology Analysis & Deep Dives',
-        description: 'Long-form technology analysis, explainers and strategic deep dives from Dyve Tech.'
-    },
-    trends: {
-        label: 'Tech Trends',
-        title: 'Technology Trends & Emerging Tech',
-        description: 'Emerging technology trends, market shifts and important developments tracked by Dyve Tech.'
-    },
-    tutorials: {
-        label: 'Tutorials & Guides',
-        title: 'Technology Tutorials & Guides',
-        description: 'Practical technology tutorials, technical guides and explainers from Dyve Tech.'
-    },
-    startups: {
-        label: 'Startups & Industry',
-        title: 'Technology Startups & Industry',
-        description: 'Technology companies, startups, product launches, business moves and industry developments from Dyve Tech.'
-    },
-    reviews: {
-        label: 'Reviews',
-        title: 'Technology Reviews',
-        description: 'Independent technology product, software and service reviews from Dyve Tech.'
+    'global-intelligence': {
+        label: 'Global Intelligence',
+        title: 'Global Technology & Intelligence',
+        description: 'Global technology developments, emerging systems, policy, geopolitics, cybersecurity and industry signals.',
+        route: 'global-intelligence',
+        subcategories: {
+            'global-tech': { label: 'Global Tech', description: 'Major technology developments and industry movements around the world.' },
+            'emerging-tech': { label: 'Emerging Technology', description: 'Emerging technologies with potential to reshape industries and society.' },
+            'technology-policy': { label: 'Technology Policy', description: 'Technology regulation, digital policy, AI governance and data laws.' },
+            'geopolitics-tech': { label: 'Geopolitics & Technology', description: 'The intersection of technology, national security and geopolitics.' },
+            'global-cybersecurity': { label: 'Global Cybersecurity', description: 'International cybersecurity developments and cross-border threat activity.' },
+            'industry-signals': { label: 'Industry Signals', description: 'Strategic market movements, corporate technology shifts and industry signals.' },
+            'future-intelligence': { label: 'Future Intelligence', description: 'Longer-term technology signals, scenarios and developments to watch.' }
+        }
     }
 };
 
-function b64ToUtf8(b64) {
-    const bin = atob(b64.replace(/\s/g, ''));
-    const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
-    return new TextDecoder().decode(bytes);
+const CATEGORY_CONFIG = Object.fromEntries(
+    Object.entries(CATEGORY_TAXONOMY).map(([key, value]) => [key, {
+        label: value.label,
+        title: value.title,
+        description: value.description,
+        route: value.route
+    }])
+);
+
+const LEGACY_CATEGORY_MAP = {
+    ai: ['technology', 'ai'],
+    software: ['technology', 'software'],
+    tools: ['technology', 'tech-news'],
+    coding: ['technology', 'software'],
+    developers: ['technology', 'tech-news'],
+    hardware: ['technology', 'gadgets'],
+    mobile: ['technology', 'gadgets'],
+    gadgets: ['technology', 'gadgets'],
+    cloud: ['technology', 'internet'],
+    startups: ['technology', 'startups'],
+    analysis: ['global-intelligence', 'industry-signals'],
+    trends: ['global-intelligence', 'future-intelligence'],
+    tutorials: ['cyber-safety', 'security-tips'],
+    reviews: ['technology', 'gadgets']
+};
+
+function getSubcategoryMeta(category, subcategory) {
+    const parent = CATEGORY_TAXONOMY[category];
+    return parent?.subcategories?.[subcategory] || { label: 'Latest', description: parent?.description || '' };
 }
 
-function utf8ToBase64(str) {
-    const bytes = new TextEncoder().encode(str);
-    let bin = '';
-    const CHUNK = 0x8000;
-    for (let i = 0; i < bytes.length; i += CHUNK) {
-        bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
-    }
-    return btoa(bin);
-}
+function syncSubcategorySelect(category, selected = '') {
+    const select = document.getElementById('subcategorySelect');
+    const hint = document.getElementById('subcategoryHint');
+    const categorySelect = document.getElementById('categorySelect');
+    if (!select) return;
 
-function escapeHtml(value) {
-    return String(value ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
+    const taxonomy = normalizeTaxonomy(category, selected);
+    const parent = CATEGORY_TAXONOMY[taxonomy.category];
 
-function escapeAttr(value) {
-    return escapeHtml(value);
-}
-
-function safeJson(value) {
-    return JSON.stringify(value)
-        .replace(/</g, '\\u003c')
-        .replace(/>/g, '\\u003e')
-        .replace(/&/g, '\\u0026');
-}
-
-function generateSlug(title) {
-    return String(title || '')
-        .toLowerCase()
-        .normalize('NFKD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-+|-+$/g, '')
-        .trim();
-}
-
-function showToast(message, duration = 4000) {
-    const toast = document.getElementById('toast');
-    document.getElementById('toastMessage').textContent = message;
-    toast.classList.remove('hidden');
-    setTimeout(() => toast.classList.add('hidden'), duration);
-}
-
-function setBuildStatus(state, text) {
-    const badge = document.getElementById('buildStatusBadge');
-    const label = document.getElementById('buildStatusText');
-    badge.classList.remove('ready', 'busy', 'error');
-    if (state) badge.classList.add(state);
-    label.textContent = text;
-}
-
-function logBuild(message, type = 'info') {
-    const log = document.getElementById('buildLog');
-    if (!log) return;
-    const row = document.createElement('div');
-    row.className = type;
-    row.textContent = `[build] ${message}`;
-    log.appendChild(row);
-    log.scrollTop = log.scrollHeight;
-}
-
-function resetBuildLog() {
-    const log = document.getElementById('buildLog');
-    if (log) log.innerHTML = '';
-}
-
-function getGitHubConfig() {
-    try {
-        const settings = JSON.parse(localStorage.getItem('dyve-tech-settings') || '{}');
-        return {
-            token: settings.githubToken || '',
-            repo: settings.githubRepo || '',
-            branch: settings.githubBranch || 'main',
-            siteUrl: String(settings.siteUrl || 'https://dyve.online').replace(/\/+$/, ''),
-            groqKey: settings.groqKey || ''
-        };
-    } catch (e) {
-        console.error('Error reading settings:', e);
-        return { token: '', repo: '', branch: 'main', siteUrl: 'https://dyve.online', groqKey: '' };
-    }
-}
-
-async function fetchWithRetry(url, options = {}, retries = 2) {
-    let lastErr;
-    for (let i = 0; i <= retries; i++) {
-        try {
-            const res = await fetch(url, options);
-            if (res.status === 404 || res.status === 401 || res.status === 403) return res;
-            if (!res.ok && i < retries) {
-                await new Promise(r => setTimeout(r, 1200 * (i + 1)));
-                continue;
-            }
-            return res;
-        } catch (e) {
-            lastErr = e;
-            if (i < retries) await new Promise(r => setTimeout(r, 1200 * (i + 1)));
-        }
-    }
-    throw lastErr || new Error('Network error');
-}
-
-function authHeaders(config, extra = {}) {
-    return Object.assign({
-        'Authorization': `token ${config.token}`,
-        'Accept': 'application/vnd.github+json'
-    }, extra);
-}
-
-async function fetchArticlesJson(config) {
-    const techPath = STATIC_BUILD_CONFIG.articleDataPath;
-    const request = path => fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
-        { headers: authHeaders(config) }
-    );
-
-    const metaRes = await request(techPath);
-
-    if (metaRes.status === 404) {
-        /*
-         * Compatibility mode is deliberately strict.
-         *
-         * The old shared assets/articles.json may contain both Dyve Tech and
-         * HackaX records. We NEVER use page="tech" by itself as proof of
-         * Tech ownership because the legacy file contains security records
-         * that were incorrectly marked page="tech".
-         *
-         * A record is accepted by the Tech Editor only when its category is
-         * an actual Dyve Tech category.
-         */
-        const legacyRes = await request('assets/articles.json');
-
-        if (legacyRes.status === 404) {
-            return { articles: [], sha: '', migratedFromLegacy: false };
-        }
-
-        if (!legacyRes.ok) {
-            const err = await legacyRes.json().catch(() => ({}));
-            throw new Error(`Legacy articles.json fetch failed: ${err.message || legacyRes.status}`);
-        }
-
-        const legacyMeta = await legacyRes.json();
-        let legacyText = legacyMeta.content ? b64ToUtf8(legacyMeta.content) : '';
-
-        if (!legacyText && legacyMeta.download_url) {
-            const rawRes = await fetchWithRetry(
-                legacyMeta.download_url,
-                { headers: authHeaders(config) }
-            );
-
-            if (rawRes.ok) legacyText = await rawRes.text();
-        }
-
-        let legacyArticles = [];
-
-        try {
-            legacyArticles = legacyText.trim() ? JSON.parse(legacyText) : [];
-        } catch (e) {
-            throw new Error('Legacy assets/articles.json is corrupt. Run the One-Time Data Migration after restoring the JSON array.');
-        }
-
-        if (!Array.isArray(legacyArticles)) legacyArticles = [];
-
-        const techArticles = legacyArticles.filter(article => {
-            if (!article || typeof article !== 'object') return false;
-
-            const category = String(
-                article.category || article.meta || ''
-            ).trim().toLowerCase();
-
-            return Boolean(CATEGORY_CONFIG[category]);
-        });
-
-        return {
-            articles: techArticles,
-            sha: '',
-            migratedFromLegacy: techArticles.length > 0
-        };
+    if (categorySelect && taxonomy.category && categorySelect.value !== taxonomy.category) {
+        categorySelect.value = taxonomy.category;
     }
 
-    if (!metaRes.ok) {
-        const err = await metaRes.json().catch(() => ({}));
-        throw new Error(`tech-articles.json fetch failed: ${err.message || metaRes.status}`);
+    select.innerHTML = '';
+
+    if (!parent) {
+        select.disabled = true;
+        select.innerHTML = '<option value="" selected>Select a primary category first</option>';
+        if (hint) hint.textContent = 'Choose the editorial pillar first; available subsections will appear here.';
+        return;
     }
 
-    const meta = await metaRes.json();
-    const sha = meta.sha || '';
-    let text = '';
-
-    if (meta.content) {
-        text = b64ToUtf8(meta.content);
-    } else if (meta.download_url) {
-        const rawRes = await fetchWithRetry(
-            meta.download_url,
-            { headers: authHeaders(config) }
-        );
-
-        if (rawRes.ok) text = await rawRes.text();
-    }
-
-    text = (text || '').trim();
-
-    if (!text) {
-        return {
-            articles: [],
-            sha,
-            migratedFromLegacy: false
-        };
-    }
-
-    let articles;
-
-    try {
-        articles = JSON.parse(text);
-    } catch (e) {
-        throw new Error('tech-articles.json is corrupt. Restore it as a JSON array before publishing.');
-    }
-
-    if (!Array.isArray(articles)) articles = [];
-
-    /*
-     * Hard publishing boundary:
-     * - page="tech" is required for canonical Tech records.
-     * - category must also exist in CATEGORY_CONFIG.
-     *
-     * This prevents HackaX/security records from ever reaching
-     * validateArticleSet(), even if an old record accidentally has
-     * page="tech".
-     */
-    const techArticles = articles.filter(article => {
-        if (!article || typeof article !== 'object') return false;
-
-        const page = String(article.page || '').trim().toLowerCase();
-        const category = String(
-            article.category || article.meta || ''
-        ).trim().toLowerCase();
-
-        return page === 'tech' && Boolean(CATEGORY_CONFIG[category]);
+    select.disabled = false;
+    select.insertAdjacentHTML('beforeend', '<option value="" disabled>Select Subcategory</option>');
+    Object.entries(parent.subcategories).forEach(([key, meta]) => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = meta.label;
+        if (key === taxonomy.subcategory) option.selected = true;
+        select.appendChild(option);
     });
 
-    return {
-        articles: techArticles,
-        sha,
-        migratedFromLegacy: false
-    };
+    if (!taxonomy.subcategory || !parent.subcategories[taxonomy.subcategory]) select.selectedIndex = 0;
+    if (hint) hint.textContent = `${parent.label}: ${Object.keys(parent.subcategories).length} editorial subsections available.`;
 }
 
-async function githubCommitFiles(config, files, message) {
-    const refRes = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/git/ref/heads/${encodeURIComponent(config.branch)}`,
-        { headers: authHeaders(config) }
-    );
-    if (!refRes.ok) throw new Error(`Unable to resolve branch ${config.branch}.`);
+function normalizeTaxonomy(category, subcategory = '') {
+    let parent = String(category || '').trim().toLowerCase();
+    let child = String(subcategory || '').trim().toLowerCase();
 
-    const ref = await refRes.json();
-    const parentSha = ref.object && ref.object.sha;
-    if (!parentSha) throw new Error('GitHub returned no branch commit SHA.');
-
-    const commitRes = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/git/commits/${parentSha}`,
-        { headers: authHeaders(config) }
-    );
-    if (!commitRes.ok) throw new Error('Unable to resolve current Git tree.');
-
-    const parentCommit = await commitRes.json();
-    const baseTree = parentCommit.tree && parentCommit.tree.sha;
-    if (!baseTree) throw new Error('GitHub returned no base tree SHA.');
-
-    const entries = [];
-
-    for (const file of files) {
-        if (!file || !file.path) continue;
-
-        if (file.delete) {
-            entries.push({
-                path: file.path,
-                mode: '100644',
-                type: 'blob',
-                sha: null
-            });
-            continue;
-        }
-
-        const blobRes = await fetchWithRetry(
-            `https://api.github.com/repos/${config.repo}/git/blobs`,
-            {
-                method: 'POST',
-                headers: authHeaders(config, { 'Content-Type': 'application/json' }),
-                body: JSON.stringify({
-                    content: String(file.content ?? ''),
-                    encoding: 'utf-8'
-                })
-            }
-        );
-
-        if (!blobRes.ok) {
-            const err = await blobRes.json().catch(() => ({}));
-            throw new Error(`Unable to create Git blob for ${file.path}: ${err.message || blobRes.status}`);
-        }
-
-        const blob = await blobRes.json();
-        entries.push({
-            path: file.path,
-            mode: '100644',
-            type: 'blob',
-            sha: blob.sha
-        });
+    if (LEGACY_CATEGORY_MAP[parent]) {
+        const mapped = LEGACY_CATEGORY_MAP[parent];
+        parent = mapped[0];
+        if (!child || !CATEGORY_TAXONOMY[parent]?.subcategories?.[child]) child = mapped[1];
     }
 
-    const treeRes = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/git/trees`,
-        {
-            method: 'POST',
-            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
-            body: JSON.stringify({
-                base_tree: baseTree,
-                tree: entries
-            })
-        }
-    );
-
-    if (!treeRes.ok) {
-        const err = await treeRes.json().catch(() => ({}));
-        throw new Error(`Unable to create Git tree: ${err.message || treeRes.status}`);
-    }
-
-    const tree = await treeRes.json();
-
-    const newCommitRes = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/git/commits`,
-        {
-            method: 'POST',
-            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
-            body: JSON.stringify({
-                message,
-                tree: tree.sha,
-                parents: [parentSha]
-            })
-        }
-    );
-
-    if (!newCommitRes.ok) {
-        const err = await newCommitRes.json().catch(() => ({}));
-        throw new Error(`Unable to create Git commit: ${err.message || newCommitRes.status}`);
-    }
-
-    const newCommit = await newCommitRes.json();
-
-    const updateRefRes = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/git/refs/heads/${encodeURIComponent(config.branch)}`,
-        {
-            method: 'PATCH',
-            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
-            body: JSON.stringify({
-                sha: newCommit.sha,
-                force: false
-            })
-        }
-    );
-
-    if (!updateRefRes.ok) {
-        const err = await updateRefRes.json().catch(() => ({}));
-        throw new Error(`Unable to publish atomic commit: ${err.message || updateRefRes.status}`);
-    }
-
-    return newCommit;
+    if (!CATEGORY_TAXONOMY[parent]) return { category: '', subcategory: '' };
+    if (!CATEGORY_TAXONOMY[parent].subcategories[child]) child = Object.keys(CATEGORY_TAXONOMY[parent].subcategories)[0];
+    return { category: parent, subcategory: child };
 }
 
-async function githubPutFile(config, path, text, message) {
-    let sha = '';
-    const metaRes = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
-        { headers: authHeaders(config) }
-    );
-
-    if (metaRes.ok) {
-        const data = await metaRes.json();
-        sha = data.sha || '';
-    }
-
-    const body = {
-        message,
-        content: utf8ToBase64(text),
-        branch: config.branch
-    };
-
-    if (sha) body.sha = sha;
-
-    const res = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/contents/${path}`,
-        {
-            method: 'PUT',
-            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
-            body: JSON.stringify(body)
-        }
-    );
-
-    if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(`Upload failed (${res.status}): ${err.message || path}`);
-    }
-
-    return await res.json();
-}
-
-async function githubDeleteFile(config, path, message) {
-    const metaRes = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
-        { headers: authHeaders(config) }
-    );
-
-    if (metaRes.status === 404) return true;
-    if (!metaRes.ok) throw new Error(`Unable to inspect ${path}`);
-
-    const meta = await metaRes.json();
-
-    const res = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/contents/${path}`,
-        {
-            method: 'DELETE',
-            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
-            body: JSON.stringify({
-                message,
-                sha: meta.sha,
-                branch: config.branch
-            })
-        }
-    );
-
-    if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(`Delete failed (${res.status}): ${err.message || path}`);
-    }
-
-    return true;
-}
-
-function deltaPathFor(url) {
-    const key = (url || '')
-        .replace(/\.html$/i, '')
-        .replace(/[^\w-]+/g, '-')
-        .replace(/^-+|-+$/g, '') || 'article';
-    return `assets/deltas/${key}.json`;
-}
-
-function normalizeArticle(article) {
-    if (!article || typeof article !== 'object') return null;
-
-    const title = String(article.title || '').trim();
-    const url = String(article.url || '').replace(/^\/+/, '').trim();
-    const page = 'tech';
-    const category = String(article.category || article.meta || 'ai').trim();
-    const tag = String(article.tag || 'News').trim();
-    const date = String(article.date || new Date().toISOString().slice(0, 10)).slice(0, 10);
-
-    if (!title || !url) return null;
-
-    return {
-        ...article,
-        title,
-        url,
-        desc: String(article.desc || '').trim(),
-        image: String(article.image || STATIC_BUILD_CONFIG.defaultImage),
-        imageAlt: String(article.imageAlt || '').trim(),
-        tag,
-        meta: category,
-        category,
-        date,
-        modified: String(article.modified || article.date || date).trim(),
-        page,
-        author: String(article.author || STATIC_BUILD_CONFIG.publisherName),
-        readTime: Math.max(1, Number(article.readTime || 4)),
-        seoTitle: String(article.seoTitle || article.title || '').trim(),
-        focusKeyword: String(article.focusKeyword || '').trim(),
-        keywords: Array.isArray(article.keywords) ? article.keywords.map(k => String(k).trim()).filter(Boolean) : String(article.keywords || '').split(',').map(k => k.trim()).filter(Boolean),
-        sourceUrl: String(article.sourceUrl || '').trim(),
-        ogPrompt: String(article.ogPrompt || '').trim()
-    };
-}
-
-function validateArticleSet(articles) {
-    if (!Array.isArray(articles)) {
-        throw new Error('BUILD FAILED: tech-articles.json must contain a JSON array.');
-    }
-
-    const errors = [];
-    const normalized = [];
-    const seenUrls = new Map();
-
-    articles.forEach((raw, index) => {
-        const number = index + 1;
-        if (!raw || typeof raw !== 'object') {
-            errors.push(`Record #${number}: article must be an object.`);
-            return;
-        }
-
-        const article = normalizeArticle(raw);
-
-        if (!article) {
-            errors.push(`Record #${number}: missing required title or url.`);
-            return;
-        }
-
-        if (!SECTION_CONFIG[article.page]) {
-            errors.push(`Record #${number} "${article.title}": invalid publication page "${article.page}". Tech Editor can publish only to /tech/.`);
-        }
-
-        if (!CATEGORY_CONFIG[article.category]) {
-            errors.push(`Record #${number} "${article.title}": category "${article.category}" is outside the Dyve Tech publishing boundary. Remove it from tech-articles.json or run the One-Time Data Migration.`);
-        }
-
-        const expectedPrefix = 'tech/';
-        const validCanonicalRoute =
-            article.url.startsWith(expectedPrefix) &&
-            article.url.endsWith('.html') &&
-            !article.url.includes('//') &&
-            !article.url.includes('?') &&
-            !article.url.includes('#');
-
-        if (!validCanonicalRoute) {
-            errors.push(
-                `Record #${number} "${article.title}": page/url mismatch. page="${article.page}" requires url="${expectedPrefix}<slug>.html", received "${article.url}". Run "Migrate legacy routes" once if this is an old article URL.`
-            );
-        }
-
-        if (seenUrls.has(article.url)) {
-            errors.push(`Record #${number} "${article.title}": duplicate URL "${article.url}" also used by record #${seenUrls.get(article.url)}.`);
-        } else {
-            seenUrls.set(article.url, number);
-        }
-
-        if (!/^\d{4}-\d{2}-\d{2}$/.test(article.date) || Number.isNaN(new Date(article.date).getTime())) {
-            errors.push(`Record #${number} "${article.title}": invalid date "${article.date}". Expected YYYY-MM-DD.`);
-        }
-
-        if (!article.image) {
-            errors.push(`Record #${number} "${article.title}": image is required.`);
-        }
-
-        normalized.push(article);
-    });
-
-    if (errors.length) {
-        const message = `BUILD FAILED — ${errors.length} validation error${errors.length === 1 ? '' : 's'}:\n\n${errors.map((e, i) => `${i + 1}. ${e}`).join('\n')}`;
-        throw new Error(message);
-    }
-
-    return normalized;
-}
-
-function migrateLegacyRoutes(articles) {
-    if (!Array.isArray(articles)) {
-        throw new Error('Cannot migrate: tech-articles.json is not an array.');
-    }
-
-    const migrated = [];
-    const redirects = [];
-    const seenCanonicalUrls = new Set(
-        articles
-            .map(article => String(article && article.url || '').replace(/^\/+/, '').trim())
-            .filter(Boolean)
-    );
-
-    const usedNewUrls = new Set();
-
-    for (const raw of articles) {
-        const article = normalizeArticle(raw);
-
-        if (!article) {
-            migrated.push(raw);
-            continue;
-        }
-
-        const next = { ...article };
-        const isLegacyTechRoute =
-            article.page === 'tech' &&
-            /^article\//i.test(article.url);
-
-        if (isLegacyTechRoute) {
-            const oldUrl = article.url;
-            const oldPath = oldUrl
-                .replace(/^article\//i, '')
-                .replace(/\/index\.html$/i, '.html');
-
-            let slug = oldPath
-                .replace(/\.html$/i, '')
-                .split('/')
-                .filter(Boolean)
-                .pop() || generateSlug(article.title);
-
-            slug = generateSlug(slug) || generateSlug(article.title) || `article-${Date.now()}`;
-
-            let newUrl = `tech/${slug}.html`;
-            let suffix = 2;
-
-            while (
-                usedNewUrls.has(newUrl) ||
-                (
-                    seenCanonicalUrls.has(newUrl) &&
-                    newUrl !== article.url
-                )
-            ) {
-                newUrl = `tech/${slug}-${suffix}.html`;
-                suffix++;
-            }
-
-            next.url = newUrl;
-            next.legacyUrls = Array.from(new Set([
-                ...(Array.isArray(article.legacyUrls) ? article.legacyUrls : []),
-                oldUrl
-            ]));
-
-            redirects.push({
-                from: `/${oldUrl}`,
-                to: `/${newUrl}`
-            });
-
-            usedNewUrls.add(newUrl);
-        }
-
-        (next.legacyUrls || []).forEach(oldUrl => {
-            const cleanOld = String(oldUrl || '').replace(/^\/+/, '').trim();
-
-            if (
-                cleanOld &&
-                cleanOld !== next.url &&
-                !redirects.some(redirect => redirect.from === `/${cleanOld}`)
-            ) {
-                redirects.push({
-                    from: `/${cleanOld}`,
-                    to: `/${next.url}`
-                });
-            }
-        });
-
-        migrated.push(next);
-    }
-
-    return {
-        articles: migrated,
-        redirects
-    };
-}
-
-
-function sortArticles(articles) {
-    return articles
-        .map(normalizeArticle)
-        .filter(Boolean)
-        .sort((a, b) => new Date(b.date) - new Date(a.date));
-}
 
 function getCategoryMeta(category) {
     return CATEGORY_CONFIG[category] || {
@@ -2011,6 +1419,12 @@ function buildSitemapXML(siteUrl, articles) {
     const today = new Date().toISOString().slice(0, 10);
     const urls = new Map();
     urls.set(`${siteUrl}/tech/`, normalized[0]?.date || today);
+    Object.entries(CATEGORY_TAXONOMY).forEach(([category, meta]) => {
+        urls.set(categoryPageUrl(siteUrl, category), today);
+        Object.keys(meta.subcategories).forEach(subcategory => {
+            urls.set(categoryPageUrl(siteUrl, category, subcategory), today);
+        });
+    });
     normalized.forEach(article => urls.set(articleUrl(siteUrl, article), String(article.modified || article.date).slice(0, 10)));
     const body = [...urls.entries()].map(([loc, lastmod]) => {
         const article = normalized.find(item => articleUrl(siteUrl, item) === loc);
@@ -2067,12 +1481,199 @@ async function migrateLegacyContent(config, articles) {
 function updateBuildStats(articles) {
     const normalized = sortArticles(articles);
     const categories = new Set(normalized.map(a => a.category).filter(Boolean));
+    const taxonomyPageCount = Object.values(CATEGORY_TAXONOMY).reduce((total, meta) => total + 1 + Object.keys(meta.subcategories).length, 0);
     const sitemapUrls = new Set(['/tech/']);
+    Object.entries(CATEGORY_TAXONOMY).forEach(([category, meta]) => {
+        sitemapUrls.add('/tech/' + meta.route + '/');
+        Object.keys(meta.subcategories).forEach(subcategory => sitemapUrls.add('/tech/' + meta.route + '/' + subcategory + '/'));
+    });
     normalized.forEach(a => sitemapUrls.add('/' + a.url));
     document.getElementById('buildArticleCount').textContent = normalized.length;
-    document.getElementById('buildCategoryCount').textContent = categories.size;
+    document.getElementById('buildCategoryCount').textContent = categories.size + '/' + Object.keys(CATEGORY_TAXONOMY).length;
     document.getElementById('buildSitemapCount').textContent = sitemapUrls.size;
-    document.getElementById('buildPageCount').textContent = 1 + normalized.length;
+    document.getElementById('buildPageCount').textContent = taxonomyPageCount + normalized.length + 1;
+}
+
+async function loadCategoryTemplate(config) {
+    const templatePath = STATIC_BUILD_CONFIG.categoryTemplatePath;
+    const templateHTML = await fetchGitHubText(config, templatePath, { optional: true });
+
+    if (!templateHTML || !templateHTML.trim()) {
+        throw new Error(`CATEGORY TEMPLATE NOT FOUND: ${templatePath}. Create the standalone Tech category template before publishing.`);
+    }
+
+    const required = [
+        'PAGE_TITLE',
+        'PAGE_DESCRIPTION_ATTR',
+        'CANONICAL_URL',
+        'OG_IMAGE',
+        'PAGE_SCHEMA',
+        'CATEGORY_LABEL',
+        'PAGE_HEADING',
+        'PAGE_DESCRIPTION',
+        'SUBCATEGORY_CRUMB',
+        'SUBCATEGORY_NAV',
+        'LIST_HEADING',
+        'ARTICLE_COUNT',
+        'ARTICLE_LIST'
+    ];
+
+    const missing = required.filter(token => !templateHTML.includes(`{{${token}}}`));
+    if (missing.length) {
+        throw new Error(`CATEGORY TEMPLATE CONTRACT FAILED: ${templatePath} is missing required token(s): ${missing.map(token => `{{${token}}}`).join(', ')}`);
+    }
+
+    return templateHTML;
+}
+
+function categoryPageUrl(siteUrl, category, subcategory = '') {
+    const parent = CATEGORY_TAXONOMY[category];
+    if (!parent) return `${siteUrl}/tech/`;
+    return subcategory
+        ? `${siteUrl}/tech/${parent.route}/${subcategory}/`
+        : `${siteUrl}/tech/${parent.route}/`;
+}
+
+function relativeArticleUrlFromCategoryPage(article, category, subcategory = '') {
+    const depth = subcategory ? '../../' : '../';
+    return `${depth}${String(article.url || '').replace(/^tech\//, '')}`;
+}
+
+function buildCategoryArticleCard(article, category, subcategory = '') {
+    const href = relativeArticleUrlFromCategoryPage(article, category, subcategory);
+    const categoryMeta = getCategoryMeta(category);
+    const childMeta = getSubcategoryMeta(category, subcategory || article.subcategory);
+    return `<a class="card" href="${escapeAttr(href)}">
+    <div class="thumb"><img src="${escapeAttr(article.image || STATIC_BUILD_CONFIG.defaultImage)}" alt="${escapeAttr(article.imageAlt || article.title)}" loading="lazy" width="800" height="500"></div>
+    <div class="body">
+        <div class="tag">${escapeHtml(childMeta.label || categoryMeta.label)}</div>
+        <h3>${escapeHtml(article.title)}</h3>
+        <p class="desc">${escapeHtml(truncate(article.desc || '', 180))}</p>
+        <div class="meta">${escapeHtml(formatDate(article.date))} · ${Math.max(1, Number(article.readTime || 4))} MIN READ</div>
+    </div>
+</a>`;
+}
+
+async function buildCategoryPages(config, articles) {
+    if (!STATIC_BUILD_CONFIG.generateCategoryPages) return [];
+
+    const template = await loadCategoryTemplate(config);
+    const normalized = validateArticleSet(sortArticles(articles));
+    const outputs = [];
+    const latestImage = normalized[0]?.image || STATIC_BUILD_CONFIG.defaultImage;
+
+    for (const [category, meta] of Object.entries(CATEGORY_TAXONOMY)) {
+        const categoryArticles = normalized.filter(article => article.category === category);
+        const parentUrl = categoryPageUrl(config.siteUrl, category);
+        const subNav = [
+            `<a class="active" href="./">Latest</a>`,
+            ...Object.entries(meta.subcategories).map(([key, child]) => `<a href="${escapeAttr(`${key}/`)}">${escapeHtml(child.label)}</a>`)
+        ].join('');
+
+        const parentSchema = safeJson({
+            '@context': 'https://schema.org',
+            '@type': 'CollectionPage',
+            '@id': `${parentUrl}#webpage`,
+            name: meta.title,
+            headline: meta.title,
+            description: meta.description,
+            url: parentUrl,
+            isPartOf: { '@type': 'WebSite', '@id': `${config.siteUrl}/#website`, name: 'Dyve', url: `${config.siteUrl}/` },
+            publisher: { '@type': 'Organization', '@id': `${config.siteUrl}/tech/#organization`, name: 'Dyve Tech', url: `${config.siteUrl}/tech/` },
+            breadcrumb: {
+                '@type': 'BreadcrumbList',
+                itemListElement: [
+                    { '@type': 'ListItem', position: 1, name: 'Dyve', item: `${config.siteUrl}/` },
+                    { '@type': 'ListItem', position: 2, name: 'Dyve Tech', item: `${config.siteUrl}/tech/` },
+                    { '@type': 'ListItem', position: 3, name: meta.label, item: parentUrl }
+                ]
+            },
+            mainEntity: {
+                '@type': 'ItemList',
+                numberOfItems: categoryArticles.length,
+                itemListElement: categoryArticles.slice(0, 100).map((article, index) => ({
+                    '@type': 'ListItem', position: index + 1, name: article.title, url: articleUrl(config.siteUrl, article)
+                }))
+            }
+        });
+
+        const parentValues = {
+            PAGE_TITLE: escapeHtml(`${meta.title} | Dyve Tech`),
+            PAGE_DESCRIPTION_ATTR: escapeAttr(meta.description),
+            CANONICAL_URL: escapeAttr(parentUrl),
+            OG_IMAGE: escapeAttr(latestImage),
+            PAGE_SCHEMA: parentSchema,
+            CATEGORY_LABEL: escapeHtml(meta.label),
+            PAGE_HEADING: escapeHtml(meta.title),
+            PAGE_DESCRIPTION: escapeHtml(meta.description),
+            SUBCATEGORY_CRUMB: '',
+            SUBCATEGORY_NAV: subNav,
+            LIST_HEADING: escapeHtml(`Latest ${meta.label}`),
+            ARTICLE_COUNT: categoryArticles.length,
+            ARTICLE_LIST: categoryArticles.length
+                ? categoryArticles.slice(0, STATIC_BUILD_CONFIG.maxArticlesPerIndex).map(a => buildCategoryArticleCard(a, category)).join('')
+                : '<div class="empty"><strong>No stories published in this pillar yet.</strong></div>'
+        };
+
+        outputs.push({ path: `tech/${meta.route}/index.html`, content: replaceArticleTemplateTokens(template, parentValues) });
+
+        for (const [subcategory, child] of Object.entries(meta.subcategories)) {
+            const childArticles = categoryArticles.filter(article => article.subcategory === subcategory);
+            const childUrl = categoryPageUrl(config.siteUrl, category, subcategory);
+            const childNav = [
+                `<a href="../">Latest</a>`,
+                ...Object.entries(meta.subcategories).map(([key, item]) => `<a class="${key === subcategory ? 'active' : ''}" href="../${key}/">${escapeHtml(item.label)}</a>`)
+            ].join('');
+            const schema = safeJson({
+                '@context': 'https://schema.org',
+                '@type': 'CollectionPage',
+                '@id': `${childUrl}#webpage`,
+                name: `${child.label} | ${meta.label} | Dyve Tech`,
+                headline: child.label,
+                description: child.description,
+                url: childUrl,
+                isPartOf: { '@type': 'CollectionPage', '@id': parentUrl, name: meta.title, url: parentUrl },
+                breadcrumb: {
+                    '@type': 'BreadcrumbList',
+                    itemListElement: [
+                        { '@type': 'ListItem', position: 1, name: 'Dyve', item: `${config.siteUrl}/` },
+                        { '@type': 'ListItem', position: 2, name: 'Dyve Tech', item: `${config.siteUrl}/tech/` },
+                        { '@type': 'ListItem', position: 3, name: meta.label, item: parentUrl },
+                        { '@type': 'ListItem', position: 4, name: child.label, item: childUrl }
+                    ]
+                },
+                mainEntity: {
+                    '@type': 'ItemList',
+                    numberOfItems: childArticles.length,
+                    itemListElement: childArticles.slice(0, 100).map((article, index) => ({
+                        '@type': 'ListItem', position: index + 1, name: article.title, url: articleUrl(config.siteUrl, article)
+                    }))
+                }
+            });
+
+            const childValues = {
+                PAGE_TITLE: escapeHtml(`${child.label} | ${meta.label} | Dyve Tech`),
+                PAGE_DESCRIPTION_ATTR: escapeAttr(child.description),
+                CANONICAL_URL: escapeAttr(childUrl),
+                OG_IMAGE: escapeAttr(childArticles[0]?.image || latestImage),
+                PAGE_SCHEMA: schema,
+                CATEGORY_LABEL: escapeHtml(meta.label),
+                PAGE_HEADING: escapeHtml(child.label),
+                PAGE_DESCRIPTION: escapeHtml(child.description),
+                SUBCATEGORY_CRUMB: ` <span> / </span>${escapeHtml(child.label)}`,
+                SUBCATEGORY_NAV: childNav,
+                LIST_HEADING: escapeHtml(`Latest ${child.label}`),
+                ARTICLE_COUNT: childArticles.length,
+                ARTICLE_LIST: childArticles.length
+                    ? childArticles.slice(0, STATIC_BUILD_CONFIG.maxArticlesPerIndex).map(a => buildCategoryArticleCard(a, category, subcategory)).join('')
+                    : '<div class="empty"><strong>No stories published in this subsection yet.</strong></div>'
+            };
+
+            outputs.push({ path: `tech/${meta.route}/${subcategory}/index.html`, content: replaceArticleTemplateTokens(template, childValues) });
+        }
+    }
+
+    return outputs;
 }
 
 async function buildStaticSite(config, articles, options = {}) {
@@ -2090,6 +1691,12 @@ async function buildStaticSite(config, articles, options = {}) {
         logBuild(`Validated ${normalized.length} article records.`, 'ok');
 
         const files = [];
+
+        if (STATIC_BUILD_CONFIG.generateCategoryPages) {
+            const categoryFiles = await buildCategoryPages(config, normalized);
+            files.push(...categoryFiles);
+            logBuild(`Generated ${categoryFiles.length} category and subsection index pages from the four-pillar taxonomy.`, 'ok');
+        }
 
         if (STATIC_BUILD_CONFIG.updateHomepageOnPublish) {
             const existingTechIndex = await fetchGitHubText(config, 'tech/index.html', { optional: true });
@@ -2376,7 +1983,8 @@ async function prepareLegacyRouteMigration(config, migration) {
             article.desc,
             article.image,
             article.tag || 'News',
-            article.category || article.meta || 'trends',
+            normalizeTaxonomy(article.category || article.meta || '', article.subcategory || '').category,
+            normalizeTaxonomy(article.category || article.meta || '', article.subcategory || '').subcategory,
             newSlug,
             article.date,
             articleBody,
@@ -2498,12 +2106,9 @@ function updateMigrationStats(sourceCount, techCount, hackaXCount, skippedCount)
 
 function isDyveTechRecord(article) {
     if (!article || typeof article !== 'object') return false;
-
-    const category = String(
-        article.category || article.meta || ''
-    ).trim().toLowerCase();
-
-    return Boolean(CATEGORY_CONFIG[category]);
+    const page = String(article.page || '').trim().toLowerCase();
+    const rawCategory = String(article.category || article.meta || '').trim().toLowerCase();
+    return page === 'tech' && Boolean(CATEGORY_CONFIG[rawCategory] || LEGACY_CATEGORY_MAP[rawCategory]);
 }
 
 function dedupeArticleRecords(records) {
@@ -3106,6 +2711,7 @@ function collectCurrentDraft() {
         title: document.getElementById('titleInput').value.trim(),
         description: document.getElementById('descriptionInput').value.trim(),
         category: document.getElementById('categorySelect').value,
+        subcategory: document.getElementById('subcategorySelect')?.value || '',
         contentType: document.getElementById('contentTypeSelect').value,
         imageUrl: document.getElementById('imageUrlInput').value,
         imageAlt: document.getElementById('imageAltInput').value.trim(),
@@ -3149,6 +2755,7 @@ function loadCurrentDraft() {
         document.getElementById('titleInput').value = draft.title || '';
         document.getElementById('descriptionInput').value = draft.description || '';
         document.getElementById('categorySelect').value = draft.category || '';
+        syncSubcategorySelect(draft.category || '', draft.subcategory || '');
         document.getElementById('contentTypeSelect').value = draft.contentType || '';
         document.getElementById('imageUrlInput').value = draft.imageUrl || '';
         document.getElementById('imageAltInput').value = draft.imageAlt || '';
@@ -3176,6 +2783,7 @@ function clearForm() {
     document.getElementById('titleInput').value = '';
     document.getElementById('descriptionInput').value = '';
     document.getElementById('categorySelect').value = '';
+    syncSubcategorySelect('');
     document.getElementById('contentTypeSelect').value = '';
     document.getElementById('imageUrlInput').value = '';
     document.getElementById('imageAltInput').value = '';
@@ -3222,7 +2830,7 @@ function loadAgentPayload() {
     document.getElementById('titleInput').value = payload.title || '';
     document.getElementById('descriptionInput').value = payload.desc || '';
 
-    if (payload.category) document.getElementById('categorySelect').value = payload.category;
+    if (payload.category) { document.getElementById('categorySelect').value = payload.category; syncSubcategorySelect(payload.category, payload.subcategory || ''); }
     if (payload.contentType) document.getElementById('contentTypeSelect').value = payload.contentType;
 
     if (payload.image) {
@@ -3279,7 +2887,7 @@ async function loadEditData() {
         document.getElementById('sourceUrlInput').value = edit.sourceUrl || '';
 
         const catId = edit.meta || edit.category || '';
-        if (catId) document.getElementById('categorySelect').value = catId;
+        if (catId) { document.getElementById('categorySelect').value = catId; syncSubcategorySelect(catId, edit.subcategory || ''); }
         if (edit.tag) document.getElementById('contentTypeSelect').value = edit.tag;
 
         if (edit.image) {
@@ -3522,6 +3130,7 @@ function saveDraft() {
         title,
         description: document.getElementById('descriptionInput').value.trim(),
         category: document.getElementById('categorySelect').value,
+        subcategory: document.getElementById('subcategorySelect')?.value || '',
         contentType: document.getElementById('contentTypeSelect').value,
         imageUrl: document.getElementById('imageUrlInput').value,
         ogImagePrompt: document.getElementById('ogImagePrompt').value.trim(),
@@ -3573,6 +3182,7 @@ async function publishArticle() {
     const title = document.getElementById('titleInput').value.trim();
     const description = document.getElementById('descriptionInput').value.trim();
     const category = document.getElementById('categorySelect').value;
+    const subcategory = document.getElementById('subcategorySelect')?.value || '';
     const contentType = document.getElementById('contentTypeSelect').value;
     const imageUrl = document.getElementById('imageUrlInput').value.trim();
 
@@ -3585,7 +3195,8 @@ async function publishArticle() {
 
     if (!title) return showToast('Article Title is required.');
     if (!description) return showToast('Meta Description is required.');
-    if (!category) return showToast('Please select a category.');
+    if (!category) return showToast('Please select a primary category.');
+    if (!subcategory) return showToast('Please select a subcategory.');
 
     if (!CATEGORY_CONFIG[String(category).trim().toLowerCase()]) {
         showToast('This category is not part of Dyve Tech. Choose a valid Tech category.');
@@ -3629,6 +3240,7 @@ async function publishArticle() {
             tag: contentType || 'News',
             meta: category,
             category,
+            subcategory,
             date: today,
             page: 'tech',
             delta: deltaPathFor(articleUrl),
@@ -3667,6 +3279,7 @@ async function publishArticle() {
             finalImage,
             contentType || 'News',
             category,
+            subcategory,
             slug,
             today,
             articleHTML,
@@ -3777,6 +3390,9 @@ const ARTICLE_TEMPLATE_REQUIRED_TOKENS = [
     'DATE_MODIFIED',
     'PUBLISHER_NAME',
     'CATEGORY_LABEL_ATTR',
+    'SUBCATEGORY_LABEL_ATTR',
+    'CATEGORY_URL',
+    'SUBCATEGORY_URL',
     'ARTICLE_SCHEMA',
     'RELATED_SCHEMA',
     'TAG',
@@ -3829,14 +3445,18 @@ async function loadArticleTemplate(config) {
     return templateHTML;
 }
 
-async function generateTechArticleHTML(siteUrl, title, desc, image, tag, category, slug, date, articleHTML, ogPrompt = '', allArticles = [], seoMeta = {}, config = null) {
+async function generateTechArticleHTML(siteUrl, title, desc, image, tag, category, subcategory, slug, date, articleHTML, ogPrompt = '', allArticles = [], seoMeta = {}, config = null) {
     if (!config) {
         throw new Error('GitHub configuration is required to render the standalone Tech article template.');
     }
 
     const templateHTML = await loadArticleTemplate(config);
     const categoryMeta = getCategoryMeta(category);
+    const subcategoryMeta = getSubcategoryMeta(category, subcategory);
     const categoryLabel = categoryMeta.label;
+    const subcategoryLabel = subcategoryMeta.label;
+    const categoryUrl = `${siteUrl}/tech/${categoryMeta.route}/`;
+    const subcategoryUrl = `${categoryUrl}${subcategory}/`;
     const canonicalUrl = `${siteUrl}/tech/${slug}.html`;
 
     const effectiveSeoTitle = String(seoMeta.seoTitle || title).trim() || title;
@@ -3923,7 +3543,8 @@ async function generateTechArticleHTML(siteUrl, title, desc, image, tag, categor
             '@type': 'WebPage',
             '@id': canonicalUrl
         },
-        articleSection: categoryLabel,
+        articleSection: `${categoryLabel} > ${subcategoryLabel}`,
+        isPartOf: { '@type': 'CollectionPage', '@id': categoryUrl, name: categoryMeta.title, url: categoryUrl },
         keywords: uniqueKeywords.join(', '),
         ...(effectiveFocusKeyword
             ? { about: [{ '@type': 'Thing', name: effectiveFocusKeyword }] }
@@ -3982,6 +3603,10 @@ async function generateTechArticleHTML(siteUrl, title, desc, image, tag, categor
         tag,
         category,
         categoryLabel,
+        subcategory,
+        subcategoryLabel,
+        categoryUrl,
+        subcategoryUrl,
         slug,
         url: canonicalUrl,
         date,
@@ -4027,6 +3652,9 @@ async function generateTechArticleHTML(siteUrl, title, desc, image, tag, categor
         DATE_MODIFIED: escapeAttr(modifiedDate),
         PUBLISHER_NAME: escapeHtml(STATIC_BUILD_CONFIG.publisherName),
         CATEGORY_LABEL_ATTR: escapeAttr(categoryLabel),
+        SUBCATEGORY_LABEL_ATTR: escapeAttr(subcategoryLabel),
+        CATEGORY_URL: escapeAttr(categoryUrl),
+        SUBCATEGORY_URL: escapeAttr(subcategoryUrl),
         ARTICLE_SCHEMA: safeJson(schema),
         RELATED_SCHEMA: safeJson(relatedSchema),
         TAG: escapeHtml(tag),
@@ -4037,6 +3665,7 @@ async function generateTechArticleHTML(siteUrl, title, desc, image, tag, categor
         ARTICLE_BODY: articleBody,
         TAG_ESCAPED: escapeHtml(tag),
         CATEGORY_LABEL: escapeHtml(categoryLabel),
+        SUBCATEGORY_LABEL: escapeHtml(subcategoryLabel),
         CURRENT_YEAR: new Date().getFullYear(),
         ARTICLE_RUNTIME_JSON: safeJson(articleRuntimeData),
         RELATED_ARTICLES_JSON: safeJson(relatedData)
@@ -4168,6 +3797,10 @@ function runPublicationPreflight(){
     if(!selectedCategory)fail('Category','Select a publication category.');
     else if(!CATEGORY_CONFIG[selectedCategory])fail('Category','The selected category is not a valid Dyve Tech category.');
     else pass('Category',`Publication category "${selectedCategory}" is valid for Dyve Tech.`);
+    const selectedSubcategory=String(document.getElementById('subcategorySelect')?.value||'').trim().toLowerCase();
+    if(!selectedSubcategory)fail('Subcategory','Select a subsection within the primary category.');
+    else if(!CATEGORY_TAXONOMY[selectedCategory]?.subcategories?.[selectedSubcategory])fail('Subcategory','The selected subcategory is not valid for the chosen primary category.');
+    else pass('Subcategory',`Publication subsection "${getSubcategoryMeta(selectedCategory,selectedSubcategory).label}" is valid.`);
     if(!document.getElementById('contentTypeSelect').value)warn('Content type','Select News, Analysis, Guide, Tutorial, Review or Opinion.');
     if(!document.getElementById('imageUrlInput').value.trim())warn('Featured image','No custom featured image; the static builder will use its default image.');
     const score=Math.max(0,Math.min(100,Math.round(checks.reduce((t,i)=>t+(i.type==='pass'?1:i.type==='warn'?.45:0),0)/Math.max(1,checks.length)*100)));
@@ -4489,9 +4122,20 @@ function setupFab() {
 document.addEventListener('DOMContentLoaded', () => {
     initQuill();
     setupFab();
+    syncSubcategorySelect('');
 
     checkGitHubConnection();
     checkGroqConnection();
+
+    document.getElementById('categorySelect').addEventListener('change', e => {
+        syncSubcategorySelect(e.target.value, '');
+        autoSaveDraft();
+        if (lastPreflight) runPublicationPreflight();
+    });
+    document.getElementById('subcategorySelect')?.addEventListener('change', () => {
+        autoSaveDraft();
+        if (lastPreflight) runPublicationPreflight();
+    });
 
     document.getElementById('titleInput').addEventListener('input', e => {
         document.getElementById('slugPreview').textContent =
