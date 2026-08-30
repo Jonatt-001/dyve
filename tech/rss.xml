@@ -5,10 +5,22 @@
     <link>https://dyve.online/tech/</link>
     <description>Technology news, analysis and intelligence from Dyve Tech.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 30 Aug 2026 15:58:30 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 30 Aug 2026 16:07:59 GMT</lastBuildDate>
     <generator>Dyve Tech Editorial Publisher</generator>
     <atom:link href="https://dyve.online/tech/rss.xml" rel="self" type="application/rss+xml" />
 
+    <item>
+        <title>ownCloud Flaw Exploited to Steal Nuclear Records</title>
+        <link>https://dyve.online/tech/owncloud-flaw-exploited-to-steal-nuclear-records.html</link>
+        <guid isPermaLink="true">https://dyve.online/tech/owncloud-flaw-exploited-to-steal-nuclear-records.html</guid>
+        <description>ownCloud Flaw Exploited to Steal Nuclear Records: Cybersecurity and Infrastructure Security Agency (CISA) on Thursday added a critical security flaw impactin...</description>
+        <pubDate>Sun, 30 Aug 2026 16:07:57 GMT</pubDate>
+        <dc:creator>Dyve Tech Editorial Unit</dc:creator>
+        <category>Tech Trends</category>
+        <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788105623/dyve-tech/owncloud-flaw-exploited-to-steal-nuclear-records-from-philippine-research-body-featured.jpg" medium="image" />
+        <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788105623/dyve-tech/owncloud-flaw-exploited-to-steal-nuclear-records-from-philippine-research-body-featured.jpg" />
+        <content:encoded><![CDATA[<p>ownCloud Flaw Exploited to Steal Nuclear Records: Cybersecurity and Infrastructure Security Agency (CISA) on Thursday added a critical security flaw impactin...</p>]]></content:encoded>
+    </item>
     <item>
         <title>Nigerian Army X Account Targeted in Cyberattack</title>
         <link>https://dyve.online/tech/nigerian-army-x-account-targeted-in-cyberattack.html</link>
