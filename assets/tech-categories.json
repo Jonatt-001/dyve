@@ -1,0 +1,367 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "tech",
+      "label": "Tech",
+      "title": "Tech News & Intelligence",
+      "description": "Technology news, software, artificial intelligence, computing, developer tools, mobile technology, cloud platforms and emerging technology.",
+      "subcategories": [
+        {
+          "id": "artificial-intelligence",
+          "label": "Artificial Intelligence",
+          "keywords": [
+            "ai",
+            "artificial intelligence",
+            "machine learning",
+            "llm",
+            "generative ai",
+            "agentic ai",
+            "ai agents",
+            "neural network",
+            "model"
+          ]
+        },
+        {
+          "id": "software",
+          "label": "Software",
+          "keywords": [
+            "software",
+            "app",
+            "application",
+            "operating system",
+            "platform",
+            "saas"
+          ]
+        },
+        {
+          "id": "developer-tools",
+          "label": "Developer Tools",
+          "keywords": [
+            "developer tool",
+            "sdk",
+            "api",
+            "framework",
+            "library",
+            "ide",
+            "developer platform"
+          ]
+        },
+        {
+          "id": "coding-programming",
+          "label": "Coding & Programming",
+          "keywords": [
+            "coding",
+            "programming",
+            "programming language",
+            "javascript",
+            "python",
+            "typescript",
+            "php",
+            "compiler",
+            "repository"
+          ]
+        },
+        {
+          "id": "developers-engineering",
+          "label": "Developers & Engineering",
+          "keywords": [
+            "developer",
+            "software engineer",
+            "engineering",
+            "devops",
+            "developer workflow",
+            "software development"
+          ]
+        },
+        {
+          "id": "hardware-computing",
+          "label": "Hardware & Computing",
+          "keywords": [
+            "hardware",
+            "processor",
+            "cpu",
+            "gpu",
+            "computer",
+            "computing",
+            "chip",
+            "semiconductor",
+            "server"
+          ]
+        },
+        {
+          "id": "mobile-technology",
+          "label": "Mobile Technology",
+          "keywords": [
+            "mobile",
+            "smartphone",
+            "android",
+            "ios",
+            "iphone",
+            "mobile app",
+            "tablet"
+          ]
+        },
+        {
+          "id": "gadgets-devices",
+          "label": "Gadgets & Devices",
+          "keywords": [
+            "gadget",
+            "wearable",
+            "device",
+            "smartwatch",
+            "earbuds",
+            "consumer electronics"
+          ]
+        },
+        {
+          "id": "cloud-infrastructure",
+          "label": "Cloud & Infrastructure",
+          "keywords": [
+            "cloud",
+            "aws",
+            "azure",
+            "google cloud",
+            "infrastructure",
+            "serverless",
+            "kubernetes",
+            "data center"
+          ]
+        },
+        {
+          "id": "startups-industry",
+          "label": "Startups & Industry",
+          "keywords": [
+            "startup",
+            "venture",
+            "funding",
+            "acquisition",
+            "technology company",
+            "industry",
+            "ipo"
+          ]
+        },
+        {
+          "id": "emerging-technology",
+          "label": "Emerging Technology",
+          "keywords": [
+            "emerging technology",
+            "quantum",
+            "robotics",
+            "spatial computing",
+            "blockchain",
+            "web3",
+            "future technology"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cyber-news",
+      "label": "Cyber News",
+      "title": "Cyber News & Security Intelligence",
+      "description": "Cybersecurity news covering attacks, breaches, vulnerabilities, malware, threat actors, privacy and digital defense.",
+      "subcategories": [
+        {
+          "id": "attacks-breaches",
+          "label": "Attacks & Breaches",
+          "keywords": [
+            "cyberattack",
+            "attack",
+            "breach",
+            "hacked",
+            "compromised",
+            "intrusion"
+          ]
+        },
+        {
+          "id": "ransomware",
+          "label": "Ransomware",
+          "keywords": [
+            "ransomware",
+            "extortion",
+            "double extortion",
+            "encrypt files"
+          ]
+        },
+        {
+          "id": "vulnerabilities-exploits",
+          "label": "Vulnerabilities & Exploits",
+          "keywords": [
+            "vulnerability",
+            "cve",
+            "exploit",
+            "zero-day",
+            "zero day",
+            "patch"
+          ]
+        },
+        {
+          "id": "threat-actors",
+          "label": "Threat Actors",
+          "keywords": [
+            "threat actor",
+            "hacker group",
+            "cybercriminal",
+            "apt",
+            "criminal group"
+          ]
+        },
+        {
+          "id": "malware-phishing",
+          "label": "Malware & Phishing",
+          "keywords": [
+            "malware",
+            "trojan",
+            "infostealer",
+            "phishing",
+            "botnet",
+            "spyware"
+          ]
+        },
+        {
+          "id": "data-leaks-privacy",
+          "label": "Data Leaks & Privacy",
+          "keywords": [
+            "data leak",
+            "data breach",
+            "exposed data",
+            "privacy",
+            "credentials",
+            "passwords",
+            "personal data"
+          ]
+        },
+        {
+          "id": "identity-fraud",
+          "label": "Identity & Fraud",
+          "keywords": [
+            "identity theft",
+            "fraud",
+            "account takeover",
+            "scam",
+            "financial fraud"
+          ]
+        },
+        {
+          "id": "cyber-defense",
+          "label": "Cyber Defense",
+          "keywords": [
+            "cyber defense",
+            "security product",
+            "security update",
+            "incident response",
+            "defense",
+            "soc"
+          ]
+        },
+        {
+          "id": "cyber-policy",
+          "label": "Cyber Policy & Regulation",
+          "keywords": [
+            "cyber policy",
+            "cyber law",
+            "regulation",
+            "cybersecurity agency",
+            "government cybersecurity"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "global-intelligence",
+      "label": "Global Intelligence",
+      "title": "Global Intelligence & Digital Risk",
+      "description": "Global intelligence on geopolitical technology risk, state activity, espionage, critical infrastructure and emerging digital threats.",
+      "subcategories": [
+        {
+          "id": "geopolitics-technology",
+          "label": "Geopolitics & Technology",
+          "keywords": [
+            "geopolitics",
+            "geopolitical",
+            "technology policy",
+            "tech rivalry",
+            "strategic competition"
+          ]
+        },
+        {
+          "id": "state-nation-threats",
+          "label": "State & Nation Threats",
+          "keywords": [
+            "nation state",
+            "state-sponsored",
+            "government-backed",
+            "state actor",
+            "national security"
+          ]
+        },
+        {
+          "id": "digital-espionage",
+          "label": "Digital Espionage",
+          "keywords": [
+            "espionage",
+            "cyber espionage",
+            "spying",
+            "intelligence operation",
+            "surveillance"
+          ]
+        },
+        {
+          "id": "critical-infrastructure",
+          "label": "Critical Infrastructure",
+          "keywords": [
+            "critical infrastructure",
+            "power grid",
+            "telecom",
+            "water system",
+            "transportation infrastructure"
+          ]
+        },
+        {
+          "id": "disinformation-influence",
+          "label": "Disinformation & Influence",
+          "keywords": [
+            "disinformation",
+            "misinformation",
+            "influence operation",
+            "information warfare",
+            "propaganda"
+          ]
+        },
+        {
+          "id": "surveillance-intelligence",
+          "label": "Surveillance & Intelligence",
+          "keywords": [
+            "surveillance",
+            "intelligence",
+            "signals intelligence",
+            "osint",
+            "reconnaissance"
+          ]
+        },
+        {
+          "id": "global-risk-security",
+          "label": "Global Risk & Security",
+          "keywords": [
+            "global risk",
+            "security risk",
+            "national security",
+            "digital risk",
+            "threat assessment"
+          ]
+        },
+        {
+          "id": "emerging-threats",
+          "label": "Emerging Threats",
+          "keywords": [
+            "emerging threat",
+            "future threat",
+            "hybrid threat",
+            "strategic threat"
+          ]
+        }
+      ]
+    }
+  ]
+}

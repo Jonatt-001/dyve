@@ -1,13 +1,46 @@
 [
   {
+    "title": "GTA 6 Takes Around 80 Hours To Complete, Says Developer",
+    "desc": "GTA 6 Takes Around 80 Hours To Complete, Says Developer: Rockstar North co-studio head Rob Nelson has given us the first real number on GTA 6's length",
+    "image": "https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788126451/dyve-tech/gta-6-takes-around-80-hours-to-complete-says-developer-featured.jpg",
+    "imageAlt": "Rockstar North co-studio head Rob Nelson has given us the first real number on GTA 6's length. Nelson told The New York Times that his ow...",
+    "url": "tech/gta-6-takes-around-80-hours-to-complete-says-developer.html",
+    "tag": "News Report",
+    "contentType": "News Report",
+    "meta": "tech",
+    "category": "tech",
+    "subcategory": "software",
+    "date": "2026-08-30",
+    "page": "tech",
+    "delta": "assets/deltas/tech-gta-6-takes-around-80-hours-to-complete-says-developer.json",
+    "readTime": 1,
+    "author": "Dyve Tech Editorial Unit",
+    "modified": "2026-08-30T21:48:05.081Z",
+    "createdAt": "2026-08-30T21:48:05.081Z",
+    "seoTitle": "GTA 6 Takes Around 80 Hours To Complete, Says Developer",
+    "focusKeyword": "rockstar",
+    "keywords": [
+      "rockstar",
+      "north",
+      "co-studio",
+      "head",
+      "nelson",
+      "given",
+      "first",
+      "real"
+    ],
+    "sourceUrl": "",
+    "ogPrompt": "Modern technology visualization of GTA 6 Takes Around 80 Hours To Complete, Says Developer. Focus on rockstar,north,co-studio,head,nelson,given,first,real. Editorial, premium, high-tech aesthetic, clean composition, no text."
+  },
+  {
     "title": "Claude Code Can Be Tricked Into Running Malicious Code",
     "desc": "Claude Code Can Be Tricked Into Running Malicious Code: A malicious website, a poisoned Python module and a seemingly harmless request to “summarize this pag...",
     "image": "https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788053571/dyve-tech/claude-codes-auto-mode-was-designed-to-stop-prompt-injection-a-researcher-found-a-way-around-it-featured.jpg",
     "imageAlt": "A malicious website, a poisoned Python module and a seemingly harmless request to “summarize this page” were enough to turn an AI coding...",
     "url": "tech/claude-code-can-be-tricked-into-running-malicious-code.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-30",
     "page": "tech",
     "delta": "assets/deltas/tech-claude-code-can-be-tricked-into-running-malicious-code.json",
@@ -19,7 +52,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Nigerian Army X Account Targeted in Cyberattack",
@@ -28,8 +63,8 @@
     "imageAlt": "Nigerian Army X Account Targeted in Cyberattack, Suspicious Posts Trigger Warning",
     "url": "tech/nigerian-army-x-account-targeted-in-cyberattack.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-30",
     "page": "tech",
     "delta": "assets/deltas/tech-nigerian-army-x-account-targeted-in-cyberattack.json",
@@ -41,7 +76,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "ownCloud Flaw Exploited to Steal Nuclear Records",
@@ -50,8 +87,8 @@
     "imageAlt": "The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Thursday added a critical security flaw impacting ownCloud to its Kno...",
     "url": "tech/owncloud-flaw-exploited-to-steal-nuclear-records.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-30",
     "page": "tech",
     "delta": "assets/deltas/tech-owncloud-flaw-exploited-to-steal-nuclear-records.json",
@@ -63,7 +100,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "WhatsApp chat used to send cash for crime and extremism",
@@ -72,8 +111,8 @@
     "imageAlt": "A WhatsApp group chat was used to send hundreds of millions of euros in cash around the world, funding organised crime and extremism with...",
     "url": "tech/whatsapp-chat-used-to-send-cash-for-crime-and-extremism.html",
     "tag": "Technology",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-30",
     "page": "tech",
     "delta": "assets/deltas/tech-whatsapp-chat-used-to-send-cash-for-crime-and-extremism.json",
@@ -85,7 +124,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Technology",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Five Critical WordPress Plugin and Theme Flaws Enable Site Takeover or RCE",
@@ -94,8 +135,8 @@
     "imageAlt": "Multiple critical security flaws have been disclosed in WordPress plugins and themes, including WPMU DEV Dashboard, Avada, TranslatePress...",
     "url": "tech/five-critical-wordpress-plugin-and-theme-flaws-enable-site-takeover-or-rce.html",
     "tag": "Developer Tools",
-    "meta": "tools",
-    "category": "tools",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-29",
     "page": "tech",
     "delta": "assets/deltas/tech-five-critical-wordpress-plugin-and-theme-flaws-enable-site-takeover-or-rce.json",
@@ -107,7 +148,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Developer Tools",
+    "subcategory": "developer-tools"
   },
   {
     "title": "Nigeria Under Cyber Threat: Major Cyber Breaches and Attacks Making Headlines in 2026",
@@ -116,8 +159,8 @@
     "imageAlt": "The Corporate Affairs Commission Data Breach Investigation",
     "url": "tech/nigeria-under-cyber-threat-major-cyber-breaches-and-attacks-making-headlines-in-2026.html",
     "tag": "Tutorials & Guides",
-    "meta": "tutorials",
-    "category": "tutorials",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-29",
     "page": "tech",
     "delta": "assets/deltas/tech-nigeria-under-cyber-threat-major-cyber-breaches-and-attacks-making-headlines-in-2026.json",
@@ -129,7 +172,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tutorials & Guides",
+    "subcategory": "developer-tools"
   },
   {
     "title": "OpenAI slows down training after its AI carried out hack",
@@ -138,8 +183,8 @@
     "imageAlt": "'Unprecedented' cyber-attack",
     "url": "tech/openai-slows-down-training-after-its-ai-carried-out-hack.html",
     "tag": "Artificial Intelligence",
-    "meta": "ai",
-    "category": "ai",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-21",
     "page": "tech",
     "delta": "assets/deltas/tech-openai-slows-down-training-after-its-ai-carried-out-hack.json",
@@ -151,7 +196,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Artificial Intelligence",
+    "subcategory": "artificial-intelligence"
   },
   {
     "title": "Google unveils 12-month free AI offer for Nigerian students",
@@ -160,8 +207,8 @@
     "imageAlt": "Google unveils 12-month free AI offer for Nigerian students: Google has launched a new initiative...",
     "url": "tech/google-unveils-12-month-free-ai-offer-for-nigerian-students.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-20",
     "page": "tech",
     "delta": "assets/deltas/tech-google-unveils-12-month-free-ai-offer-for-nigerian-students.json",
@@ -173,7 +220,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Hacker claims 3.6 million Azure account records stolen from major companies",
@@ -182,8 +231,8 @@
     "imageAlt": "Hacker claims 3.6 million Azure account records stolen from major companies: threat actor is sell...",
     "url": "tech/hacker-claims-36-million-azure-account-records-stolen-from-major-companies.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-19",
     "page": "tech",
     "delta": "assets/deltas/tech-hacker-claims-36-million-azure-account-records-stolen-from-major-companies.json",
@@ -195,7 +244,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "FINALLY : GitHub restores services after nearly 8hrs",
@@ -204,8 +255,8 @@
     "imageAlt": "GitHub restores services after nearly 8-hour outage disrupts Actions, APIs, PRs and Copilot: GitH...",
     "url": "tech/finally-github-restores-services-after-nearly-8hrs.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-18",
     "page": "tech",
     "delta": "assets/deltas/tech-finally-github-restores-services-after-nearly-8hrs.json",
@@ -217,7 +268,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "5 developer tools I use every day, and none of them write code",
@@ -226,8 +279,8 @@
     "imageAlt": "5 developer tools I use every day, and none of them write code: I spend a lot of time around code...",
     "url": "tech/5-developer-tools-i-use-every-day-and-none-of-them-write-code.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-16",
     "page": "tech",
     "delta": "assets/deltas/tech-5-developer-tools-i-use-every-day-and-none-of-them-write-code.json",
@@ -239,7 +292,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Gemini 3.7 Flash vs 3.6 Flash: What’s New for Developers",
@@ -248,8 +303,8 @@
     "imageAlt": "Gemini 3.7 Flash vs 3.6 Flash: What’s New for Developers: Google has officially released Gemini 3",
     "url": "tech/gemini-37-flash-vs-36-flash-whats-new-for-developers.html",
     "tag": "Artificial Intelligence",
-    "meta": "ai",
-    "category": "ai",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-16",
     "page": "tech",
     "delta": "assets/deltas/tech-gemini-37-flash-vs-36-flash-whats-new-for-developers.json",
@@ -261,7 +316,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Artificial Intelligence",
+    "subcategory": "artificial-intelligence"
   },
   {
     "title": "Nigeria Records 4,975 Weekly Cyberattacks as Ransomware Victims Surge 87%",
@@ -270,8 +327,8 @@
     "imageAlt": "Nigeria Records 4,975 Weekly Cyberattacks as Ransomware Victims Surge 87%: Nigeria recorded an av...",
     "url": "tech/nigeria-records-4975-weekly-cyberattacks-as-ransomware-victims-surge-87.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-16",
     "page": "tech",
     "delta": "assets/deltas/tech-nigeria-records-4975-weekly-cyberattacks-as-ransomware-victims-surge-87.json",
@@ -283,7 +340,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "OpenAI’s $6.5 Billion Bet",
@@ -292,8 +351,8 @@
     "imageAlt": "OpenAI’s $6.5 Billion Bet : 5 Billion Bet on Jony Ive Reveals the Skill Technology Can’t ReplaceS...",
     "url": "tech/openais-65-billion-bet.html",
     "tag": "Artificial Intelligence",
-    "meta": "ai",
-    "category": "ai",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-16",
     "page": "tech",
     "delta": "assets/deltas/tech-openais-65-billion-bet.json",
@@ -305,7 +364,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Artificial Intelligence",
+    "subcategory": "artificial-intelligence"
   },
   {
     "title": "Why AI Agents & ML Workflows Need a Durable AI Runtime",
@@ -314,8 +375,8 @@
     "imageAlt": "Tech Article: The Death of the Static Pipeline: Why AI Agents and ML Workflows Need a Durable AI...",
     "url": "tech/why-ai-agents-ml-workflows-need-a-durable-ai-runtime.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-15",
     "page": "tech",
     "delta": "assets/deltas/tech-why-ai-agents-ml-workflows-need-a-durable-ai-runtime.json",
@@ -327,7 +388,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Why Your AI Coding Agent Keeps Breaking Production (And How  git blame Can Stop It)",
@@ -336,8 +399,8 @@
     "imageAlt": "Why Your AI Coding Agent Keeps Breaking Production (And How git blame Can Stop It): AI coding age...",
     "url": "tech/why-your-ai-coding-agent-keeps-breaking-production-and-how-git-blame-can-stop-it.html",
     "tag": "Artificial Intelligence",
-    "meta": "ai",
-    "category": "ai",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-15",
     "page": "tech",
     "delta": "assets/deltas/tech-why-your-ai-coding-agent-keeps-breaking-production-and-how-git-blame-can-stop-it.json",
@@ -349,7 +412,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Artificial Intelligence",
+    "subcategory": "artificial-intelligence"
   },
   {
     "title": "Apple Submits Proposal for Commissions on External Links",
@@ -358,8 +423,8 @@
     "imageAlt": "Apple  submits proposal for commissions on external links. Apple has finally submitted its propos...",
     "url": "tech/apple-submits-proposal-for-commissions-on-external-links.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-14",
     "page": "tech",
     "delta": "assets/deltas/tech-apple-submits-proposal-for-commissions-on-external-links.json",
@@ -371,7 +436,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Commerzbank Cybercrime: €30 Million Stolen",
@@ -380,8 +447,8 @@
     "imageAlt": "Latest on commerzbank cybercrime: €30 million stolen. A recent cybercrime operation has led to th...",
     "url": "tech/commerzbank-cybercrime-30-million-stolen.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-14",
     "page": "tech",
     "delta": "assets/deltas/tech-commerzbank-cybercrime-30-million-stolen.json",
@@ -393,7 +460,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Facebook's Creator Studio App: AI-Powered Tools for Content Creators",
@@ -402,8 +471,8 @@
     "imageAlt": "Facebook launches Creator Studio app with AI-powered tools for creators",
     "url": "tech/facebooks-creator-studio-app-ai-powered-tools-for-content-creators.html",
     "tag": "Artificial Intelligence",
-    "meta": "ai",
-    "category": "ai",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-13",
     "page": "tech",
     "delta": "assets/deltas/tech-facebooks-creator-studio-app-ai-powered-tools-for-content-creators.json",
@@ -415,7 +484,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Artificial Intelligence",
+    "subcategory": "artificial-intelligence"
   },
   {
     "title": "Massive Credential Leak Exposes 12M Accounts Across Dark Web Markets",
@@ -424,8 +495,8 @@
     "imageAlt": "A coordinated breach operation has surfaced millions of credentials across underground forums.",
     "url": "tech/article-credential-leak.html",
     "tag": "Breach Intel",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-12",
     "page": "tech",
     "delta": "assets/deltas/tech-article-credential-leak.json",
@@ -437,7 +508,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Breach Intel",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Credential Stuffing Attacks Explained",
@@ -446,8 +519,8 @@
     "imageAlt": "How hackers turn leaked passwords into large-scale account takeovers.",
     "url": "tech/article-credential-stuffing.html",
     "tag": "Deep Dive Analysis",
-    "meta": "analysis",
-    "category": "analysis",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-12",
     "page": "tech",
     "delta": "assets/deltas/tech-article-credential-stuffing.json",
@@ -459,7 +532,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Deep Dive Analysis",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Data Breach Response Playbook (2026)",
@@ -468,8 +543,8 @@
     "imageAlt": "Step-by-step incident response strategy for modern cyber attacks.",
     "url": "tech/article-data-breach-response.html",
     "tag": "Deep Dive Analysis",
-    "meta": "analysis",
-    "category": "analysis",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-12",
     "page": "tech",
     "delta": "assets/deltas/tech-article-data-breach-response.json",
@@ -481,7 +556,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Deep Dive Analysis",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Encrypted Messaging Platform Exploited for Data Exfiltration",
@@ -490,8 +567,8 @@
     "imageAlt": "Threat actors leverage encrypted channels for covert data movement.",
     "url": "tech/article-exfiltration.html",
     "tag": "Dark Web",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-12",
     "page": "tech",
     "delta": "assets/deltas/tech-article-exfiltration.json",
@@ -503,7 +580,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Dark Web",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Zero-Day Vulnerability Discovered in Authentication API",
@@ -512,8 +591,8 @@
     "imageAlt": "A critical zero-day flaw enables authentication bypass and session hijacking.",
     "url": "tech/article-zero-day.html",
     "tag": "Breach Intel",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-12",
     "page": "tech",
     "delta": "assets/deltas/tech-article-zero-day.json",
@@ -525,7 +604,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Breach Intel",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "What Hackers Buy on the Dark Web (Access, Exploits, Data)",
@@ -534,8 +615,8 @@
     "imageAlt": "Inside the hacker economy: credentials, exploits, and access trading.",
     "url": "tech/dark-web-hacker-economy.html",
     "tag": "Dark Web",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-12",
     "page": "tech",
     "delta": "assets/deltas/tech-dark-web-hacker-economy.json",
@@ -547,7 +628,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Dark Web",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "How the Dark Web Actually Works (Tor, Onion Routing, Encryption)",
@@ -556,8 +639,8 @@
     "imageAlt": "Technical breakdown of Tor, hidden services, and layered encryption systems.",
     "url": "tech/dark-web-how-it-works.html",
     "tag": "Dark Web",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-12",
     "page": "tech",
     "delta": "assets/deltas/tech-dark-web-how-it-works.json",
@@ -569,7 +652,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Dark Web",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Dark Web Marketplaces Explained (Vendors, Escrow, Trade Systems)",
@@ -578,8 +663,8 @@
     "imageAlt": "How underground marketplaces operate, including trust systems and transactions.",
     "url": "tech/dark-web-marketplaces.html",
     "tag": "Dark Web",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-12",
     "page": "tech",
     "delta": "assets/deltas/tech-dark-web-marketplaces.json",
@@ -591,7 +676,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Dark Web",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Dark Web Monitoring Systems (How Organizations Track Threats)",
@@ -600,8 +687,8 @@
     "imageAlt": "How companies detect leaks, threats, and attack planning in real time.",
     "url": "tech/dark-web-monitoring.html",
     "tag": "Dark Web",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-12",
     "page": "tech",
     "delta": "assets/deltas/tech-dark-web-monitoring.json",
@@ -613,7 +700,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Dark Web",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Is the Dark Web Dangerous? Risks, Myths & Reality",
@@ -622,8 +711,8 @@
     "imageAlt": "Separating myths from reality and understanding actual risks.",
     "url": "tech/dark-web-risks.html",
     "tag": "Dark Web",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-12",
     "page": "tech",
     "delta": "assets/deltas/tech-dark-web-risks.json",
@@ -635,7 +724,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Dark Web",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Dark Web Secrets: What Really Happens Beyond the Surface Web",
@@ -644,8 +735,8 @@
     "imageAlt": "Inside the hidden internet: marketplaces, threat actors, and cyber intelligence systems.",
     "url": "tech/dark-web.html",
     "tag": "Dark Web",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-12",
     "page": "tech",
     "delta": "assets/deltas/tech-dark-web.json",
@@ -657,7 +748,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Dark Web",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "How to Effectively Deploy Code With Claude Code",
@@ -666,8 +759,8 @@
     "imageAlt": "Now that we have coding agents writing most, if not all, of the code that is used for different a...",
     "url": "tech/how-to-effectively-deploy-code-with-claude-code.html",
     "tag": "Developer Tools",
-    "meta": "tools",
-    "category": "tools",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-12",
     "page": "tech",
     "delta": "assets/deltas/tech-how-to-effectively-deploy-code-with-claude-code.json",
@@ -679,7 +772,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Developer Tools",
+    "subcategory": "developer-tools"
   },
   {
     "title": "API Server: Explained like Never Before (Episode 4)",
@@ -688,8 +783,8 @@
     "imageAlt": "Discover insights on api server: explained like never before (episode 4). Welcome to Episode 4 of K8",
     "url": "tech/api-server-explained-like-never-before-episode-4.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-08",
     "page": "tech",
     "delta": "assets/deltas/tech-api-server-explained-like-never-before-episode-4.json",
@@ -701,7 +796,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Cloudflare Wallets Will Let AI Agents Pay for APIs Safely Online",
@@ -710,8 +807,8 @@
     "imageAlt": "Cloudflare is building programmable wallets that let AI agents pay for APIs, data and online content",
     "url": "tech/cloudflare-wallets-will-let-ai-agents-pay-for-apis-safely-online.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-08",
     "page": "tech",
     "delta": "assets/deltas/tech-cloudflare-wallets-will-let-ai-agents-pay-for-apis-safely-online.json",
@@ -723,7 +820,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Elon Musk says Starship Flight 13 recovery ‘not looking good’ despite successful splashdown",
@@ -732,8 +831,8 @@
     "imageAlt": "SpaceX's attempt to recover its Flight 13 Starship from the Indian Ocean is facing fresh challenges,",
     "url": "tech/elon-musk-says-starship-flight-13-recovery-not-looking-good-despite-successful-splashdown.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-08",
     "page": "tech",
     "delta": "assets/deltas/tech-elon-musk-says-starship-flight-13-recovery-not-looking-good-despite-successful-splashdown.json",
@@ -745,7 +844,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "HM...",
@@ -754,8 +855,8 @@
     "imageAlt": "Discover insights on hm.... . Learn more with Dyve Tech.",
     "url": "tech/hm.html",
     "tag": "Artificial Intelligence",
-    "meta": "ai",
-    "category": "ai",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-08",
     "page": "tech",
     "delta": "assets/deltas/tech-hm.json",
@@ -767,7 +868,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Artificial Intelligence",
+    "subcategory": "artificial-intelligence"
   },
   {
     "title": "HMkk",
@@ -776,8 +879,8 @@
     "imageAlt": "Discover insights on hmkk. . Learn more with Dyve Tech.",
     "url": "tech/hmkk.html",
     "tag": "Artificial Intelligence",
-    "meta": "ai",
-    "category": "ai",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-08",
     "page": "tech",
     "delta": "assets/deltas/tech-hmkk.json",
@@ -789,7 +892,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Artificial Intelligence",
+    "subcategory": "artificial-intelligence"
   },
   {
     "title": "HMkllkk",
@@ -798,8 +903,8 @@
     "imageAlt": "Discover insights on hmkllkk. . Learn more with Dyve Tech.",
     "url": "tech/hmkllkk.html",
     "tag": "Coding",
-    "meta": "coding",
-    "category": "coding",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-08",
     "page": "tech",
     "delta": "assets/deltas/tech-hmkllkk.json",
@@ -811,7 +916,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Coding",
+    "subcategory": "coding-programming"
   },
   {
     "title": "Just tedt",
@@ -820,8 +927,8 @@
     "imageAlt": "Discover insights on just tedt. . Learn more with Dyve Tech.",
     "url": "tech/just-tedt.html",
     "tag": "Developer Tools",
-    "meta": "tools",
-    "category": "tools",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-08",
     "page": "tech",
     "delta": "assets/deltas/tech-just-tedt.json",
@@ -833,7 +940,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Developer Tools",
+    "subcategory": "developer-tools"
   },
   {
     "title": "Llll",
@@ -842,8 +951,8 @@
     "imageAlt": "Discover insights on llll. . Learn more with Dyve Tech.",
     "url": "tech/llll.html",
     "tag": "Artificial Intelligence",
-    "meta": "ai",
-    "category": "ai",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-08",
     "page": "tech",
     "delta": "assets/deltas/tech-llll.json",
@@ -855,7 +964,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Artificial Intelligence",
+    "subcategory": "artificial-intelligence"
   },
   {
     "title": "Neeww",
@@ -864,8 +975,8 @@
     "imageAlt": "Discover insights on neeww. . Learn more with Dyve Tech.",
     "url": "tech/neeww.html",
     "tag": "Artificial Intelligence",
-    "meta": "ai",
-    "category": "ai",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-08",
     "page": "tech",
     "delta": "assets/deltas/tech-neeww.json",
@@ -877,7 +988,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Artificial Intelligence",
+    "subcategory": "artificial-intelligence"
   },
   {
     "title": "Ransomware Attacks Surge 20% in July: What You Need to Know",
@@ -886,8 +999,8 @@
     "imageAlt": "Ransomware attacks have seen a significant surge, with a nearly 20 percent increase in July, accordi",
     "url": "tech/ransomware-attacks-surge-20-in-july-what-you-need-to-know.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-08",
     "page": "tech",
     "delta": "assets/deltas/tech-ransomware-attacks-surge-20-in-july-what-you-need-to-know.json",
@@ -899,7 +1012,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Tertiary",
@@ -908,8 +1023,8 @@
     "imageAlt": "Test running",
     "url": "tech/tertiary.html",
     "tag": "Tutorials",
-    "meta": "tutorials",
-    "category": "tutorials",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-08",
     "page": "tech",
     "delta": "assets/deltas/tech-tertiary.json",
@@ -921,7 +1036,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tutorials",
+    "subcategory": "developer-tools"
   },
   {
     "title": "Cloudflare launches Kitesurf, a browser built for AI agents",
@@ -930,8 +1047,8 @@
     "imageAlt": "Discover insights on cloudflare launches kitesurf, a browser built for ai agents. Cloudflare is the",
     "url": "tech/cloudflare-launches-kitesurf-a-browser-built-for-ai-agents.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-07",
     "page": "tech",
     "delta": "assets/deltas/tech-cloudflare-launches-kitesurf-a-browser-built-for-ai-agents.json",
@@ -943,7 +1060,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Cloudflare open-sources vibe-coding platform for people who aren’t coders",
@@ -952,8 +1071,8 @@
     "imageAlt": "Discover insights on cloudflare open-sources vibe-coding platform for people who aren’t coders. Clou",
     "url": "tech/cloudflare-open-sources-vibe-coding-platform-for-people-who-arent-coders.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-07",
     "page": "tech",
     "delta": "assets/deltas/tech-cloudflare-open-sources-vibe-coding-platform-for-people-who-arent-coders.json",
@@ -965,7 +1084,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Europe Finalizes Ambitious Plans for IRIS²: The EU’s ‘Sovereign’ Starlink Competitor",
@@ -974,8 +1095,8 @@
     "imageAlt": "Are we about to witness a new space race for global internet supremacy? The European Union has offic",
     "url": "tech/europe-finalizes-ambitious-plans-for-iris-the-eus-sovereign-starlink-competitor.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-07",
     "page": "tech",
     "delta": "assets/deltas/tech-europe-finalizes-ambitious-plans-for-iris-the-eus-sovereign-starlink-competitor.json",
@@ -987,7 +1108,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT‑5.6 Luna for free users",
@@ -996,8 +1119,8 @@
     "imageAlt": "Discover insights on improving gpt‑5.6 sol in chatgpt—and expanding access to gpt‑5.6 luna for free",
     "url": "tech/improving-gpt56-sol-in-chatgptand-expanding-access-to-gpt56-luna-for-free-users.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-07",
     "page": "tech",
     "delta": "assets/deltas/tech-improving-gpt56-sol-in-chatgptand-expanding-access-to-gpt56-luna-for-free-users.json",
@@ -1009,7 +1132,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Mark Zuckerberg predicts that billions of people will have personal AI agents in five years",
@@ -1018,8 +1143,8 @@
     "imageAlt": "Discover insights on mark zuckerberg predicts that billions of people will have personal ai agents i",
     "url": "tech/mark-zuckerberg-predicts-that-billions-of-people-will-have-personal-ai-agents-in-five-years.html",
     "tag": "Artificial Intelligence",
-    "meta": "ai",
-    "category": "ai",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-07",
     "page": "tech",
     "delta": "assets/deltas/tech-mark-zuckerberg-predicts-that-billions-of-people-will-have-personal-ai-agents-in-five-years.json",
@@ -1031,7 +1156,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Artificial Intelligence",
+    "subcategory": "artificial-intelligence"
   },
   {
     "title": "Responding to the next frontier of critical cyber capabilities",
@@ -1040,8 +1167,8 @@
     "imageAlt": "Cybersecurity is rapidly changing as models become more capable in ways that can both strengthen cyb",
     "url": "tech/responding-to-the-next-frontier-of-critical-cyber-capabilities.html",
     "tag": "Artificial Intelligence",
-    "meta": "ai",
-    "category": "ai",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-07",
     "page": "tech",
     "delta": "assets/deltas/tech-responding-to-the-next-frontier-of-critical-cyber-capabilities.json",
@@ -1053,7 +1180,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Artificial Intelligence",
+    "subcategory": "artificial-intelligence"
   },
   {
     "title": "Apple issues new challenge against UK order for access to private user data",
@@ -1062,8 +1191,8 @@
     "imageAlt": "Discover insights on apple issues new challenge against uk order for access to private user data. Th",
     "url": "tech/apple-issues-new-challenge-against-uk-order-for-access-to-private-user-data.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-04",
     "page": "tech",
     "delta": "assets/deltas/tech-apple-issues-new-challenge-against-uk-order-for-access-to-private-user-data.json",
@@ -1075,7 +1204,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Quantum Breakthrough: How New Quantum Neural Networks Are Smashing Processing Speed Records",
@@ -1084,8 +1215,8 @@
     "imageAlt": "Discover insights on quantum breakthrough: how new quantum neural networks are smashing processing s",
     "url": "tech/quantum-breakthrough-how-new-quantum-neural-networks-are-smashing-processing-speed-records.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-04",
     "page": "tech",
     "delta": "assets/deltas/tech-quantum-breakthrough-how-new-quantum-neural-networks-are-smashing-processing-speed-records.json",
@@ -1097,7 +1228,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Claude Opus 5 became downright ruthless when tasked with running a vending machine",
@@ -1106,8 +1239,8 @@
     "imageAlt": "For a year now, the AI safety testing firm Andon Labs has given frontier models various real-world t",
     "url": "tech/claude-opus-5-became-downright-ruthless-when-tasked-with-running-a-vending-machine.html",
     "tag": "Artificial Intelligence",
-    "meta": "ai",
-    "category": "ai",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-03",
     "page": "tech",
     "delta": "assets/deltas/tech-claude-opus-5-became-downright-ruthless-when-tasked-with-running-a-vending-machine.json",
@@ -1119,7 +1252,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Artificial Intelligence",
+    "subcategory": "artificial-intelligence"
   },
   {
     "title": "Claude",
@@ -1128,8 +1263,8 @@
     "imageAlt": "Discover insights on claude. For a year now, the AI safety testing firm Andon Labs has given frontie",
     "url": "tech/claude.html",
     "tag": "Artificial Intelligence",
-    "meta": "ai",
-    "category": "ai",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-03",
     "page": "tech",
     "delta": "assets/deltas/tech-claude.json",
@@ -1141,7 +1276,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Artificial Intelligence",
+    "subcategory": "artificial-intelligence"
   },
   {
     "title": "Sporty gist",
@@ -1150,8 +1287,8 @@
     "imageAlt": "Discover critical insights on runs. Spotify is adding a new mode to its phone app for people who lik",
     "url": "tech/sporty-gist.html",
     "tag": "Tech Intelligence",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-03",
     "page": "tech",
     "delta": "assets/deltas/tech-sporty-gist.json",
@@ -1163,7 +1300,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Intelligence",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Teads files suit against Google; seeks financial compensation after antitrust ruling",
@@ -1172,8 +1311,8 @@
     "imageAlt": "Discover insights on teads files suit against google; seeks financial compensation after antitrust r",
     "url": "tech/teads-files-suit-against-google-seeks-financial-compensation-after-antitrust-ruling.html",
     "tag": "Tech Trends",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-03",
     "page": "tech",
     "delta": "assets/deltas/tech-teads-files-suit-against-google-seeks-financial-compensation-after-antitrust-ruling.json",
@@ -1185,7 +1324,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Trends",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "The Agentic AI Revolution",
@@ -1194,8 +1335,8 @@
     "imageAlt": "For years, artificial intelligence in the enterprise has felt like a brilliant but stubbornly reacti",
     "url": "tech/the-agentic-ai-revolution.html",
     "tag": "Artificial Intelligence",
-    "meta": "ai",
-    "category": "ai",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-03",
     "page": "tech",
     "delta": "assets/deltas/tech-the-agentic-ai-revolution.json",
@@ -1207,7 +1348,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Artificial Intelligence",
+    "subcategory": "artificial-intelligence"
   },
   {
     "title": "What Is Information Architecture in UX?",
@@ -1216,8 +1359,8 @@
     "imageAlt": "Discover critical insights on architecture. For some, the phrase “information architecture” is an un",
     "url": "tech/what-is-information-architecture-in-ux.html",
     "tag": "Tech Intelligence",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-02",
     "page": "tech",
     "delta": "assets/deltas/tech-what-is-information-architecture-in-ux.json",
@@ -1229,7 +1372,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Intelligence",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Why UX Research Powers Better Agentic AI",
@@ -1238,8 +1383,8 @@
     "imageAlt": "Expert analysis of agent and research. What makes agentic AI different from everything that came before it is the shift Stay informed with Dyve HackaX.",
     "url": "tech/why-ux-research-powers-better-agentic-ai.html",
     "tag": "Tech Intelligence",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-02",
     "page": "tech",
     "delta": "assets/deltas/tech-why-ux-research-powers-better-agentic-ai.json",
@@ -1251,7 +1396,9 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Intelligence",
+    "subcategory": "emerging-technology"
   },
   {
     "title": "Yooooo",
@@ -1260,8 +1407,8 @@
     "imageAlt": "Discover critical insights on agent. What makes agentic AI different from everything that came befor",
     "url": "tech/yooooo.html",
     "tag": "Tech Intelligence",
-    "meta": "trends",
-    "category": "trends",
+    "meta": "tech",
+    "category": "tech",
     "date": "2026-08-02",
     "page": "tech",
     "delta": "assets/deltas/tech-yooooo.json",
@@ -1273,6 +1420,8 @@
     "focusKeyword": "",
     "keywords": [],
     "sourceUrl": "",
-    "ogPrompt": ""
+    "ogPrompt": "",
+    "contentType": "Tech Intelligence",
+    "subcategory": "emerging-technology"
   }
 ]
