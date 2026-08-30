@@ -331,11 +331,11 @@
                 <div class="flex items-start justify-between gap-4 mb-4">
                     <div>
                         <h3 class="text-base font-extrabold text-[#00001a]">Static SEO Build Engine</h3>
-                        <p class="text-xs text-gray-500 mt-1">Publishing validates tech-articles.json, generates /tech/index.html, rebuilds article SEO/internal links, /tech/sitemap.xml and Tech redirects, then publishes the complete build atomically.</p>
+                        <p class="text-xs text-gray-500 mt-1">Publishing uses <code>assets/tech-articles.json</code> as the only Tech article database. Article pages are rendered from <code>tech/articles.html</code> into <code>tech/&lt;slug&gt;.html</code>; <code>tech/index.html</code> remains the production homepage and is never replaced by article publication. This editor never reads or writes another article database.</p>
                     </div>
                     <div class="flex flex-wrap justify-end gap-2">
-                        <button id="migrateRoutesBtn" class="shrink-0 px-3 py-2 text-xs font-bold text-amber-700 border border-amber-300 bg-amber-50 rounded-lg hover:bg-amber-100 transition">
-                            Migrate &amp; Publish Legacy Routes
+                        <button id="restoreTechDbBtn" class="shrink-0 px-3 py-2 text-xs font-bold text-emerald-700 border border-emerald-300 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                            Restore &amp; Normalize Tech DB
                         </button>
                         <button id="previewBuildBtn" class="shrink-0 px-3 py-2 text-xs font-bold text-[#f15e50] border border-[#f15e50] rounded-lg hover:bg-[#fef3f2] transition">
                             Preview Build
@@ -358,40 +358,40 @@
             <div class="migration-panel rounded-xl p-5">
                 <div class="flex items-start justify-between gap-4 mb-4">
                     <div>
-                        <div class="text-[10px] uppercase tracking-[.18em] font-extrabold text-[#f15e50]">One-time data migration</div>
-                        <h3 class="text-base font-extrabold text-[#00001a] mt-1">Separate Dyve Tech from HackaX</h3>
+                        <div class="text-[10px] uppercase tracking-[.18em] font-extrabold text-[#f15e50]">Tech database recovery</div>
+                        <h3 class="text-base font-extrabold text-[#00001a] mt-1">Restore &amp; Normalize <code>tech-articles.json</code></h3>
                         <p class="text-xs text-gray-500 mt-1 leading-relaxed">
-                            Reads the legacy <code>assets/articles.json</code>, keeps HackaX/security records there, extracts only valid Dyve Tech records into <code>assets/tech-articles.json</code>, preserves every record and existing URL, and publishes both files together in one atomic commit.
+                            This editor owns only <code>assets/tech-articles.json</code>. Restore reads the current Tech database and, when available, previous versions of that same file from Git history, recovers missing Tech records, normalizes taxonomy/routes/metadata, removes duplicates, validates the result, and writes only the Tech database plus required Tech redirects.
                         </p>
                     </div>
                     <span id="migrationState" class="migration-state">
                         <span class="dot"></span>
-                        <span id="migrationStateText">Not run</span>
+                        <span id="migrationStateText">Ready</span>
                     </span>
                 </div>
 
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
-                    <div class="migration-stat"><strong id="migrationSourceCount">0</strong><span>Legacy records</span></div>
-                    <div class="migration-stat"><strong id="migrationTechCount">0</strong><span>Tech records</span></div>
-                    <div class="migration-stat"><strong id="migrationHackaXCount">0</strong><span>HackaX records</span></div>
-                    <div class="migration-stat"><strong id="migrationSkippedCount">0</strong><span>Skipped</span></div>
+                    <div class="migration-stat"><strong id="migrationSourceCount">0</strong><span>Current records</span></div>
+                    <div class="migration-stat"><strong id="migrationTechCount">0</strong><span>Restored records</span></div>
+                    <div class="migration-stat"><strong id="migrationHackaXCount">0</strong><span>Recovered</span></div>
+                    <div class="migration-stat"><strong id="migrationSkippedCount">0</strong><span>Duplicates removed</span></div>
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-2">
                     <button id="runDataMigrationBtn" class="flex-1 px-4 py-3 text-sm font-extrabold text-white bg-[#00001a] rounded-lg hover:bg-[#17172e] transition">
-                        Run One-Time Separation
+                        Restore &amp; Normalize Tech Database
                     </button>
                     <button id="migrationPreviewBtn" class="px-4 py-3 text-sm font-bold text-[#f15e50] border border-[#f15e50] bg-[#fef3f2] rounded-lg hover:bg-[#f15e50] hover:text-white transition">
-                        Inspect Data
+                        Inspect Tech Database
                     </button>
                 </div>
 
                 <div id="migrationLog" class="build-log bg-slate-950 text-slate-200 rounded-lg p-3 mt-3">
-                    <div class="info">[migration] Waiting. Run this once before publishing new Tech articles.</div>
+                    <div class="info">[tech-db] Ready. This panel reads only assets/tech-articles.json.</div>
                 </div>
 
                 <p class="text-[11px] text-gray-500 mt-3 leading-relaxed">
-                    This migration is idempotent: running it again will not duplicate records. It does not delete article HTML, editor deltas, images, or existing URLs.
+                    Restore is Tech-only. It never reads, writes, merges, deletes, or depends on any other article database.
                 </p>
             </div>
         </div>
@@ -559,9 +559,14 @@
 /* ============================================================
    DYVE|TECH EDITOR
    Static publishing architecture:
-   editor -> assets/tech-articles.json -> tech/articles.html -> article HTML
-   editor -> category-template.html -> category/subcategory indexes
-   -> /tech/index.html -> /tech/sitemap.xml (root sitemap/robots remain site-level)
+   admin/tech-editor/index.html
+       -> assets/tech-articles.json (ONLY Tech article database)
+       -> tech/articles.html (standalone article template)
+       -> tech/<slug>.html (generated article pages)
+       -> tech/index.html (production homepage; NEVER rebuilt by this editor)
+       -> tech/category-template.html -> Tech category/subcategory indexes
+       -> tech/sitemap.xml + tech/rss.xml
+   Other Dyve article databases are outside this editor's ownership.
    ============================================================ */
 
 let currentDraftId = null;
@@ -762,6 +767,43 @@ async function prepareImageForCloudinary(file, contextLabel = 'image') {
 }
 
 
+/*
+ * ============================================================
+ * DYVE TECH PATH CONTRACT
+ * ============================================================
+ * This editor lives at:
+ *     admin/tech-editor/index.html
+ *
+ * Tech production files live at:
+ *     tech/index.html
+ *     tech/articles.html              (standalone article template)
+ *     tech/category-template.html
+ *     tech/<slug>.html                (generated article pages)
+ *     tech/sitemap.xml
+ *     tech/rss.xml
+ *
+ * Tech data lives at:
+ *     assets/tech-articles.json       (ONLY article database)
+ *     assets/deltas/<article>.json    (ONLY Tech article deltas)
+ *
+ * These are repository paths used by the GitHub API. They are NOT
+ * browser-relative paths from admin/tech-editor/.
+ *
+ * The editor must never substitute articles.json, another section's
+ * database, or another system's content source for tech-articles.json.
+ * ============================================================
+ */
+const TECH_PATH_CONTRACT = Object.freeze({
+    editorFile: 'admin/tech-editor/index.html',
+    indexFile: 'tech/index.html',
+    articleTemplate: 'tech/articles.html',
+    categoryTemplate: 'tech/category-template.html',
+    articleData: 'assets/tech-articles.json',
+    deltaDirectory: 'assets/deltas/',
+    sitemap: 'tech/sitemap.xml',
+    rss: 'tech/rss.xml'
+});
+
 const STATIC_BUILD_CONFIG = {
     generateTechIndex: false,
     updateHomepageOnPublish: false,
@@ -776,13 +818,14 @@ const STATIC_BUILD_CONFIG = {
     organizationName: 'Dyve',
     publicationName: 'Dyve Tech',
     defaultImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop',
-    articleDataPath: 'assets/tech-articles.json',
-    techSitemapPath: 'tech/sitemap.xml',
-    techRssPath: 'tech/rss.xml',
+    articleDataPath: TECH_PATH_CONTRACT.articleData,
+    techIndexPath: TECH_PATH_CONTRACT.indexFile,
+    techSitemapPath: TECH_PATH_CONTRACT.sitemap,
+    techRssPath: TECH_PATH_CONTRACT.rss,
     cloudinaryFolder: 'dyve-tech',
     homepageTemplatePath: 'admin/tech-editor/tech-homepage-template.html',
-    articleTemplatePath: 'tech/articles.html',
-    categoryTemplatePath: 'tech/category-template.html'
+    articleTemplatePath: TECH_PATH_CONTRACT.articleTemplate,
+    categoryTemplatePath: TECH_PATH_CONTRACT.categoryTemplate
 };
 
 const SECTION_CONFIG = {
@@ -1402,74 +1445,28 @@ function authHeaders(config, extra = {}) {
 }
 
 async function fetchArticlesJson(config) {
+    if (STATIC_BUILD_CONFIG.articleDataPath !== TECH_PATH_CONTRACT.articleData) {
+        throw new Error('Tech data ownership violation: the editor must use assets/tech-articles.json.');
+    }
+    /*
+     * HARD DATA OWNERSHIP BOUNDARY
+     * -----------------------------
+     * The Dyve Tech Editor has exactly one article database:
+     *
+     *     assets/tech-articles.json
+     *
+     * Never fall back to, read from, merge with, or inspect another
+     * article database. Other Dyve systems own their own data.
+     */
     const techPath = STATIC_BUILD_CONFIG.articleDataPath;
-    const request = path => fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
+
+    const metaRes = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/contents/${techPath}?ref=${encodeURIComponent(config.branch)}`,
         { headers: authHeaders(config) }
     );
 
-    const metaRes = await request(techPath);
-
     if (metaRes.status === 404) {
-        /*
-         * Compatibility mode is deliberately strict.
-         *
-         * The old shared assets/articles.json may contain both Dyve Tech and
-         * HackaX records. We NEVER use page="tech" by itself as proof of
-         * Tech ownership because the legacy file contains security records
-         * that were incorrectly marked page="tech".
-         *
-         * A record is accepted by the Tech Editor only when its category is
-         * an actual Dyve Tech category.
-         */
-        const legacyRes = await request('assets/articles.json');
-
-        if (legacyRes.status === 404) {
-            return { articles: [], sha: '', migratedFromLegacy: false };
-        }
-
-        if (!legacyRes.ok) {
-            const err = await legacyRes.json().catch(() => ({}));
-            throw new Error(`Legacy articles.json fetch failed: ${err.message || legacyRes.status}`);
-        }
-
-        const legacyMeta = await legacyRes.json();
-        let legacyText = legacyMeta.content ? b64ToUtf8(legacyMeta.content) : '';
-
-        if (!legacyText && legacyMeta.download_url) {
-            const rawRes = await fetchWithRetry(
-                legacyMeta.download_url,
-                { headers: authHeaders(config) }
-            );
-
-            if (rawRes.ok) legacyText = await rawRes.text();
-        }
-
-        let legacyArticles = [];
-
-        try {
-            legacyArticles = legacyText.trim() ? JSON.parse(legacyText) : [];
-        } catch (e) {
-            throw new Error('Legacy assets/articles.json is corrupt. Run the One-Time Data Migration after restoring the JSON array.');
-        }
-
-        if (!Array.isArray(legacyArticles)) legacyArticles = [];
-
-        const techArticles = legacyArticles.filter(article => {
-            if (!article || typeof article !== 'object') return false;
-
-            const category = String(
-                article.category || article.meta || ''
-            ).trim().toLowerCase();
-
-            return Boolean(CATEGORY_CONFIG[category]);
-        });
-
-        return {
-            articles: techArticles,
-            sha: '',
-            migratedFromLegacy: techArticles.length > 0
-        };
+        return { articles: [], sha: '', exists: false };
     }
 
     if (!metaRes.ok) {
@@ -1495,11 +1492,7 @@ async function fetchArticlesJson(config) {
     text = (text || '').trim();
 
     if (!text) {
-        return {
-            articles: [],
-            sha,
-            migratedFromLegacy: false
-        };
+        return { articles: [], sha, exists: true };
     }
 
     let articles;
@@ -1507,35 +1500,17 @@ async function fetchArticlesJson(config) {
     try {
         articles = JSON.parse(text);
     } catch (e) {
-        throw new Error('tech-articles.json is corrupt. Restore it as a JSON array before publishing.');
+        throw new Error('tech-articles.json is corrupt. Use Restore & Normalize Tech Database after confirming the file history.');
     }
 
-    if (!Array.isArray(articles)) articles = [];
-
-    /*
-     * Hard publishing boundary:
-     * - page="tech" is required for canonical Tech records.
-     * - category must also exist in CATEGORY_CONFIG.
-     *
-     * This prevents HackaX/security records from ever reaching
-     * validateArticleSet(), even if an old record accidentally has
-     * page="tech".
-     */
-    const techArticles = articles.filter(article => {
-        if (!article || typeof article !== 'object') return false;
-
-        const page = String(article.page || '').trim().toLowerCase();
-        const category = String(
-            article.category || article.meta || ''
-        ).trim().toLowerCase();
-
-        return page === 'tech' && Boolean(CATEGORY_CONFIG[category]);
-    });
+    if (!Array.isArray(articles)) {
+        throw new Error('tech-articles.json must contain a JSON array.');
+    }
 
     return {
-        articles: techArticles,
+        articles,
         sha,
-        migratedFromLegacy: false
+        exists: true
     };
 }
 
@@ -1734,7 +1709,7 @@ function deltaPathFor(url) {
         .replace(/\.html$/i, '')
         .replace(/[^\w-]+/g, '-')
         .replace(/^-+|-+$/g, '') || 'article';
-    return `assets/deltas/${key}.json`;
+    return `${TECH_PATH_CONTRACT.deltaDirectory}${key}.json`;
 }
 
 function normalizeArticle(article) {
@@ -1842,96 +1817,155 @@ function validateArticleSet(articles) {
     return normalized;
 }
 
-function migrateLegacyRoutes(articles) {
+function normalizeTechDatabaseRecords(articles) {
     if (!Array.isArray(articles)) {
-        throw new Error('Cannot migrate: tech-articles.json is not an array.');
+        throw new Error('Cannot normalize Tech database: tech-articles.json must contain a JSON array.');
     }
 
-    const migrated = [];
+    const normalized = [];
     const redirects = [];
-    const seenCanonicalUrls = new Set(
-        articles
-            .map(article => String(article && article.url || '').replace(/^\/+/, '').trim())
-            .filter(Boolean)
-    );
+    const seenKeys = new Set();
+    const usedUrls = new Set();
 
-    const usedNewUrls = new Set();
+    const addRedirect = (from, to) => {
+        const cleanFrom = String(from || '').replace(/^\/+/, '').trim();
+        const cleanTo = String(to || '').replace(/^\/+/, '').trim();
 
-    for (const raw of articles) {
-        const article = normalizeArticle(raw);
+        if (!cleanFrom || !cleanTo || cleanFrom === cleanTo) return;
 
-        if (!article) {
-            migrated.push(raw);
-            continue;
+        if (redirects.some(item =>
+            item.from.replace(/^\/+/, '') === cleanFrom &&
+            item.to.replace(/^\/+/, '') === cleanTo
+        )) return;
+
+        redirects.push({
+            from: `/${cleanFrom}`,
+            to: `/${cleanTo}`
+        });
+    };
+
+    const normalizeUrl = (rawUrl, title, index) => {
+        const original = String(rawUrl || '').replace(/^\/+/, '').trim();
+
+        if (/^https?:\/\//i.test(original)) {
+            throw new Error(`Tech record "${title}" has an absolute article URL. Expected tech/<slug>.html.`);
         }
 
-        const next = { ...article };
-        const isLegacyTechRoute =
-            article.page === 'tech' &&
-            /^article\//i.test(article.url);
-
-        if (isLegacyTechRoute) {
-            const oldUrl = article.url;
-            const oldPath = oldUrl
+        if (original && /^article\//i.test(original)) {
+            let slug = original
                 .replace(/^article\//i, '')
-                .replace(/\/index\.html$/i, '.html');
-
-            let slug = oldPath
+                .replace(/\/index\.html$/i, '.html')
                 .replace(/\.html$/i, '')
                 .split('/')
                 .filter(Boolean)
-                .pop() || generateSlug(article.title);
+                .pop() || generateSlug(title);
 
-            slug = generateSlug(slug) || generateSlug(article.title) || `article-${Date.now()}`;
-
-            let newUrl = `tech/${slug}.html`;
+            slug = generateSlug(slug) || generateSlug(title) || `article-${index + 1}`;
+            let candidate = `tech/${slug}.html`;
             let suffix = 2;
 
-            while (
-                usedNewUrls.has(newUrl) ||
-                (
-                    seenCanonicalUrls.has(newUrl) &&
-                    newUrl !== article.url
-                )
-            ) {
-                newUrl = `tech/${slug}-${suffix}.html`;
+            while (usedUrls.has(candidate)) {
+                candidate = `tech/${slug}-${suffix}.html`;
                 suffix++;
             }
 
-            next.url = newUrl;
-            next.legacyUrls = Array.from(new Set([
-                ...(Array.isArray(article.legacyUrls) ? article.legacyUrls : []),
-                oldUrl
-            ]));
-
-            redirects.push({
-                from: `/${oldUrl}`,
-                to: `/${newUrl}`
-            });
-
-            usedNewUrls.add(newUrl);
+            addRedirect(original, candidate);
+            return candidate;
         }
 
-        (next.legacyUrls || []).forEach(oldUrl => {
-            const cleanOld = String(oldUrl || '').replace(/^\/+/, '').trim();
+        if (original) {
+            let cleaned = original
+                .replace(/^tech\//i, 'tech/')
+                .replace(/\/index\.html$/i, '.html');
 
-            if (
-                cleanOld &&
-                cleanOld !== next.url &&
-                !redirects.some(redirect => redirect.from === `/${cleanOld}`)
-            ) {
-                redirects.push({
-                    from: `/${cleanOld}`,
-                    to: `/${next.url}`
-                });
+            if (/^tech\/.+\.html$/i.test(cleaned)) {
+                return cleaned;
             }
+        }
+
+        let slug = generateSlug(title) || `article-${index + 1}`;
+        let candidate = `tech/${slug}.html`;
+        let suffix = 2;
+
+        while (usedUrls.has(candidate)) {
+            candidate = `tech/${slug}-${suffix}.html`;
+            suffix++;
+        }
+
+        return candidate;
+    };
+
+    articles.forEach((raw, index) => {
+        if (!raw || typeof raw !== 'object') return;
+
+        const title = String(raw.title || raw.headline || raw.name || '').trim();
+
+        if (!title) return;
+
+        const rawCategory = String(raw.category || raw.meta || '').trim().toLowerCase();
+        const rawSubcategory = String(raw.subcategory || '').trim().toLowerCase();
+        const taxonomy = normalizeTaxonomy(rawCategory, rawSubcategory);
+
+        if (!taxonomy.category) {
+            throw new Error(
+                `Tech record #${index + 1} "${title}" has an unsupported category "${rawCategory}". Restore stopped without publishing changes.`
+            );
+        }
+
+        const nextUrl = normalizeUrl(raw.url, title, index);
+
+        const article = normalizeArticle({
+            ...raw,
+            title,
+            page: 'tech',
+            category: taxonomy.category,
+            meta: taxonomy.category,
+            subcategory: taxonomy.subcategory,
+            url: nextUrl
         });
 
-        migrated.push(next);
-    }
+        if (!article) return;
+
+        const oldUrl = String(raw.url || '').replace(/^\/+/, '').trim();
+
+        if (oldUrl && oldUrl !== article.url) {
+            addRedirect(oldUrl, article.url);
+        }
+
+        if (Array.isArray(raw.legacyUrls)) {
+            raw.legacyUrls.forEach(oldUrlValue => {
+                addRedirect(oldUrlValue, article.url);
+            });
+        }
+
+        article.legacyUrls = Array.from(new Set([
+            ...(Array.isArray(raw.legacyUrls)
+                ? raw.legacyUrls
+                    .map(url => String(url || '').replace(/^\/+/, '').trim())
+                    .filter(Boolean)
+                : []),
+            ...(oldUrl && oldUrl !== article.url ? [oldUrl] : [])
+        ])).filter(url => url !== article.url);
+
+        const key =
+            String(article.url || '').toLowerCase() ||
+            String(article.title || '').trim().toLowerCase();
+
+        if (!key || seenKeys.has(key)) return;
+
+        if (usedUrls.has(article.url)) {
+            throw new Error(
+                `Tech database normalization found a canonical URL collision: ${article.url}. Restore stopped without publishing changes.`
+            );
+        }
+
+        seenKeys.add(key);
+        usedUrls.add(article.url);
+        normalized.push(article);
+    });
 
     return {
-        articles: migrated,
+        articles: sortArticles(normalized),
         redirects
     };
 }
@@ -2071,10 +2105,10 @@ function buildTechIndexHTML(siteUrl, articles, templateHTML = '') {
 function buildAllSectionIndexes(siteUrl, articles, templates = {}) {
     const normalized = validateArticleSet(articles);
     return {
-        'tech/index.html': buildTechIndexHTML(
+        [STATIC_BUILD_CONFIG.techIndexPath]: buildTechIndexHTML(
             siteUrl,
             normalized,
-            templates['tech/index.html'] || ''
+            templates[STATIC_BUILD_CONFIG.techIndexPath] || ''
         )
     };
 }
@@ -2364,14 +2398,14 @@ async function buildStaticSite(config, articles, options = {}) {
         }
 
         if (STATIC_BUILD_CONFIG.updateHomepageOnPublish) {
-            const existingTechIndex = await fetchGitHubText(config, 'tech/index.html', { optional: true });
+            const existingTechIndex = await fetchGitHubText(config, STATIC_BUILD_CONFIG.techIndexPath, { optional: true });
             if (!existingTechIndex || !hasDyveTechTemplateMarkers(existingTechIndex)) {
-                throw new Error('Homepage publishing is enabled but tech/index.html is not a valid Dyve Tech template.');
+                throw new Error(`Homepage publishing is enabled but ${STATIC_BUILD_CONFIG.techIndexPath} is not a valid Dyve Tech template.`);
             }
-            const sectionOutputs = buildAllSectionIndexes(config.siteUrl, normalized, { 'tech/index.html': existingTechIndex });
+            const sectionOutputs = buildAllSectionIndexes(config.siteUrl, normalized, { [STATIC_BUILD_CONFIG.techIndexPath]: existingTechIndex });
             Object.entries(sectionOutputs).forEach(([path, content]) => files.push({ path, content }));
         } else {
-            logBuild('Homepage safety lock active: tech/index.html remains untouched.', 'ok');
+            logBuild(`Homepage safety lock active: ${STATIC_BUILD_CONFIG.techIndexPath} remains untouched.`, 'ok');
         }
 
         if (STATIC_BUILD_CONFIG.generateSitemap) {
@@ -2599,225 +2633,22 @@ async function mergeRedirectsWithExistingFile(config, redirects) {
     return merged.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
 }
 
-async function prepareLegacyRouteMigration(config, migration) {
-    const files = [];
-    const deletePaths = [];
-    const migratedArticles = [];
+async function fetchTechDatabaseAtRef(config, ref) {
+    const path = STATIC_BUILD_CONFIG.articleDataPath;
 
-    for (let index = 0; index < migration.articles.length; index++) {
-        const article = normalizeArticle(migration.articles[index]);
-
-        if (!article) {
-            migratedArticles.push(migration.articles[index]);
-            continue;
-        }
-
-        const oldUrl = Array.isArray(article.legacyUrls)
-            ? article.legacyUrls.find(url => /^article\//i.test(String(url || '')))
-            : null;
-
-        if (!oldUrl) {
-            migratedArticles.push(article);
-            continue;
-        }
-
-        const newSlug = String(article.url)
-            .replace(/^tech\//i, '')
-            .replace(/\.html$/i, '');
-
-        let articleBody = '';
-        let legacyHTML = null;
-
-        try {
-            legacyHTML = await fetchGitHubText(config, oldUrl, { optional: true });
-        } catch (error) {
-            logBuild(`Could not fetch legacy HTML ${oldUrl}: ${error.message}`, 'warn');
-        }
-
-        if (legacyHTML) {
-            articleBody = extractLegacyArticleBody(legacyHTML, article.desc);
-            logBuild(`Recovered article content from ${oldUrl}.`, 'ok');
-        } else {
-            articleBody = `<p>${escapeHtml(article.desc || 'Legacy article content could not be recovered from the repository.')}</p>`;
-            logBuild(`No legacy HTML found for ${oldUrl}; using the stored description as fallback content.`, 'warn');
-        }
-
-        const articleDocument = await generateTechArticleHTML(
-            config.siteUrl,
-            article.title,
-            article.desc,
-            article.image,
-            article.tag || 'News',
-            normalizeTaxonomy(article.category || article.meta || '', article.subcategory || '').category,
-            normalizeTaxonomy(article.category || article.meta || '', article.subcategory || '').subcategory,
-            newSlug,
-            article.date,
-            articleBody,
-            article.ogPrompt || '',
-            migration.articles,
-            {
-                seoTitle: article.seoTitle || article.title,
-                focusKeyword: article.focusKeyword || '',
-                keywords: article.keywords || [],
-                sourceUrl: article.sourceUrl || '',
-                modified: article.modified || article.date
-            },
-            config
-        );
-
-        files.push({
-            path: article.url,
-            content: articleDocument
-        });
-
-        const newDeltaPath = deltaPathFor(article.url);
-        let deltaContent = null;
-
-        if (article.delta) {
-            try {
-                deltaContent = await fetchGitHubText(config, article.delta, { optional: true });
-
-                if (deltaContent) {
-                    logBuild(`Migrating existing content delta ${article.delta} → ${newDeltaPath}.`, 'ok');
-                }
-            } catch (error) {
-                logBuild(`Could not fetch legacy delta ${article.delta}: ${error.message}`, 'warn');
-            }
-        }
-
-        if (!deltaContent) {
-            deltaContent = JSON.stringify(
-                createMigrationDelta(articleBody),
-                null,
-                2
-            );
-            logBuild(`Generated a new editor delta for ${article.url}.`, 'info');
-        }
-
-        files.push({
-            path: newDeltaPath,
-            content: deltaContent
-        });
-
-        if (article.delta && article.delta !== newDeltaPath) {
-            deletePaths.push(article.delta);
-        }
-
-        deletePaths.push(oldUrl);
-
-        migratedArticles.push({
-            ...article,
-            delta: newDeltaPath
-        });
-    }
-
-    return {
-        articles: migratedArticles,
-        files,
-        deletePaths
-    };
-}
-
-function setMigrationState(state, textValue) {
-    const badge = document.getElementById('migrationState');
-    const label = document.getElementById('migrationStateText');
-
-    if (!badge || !label) return;
-
-    badge.classList.remove('ready', 'busy', 'error');
-
-    if (state) badge.classList.add(state);
-
-    label.textContent = textValue;
-}
-
-function logMigration(message, type = 'info') {
-    const log = document.getElementById('migrationLog');
-
-    if (!log) return;
-
-    const row = document.createElement('div');
-    row.className = type;
-    row.textContent = `[migration] ${message}`;
-
-    log.appendChild(row);
-    log.scrollTop = log.scrollHeight;
-}
-
-function resetMigrationLog() {
-    const log = document.getElementById('migrationLog');
-
-    if (log) {
-        log.innerHTML = '';
-    }
-}
-
-function updateMigrationStats(sourceCount, techCount, hackaXCount, skippedCount) {
-    const values = {
-        migrationSourceCount: sourceCount,
-        migrationTechCount: techCount,
-        migrationHackaXCount: hackaXCount,
-        migrationSkippedCount: skippedCount
-    };
-
-    Object.entries(values).forEach(([id, value]) => {
-        const element = document.getElementById(id);
-
-        if (element) {
-            element.textContent = String(value);
-        }
-    });
-}
-
-function isDyveTechRecord(article) {
-    if (!article || typeof article !== 'object') return false;
-    const page = String(article.page || '').trim().toLowerCase();
-    const rawCategory = String(article.category || article.meta || '').trim().toLowerCase();
-    return page === 'tech' && Boolean(CATEGORY_CONFIG[rawCategory] || LEGACY_CATEGORY_MAP[rawCategory]);
-}
-
-function dedupeArticleRecords(records) {
-    const seen = new Set();
-    const result = [];
-
-    for (const raw of Array.isArray(records) ? records : []) {
-        if (!raw || typeof raw !== 'object') continue;
-
-        const url = String(raw.url || '').replace(/^\/+/, '').trim().toLowerCase();
-        const title = String(raw.title || '').trim().toLowerCase();
-
-        const key = url || title;
-
-        if (!key || seen.has(key)) continue;
-
-        seen.add(key);
-        result.push(raw);
-    }
-
-    return result;
-}
-
-async function fetchLegacyArticlesForMigration(config, path = 'assets/articles.json') {
     const response = await fetchWithRetry(
-        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
+        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(ref)}`,
         { headers: authHeaders(config) }
     );
 
-    if (response.status === 404) {
-        return {
-            exists: false,
-            sha: '',
-            articles: []
-        };
-    }
+    if (response.status === 404) return [];
 
     if (!response.ok) {
         const error = await response.json().catch(() => ({}));
-        throw new Error(`Unable to read ${path}: ${error.message || response.status}`);
+        throw new Error(`Unable to read historical tech-articles.json at ${ref}: ${error.message || response.status}`);
     }
 
     const meta = await response.json();
-
     let content = meta.content ? b64ToUtf8(meta.content) : '';
 
     if (!content && meta.download_url) {
@@ -2826,31 +2657,41 @@ async function fetchLegacyArticlesForMigration(config, path = 'assets/articles.j
             { headers: authHeaders(config) }
         );
 
-        if (rawRes.ok) {
-            content = await rawRes.text();
-        }
+        if (rawRes.ok) content = await rawRes.text();
     }
 
-    let articles;
+    if (!content.trim()) return [];
 
-    try {
-        articles = content.trim() ? JSON.parse(content) : [];
-    } catch (error) {
-        throw new Error(`${path} is not valid JSON. Expected a JSON array.`);
+    const parsed = JSON.parse(content);
+
+    if (!Array.isArray(parsed)) {
+        throw new Error(`Historical tech-articles.json at ${ref} is not a JSON array.`);
     }
 
-    if (!Array.isArray(articles)) {
-        throw new Error(`${path} is not a JSON array. Migration stopped before publishing anything.`);
-    }
-
-    return {
-        exists: true,
-        sha: meta.sha || '',
-        articles
-    };
+    return parsed;
 }
 
-async function inspectDataMigration() {
+async function fetchTechDatabaseHistory(config) {
+    const path = STATIC_BUILD_CONFIG.articleDataPath;
+
+    const response = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/commits?path=${encodeURIComponent(path)}&sha=${encodeURIComponent(config.branch)}&per_page=12`,
+        { headers: authHeaders(config) }
+    );
+
+    if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(`Unable to inspect Tech database history: ${error.message || response.status}`);
+    }
+
+    const commits = await response.json();
+
+    return Array.isArray(commits)
+        ? commits.filter(commit => commit && commit.sha)
+        : [];
+}
+
+async function inspectTechDatabase() {
     const config = getGitHubConfig();
 
     if (!config.token || !config.repo) {
@@ -2859,7 +2700,7 @@ async function inspectDataMigration() {
     }
 
     if (!navigator.onLine) {
-        showToast('You appear offline — data inspection cannot run.');
+        showToast('You appear offline — Tech database inspection cannot run.');
         return;
     }
 
@@ -2867,41 +2708,30 @@ async function inspectDataMigration() {
     setMigrationState('busy', 'Inspecting');
 
     try {
-        const legacy = await fetchLegacyArticlesForMigration(config);
-
-        if (!legacy.exists) {
-            updateMigrationStats(0, 0, 0, 0);
-            logMigration('assets/articles.json does not exist yet.', 'warn');
-            logMigration('Nothing was changed. Create/restore the legacy file before running the migration.', 'warn');
-            setMigrationState('ready', 'Waiting');
-            return;
-        }
-
-        const tech = legacy.articles.filter(isDyveTechRecord);
-        const hackaX = legacy.articles.filter(article => !isDyveTechRecord(article));
-        const skipped = legacy.articles.length - tech.length - hackaX.length;
+        const current = await fetchArticlesJson(config);
+        const result = normalizeTechDatabaseRecords(current.articles);
 
         updateMigrationStats(
-            legacy.articles.length,
-            tech.length,
-            hackaX.length,
-            skipped
+            current.articles.length,
+            result.articles.length,
+            0,
+            Math.max(0, current.articles.length - result.articles.length)
         );
 
-        logMigration(`Found ${legacy.articles.length} record(s) in assets/articles.json.`, 'ok');
-        logMigration(`Tech boundary: ${tech.length} record(s).`, 'ok');
-        logMigration(`HackaX/security boundary: ${hackaX.length} record(s).`, 'ok');
+        logMigration(`Read ${current.articles.length} record(s) from assets/tech-articles.json.`, 'ok');
+        logMigration(`Normalization result: ${result.articles.length} canonical Tech record(s).`, 'ok');
+        logMigration(`Routes requiring redirects: ${result.redirects.length}.`, 'info');
         logMigration('Inspection only. No files were changed.', 'info');
 
         setMigrationState('ready', 'Ready');
     } catch (error) {
         setMigrationState('error', 'Inspection failed');
-        logMigration(error.message || 'Unable to inspect the legacy data.', 'error');
-        showToast(`Migration inspection failed: ${error.message}`, 7000);
+        logMigration(error.message || 'Unable to inspect the Tech database.', 'error');
+        showToast(`Tech database inspection failed: ${error.message}`, 7000);
     }
 }
 
-async function runOneTimeDataMigration() {
+async function restoreTechDatabase() {
     const config = getGitHubConfig();
 
     if (!config.token || !config.repo) {
@@ -2910,7 +2740,7 @@ async function runOneTimeDataMigration() {
     }
 
     if (!navigator.onLine) {
-        showToast('You appear offline — data migration cannot run.');
+        showToast('You appear offline — Tech database restore cannot run.');
         return;
     }
 
@@ -2920,353 +2750,166 @@ async function runOneTimeDataMigration() {
     }
 
     const confirmed = window.confirm(
-        'Run the one-time Dyve data separation now?\n\n' +
-        'This will:\n' +
-        '• read assets/articles.json\n' +
-        '• keep HackaX/security records in assets/articles.json\n' +
-        '• extract only valid Dyve Tech records into assets/tech-articles.json\n' +
-        '• preserve all existing records, content references and URLs\n' +
-        '• write both JSON files in one atomic Git commit\n\n' +
-        'No files will be changed if validation fails.'
+        'Restore and normalize the Dyve Tech database?\\n\\n' +
+        'This operation uses ONLY:\\n' +
+        '• assets/tech-articles.json\\n' +
+        '• previous Git versions of assets/tech-articles.json, when available\\n\\n' +
+        'It will:\\n' +
+        '• recover missing Tech records from Tech database history\\n' +
+        '• normalize categories and subcategories\\n' +
+        '• normalize article routes to tech/<slug>.html\\n' +
+        '• remove duplicate Tech records\\n' +
+        '• preserve existing article data and legacy URLs\\n' +
+        '• write only assets/tech-articles.json and required Tech redirects\\n\\n' +
+        'It will NOT read, write, merge, or delete any other article database.\\n\\n' +
+        'No changes will be published if validation fails.'
     );
 
     if (!confirmed) {
         resetMigrationLog();
-        logMigration('Migration cancelled. No files changed.', 'info');
+        logMigration('Restore cancelled. No files changed.', 'info');
         setMigrationState('ready', 'Cancelled');
         return;
     }
 
-    setBuildStatus('busy', 'Running data migration');
-    setMigrationState('busy', 'Migrating');
+    setBuildStatus('busy', 'Restoring Tech database');
+    setMigrationState('busy', 'Restoring');
     resetMigrationLog();
 
     try {
-        const legacy = await fetchLegacyArticlesForMigration(config, 'assets/articles.json');
+        const current = await fetchArticlesJson(config);
+        const currentRecords = Array.isArray(current.articles) ? current.articles : [];
 
-        if (!legacy.exists) {
-            throw new Error('assets/articles.json was not found. Restore the legacy database before running the one-time separation.');
-        }
+        logMigration(`Current Tech database: ${currentRecords.length} record(s).`, 'info');
 
-        const source = legacy.articles;
-
-        if (!source.length) {
-            throw new Error('assets/articles.json contains an empty array. Nothing can be migrated.');
-        }
-
-        const sourceTech = source.filter(isDyveTechRecord);
-        const sourceHackaX = source.filter(article => !isDyveTechRecord(article));
-
-        /*
-         * If tech-articles.json already exists, merge it with the extracted
-         * Tech records instead of replacing good data. Existing Tech records
-         * win on duplicate URL/title keys.
-         */
-        let existingTech = [];
+        let recoveryRecords = [];
+        let historyCommits = [];
 
         try {
-            const techFile = await fetchLegacyArticlesForMigration(
-                config,
-                STATIC_BUILD_CONFIG.articleDataPath
-            );
+            historyCommits = await fetchTechDatabaseHistory(config);
+        } catch (historyError) {
+            logMigration(`Tech history could not be inspected: ${historyError.message}`, 'warn');
+        }
 
-            if (techFile.exists) {
-                existingTech = techFile.articles;
+        for (let index = 1; index < historyCommits.length; index++) {
+            const commit = historyCommits[index];
+
+            try {
+                const snapshot = await fetchTechDatabaseAtRef(config, commit.sha);
+
+                if (Array.isArray(snapshot) && snapshot.length > currentRecords.length) {
+                    recoveryRecords = snapshot;
+
+                    logMigration(
+                        `Found a previous Tech database snapshot with ${snapshot.length} record(s) at ${commit.sha.slice(0, 7)}.`,
+                        'ok'
+                    );
+
+                    break;
+                }
+            } catch (historyError) {
                 logMigration(
-                    `Existing tech-articles.json found with ${existingTech.length} record(s); merging safely.`,
-                    'info'
+                    `Skipped Tech history snapshot ${commit.sha.slice(0, 7)}: ${historyError.message}`,
+                    'warn'
                 );
             }
-        } catch (error) {
-            throw new Error(`Could not inspect existing tech-articles.json: ${error.message}`);
         }
 
-        const mergedTech = dedupeArticleRecords([
-            ...existingTech,
-            ...sourceTech
-        ]).map(article => ({
-            ...article,
-            page: 'tech',
-            category: String(article.category || article.meta || '').trim().toLowerCase(),
-            meta: String(article.category || article.meta || '').trim().toLowerCase()
-        }));
+        const combined = dedupeTechRecordsForRecovery([
+            ...currentRecords,
+            ...recoveryRecords
+        ]);
 
-        const hackaXRecords = dedupeArticleRecords(sourceHackaX);
+        const normalizedResult = normalizeTechDatabaseRecords(combined);
+        const normalized = validateArticleSet(normalizedResult.articles);
 
-        const invalidTech = mergedTech.filter(article => !isDyveTechRecord(article));
-
-        if (invalidTech.length) {
+        if (normalized.length < currentRecords.length) {
             throw new Error(
-                `Migration safety check failed: ${invalidTech.length} record(s) would enter tech-articles.json without a valid Dyve Tech category. Nothing was published.`
+                `Restore safety check failed: normalization would reduce the Tech database from ${currentRecords.length} to ${normalized.length} records. Nothing was published.`
             );
         }
 
-        const duplicateTechUrls = new Set();
-        const duplicateTechErrors = [];
-
-        mergedTech.forEach((article, index) => {
-            const url = String(article.url || '').replace(/^\/+/, '').trim();
-
-            if (!url) {
-                duplicateTechErrors.push(`Tech record #${index + 1} has no URL.`);
-                return;
-            }
-
-            if (duplicateTechUrls.has(url)) {
-                duplicateTechErrors.push(`Duplicate Tech URL: ${url}`);
-                return;
-            }
-
-            duplicateTechUrls.add(url);
-        });
-
-        if (duplicateTechErrors.length) {
-            throw new Error(
-                `Migration safety check failed:\n\n${duplicateTechErrors.join('\n')}`
-            );
-        }
+        const recoveredCount = Math.max(0, normalized.length - currentRecords.length);
+        const duplicateCount = Math.max(0, combined.length - normalized.length);
 
         updateMigrationStats(
-            source.length,
-            sourceTech.length,
-            sourceHackaX.length,
-            source.length - sourceTech.length - sourceHackaX.length
+            currentRecords.length,
+            normalized.length,
+            recoveredCount,
+            duplicateCount
         );
 
-        logMigration(`Read ${source.length} legacy record(s).`, 'ok');
-        logMigration(`Separated ${sourceTech.length} Dyve Tech record(s).`, 'ok');
-        logMigration(`Kept ${sourceHackaX.length} HackaX/security record(s).`, 'ok');
-        logMigration(`Final Tech database: ${mergedTech.length} record(s).`, 'ok');
-        logMigration(`Final HackaX database: ${hackaXRecords.length} record(s).`, 'ok');
-
-        const techJson = JSON.stringify(
-            sortArticles(mergedTech),
-            null,
-            2
-        );
-
-        const hackaXJson = JSON.stringify(
-            hackaXRecords,
-            null,
-            2
-        );
+        logMigration(`Recovered ${recoveredCount} missing Tech record(s).`, recoveredCount ? 'ok' : 'info');
+        logMigration(`Removed/merged ${duplicateCount} duplicate record(s).`, duplicateCount ? 'ok' : 'info');
+        logMigration(`Final Tech database: ${normalized.length} canonical record(s).`, 'ok');
+        logMigration(`Tech redirects prepared: ${normalizedResult.redirects.length}.`, 'info');
 
         const files = [
             {
-                path: 'assets/tech-articles.json',
-                content: techJson
-            },
-            {
-                path: 'assets/articles.json',
-                content: hackaXJson
+                path: STATIC_BUILD_CONFIG.articleDataPath,
+                content: JSON.stringify(normalized, null, 2)
             }
         ];
 
-        /*
-         * Do not touch article HTML, editor deltas, images, redirects or
-         * any other HackaX/Tech asset during this separation. This is a data
-         * ownership migration only. Existing URLs therefore remain live.
-         */
-        logMigration('Safety validation passed.', 'ok');
-        logMigration('Prepared both databases for one atomic commit.', 'info');
-        logMigration('No article HTML, deltas, images or URLs will be deleted.', 'info');
-        logMigration('Publishing migration...', 'info');
+        if (normalizedResult.redirects.length) {
+            const existingRedirects = await mergeRedirectsWithExistingFile(
+                config,
+                normalizedResult.redirects
+            );
 
-        const commit = await githubCommitFiles(
-            config,
-            files,
-            'chore: separate Dyve Tech and HackaX article databases'
-        );
-
-        setBuildStatus('ready', 'Data migration complete');
-        setMigrationState('ready', 'Complete');
-
-        logMigration(`Atomic migration published: ${commit.sha.slice(0, 7)}.`, 'ok');
-        logMigration('assets/tech-articles.json now belongs exclusively to Dyve Tech.', 'ok');
-        logMigration('assets/articles.json now belongs exclusively to HackaX/security.', 'ok');
-        logMigration('Future Tech publications will no longer validate HackaX/security categories.', 'ok');
-
-        showToast(
-            `Migration complete: ${mergedTech.length} Tech + ${hackaXRecords.length} HackaX records separated.`
-        );
-    } catch (error) {
-        setBuildStatus('error', 'Data migration failed');
-        setMigrationState('error', 'Failed');
-        logMigration(error.message || 'Data migration failed.', 'error');
-        logMigration('Nothing was published by the migration after this validation failure.', 'error');
-        showToast(`Data migration failed: ${error.message}`, 9000);
-    }
-}
-
-async function rebuildStaticIndex() {
-    const config = getGitHubConfig();
-
-    if (!config.token || !config.repo) {
-        showToast('GitHub is not configured. Open Settings first.');
-        return;
-    }
-
-    if (!navigator.onLine) {
-        showToast('You appear offline — static build cannot run.');
-        return;
-    }
-
-    try {
-        const { articles } = await fetchArticlesJson(config);
-        const migration = migrateLegacyRoutes(articles);
-
-        if (migration.redirects.length) {
-            logBuild(`Detected ${migration.redirects.length} legacy routes. They will be migrated automatically during this rebuild.`, 'warn');
-        }
-
-        await buildStaticSite(config, migration.articles, {
-            migrated: migration,
-            extraFiles: [{
-                path: 'assets/tech-articles.json',
-                content: JSON.stringify(migration.articles, null, 2)
-            }],
-            commitMessage: migration.redirects.length
-                ? 'build: migrate routes and rebuild Dyve static publishing system'
-                : 'build: rebuild Dyve static publishing system'
-        });
-
-        showToast(
-            migration.redirects.length
-                ? `Static rebuild complete. Migrated ${migration.redirects.length} legacy route(s).`
-                : 'Static publishing data rebuilt successfully. The homepage template was preserved.'
-        );
-    } catch (error) {
-        console.error('Static build error:', error);
-        showToast(`Static build failed: ${error.message}`);
-    }
-}
-
-async function migrateLegacyRoutesAndPublish() {
-    const config = getGitHubConfig();
-
-    if (!config.token || !config.repo) {
-        showToast('GitHub is not configured. Open Settings first.');
-        return;
-    }
-
-    if (!navigator.onLine) {
-        showToast('You appear offline — migration cannot run.');
-        return;
-    }
-
-    if (buildInProgress) {
-        showToast('A static build is already running.');
-        return;
-    }
-
-    try {
-        const { articles } = await fetchArticlesJson(config);
-        const migration = migrateLegacyRoutes(articles);
-
-        resetBuildLog();
-
-        if (!migration.redirects.length) {
-            logBuild('No legacy Tech routes require migration.', 'ok');
-            showToast('No legacy routes found.');
-            setBuildStatus('ready', 'No migration required');
-            return;
-        }
-
-        const confirmed = window.confirm(
-            `Migrate ${migration.redirects.length} legacy route(s) to canonical /tech/ URLs?\n\n` +
-            `The CMS will:\n` +
-            `• generate canonical article pages\n` +
-            `• migrate editor deltas where available\n` +
-            `• preserve old URLs with 301 redirects\n` +
-            `• regenerate /tech/index.html and every section index\n` +
-            `• regenerate tech/sitemap.xml\n` +
-            `• publish everything as one atomic commit\n\n` +
-            `No changes will be published if validation fails.`
-        );
-
-        if (!confirmed) {
-            logBuild('Migration cancelled. No files changed.', 'info');
-            setBuildStatus('ready', 'Migration cancelled');
-            return;
-        }
-
-        migration.redirects.forEach(redirect => {
-            logBuild(`${redirect.from} → ${redirect.to}`, 'info');
-        });
-
-        const prepared = await prepareLegacyRouteMigration(config, migration);
-        const normalized = validateArticleSet(prepared.articles);
-
-        const existingRedirects = await mergeRedirectsWithExistingFile(
-            config,
-            migration.redirects
-        );
-
-        const files = [
-            ...prepared.files,
-            {
-                path: 'assets/tech-articles.json',
-                content: JSON.stringify(normalized, null, 2)
-            },
-            {
+            files.push({
                 path: '_redirects',
                 content: existingRedirects
-            }
-        ];
-
-        const sectionOutputs = buildAllSectionIndexes(config.siteUrl, normalized);
-
-        Object.entries(sectionOutputs).forEach(([path, content]) => {
-            files.push({
-                path,
-                content
-            });
-        });
-
-        if (STATIC_BUILD_CONFIG.generateSitemap) {
-            files.push({
-                path: STATIC_BUILD_CONFIG.techSitemapPath,
-                content: buildSitemapXML(config.siteUrl, normalized)
             });
         }
 
-
-        prepared.deletePaths.forEach(path => {
-            if (path && !files.some(file => file.path === path)) {
-                files.push({
-                    path,
-                    delete: true
-                });
-            }
-        });
-
-        updateBuildStats(normalized);
-
-        setBuildStatus('busy', 'Publishing canonical route migration');
-        logBuild(`Prepared ${prepared.files.length} migrated article/content file(s).`, 'ok');
-        logBuild(`Prepared ${prepared.deletePaths.length} legacy file deletion(s).`, 'info');
-        logBuild(`Prepared ${files.length} total Git tree changes.`, 'info');
-        logBuild('Validation passed. Publishing migration atomically...', 'info');
+        logMigration('Tech-only ownership boundary verified.', 'ok');
+        logMigration('No other article database will be read or written.', 'ok');
+        logMigration('Publishing normalized Tech database atomically...', 'info');
 
         const commit = await githubCommitFiles(
             config,
             files,
-            'chore: migrate legacy Tech routes to canonical URLs'
+            'chore: restore and normalize Dyve Tech database'
         );
 
-        setBuildStatus('ready', 'Migration complete');
-        logBuild(`Migration published atomically: ${commit.sha.slice(0, 7)}.`, 'ok');
-        logBuild('Legacy URLs now redirect permanently to their canonical /tech/ URLs.', 'ok');
-        logBuild('Tech index and sitemap were regenerated from the migrated tech-articles.json.', 'ok');
+        setBuildStatus('ready', 'Tech database restored');
+        setMigrationState('ready', 'Complete');
 
-        showToast(
-            `Successfully migrated ${migration.redirects.length} legacy route(s).`
-        );
+        logMigration(`Tech database restored atomically: ${commit.sha.slice(0, 7)}.`, 'ok');
+        logMigration(`assets/tech-articles.json now contains ${normalized.length} canonical record(s).`, 'ok');
+
+        showToast(`Tech database restored: ${normalized.length} article records.`);
+
+        if (typeof loadPublishedArticles === 'function') {
+            await loadPublishedArticles();
+        }
     } catch (error) {
-        setBuildStatus('error', 'Migration failed');
-        logBuild(error.message, 'error');
-        showToast(`Migration failed: ${error.message}`, 8000);
+        setBuildStatus('error', 'Tech restore failed');
+        setMigrationState('error', 'Restore failed');
+        logMigration(error.message || 'Tech database restore failed.', 'error');
+        showToast(`Tech database restore failed: ${error.message}`, 8000);
     }
+}
+
+function dedupeTechRecordsForRecovery(records) {
+    const seen = new Set();
+    const result = [];
+
+    for (const raw of Array.isArray(records) ? records : []) {
+        if (!raw || typeof raw !== 'object') continue;
+
+        const title = String(raw.title || raw.headline || raw.name || '').trim().toLowerCase();
+        const url = String(raw.url || '').replace(/^\/+/, '').trim().toLowerCase();
+        const key = url || title;
+
+        if (!key || seen.has(key)) continue;
+
+        seen.add(key);
+        result.push(raw);
+    }
+
+    return result;
 }
 
 
@@ -3280,8 +2923,8 @@ async function previewBuild() {
 
     try {
         const { articles } = await fetchArticlesJson(config);
-        const migration = migrateLegacyRoutes(articles);
-        const normalized = validateArticleSet(migration.articles);
+        const normalizedResult = normalizeTechDatabaseRecords(articles);
+        const normalized = validateArticleSet(normalizedResult.articles);
 
         updateBuildStats(normalized);
         resetBuildLog();
@@ -3293,8 +2936,8 @@ async function previewBuild() {
             logBuild(`Would generate ${SECTION_CONFIG[page].indexFile}: ${count} articles where page="${page}".`, 'info');
         });
 
-        if (migration.redirects.length) {
-            logBuild(`Would migrate ${migration.redirects.length} legacy route(s) and generate _redirects.`, 'warn');
+        if (normalizedResultAfterPublication.redirects.length) {
+            logBuild(`Would preserve ${normalizedResult.redirects.length} Tech legacy route redirect(s) in _redirects.`, 'warn');
         }
 
         logBuild('Would generate tech/sitemap.xml.', 'info');
@@ -3889,7 +3532,7 @@ async function publishArticle() {
         const finalImage = imageUrl || STATIC_BUILD_CONFIG.defaultImage;
 
         const { articles } = await fetchArticlesJson(config);
-        const migration = migrateLegacyRoutes(articles);
+        const normalizedResult = normalizeTechDatabaseRecords(articles);
 
         const articleWords = (articleHTML || '')
             .replace(/<[^>]+>/g, ' ')
@@ -3920,22 +3563,29 @@ async function publishArticle() {
             ogPrompt
         });
 
-        if (isUpdate && editingArticleIndex < migration.articles.length) {
-            const previous = migration.articles[editingArticleIndex];
-            migration.articles[editingArticleIndex] = {
+        const techArticles = Array.isArray(normalizedResult.articles)
+            ? [...normalizedResult.articles]
+            : [];
+
+        if (isUpdate && editingArticleIndex !== null && editingArticleIndex < techArticles.length) {
+            const previous = techArticles[editingArticleIndex];
+
+            techArticles[editingArticleIndex] = {
                 ...articleObject,
                 legacyUrls: Array.from(new Set([
                     ...(previous && Array.isArray(previous.legacyUrls) ? previous.legacyUrls : []),
                     ...(previous && previous.url && previous.url !== articleUrl ? [previous.url] : [])
                 ])),
-                createdAt: previous && previous.createdAt ? previous.createdAt : (previous && previous.date ? previous.date : today)
+                createdAt: previous && previous.createdAt
+                    ? previous.createdAt
+                    : (previous && previous.date ? previous.date : today)
             };
         } else {
-            migration.articles.unshift(articleObject);
+            techArticles.unshift(articleObject);
         }
 
-        const nextArticles = sortArticles(migration.articles);
-        const normalized = validateArticleSet(nextArticles);
+        const normalizedResultAfterPublication = normalizeTechDatabaseRecords(techArticles);
+        const normalized = validateArticleSet(normalizedResultAfterPublication.articles);
 
         const articleHTMLDocument = await generateTechArticleHTML(
             config.siteUrl,
@@ -3971,15 +3621,15 @@ async function publishArticle() {
                 content: JSON.stringify(quillDelta)
             },
             {
-                path: 'assets/tech-articles.json',
+                path: STATIC_BUILD_CONFIG.articleDataPath,
                 content: JSON.stringify(normalized, null, 2)
             }
         ];
 
-        if (migration.redirects.length) {
+        if (normalizedResultAfterPublication.redirects.length) {
             const mergedRedirects = await mergeRedirectsWithExistingFile(
                 config,
-                migration.redirects
+                normalizedResultAfterPublication.redirects
             );
 
             files.push({
@@ -3992,7 +3642,7 @@ async function publishArticle() {
          * Never generate a new Tech homepage from the editor.
          * Read the production homepage and update only its publishing markers.
          */
-        logBuild('Homepage safety lock active: tech/index.html will NOT be modified by article publication.', 'ok');
+        logBuild(`Homepage safety lock active: ${STATIC_BUILD_CONFIG.techIndexPath} will NOT be modified by article publication.`, 'ok');
 
         files.push({
             path: STATIC_BUILD_CONFIG.techSitemapPath,
@@ -4839,9 +4489,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('refreshStatusBtn').addEventListener('click', checkGitHubConnection);
     document.getElementById('groqRefreshBtn').addEventListener('click', checkGroqConnection);
     document.getElementById('previewBuildBtn').addEventListener('click', previewBuild);
-    document.getElementById('migrateRoutesBtn').addEventListener('click', migrateLegacyRoutesAndPublish);
-    document.getElementById('runDataMigrationBtn').addEventListener('click', runOneTimeDataMigration);
-    document.getElementById('migrationPreviewBtn').addEventListener('click', inspectDataMigration);
+    document.getElementById('restoreTechDbBtn').addEventListener('click', restoreTechDatabase);
+    document.getElementById('runDataMigrationBtn').addEventListener('click', restoreTechDatabase);
+    document.getElementById('migrationPreviewBtn').addEventListener('click', inspectTechDatabase);
 
     document.getElementById('fabBuild').addEventListener('click', () => {
         closeFabDrawer();
