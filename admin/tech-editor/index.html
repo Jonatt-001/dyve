@@ -1281,6 +1281,671 @@ ${buildStaticHead(title, description, canonical, schema)}
 </html>`;
 }
 
+function b64ToUtf8(b64) {
+    const bin = atob(b64.replace(/\s/g, ''));
+    const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+}
+
+function utf8ToBase64(str) {
+    const bytes = new TextEncoder().encode(str);
+    let bin = '';
+    const CHUNK = 0x8000;
+    for (let i = 0; i < bytes.length; i += CHUNK) {
+        bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
+    }
+    return btoa(bin);
+}
+
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function escapeAttr(value) {
+    return escapeHtml(value);
+}
+
+function safeJson(value) {
+    return JSON.stringify(value)
+        .replace(/</g, '\\u003c')
+        .replace(/>/g, '\\u003e')
+        .replace(/&/g, '\\u0026');
+}
+
+function generateSlug(title) {
+    return String(title || '')
+        .toLowerCase()
+        .normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .trim();
+}
+
+function showToast(message, duration = 4000) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastMessage').textContent = message;
+    toast.classList.remove('hidden');
+    setTimeout(() => toast.classList.add('hidden'), duration);
+}
+
+function setBuildStatus(state, text) {
+    const badge = document.getElementById('buildStatusBadge');
+    const label = document.getElementById('buildStatusText');
+    badge.classList.remove('ready', 'busy', 'error');
+    if (state) badge.classList.add(state);
+    label.textContent = text;
+}
+
+function logBuild(message, type = 'info') {
+    const log = document.getElementById('buildLog');
+    if (!log) return;
+    const row = document.createElement('div');
+    row.className = type;
+    row.textContent = `[build] ${message}`;
+    log.appendChild(row);
+    log.scrollTop = log.scrollHeight;
+}
+
+function resetBuildLog() {
+    const log = document.getElementById('buildLog');
+    if (log) log.innerHTML = '';
+}
+
+function getGitHubConfig() {
+    try {
+        const settings = JSON.parse(localStorage.getItem('dyve-tech-settings') || '{}');
+        return {
+            token: settings.githubToken || '',
+            repo: settings.githubRepo || '',
+            branch: settings.githubBranch || 'main',
+            siteUrl: String(settings.siteUrl || 'https://dyve.online').replace(/\/+$/, ''),
+            groqKey: settings.groqKey || ''
+        };
+    } catch (e) {
+        console.error('Error reading settings:', e);
+        return { token: '', repo: '', branch: 'main', siteUrl: 'https://dyve.online', groqKey: '' };
+    }
+}
+
+async function fetchWithRetry(url, options = {}, retries = 2) {
+    let lastErr;
+    for (let i = 0; i <= retries; i++) {
+        try {
+            const res = await fetch(url, options);
+            if (res.status === 404 || res.status === 401 || res.status === 403) return res;
+            if (!res.ok && i < retries) {
+                await new Promise(r => setTimeout(r, 1200 * (i + 1)));
+                continue;
+            }
+            return res;
+        } catch (e) {
+            lastErr = e;
+            if (i < retries) await new Promise(r => setTimeout(r, 1200 * (i + 1)));
+        }
+    }
+    throw lastErr || new Error('Network error');
+}
+
+function authHeaders(config, extra = {}) {
+    return Object.assign({
+        'Authorization': `Bearer ${config.token}`,
+        'Accept': 'application/vnd.github+json'
+    }, extra);
+}
+
+async function fetchArticlesJson(config) {
+    const techPath = STATIC_BUILD_CONFIG.articleDataPath;
+    const request = path => fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
+        { headers: authHeaders(config) }
+    );
+
+    const metaRes = await request(techPath);
+
+    if (metaRes.status === 404) {
+        /*
+         * Compatibility mode is deliberately strict.
+         *
+         * The old shared assets/articles.json may contain both Dyve Tech and
+         * HackaX records. We NEVER use page="tech" by itself as proof of
+         * Tech ownership because the legacy file contains security records
+         * that were incorrectly marked page="tech".
+         *
+         * A record is accepted by the Tech Editor only when its category is
+         * an actual Dyve Tech category.
+         */
+        const legacyRes = await request('assets/articles.json');
+
+        if (legacyRes.status === 404) {
+            return { articles: [], sha: '', migratedFromLegacy: false };
+        }
+
+        if (!legacyRes.ok) {
+            const err = await legacyRes.json().catch(() => ({}));
+            throw new Error(`Legacy articles.json fetch failed: ${err.message || legacyRes.status}`);
+        }
+
+        const legacyMeta = await legacyRes.json();
+        let legacyText = legacyMeta.content ? b64ToUtf8(legacyMeta.content) : '';
+
+        if (!legacyText && legacyMeta.download_url) {
+            const rawRes = await fetchWithRetry(
+                legacyMeta.download_url,
+                { headers: authHeaders(config) }
+            );
+
+            if (rawRes.ok) legacyText = await rawRes.text();
+        }
+
+        let legacyArticles = [];
+
+        try {
+            legacyArticles = legacyText.trim() ? JSON.parse(legacyText) : [];
+        } catch (e) {
+            throw new Error('Legacy assets/articles.json is corrupt. Run the One-Time Data Migration after restoring the JSON array.');
+        }
+
+        if (!Array.isArray(legacyArticles)) legacyArticles = [];
+
+        const techArticles = legacyArticles.filter(article => {
+            if (!article || typeof article !== 'object') return false;
+
+            const category = String(
+                article.category || article.meta || ''
+            ).trim().toLowerCase();
+
+            return Boolean(CATEGORY_CONFIG[category]);
+        });
+
+        return {
+            articles: techArticles,
+            sha: '',
+            migratedFromLegacy: techArticles.length > 0
+        };
+    }
+
+    if (!metaRes.ok) {
+        const err = await metaRes.json().catch(() => ({}));
+        throw new Error(`tech-articles.json fetch failed: ${err.message || metaRes.status}`);
+    }
+
+    const meta = await metaRes.json();
+    const sha = meta.sha || '';
+    let text = '';
+
+    if (meta.content) {
+        text = b64ToUtf8(meta.content);
+    } else if (meta.download_url) {
+        const rawRes = await fetchWithRetry(
+            meta.download_url,
+            { headers: authHeaders(config) }
+        );
+
+        if (rawRes.ok) text = await rawRes.text();
+    }
+
+    text = (text || '').trim();
+
+    if (!text) {
+        return {
+            articles: [],
+            sha,
+            migratedFromLegacy: false
+        };
+    }
+
+    let articles;
+
+    try {
+        articles = JSON.parse(text);
+    } catch (e) {
+        throw new Error('tech-articles.json is corrupt. Restore it as a JSON array before publishing.');
+    }
+
+    if (!Array.isArray(articles)) articles = [];
+
+    /*
+     * Hard publishing boundary:
+     * - page="tech" is required for canonical Tech records.
+     * - category must also exist in CATEGORY_CONFIG.
+     *
+     * This prevents HackaX/security records from ever reaching
+     * validateArticleSet(), even if an old record accidentally has
+     * page="tech".
+     */
+    const techArticles = articles.filter(article => {
+        if (!article || typeof article !== 'object') return false;
+
+        const page = String(article.page || '').trim().toLowerCase();
+        const category = String(
+            article.category || article.meta || ''
+        ).trim().toLowerCase();
+
+        return page === 'tech' && Boolean(CATEGORY_CONFIG[category]);
+    });
+
+    return {
+        articles: techArticles,
+        sha,
+        migratedFromLegacy: false
+    };
+}
+
+async function githubCommitFiles(config, files, message) {
+    const refRes = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/git/ref/heads/${encodeURIComponent(config.branch)}`,
+        { headers: authHeaders(config) }
+    );
+    if (!refRes.ok) throw new Error(`Unable to resolve branch ${config.branch}.`);
+
+    const ref = await refRes.json();
+    const parentSha = ref.object && ref.object.sha;
+    if (!parentSha) throw new Error('GitHub returned no branch commit SHA.');
+
+    const commitRes = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/git/commits/${parentSha}`,
+        { headers: authHeaders(config) }
+    );
+    if (!commitRes.ok) throw new Error('Unable to resolve current Git tree.');
+
+    const parentCommit = await commitRes.json();
+    const baseTree = parentCommit.tree && parentCommit.tree.sha;
+    if (!baseTree) throw new Error('GitHub returned no base tree SHA.');
+
+    const entries = [];
+
+    for (const file of files) {
+        if (!file || !file.path) continue;
+
+        if (file.delete) {
+            entries.push({
+                path: file.path,
+                mode: '100644',
+                type: 'blob',
+                sha: null
+            });
+            continue;
+        }
+
+        const blobRes = await fetchWithRetry(
+            `https://api.github.com/repos/${config.repo}/git/blobs`,
+            {
+                method: 'POST',
+                headers: authHeaders(config, { 'Content-Type': 'application/json' }),
+                body: JSON.stringify({
+                    content: String(file.content ?? ''),
+                    encoding: 'utf-8'
+                })
+            }
+        );
+
+        if (!blobRes.ok) {
+            const err = await blobRes.json().catch(() => ({}));
+            throw new Error(`Unable to create Git blob for ${file.path}: ${err.message || blobRes.status}`);
+        }
+
+        const blob = await blobRes.json();
+        entries.push({
+            path: file.path,
+            mode: '100644',
+            type: 'blob',
+            sha: blob.sha
+        });
+    }
+
+    const treeRes = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/git/trees`,
+        {
+            method: 'POST',
+            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
+            body: JSON.stringify({
+                base_tree: baseTree,
+                tree: entries
+            })
+        }
+    );
+
+    if (!treeRes.ok) {
+        const err = await treeRes.json().catch(() => ({}));
+        throw new Error(`Unable to create Git tree: ${err.message || treeRes.status}`);
+    }
+
+    const tree = await treeRes.json();
+
+    const newCommitRes = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/git/commits`,
+        {
+            method: 'POST',
+            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
+            body: JSON.stringify({
+                message,
+                tree: tree.sha,
+                parents: [parentSha]
+            })
+        }
+    );
+
+    if (!newCommitRes.ok) {
+        const err = await newCommitRes.json().catch(() => ({}));
+        throw new Error(`Unable to create Git commit: ${err.message || newCommitRes.status}`);
+    }
+
+    const newCommit = await newCommitRes.json();
+
+    const updateRefRes = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/git/refs/heads/${encodeURIComponent(config.branch)}`,
+        {
+            method: 'PATCH',
+            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
+            body: JSON.stringify({
+                sha: newCommit.sha,
+                force: false
+            })
+        }
+    );
+
+    if (!updateRefRes.ok) {
+        const err = await updateRefRes.json().catch(() => ({}));
+        throw new Error(`Unable to publish atomic commit: ${err.message || updateRefRes.status}`);
+    }
+
+    return newCommit;
+}
+
+async function githubPutFile(config, path, text, message) {
+    let sha = '';
+    const metaRes = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
+        { headers: authHeaders(config) }
+    );
+
+    if (metaRes.ok) {
+        const data = await metaRes.json();
+        sha = data.sha || '';
+    }
+
+    const body = {
+        message,
+        content: utf8ToBase64(text),
+        branch: config.branch
+    };
+
+    if (sha) body.sha = sha;
+
+    const res = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/contents/${path}`,
+        {
+            method: 'PUT',
+            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
+            body: JSON.stringify(body)
+        }
+    );
+
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(`Upload failed (${res.status}): ${err.message || path}`);
+    }
+
+    return await res.json();
+}
+
+async function githubDeleteFile(config, path, message) {
+    const metaRes = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/contents/${path}?ref=${encodeURIComponent(config.branch)}`,
+        { headers: authHeaders(config) }
+    );
+
+    if (metaRes.status === 404) return true;
+    if (!metaRes.ok) throw new Error(`Unable to inspect ${path}`);
+
+    const meta = await metaRes.json();
+
+    const res = await fetchWithRetry(
+        `https://api.github.com/repos/${config.repo}/contents/${path}`,
+        {
+            method: 'DELETE',
+            headers: authHeaders(config, { 'Content-Type': 'application/json' }),
+            body: JSON.stringify({
+                message,
+                sha: meta.sha,
+                branch: config.branch
+            })
+        }
+    );
+
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(`Delete failed (${res.status}): ${err.message || path}`);
+    }
+
+    return true;
+}
+
+function deltaPathFor(url) {
+    const key = (url || '')
+        .replace(/\.html$/i, '')
+        .replace(/[^\w-]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'article';
+    return `assets/deltas/${key}.json`;
+}
+
+function normalizeArticle(article) {
+    if (!article || typeof article !== 'object') return null;
+
+    const title = String(article.title || '').trim();
+    const url = String(article.url || '').replace(/^\/+/, '').trim();
+    const page = 'tech';
+    const category = String(article.category || article.meta || 'ai').trim();
+    const tag = String(article.tag || 'News').trim();
+    const date = String(article.date || new Date().toISOString().slice(0, 10)).slice(0, 10);
+
+    if (!title || !url) return null;
+
+    return {
+        ...article,
+        title,
+        url,
+        desc: String(article.desc || '').trim(),
+        image: String(article.image || STATIC_BUILD_CONFIG.defaultImage),
+        imageAlt: String(article.imageAlt || '').trim(),
+        tag,
+        meta: category,
+        category,
+        date,
+        modified: String(article.modified || article.date || date).trim(),
+        page,
+        author: String(article.author || STATIC_BUILD_CONFIG.publisherName),
+        readTime: Math.max(1, Number(article.readTime || 4)),
+        seoTitle: String(article.seoTitle || article.title || '').trim(),
+        focusKeyword: String(article.focusKeyword || '').trim(),
+        keywords: Array.isArray(article.keywords) ? article.keywords.map(k => String(k).trim()).filter(Boolean) : String(article.keywords || '').split(',').map(k => k.trim()).filter(Boolean),
+        sourceUrl: String(article.sourceUrl || '').trim(),
+        ogPrompt: String(article.ogPrompt || '').trim()
+    };
+}
+
+function validateArticleSet(articles) {
+    if (!Array.isArray(articles)) {
+        throw new Error('BUILD FAILED: tech-articles.json must contain a JSON array.');
+    }
+
+    const errors = [];
+    const normalized = [];
+    const seenUrls = new Map();
+
+    articles.forEach((raw, index) => {
+        const number = index + 1;
+        if (!raw || typeof raw !== 'object') {
+            errors.push(`Record #${number}: article must be an object.`);
+            return;
+        }
+
+        const article = normalizeArticle(raw);
+
+        if (!article) {
+            errors.push(`Record #${number}: missing required title or url.`);
+            return;
+        }
+
+        if (!SECTION_CONFIG[article.page]) {
+            errors.push(`Record #${number} "${article.title}": invalid publication page "${article.page}". Tech Editor can publish only to /tech/.`);
+        }
+
+        if (!CATEGORY_CONFIG[article.category]) {
+            errors.push(`Record #${number} "${article.title}": category "${article.category}" is outside the Dyve Tech publishing boundary. Remove it from tech-articles.json or run the One-Time Data Migration.`);
+        }
+
+        const expectedPrefix = 'tech/';
+        const validCanonicalRoute =
+            article.url.startsWith(expectedPrefix) &&
+            article.url.endsWith('.html') &&
+            !article.url.includes('//') &&
+            !article.url.includes('?') &&
+            !article.url.includes('#');
+
+        if (!validCanonicalRoute) {
+            errors.push(
+                `Record #${number} "${article.title}": page/url mismatch. page="${article.page}" requires url="${expectedPrefix}<slug>.html", received "${article.url}". Run "Migrate legacy routes" once if this is an old article URL.`
+            );
+        }
+
+        if (seenUrls.has(article.url)) {
+            errors.push(`Record #${number} "${article.title}": duplicate URL "${article.url}" also used by record #${seenUrls.get(article.url)}.`);
+        } else {
+            seenUrls.set(article.url, number);
+        }
+
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(article.date) || Number.isNaN(new Date(article.date).getTime())) {
+            errors.push(`Record #${number} "${article.title}": invalid date "${article.date}". Expected YYYY-MM-DD.`);
+        }
+
+        if (!article.image) {
+            errors.push(`Record #${number} "${article.title}": image is required.`);
+        }
+
+        normalized.push(article);
+    });
+
+    if (errors.length) {
+        const message = `BUILD FAILED — ${errors.length} validation error${errors.length === 1 ? '' : 's'}:\n\n${errors.map((e, i) => `${i + 1}. ${e}`).join('\n')}`;
+        throw new Error(message);
+    }
+
+    return normalized;
+}
+
+function migrateLegacyRoutes(articles) {
+    if (!Array.isArray(articles)) {
+        throw new Error('Cannot migrate: tech-articles.json is not an array.');
+    }
+
+    const migrated = [];
+    const redirects = [];
+    const seenCanonicalUrls = new Set(
+        articles
+            .map(article => String(article && article.url || '').replace(/^\/+/, '').trim())
+            .filter(Boolean)
+    );
+
+    const usedNewUrls = new Set();
+
+    for (const raw of articles) {
+        const article = normalizeArticle(raw);
+
+        if (!article) {
+            migrated.push(raw);
+            continue;
+        }
+
+        const next = { ...article };
+        const isLegacyTechRoute =
+            article.page === 'tech' &&
+            /^article\//i.test(article.url);
+
+        if (isLegacyTechRoute) {
+            const oldUrl = article.url;
+            const oldPath = oldUrl
+                .replace(/^article\//i, '')
+                .replace(/\/index\.html$/i, '.html');
+
+            let slug = oldPath
+                .replace(/\.html$/i, '')
+                .split('/')
+                .filter(Boolean)
+                .pop() || generateSlug(article.title);
+
+            slug = generateSlug(slug) || generateSlug(article.title) || `article-${Date.now()}`;
+
+            let newUrl = `tech/${slug}.html`;
+            let suffix = 2;
+
+            while (
+                usedNewUrls.has(newUrl) ||
+                (
+                    seenCanonicalUrls.has(newUrl) &&
+                    newUrl !== article.url
+                )
+            ) {
+                newUrl = `tech/${slug}-${suffix}.html`;
+                suffix++;
+            }
+
+            next.url = newUrl;
+            next.legacyUrls = Array.from(new Set([
+                ...(Array.isArray(article.legacyUrls) ? article.legacyUrls : []),
+                oldUrl
+            ]));
+
+            redirects.push({
+                from: `/${oldUrl}`,
+                to: `/${newUrl}`
+            });
+
+            usedNewUrls.add(newUrl);
+        }
+
+        (next.legacyUrls || []).forEach(oldUrl => {
+            const cleanOld = String(oldUrl || '').replace(/^\/+/, '').trim();
+
+            if (
+                cleanOld &&
+                cleanOld !== next.url &&
+                !redirects.some(redirect => redirect.from === `/${cleanOld}`)
+            ) {
+                redirects.push({
+                    from: `/${cleanOld}`,
+                    to: `/${next.url}`
+                });
+            }
+        });
+
+        migrated.push(next);
+    }
+
+    return {
+        articles: migrated,
+        redirects
+    };
+}
+
+
+function sortArticles(articles) {
+    return articles
+        .map(normalizeArticle)
+        .filter(Boolean)
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
+
+
 const DYVE_TECH_TEMPLATE_MARKERS = Object.freeze({
     head: ['<!-- DYVE_TECH_HEAD_START -->', '<!-- DYVE_TECH_HEAD_END -->'],
     featured: ['<!-- DYVE_TECH_FEATURED_START -->', '<!-- DYVE_TECH_FEATURED_END -->'],
@@ -4005,7 +4670,7 @@ async function checkGitHubConnection() {
     try {
         const response = await fetchWithRetry(
             `https://api.github.com/repos/${config.repo}`,
-            { headers: authHeaders(config) }
+            { headers: authHeaders(config), signal: AbortSignal.timeout(10000) }
         );
 
         if (response.ok) {
