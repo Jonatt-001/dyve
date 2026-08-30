@@ -1,5 +1,15 @@
 <!DOCTYPE html>
-<!-- DYVE_TECH_HOMEPAGE_TEMPLATE_VERSION: 6.0.0 -->
+<!-- DYVE_TECH_HOMEPAGE_TEMPLATE_VERSION: 7.0.0 -->
+<!--
+DYVE TECH HOMEPAGE — PRODUCTION TEMPLATE
+ARCHITECTURE:
+- This file owns the public homepage presentation, responsive system and interactions.
+- The editor owns article data in /assets/tech-articles.json.
+- The homepage does not contain CMS/editor code.
+- The homepage can be redesigned independently without changing the Tech Editor.
+- Published article pages are standalone documents and are not coupled to this layout.
+- Runtime data loading is read-only and same-origin.
+-->
 <html lang="en">
 <head>
 <!-- DYVE TECH: Reference visual system preserved; backend/data/SEO wired to Tech. -->
@@ -15,26 +25,30 @@
 <meta name="color-scheme" content="dark">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="application-name" content="Dyve Tech">
-<link rel="canonical" href="https://www.dyve.online/tech/index.html">
-<link rel="alternate" hreflang="en" href="https://www.dyve.online/tech/index.html">
+<link rel="alternate" type="application/rss+xml" title="Dyve Tech RSS" href="https://www.dyve.online/tech/rss.xml">
+<link rel="canonical" href="https://www.dyve.online/tech/">
+<link rel="alternate" hreflang="en" href="https://www.dyve.online/tech/">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Audiowide&family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Dyve Tech">
 <meta property="og:title" content="Technology News &amp; Intelligence | Dyve Tech">
 <meta property="og:description" content="Technology news, analysis and intelligence across artificial intelligence, software, developer tools, cloud, hardware, mobile and emerging digital systems.">
-<meta property="og:url" content="https://www.dyve.online/tech/index.html">
+<meta property="og:url" content="https://www.dyve.online/tech/">
 <meta property="og:image" content="https://www.dyve.online/assets/tech-hero.png">
 <meta property="og:image:alt" content="Dyve Tech technology news and intelligence">
 <meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="700">
 
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@dyveonline">
 <meta name="twitter:title" content="Technology News &amp; Intelligence | Dyve Tech">
 <meta name="twitter:description" content="Technology news, analysis and intelligence from Dyve Tech across AI, software, cloud, hardware, developer tools and emerging digital systems.">
 <meta name="twitter:image" content="https://www.dyve.online/assets/tech-hero.png">
@@ -61,15 +75,15 @@
             "@type": "Organization",
             "@id": "https://www.dyve.online/tech/#organization",
             "name": "Dyve Tech",
-            "url": "https://www.dyve.online/tech/index.html",
+            "url": "https://www.dyve.online/tech/",
             "parentOrganization": {
                 "@id": "https://www.dyve.online/#organization"
             }
         },
         {
             "@type": "WebPage",
-            "@id": "https://www.dyve.online/tech/index.html#webpage",
-            "url": "https://www.dyve.online/tech/index.html",
+            "@id": "https://www.dyve.online/tech/#webpage",
+            "url": "https://www.dyve.online/tech/",
             "name": "Technology News & Intelligence | Dyve Tech",
             "headline": "Technology News & Intelligence | Dyve Tech",
             "description": "Dyve Tech delivers technology news, analysis and intelligence across artificial intelligence, software, developer tools, cloud computing, hardware, mobile technology and emerging digital systems.",
@@ -86,13 +100,13 @@
             "inLanguage": "en",
             "isAccessibleForFree": true,
             "mainEntity": {
-                "@id": "https://www.dyve.online/tech/index.html#collection"
+                "@id": "https://www.dyve.online/tech/#collection"
             }
         },
         {
             "@type": "CollectionPage",
-            "@id": "https://www.dyve.online/tech/index.html#collection",
-            "url": "https://www.dyve.online/tech/index.html",
+            "@id": "https://www.dyve.online/tech/#collection",
+            "url": "https://www.dyve.online/tech/",
             "name": "Technology News & Intelligence | Dyve Tech",
             "headline": "Technology News & Intelligence | Dyve Tech",
             "description": "Technology news, analysis and intelligence covering artificial intelligence, software, developer tools, cloud computing, hardware, mobile technology and emerging digital systems.",
@@ -105,12 +119,12 @@
             "inLanguage": "en",
             "isAccessibleForFree": true,
             "mainEntity": {
-                "@id": "https://www.dyve.online/tech/index.html#article-list"
+                "@id": "https://www.dyve.online/tech/#article-list"
             }
         },
         {
             "@type": "BreadcrumbList",
-            "@id": "https://www.dyve.online/tech/index.html#breadcrumb",
+            "@id": "https://www.dyve.online/tech/#breadcrumb",
             "itemListElement": [
                 {
                     "@type": "ListItem",
@@ -122,13 +136,13 @@
                     "@type": "ListItem",
                     "position": 2,
                     "name": "Technology",
-                    "item": "https://www.dyve.online/tech/index.html"
+                    "item": "https://www.dyve.online/tech/"
                 }
             ]
         },
         {
             "@type": "ItemList",
-            "@id": "https://www.dyve.online/tech/index.html#article-list",
+            "@id": "https://www.dyve.online/tech/#article-list",
             "name": "Latest Technology News & Intelligence",
             "description": "Latest technology stories published by Dyve Tech.",
             "numberOfItems": 0,
@@ -207,12 +221,35 @@ section{position:relative}
 @media (max-width:360px){.hero{min-height:585px;height:585px}.hero-inner{width:calc(100% - 28px);padding-bottom:20px}.hero h1{max-width:285px;font-size:34px}.hero-copy{max-width:270px;font-size:8.5px}.hero-index{max-width:280px;margin-top:18px}.hero-index-item strong{font-size:7.7px}.tech-network-heading h2{font-size:39px}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
 </style>
-</head>
-<style>
-/* DYVE TECH: four-pillar editorial navigation */
-.category-rail{padding:0 0 38px}.category-rail-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:14px}.category-rail-head h2{font-family:Audiowide,Inter,sans-serif;font-weight:400;font-size:clamp(18px,3vw,26px);color:#edf5f2}.category-rail-head p{max-width:520px;color:rgba(255,255,255,.38);font-size:10px;line-height:1.7}.category-rail-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.category-rail-card{display:flex;flex-direction:column;justify-content:space-between;min-height:145px;padding:16px;border:1px solid var(--greenLine);border-radius:14px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(255,255,255,.008));transition:.22s}.category-rail-card:hover{transform:translateY(-3px);border-color:var(--green);background:rgba(0,255,170,.035)}.category-rail-card .num{font:9px Audiowide,Inter,sans-serif;color:var(--green);letter-spacing:.12em}.category-rail-card h3{margin-top:16px;font:400 18px/1.05 Audiowide,Inter,sans-serif;color:#f2f7f5}.category-rail-card p{margin-top:8px;color:rgba(255,255,255,.34);font-size:8px;line-height:1.6}.category-rail-card span:last-child{margin-top:14px;color:rgba(0,255,170,.7);font-size:9px;letter-spacing:.08em;text-transform:uppercase}@media(max-width:900px){.category-rail-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:640px){.category-rail{padding-bottom:30px}.category-rail-grid{grid-template-columns:1fr}.category-rail-card{min-height:130px}}
-</style>
 
+<style>
+/* DYVE TECH 7.0 production hardening */
+:root{--greenLine:rgba(0,255,170,.18)}
+html{scroll-padding-top:var(--header-height)}
+body{min-height:100dvh}
+button,a,input{touch-action:manipulation}
+button:disabled{cursor:not-allowed;opacity:.55}
+.header-search,.menu-button,.search-close,.hero-btn,.section-link,.text-link,.brief-link,.tech-network-link,.footer-column a,.footer-core nav a,.mobile-nav a,.signal-ticker a,.topic,.card,.mini,.release,.hero-index-item{-webkit-tap-highlight-color:transparent}
+.hero::before,.hero::after,.hero-grid,.hero-visual,.hero-visual::before,.hero-visual::after,.cinematic::before,.cinematic::after,.signal::before,.signal::after{pointer-events:none}
+img{height:auto}
+img[width][height]{height:auto}
+.search-panel{overscroll-behavior:contain}
+.search-results:empty{display:none}
+@media(max-width:699px){
+    .search-panel-inner{padding-top:7vh}
+    .search-input{height:60px;font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){
+    .hero-visual{opacity:.35}
+}
+@media print{
+    .utility,.header,.mobile-nav,.search-panel,.data-state,.signal-bar,.hero-actions,.footer{display:none!important}
+    body{background:#fff;color:#111}
+    .hero,.section,.cinematic,.signal,.brief,.releases,.topics,.tech-network{break-inside:avoid;background:#fff!important;color:#111!important}
+    .hero h1,.section-title,.cinematic h2,.signal h2,.brief-copy h2,.tech-network-heading h2{color:#111!important}
+}
+</style>
+</head>
 
 <body>
 
@@ -635,6 +672,8 @@ function absoluteUrl(value) {
     if (!value) return SITE_URL + DEFAULT_IMAGE;
     const valueString = String(value).trim();
     if (/^https?:\/\//i.test(valueString)) return valueString;
+    if (/^\/\//.test(valueString)) return window.location.protocol + valueString;
+    if (/^(javascript|data|vbscript):/i.test(valueString)) return SITE_URL + DEFAULT_IMAGE;
     return SITE_URL + (valueString.startsWith("/") ? valueString : "/" + valueString);
 }
 
@@ -642,7 +681,23 @@ function normalizeArticleUrl(value) {
     if (!value) return SITE_CONFIG.articleRoot;
     let result = String(value).trim();
     if (!result) return SITE_CONFIG.articleRoot;
-    if (/^https?:\/\//i.test(result) || /^\/\//.test(result)) return result;
+    if (/^https?:\/\//i.test(result)) {
+        try {
+            const parsed = new URL(result, SITE_URL);
+            if (parsed.origin === SITE_URL) result = parsed.pathname;
+            else return result;
+        } catch (error) {
+            return SITE_CONFIG.articleRoot;
+        }
+    } else if (/^\/\//.test(result)) {
+        try {
+            const parsed = new URL(window.location.protocol + result);
+            if (parsed.origin === SITE_URL) result = parsed.pathname;
+            else return result;
+        } catch (error) {
+            return SITE_CONFIG.articleRoot;
+        }
+    }
     result = result.replace(/^\/+/,"");
     if (result.indexOf("tech/") === 0) return "/" + result;
     return "/tech/" + result;
@@ -779,10 +834,11 @@ function createImageMarkup(article,loading,small) {
 
     return (
         '<img' +
-            ' src="' + escapeAttr(article.image) + '"' +
+            ' src="' + escapeAttr(absoluteUrl(article.image)) + '"' +
             ' alt="' + escapeAttr(article.imageAlt) + '"' +
             ' loading="' + escapeAttr(loading || "lazy") + '"' +
             ' decoding="async"' +
+            (loading === "eager" ? ' fetchpriority="high"' : '') +
             ' width="1200"' +
             ' height="800"' +
             ' data-fallback-title="' + escapeAttr(article.title) + '"' +
@@ -840,7 +896,7 @@ function setBackground(element,image) {
     }
 
     const safeImage =
-        String(image)
+        absoluteUrl(image)
             .replace(/\\/g,"\\\\")
             .replace(/"/g,'\\"');
 
@@ -966,8 +1022,7 @@ function renderHero() {
      */
     setBackground(
         $("hero"),
-        article.image,
-        article.title
+        article.image
     );
 
     setText(
@@ -1153,7 +1208,7 @@ function renderBrief() {
             }
         };
 
-        image.src = article.image;
+        image.src = absoluteUrl(article.image);
         image.alt = article.imageAlt;
         image.hidden = false;
     }
@@ -1400,34 +1455,27 @@ function setMeta(selector,attribute,value) {
 }
 
 function updateSEO() {
-    const article = articles[0];
-
-    const title =
-        article
-            ? "Technology News & Intelligence | " + article.title
-            : "Technology News & Intelligence | " + SITE_CONFIG.name;
-
-    const description =
-        article && article.excerpt
-            ? article.excerpt.slice(0,160)
-            : SITE_CONFIG.description;
+    const title = "Technology News & Intelligence | " + SITE_CONFIG.name;
+    const description = SITE_CONFIG.description;
 
     document.title = title;
 
     setMeta('meta[name="description"]',"content",description);
     setMeta('meta[property="og:title"]',"content",title);
     setMeta('meta[property="og:description"]',"content",description);
+    setMeta('meta[property="og:url"]',"content",HOME_URL);
     setMeta('meta[name="twitter:title"]',"content",title);
     setMeta('meta[name="twitter:description"]',"content",description);
 
     const image =
-        article && article.image
-            ? absoluteUrl(article.image)
+        articles[0] && articles[0].image
+            ? absoluteUrl(articles[0].image)
             : absoluteUrl(SITE_CONFIG.fallbackLogo);
 
     setMeta('meta[property="og:image"]',"content",image);
     setMeta('meta[name="twitter:image"]',"content",image);
 }
+
 
 function injectSchema() {
     document
@@ -1559,10 +1607,12 @@ function initSearch() {
     const close = $("search-close");
     const input = $("search-input");
     const results = $("search-results");
+    let previousFocus = null;
 
     if (!button || !panel || !close || !input || !results) return;
 
     function openSearch() {
+        previousFocus = document.activeElement;
         document.body.classList.remove("menu-open");
 
         const menu = $("menu-button");
@@ -1592,6 +1642,12 @@ function initSearch() {
         panel.setAttribute("aria-hidden","true");
         button.setAttribute("aria-expanded","false");
         document.body.classList.remove("search-open");
+        results.innerHTML = "";
+        if (previousFocus && typeof previousFocus.focus === "function") {
+            previousFocus.focus();
+        } else {
+            button.focus();
+        }
     }
 
     function renderResults(query) {
@@ -1641,6 +1697,10 @@ function initSearch() {
     button.addEventListener("click",openSearch);
     close.addEventListener("click",closeSearch);
 
+    panel.addEventListener("click",function (event) {
+        if (event.target === panel) closeSearch();
+    });
+
     input.addEventListener("input",function () {
         renderResults(input.value);
     });
@@ -1649,6 +1709,21 @@ function initSearch() {
         if (event.key === "Escape") {
             closeSearch();
             document.body.classList.remove("menu-open");
+        }
+
+        if (event.key === "Tab" && panel.classList.contains("open")) {
+            const focusable = panel.querySelectorAll('button, input, a[href], [tabindex]:not([tabindex="-1"])');
+            if (focusable.length) {
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (event.shiftKey && document.activeElement === first) {
+                    event.preventDefault();
+                    last.focus();
+                } else if (!event.shiftKey && document.activeElement === last) {
+                    event.preventDefault();
+                    first.focus();
+                }
+            }
         }
 
         if (
@@ -1690,6 +1765,13 @@ function initMenu() {
 
         if (open) {
             document.body.classList.remove("search-open");
+            const panel = $("search-panel");
+            const searchButton = $("search-button");
+            if (panel) {
+                panel.classList.remove("open");
+                panel.setAttribute("aria-hidden","true");
+            }
+            if (searchButton) searchButton.setAttribute("aria-expanded","false");
         }
     });
 
@@ -1742,14 +1824,23 @@ async function loadArticles() {
 
     refreshInFlight = true;
 
+    document.documentElement.setAttribute("data-tech-feed-loading","true");
+
     setState(
         lastSuccessfulSync ? "live" : "",
         lastSuccessfulSync ? "Refreshing feed" : "Loading technology"
     );
 
     try {
-        const response =
-            await fetch(
+        const controller = new AbortController();
+        const timeout = window.setTimeout(function () {
+            controller.abort();
+        }, 12000);
+
+        let response;
+
+        try {
+            response = await fetch(
                 SITE_CONFIG.dataUrl,
                 {
                     method:"GET",
@@ -1757,9 +1848,13 @@ async function loadArticles() {
                     credentials:"same-origin",
                     headers:{
                         "Accept":"application/json"
-                    }
+                    },
+                    signal:controller.signal
                 }
             );
+        } finally {
+            window.clearTimeout(timeout);
+        }
 
         if (!response.ok) {
             throw new Error(
@@ -1820,6 +1915,12 @@ async function loadArticles() {
             "Live feed · " + articles.length + " stories"
         );
 
+        window.clearTimeout(window.__dyveFeedStateTimer);
+        window.__dyveFeedStateTimer = window.setTimeout(function () {
+            const state = $("data-state");
+            if (state && lastSuccessfulSync) state.classList.add("settled");
+        }, 5000);
+
     } catch (error) {
         console.error("[Dyve Tech] Feed error:",error);
 
@@ -1852,12 +1953,24 @@ async function loadArticles() {
 
     } finally {
         refreshInFlight = false;
+        document.documentElement.removeAttribute("data-tech-feed-loading");
     }
+}
+
+function initNetworkState() {
+    window.addEventListener("online",function () {
+        setState(lastSuccessfulSync ? "live" : "",lastSuccessfulSync ? "Connection restored" : "Online");
+        loadArticles();
+    });
+
+    window.addEventListener("offline",function () {
+        setState("error",articles.length ? "Offline · showing synced feed" : "Offline");
+    });
 }
 
 function initRefreshLoop() {
     window.setInterval(function () {
-        if (document.visibilityState === "visible") {
+        if (document.visibilityState === "visible" && navigator.onLine) {
             loadArticles();
         }
     },SITE_CONFIG.refreshInterval);
@@ -1876,6 +1989,7 @@ renderFooter();
 initSearch();
 initMenu();
 initReveal();
+initNetworkState();
 loadArticles();
 initRefreshLoop();
 
