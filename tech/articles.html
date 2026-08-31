@@ -1856,6 +1856,651 @@ footer nav a:hover{
         color:#111!important;
     }
 }
+
+/* ============================================================
+   DYVE TECH EDITORIAL SYSTEM — PREMIUM POLISH OVERRIDES
+   Intentional hierarchy, publication-grade spacing and surfaces.
+   ============================================================ */
+
+:root{
+    --paper:#f6f6f2;
+    --paper-2:#fbfbf8;
+    --surface:#ffffff;
+    --surface-tint:#f1f5f1;
+    --ink:#111513;
+    --body:#303733;
+    --body-soft:#5c6560;
+    --muted:#7c847f;
+    --muted-2:#a0a6a1;
+    --accent:#16775a;
+    --accent-dark:#0e5d46;
+    --accent-soft:#e8f2ed;
+    --accent-line:#c7ded4;
+    --blue:#2878e5;
+    --blue-soft:#eaf2ff;
+    --gold:#9b783b;
+    --gold-soft:#f6efdf;
+    --line:#d9ddd8;
+    --line-soft:#e8ebe7;
+    --shadow-card:0 14px 40px rgba(17,30,24,.07);
+    --shadow-card-hover:0 20px 52px rgba(17,30,24,.11);
+}
+
+body{
+    background:
+        radial-gradient(circle at 50% -8%,rgba(22,119,90,.08),transparent 28%),
+        linear-gradient(180deg,#fbfbf8 0%,#f6f6f2 48%,#fafaf7 100%);
+}
+
+/* Header: cleaner publication masthead */
+.top{
+    background:rgba(251,251,248,.94);
+    border-bottom:1px solid rgba(17,21,19,.08);
+    box-shadow:0 7px 28px rgba(17,30,24,.045);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+}
+.top.scrolled{
+    box-shadow:0 10px 34px rgba(17,30,24,.09);
+}
+.top-link{
+    color:var(--accent-dark);
+    background:linear-gradient(180deg,#f2f8f5,#e9f2ee);
+    border-color:#c5ddd3;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+}
+
+/* Head block */
+.head{
+    max-width:1040px;
+    padding:74px 0 42px;
+}
+.kicker{
+    position:relative;
+    width:max-content;
+    max-width:100%;
+    min-height:48px;
+    margin:0 auto 30px;
+    padding:8px 13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    color:var(--accent-dark);
+    background:linear-gradient(135deg,rgba(232,242,237,.96),rgba(246,248,244,.96));
+    border:1px solid #c8ded5;
+    border-radius:14px;
+    box-shadow:
+        0 8px 24px rgba(16,91,68,.055),
+        inset 0 1px 0 rgba(255,255,255,.9);
+    font-family:'Manrope',Inter,sans-serif;
+    font-size:.63rem;
+    font-weight:800;
+    letter-spacing:.105em;
+    line-height:1.4;
+    text-transform:uppercase;
+}
+.kicker::after{
+    content:"";
+    position:absolute;
+    left:18px;
+    right:18px;
+    bottom:-1px;
+    height:2px;
+    background:linear-gradient(90deg,transparent,var(--accent),transparent);
+    opacity:.65;
+    border-radius:99px;
+}
+.kicker-mark{
+    width:9px;
+    height:9px;
+    flex:0 0 9px;
+    border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 5px rgba(22,119,90,.10);
+}
+.kicker-item{
+    color:inherit;
+    text-decoration:none;
+    white-space:nowrap;
+}
+.kicker-category{
+    color:var(--accent-dark);
+}
+.kicker-subcategory{
+    color:#396956;
+}
+.kicker-tag{
+    color:#59625d;
+    background:rgba(255,255,255,.62);
+    border:1px solid rgba(22,119,90,.10);
+    border-radius:999px;
+    padding:7px 10px;
+}
+.kicker-divider{
+    color:#9ca9a2;
+    font-weight:700;
+}
+
+h1{
+    max-width:980px;
+    margin:0 auto 24px;
+    font-size:clamp(2.45rem,5.4vw,4.7rem);
+    line-height:1.045;
+    letter-spacing:-.042em;
+}
+
+.dek{
+    position:relative;
+    max-width:790px;
+    margin:0 auto;
+    padding:20px 28px 21px;
+    color:#606964;
+    font-family:'Libre Baskerville','Source Serif 4',Georgia,serif;
+    font-size:clamp(1.05rem,2vw,1.24rem);
+    font-style:italic;
+    line-height:1.75;
+    text-wrap:pretty;
+    background:rgba(255,255,255,.58);
+    border-top:1px solid rgba(22,119,90,.13);
+    border-bottom:1px solid rgba(22,119,90,.13);
+    border-radius:10px;
+    box-shadow:0 8px 28px rgba(17,30,24,.025);
+}
+.dek::before{
+    content:"";
+    position:absolute;
+    top:17px;
+    bottom:17px;
+    left:0;
+    width:3px;
+    border-radius:99px;
+    background:linear-gradient(180deg,var(--accent),#8ebea9);
+}
+
+/* Publication metadata: author first, then exact date/read-time hierarchy */
+.byline-row{
+    max-width:760px;
+    margin:25px auto 0;
+    padding:13px 18px;
+    justify-content:center;
+    align-items:center;
+    gap:8px 11px;
+    color:#69716c;
+    background:rgba(255,255,255,.78);
+    border:1px solid #e1e4df;
+    border-radius:999px;
+    box-shadow:0 7px 24px rgba(17,30,24,.045);
+    font-family:'Manrope',Inter,sans-serif;
+    font-size:.71rem;
+}
+.byline-author{
+    gap:8px;
+    color:var(--ink);
+    font-weight:800;
+}
+.byline-author-name{
+    white-space:nowrap;
+}
+.author-dot{
+    width:26px;
+    height:26px;
+    background:var(--ink);
+    font-size:.57rem;
+}
+.verified-badge{
+    width:18px;
+    height:18px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--blue);
+    flex:0 0 18px;
+}
+.verified-badge svg{
+    width:18px;
+    height:18px;
+    display:block;
+}
+.date-meta{
+    color:#5d6661;
+    font-weight:600;
+}
+.byline-separator{
+    color:#b4bbb6;
+}
+
+
+
+.byline-publication{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    color:#5d6661;
+    font-family:'Manrope',Inter,sans-serif;
+    font-size:.72rem;
+    font-weight:650;
+    letter-spacing:.005em;
+}
+.byline-author{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+}
+.byline-row{
+    flex-direction:column;
+}
+
+/* Share controls become a deliberate secondary tool row */
+.share{
+    margin-top:18px;
+    padding-top:18px;
+    border-top:1px solid var(--line-soft);
+}
+.share-label{
+    color:#8b928d;
+}
+.share button,
+.share a{
+    width:40px;
+    height:40px;
+    background:#fff;
+    border-color:#dfe3df;
+    box-shadow:0 4px 14px rgba(17,30,24,.035);
+}
+
+/* Hero: publication-grade framed media */
+.hero{
+    margin:24px auto 0;
+}
+.hero-media{
+    border:8px solid #fff;
+    border-radius:22px;
+    box-shadow:
+        0 1px 0 rgba(17,21,19,.07),
+        0 22px 60px rgba(17,30,24,.12);
+}
+.hero-caption{
+    padding:11px 4px 0;
+    color:#8a918c;
+    font-family:'Manrope',sans-serif;
+    font-size:.6rem;
+    letter-spacing:.04em;
+}
+
+/* Main content division */
+.editorial-grid{
+    position:relative;
+}
+.sf-box{
+    margin-top:62px;
+    padding:0 0 4px;
+}
+.sf-box .rule{
+    border-color:#d9ddd8;
+}
+.standfirst{
+    position:relative;
+    margin:18px 0 0;
+    padding:22px 24px 24px 26px;
+    color:#39423d;
+    font-family:'Libre Baskerville','Source Serif 4',Georgia,serif;
+    font-size:1.18rem;
+    line-height:1.75;
+    font-style:italic;
+    background:linear-gradient(135deg,#fbfbf8,#f0f5f1);
+    border:1px solid #d9e5df;
+    border-radius:16px;
+    box-shadow:var(--shadow-card);
+}
+.standfirst::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:20px;
+    bottom:20px;
+    width:3px;
+    background:var(--accent);
+    border-radius:0 3px 3px 0;
+}
+.more-link{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    margin:18px 0 5px;
+    padding:10px 14px;
+    color:var(--accent-dark);
+    background:#eef6f2;
+    border:1px solid #cfe1d9;
+    border-radius:999px;
+    font-family:'Manrope',sans-serif;
+    font-size:.62rem;
+    font-weight:800;
+    letter-spacing:.11em;
+    text-transform:uppercase;
+    text-decoration:none;
+}
+
+/* Article body gets a stronger editorial column */
+.body{
+    margin-top:52px;
+    color:#303733;
+    font-family:'Source Serif 4','Libre Baskerville',Georgia,serif;
+    font-size:1.14rem;
+    line-height:1.86;
+}
+.body p{
+    margin:0 0 1.65em;
+}
+.body h2{
+    margin-top:2.2em;
+    padding-top:.85em;
+    border-top:1px solid var(--line);
+}
+.body blockquote{
+    margin:2.1em 0;
+    padding:25px 28px;
+    border:1px solid #d6e4dd;
+    border-left:4px solid var(--accent);
+    border-radius:14px;
+    background:#eef5f1;
+    box-shadow:var(--shadow-card);
+}
+
+/* Taxonomy becomes a proper section, not generic pills */
+.tags{
+    margin-top:64px;
+    padding:26px 0 0;
+    gap:9px;
+    border-top:1px solid #d5d9d4;
+}
+.tags-label{
+    width:100%;
+    margin-bottom:5px;
+    color:var(--accent-dark);
+    font-size:.62rem;
+    letter-spacing:.18em;
+}
+.chip{
+    color:#44504a;
+    background:#fff;
+    border-color:#d6ddd8;
+    box-shadow:0 3px 12px rgba(17,30,24,.035);
+    padding:9px 13px;
+}
+
+/* Author card becomes a real publication identity module */
+.author-card{
+    margin-top:58px;
+    padding:25px 27px;
+    border:1px solid #d7ded9;
+    border-radius:18px;
+    background:
+        radial-gradient(circle at 100% 0,rgba(22,119,90,.075),transparent 38%),
+        linear-gradient(135deg,#fff,#f7faf8);
+    box-shadow:var(--shadow-card);
+}
+.author-eyebrow{
+    color:var(--accent-dark);
+    letter-spacing:.17em;
+}
+.author-name{
+    font-size:1.04rem;
+}
+.author-description{
+    font-size:.76rem;
+}
+.author-link{
+    background:#fff;
+    border-color:#d7ded9;
+    box-shadow:0 3px 12px rgba(17,30,24,.035);
+}
+
+/* Google News card gets clear product-like hierarchy */
+.news-source{
+    margin-top:28px;
+    padding:21px 22px;
+    border:1px solid #e1d7c3;
+    border-radius:18px;
+    background:
+        radial-gradient(circle at 100% 0,rgba(190,157,82,.10),transparent 35%),
+        linear-gradient(135deg,#fffdf7,#f7f1e5);
+    box-shadow:var(--shadow-card);
+}
+.news-source-icon{
+    border-color:#dfd4bc;
+    background:#fffdf8;
+}
+.news-source-title{
+    font-family:'Manrope',sans-serif;
+    font-weight:800;
+}
+.news-source-copy{
+    color:#6e716b;
+}
+
+/* CTA: stronger editorial conversion point */
+.premium-cta{
+    border:1px solid rgba(103,157,133,.32);
+    box-shadow:0 24px 60px rgba(13,50,37,.16);
+}
+
+/* Comments / related: clean section architecture */
+.comments{
+    border-top:1px solid #d8ddd9;
+}
+.comments-head h2,
+.related-mid-head h2{
+    letter-spacing:-.03em;
+}
+.related{
+    margin-top:92px;
+}
+.ymal-head{
+    padding-bottom:14px;
+    border-bottom:2px solid #1a221e;
+}
+.ymal-flag{
+    color:var(--accent-dark);
+}
+
+/* Footer becomes a proper brand destination */
+footer{
+    position:relative;
+    margin-top:112px;
+    padding:70px 24px calc(48px + env(safe-area-inset-bottom));
+    background:
+        radial-gradient(circle at 82% 0,rgba(44,116,91,.18),transparent 28%),
+        linear-gradient(145deg,#101613 0%,#151c18 58%,#0f1412 100%);
+    color:#fff;
+    border-top:1px solid rgba(119,170,148,.28);
+}
+footer::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:3px;
+    background:linear-gradient(90deg,var(--accent),#a6c27b,var(--accent));
+}
+.footer-top{
+    padding-bottom:48px;
+    gap:60px;
+}
+.fbrand{
+    font-size:1.22rem;
+    letter-spacing:.055em;
+}
+.footer-description{
+    max-width:470px;
+    margin-top:17px;
+    color:rgba(255,255,255,.60);
+    font-size:1rem;
+    line-height:1.75;
+}
+.footer-column-title{
+    margin-bottom:16px;
+    color:#8dc1aa;
+    font-size:.61rem;
+    letter-spacing:.18em;
+}
+footer nav{
+    gap:12px;
+}
+footer nav a{
+    color:rgba(255,255,255,.72);
+    font-size:.78rem;
+    transition:color .2s ease,transform .2s ease;
+}
+footer nav a:hover{
+    color:#fff;
+    transform:translateX(2px);
+}
+.footer-bottom{
+    padding-top:27px;
+}
+.copy{
+    color:rgba(255,255,255,.38);
+}
+.footer-mark{
+    color:rgba(255,255,255,.48);
+    letter-spacing:.12em;
+}
+
+/* Mobile refinement */
+@media(max-width:760px){
+    .head{
+        padding-top:44px;
+        padding-bottom:28px;
+    }
+    .kicker{
+        width:auto;
+        margin-left:4px;
+        margin-right:4px;
+        padding:8px 10px;
+        gap:6px;
+        font-size:.52rem;
+        letter-spacing:.085em;
+        border-radius:13px;
+    }
+    .kicker-mark{
+        width:8px;
+        height:8px;
+        flex-basis:8px;
+    }
+    .kicker-tag{
+        padding:6px 8px;
+    }
+    h1{
+        font-size:clamp(2.15rem,10vw,3rem);
+        line-height:1.055;
+        margin-bottom:18px;
+    }
+    .dek{
+        padding:17px 20px 18px;
+        font-size:1rem;
+        line-height:1.7;
+    }
+    .dek::before{
+        top:15px;
+        bottom:15px;
+    }
+    .byline-row{
+        max-width:100%;
+        margin-top:20px;
+        padding:12px 13px;
+        border-radius:16px;
+        gap:7px;
+        line-height:1.55;
+    }
+    .byline-publication{
+        gap:7px;
+        font-size:.67rem;
+        white-space:nowrap;
+    }
+    .byline-author{
+        width:100%;
+        justify-content:center;
+    }
+    .date-meta{
+        font-size:.67rem;
+    }
+    .share{
+        margin-top:16px;
+        padding-top:15px;
+    }
+    .hero{
+        margin-top:15px;
+    }
+    .hero-media{
+        border-width:5px;
+        border-radius:16px;
+    }
+    .sf-box{
+        margin-top:44px;
+    }
+    .standfirst{
+        margin-top:15px;
+        padding:19px 18px 20px 21px;
+        font-size:1.06rem;
+        line-height:1.72;
+        border-radius:15px;
+    }
+    .body{
+        margin-top:40px;
+        font-size:1.08rem;
+        line-height:1.82;
+    }
+    .tags{
+        margin-top:48px;
+    }
+    .author-card{
+        margin-top:44px;
+        padding:20px;
+        border-radius:16px;
+    }
+    .news-source{
+        border-radius:16px;
+        padding:19px;
+    }
+    footer{
+        margin-top:78px;
+        padding:50px 18px calc(42px + env(safe-area-inset-bottom));
+    }
+    .footer-top{
+        gap:35px 25px;
+        padding-bottom:36px;
+    }
+    .footer-description{
+        font-size:.92rem;
+    }
+    .footer-bottom{
+        gap:12px;
+    }
+}
+
+@media(max-width:420px){
+    .kicker{
+        font-size:.48rem;
+    }
+    .kicker-divider{
+        display:none;
+    }
+    .kicker-item{
+        white-space:normal;
+        text-align:center;
+    }
+    .byline-row{
+        padding:12px 10px;
+    }
+    .byline-author-name{
+        font-size:.68rem;
+    }
+}
+
 </style>
 </head>
 <body>
@@ -1902,48 +2547,60 @@ footer nav a:hover{
 <meta itemprop="articleSection" content="{{CATEGORY_LABEL_ATTR}}">
 <div class="article-shell">
     <header class="head">
-        <div class="kicker"
-             aria-label="Article classification">
-            <span class="mark" aria-hidden="true"></span>
-            <span>{{CATEGORY_LABEL}}</span>
-            <span class="slash" aria-hidden="true">/</span>
-            <span>{{SUBCATEGORY_LABEL}}</span>
-            <span class="slash" aria-hidden="true">/</span>
-            <span>{{TAG}}</span>
-        </div>
+        <nav class="kicker" aria-label="Article classification">
+            <span class="kicker-mark" aria-hidden="true"></span>
+            <a class="kicker-item kicker-category" href="{{CATEGORY_URL}}">
+                <span>{{CATEGORY_LABEL}}</span>
+            </a>
+            <span class="kicker-divider" aria-hidden="true">/</span>
+            <a class="kicker-item kicker-subcategory" href="{{SUBCATEGORY_URL}}">
+                <span>{{SUBCATEGORY_LABEL}}</span>
+            </a>
+            <span class="kicker-divider kicker-subcategory-divider" aria-hidden="true">/</span>
+            <span class="kicker-item kicker-tag">
+                <span>{{TAG}}</span>
+            </span>
+        </nav>
         <h1 itemprop="name">
             {{HEADLINE}}
         </h1>
         <p class="dek">
             {{DESCRIPTION_TEXT}}
         </p>
-        <div class="byline-row">
-            <span class="byline-author">
+        <div class="byline-row" aria-label="Article publication information">
+            <div class="byline-publication">
+                <time class="date-meta publication-date"
+                      id="publicationDate"
+                      datetime="{{DATE_PUBLISHED}}">
+                    {{FORMATTED_DATE}}
+                </time>
+                <span class="byline-separator" aria-hidden="true">•</span>
+                <span class="date-meta">
+                    {{READ_TIME}} min read
+                </span>
+            </div>
+            <div class="byline-author">
                 <span class="author-dot"
                       id="authorInitials"
                       aria-hidden="true">
                 </span>
-                <span>By {{PUBLISHER_NAME}}</span>
-            </span>
-            <span class="byline-separator"
-                  aria-hidden="true">•</span>
-            <time class="date-meta"
-                  datetime="{{DATE_PUBLISHED}}">
-                {{FORMATTED_DATE}}
-            </time>
-            <span class="byline-separator"
-                  aria-hidden="true">•</span>
-            <span class="date-meta">
-                {{READ_TIME}} min read
-            </span>
-            <span class="byline-separator"
-                  id="updatedBylineDot"
-                  hidden
-                  aria-hidden="true">•</span>
-            <span class="date-meta"
-                  id="updatedByline"
-                  hidden>
-            </span>
+                <span class="byline-author-name">Dyve Tech Editorial Unit</span>
+                <span class="verified-badge"
+                      aria-label="Verified editorial unit"
+                      title="Verified editorial unit">
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         aria-hidden="true">
+                        <path d="M12 2l2.35 1.25 2.65-.05 1.25 2.35 2.35 1.25-.05 2.65L22 12l-1.45 2.55.05 2.65-2.35 1.25-1.25 2.35-2.65-.05L12 22l-2.55-1.45-2.65.05-1.25-2.35-2.35-1.25.05-2.65L2 12l1.45-2.55-.05-2.65 2.35-1.25L7 3.2l2.65.05L12 2z"
+                              fill="currentColor"/>
+                        <path d="M8.35 11.95l2.25 2.25 5.15-5.15"
+                              stroke="#fff"
+                              stroke-width="1.7"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                    </svg>
+                </span>
+            </div>
         </div>
         <div class="share"
              aria-label="Share article">
@@ -2070,7 +2727,7 @@ footer nav a:hover{
                    href="{{CATEGORY_URL}}">
                     #{{CATEGORY_LABEL}}
                 </a>
-                <a class="chip"
+                <a class="chip chip-subcategory"
                    href="{{SUBCATEGORY_URL}}">
                     #{{SUBCATEGORY_LABEL}}
                 </a>
@@ -2407,8 +3064,6 @@ footer nav a:hover{
     var midSection=document.getElementById('midArticleRelated');
     var dataEl=document.getElementById('dyveArticleData');
     var relatedEl=document.getElementById('dyveRelatedData');
-    var updatedByline=document.getElementById('updatedByline');
-    var updatedBylineDot=document.getElementById('updatedBylineDot');
     var authorInitials=document.getElementById('authorInitials');
     var authorAvatar=document.getElementById('authorAvatar');
     var authorDescription=document.getElementById('authorDescription');
@@ -2551,6 +3206,48 @@ footer nav a:hover{
     }
     var articleData=readJson(dataEl,{});
     var related=readJson(relatedEl,{});
+
+    function isUnresolvedToken(value){
+        return /\{\{[^}]+\}\}|\(ISUBCATEGORY_LABELI\)/i.test(
+            String(value==null?'':value).trim()
+        );
+    }
+
+    document.querySelectorAll('.kicker-subcategory, .kicker-subcategory-divider, .chip-subcategory').forEach(function(el){
+        var value=(el.textContent || '').trim();
+        if(isUnresolvedToken(value) || !value || value === '#'){
+            el.remove();
+        }
+    });
+
+    var kicker=document.querySelector('.kicker');
+    if(kicker){
+        var visibleItems=kicker.querySelectorAll('.kicker-item');
+        if(!visibleItems.length){
+            kicker.remove();
+        }
+    }
+
+    var publicationDate=document.getElementById('publicationDate');
+    if(publicationDate){
+        var publishedValue=
+            articleData.datePublished ||
+            articleData.date ||
+            publicationDate.getAttribute('datetime') ||
+            '';
+        var parsedDate=new Date(publishedValue);
+        if(!Number.isNaN(parsedDate.getTime())){
+            publicationDate.textContent=new Intl.DateTimeFormat(
+                'en-US',
+                {
+                    month:'long',
+                    day:'numeric',
+                    year:'numeric',
+                    timeZone:'UTC'
+                }
+            ).format(parsedDate);
+        }
+    }
     function esc(value){
         return String(value==null?'':value)
             .replace(/&/g,'&amp;')
@@ -2791,22 +3488,6 @@ footer nav a:hover{
                 midItems.map(renderRelatedMid).join('');
             midSection.hidden=false;
         }
-    }
-    if(
-        updatedByline &&
-        updatedBylineDot &&
-        articleData.modified &&
-        articleData.date &&
-        articleData.modified!==articleData.date
-    ){
-        updatedByline.textContent=
-            'Updated '+
-            (
-                articleData.modifiedFormatted ||
-                articleData.modified
-            );
-        updatedByline.hidden=false;
-        updatedBylineDot.hidden=false;
     }
     if(
         sourceBlock &&
