@@ -5,10 +5,22 @@
     <link>https://dyve.online/tech/</link>
     <description>Technology news, analysis and intelligence from Dyve Tech.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 31 Aug 2026 00:48:45 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 31 Aug 2026 01:37:47 GMT</lastBuildDate>
     <generator>Dyve Tech Editorial Publisher</generator>
     <atom:link href="https://dyve.online/tech/rss.xml" rel="self" type="application/rss+xml" />
 
+    <item>
+        <title>How to receive a free three-month subscription to AI applications.</title>
+        <link>https://dyve.online/tech/how-to-receive-a-free-three-month-subscription-to-ai-applications.html</link>
+        <guid isPermaLink="true">https://dyve.online/tech/how-to-receive-a-free-three-month-subscription-to-ai-applications.html</guid>
+        <description>How to receive a free three-month subscription to AI applications.: PUTRAJAYA, Aug 30 — Participants in the AI for the People (AI Untuk Rakyat) programme mus...</description>
+        <pubDate>Mon, 31 Aug 2026 01:37:44 GMT</pubDate>
+        <dc:creator>Dyve Tech Editorial Unit</dc:creator>
+        <category>Tech</category>
+        <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788140252/dyve-tech/how-to-receive-a-free-three-month-subscription-to-ai-applications-featured.jpg" medium="image" />
+        <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788140252/dyve-tech/how-to-receive-a-free-three-month-subscription-to-ai-applications-featured.jpg" />
+        <content:encoded><![CDATA[<p>How to receive a free three-month subscription to AI applications.: PUTRAJAYA, Aug 30 — Participants in the AI for the People (AI Untuk Rakyat) programme mus...</p>]]></content:encoded>
+    </item>
     <item>
         <title>Cyber Threats Strike at AI Speed, Malaysia Urged to Strengthen Defence</title>
         <link>https://dyve.online/tech/cyber-threats-strike-at-ai-speed-malaysia-urged-to-strengthen-defence.html</link>
@@ -596,18 +608,6 @@
         <media:content url="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&amp;w=800" medium="image" />
         <media:thumbnail url="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&amp;w=800" />
         <content:encoded><![CDATA[<p>Discover insights on improving gpt‑5.6 sol in chatgpt—and expanding access to gpt‑5.6 luna for free users. Our mission is to ensure that artificial general i...</p>]]></content:encoded>
-    </item>
-    <item>
-        <title>Mark Zuckerberg predicts that billions of people will have personal AI agents in five years</title>
-        <link>https://dyve.online/tech/mark-zuckerberg-predicts-that-billions-of-people-will-have-personal-ai-agents-in-five-years.html</link>
-        <guid isPermaLink="true">https://dyve.online/tech/mark-zuckerberg-predicts-that-billions-of-people-will-have-personal-ai-agents-in-five-years.html</guid>
-        <description>Discover insights on mark zuckerberg predicts that billions of people will have personal ai agents in five years. Meta founder and CEO Mark Zuckerberg is try...</description>
-        <pubDate>Fri, 07 Aug 2026 00:00:00 GMT</pubDate>
-        <dc:creator>Dyve Tech Intelligence Unit</dc:creator>
-        <category>Tech</category>
-        <media:content url="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&amp;w=800" medium="image" />
-        <media:thumbnail url="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&amp;w=800" />
-        <content:encoded><![CDATA[<p>Discover insights on mark zuckerberg predicts that billions of people will have personal ai agents in five years. Meta founder and CEO Mark Zuckerberg is try...</p>]]></content:encoded>
     </item>
 </channel>
 </rss>
