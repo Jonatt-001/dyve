@@ -5,10 +5,22 @@
     <link>https://dyve.online/tech/</link>
     <description>Technology news, analysis and intelligence from Dyve Tech.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 31 Aug 2026 01:37:47 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 31 Aug 2026 02:53:44 GMT</lastBuildDate>
     <generator>Dyve Tech Editorial Publisher</generator>
     <atom:link href="https://dyve.online/tech/rss.xml" rel="self" type="application/rss+xml" />
 
+    <item>
+        <title>Court Rules Trump Administration Illegally Blacklisted Anthropic</title>
+        <link>https://dyve.online/tech/court-rules-trump-administration-illegally-blacklisted-anthropic.html</link>
+        <guid isPermaLink="true">https://dyve.online/tech/court-rules-trump-administration-illegally-blacklisted-anthropic.html</guid>
+        <description>Court Rules Trump Administration Illegally Blacklisted Anthropic: A US federal judge has ruled that the Trump administration acted unlawfully when it labelle...</description>
+        <pubDate>Mon, 31 Aug 2026 02:53:43 GMT</pubDate>
+        <dc:creator>Dyve Tech Editorial Unit</dc:creator>
+        <category>Tech</category>
+        <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788144723/dyve-tech/court-rules-trump-administration-illegally-blacklisted-anthropic-featured.png" medium="image" />
+        <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788144723/dyve-tech/court-rules-trump-administration-illegally-blacklisted-anthropic-featured.png" />
+        <content:encoded><![CDATA[<p>Court Rules Trump Administration Illegally Blacklisted Anthropic: A US federal judge has ruled that the Trump administration acted unlawfully when it labelle...</p>]]></content:encoded>
+    </item>
     <item>
         <title>How to receive a free three-month subscription to AI applications.</title>
         <link>https://dyve.online/tech/how-to-receive-a-free-three-month-subscription-to-ai-applications.html</link>
@@ -596,18 +608,6 @@
         <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786125072/gut9xkzmflzeqles1z8a.jpg" medium="image" />
         <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786125072/gut9xkzmflzeqles1z8a.jpg" />
         <content:encoded><![CDATA[<p>Are we about to witness a new space race for global internet supremacy? The European Union has officially moved past the planning stage for IRIS², its highly anticipated low Earth orbit (LEO) satellite broadband network.</p>]]></content:encoded>
-    </item>
-    <item>
-        <title>Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT‑5.6 Luna for free users</title>
-        <link>https://dyve.online/tech/improving-gpt56-sol-in-chatgptand-expanding-access-to-gpt56-luna-for-free-users.html</link>
-        <guid isPermaLink="true">https://dyve.online/tech/improving-gpt56-sol-in-chatgptand-expanding-access-to-gpt56-luna-for-free-users.html</guid>
-        <description>Discover insights on improving gpt‑5.6 sol in chatgpt—and expanding access to gpt‑5.6 luna for free users. Our mission is to ensure that artificial general i...</description>
-        <pubDate>Fri, 07 Aug 2026 00:00:00 GMT</pubDate>
-        <dc:creator>Dyve Tech Intelligence Unit</dc:creator>
-        <category>Tech</category>
-        <media:content url="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&amp;w=800" medium="image" />
-        <media:thumbnail url="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&amp;w=800" />
-        <content:encoded><![CDATA[<p>Discover insights on improving gpt‑5.6 sol in chatgpt—and expanding access to gpt‑5.6 luna for free users. Our mission is to ensure that artificial general i...</p>]]></content:encoded>
     </item>
 </channel>
 </rss>
