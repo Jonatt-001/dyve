@@ -1,0 +1,909 @@
+<!--
+DYVE TECH ARTICLE TEMPLATE — tech/articles.html
+This file owns the public article-page design system.
+
+EDITOR CONTRACT:
+- The editor injects content/data only. Do not put layout or CSS in the editor.
+- You can redesign this file independently. Keep the article-template token contract intact.
+- Add/remove visual components here without changing tech-editor/index.html.
+- Required tokens are listed in the editor's renderArticleTemplate() function.
+
+The final published article is a standalone HTML file. It does not fetch the CMS at runtime.
+-->
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="theme-color" content="#020403">
+<meta name="color-scheme" content="dark">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="format-detection" content="telephone=no">
+<title>NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope... | Dyve Tech</title>
+<meta name="description" content="NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope Launches: Now on a three-month, million-mile journey to its final orbit, NASA’s Nancy Grace Ro...">
+<meta name="author" content="Dyve Tech Editorial Unit">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://dyve.online/tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches.html">
+<link rel="alternate" type="application/rss+xml" title="Dyve Tech RSS" href="https://dyve.online/tech/rss.xml">
+
+<meta property="og:site_name" content="Dyve Tech">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope...">
+<meta property="og:description" content="NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope Launches: Now on a three-month, million-mile journey to its final orbit, NASA’s Nancy Grace Ro...">
+<meta property="og:url" content="https://dyve.online/tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches.html">
+<meta property="og:image" content="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788134990/dyve-tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches-featured.jpg">
+<meta property="og:image:alt" content="Now on a three-month, million-mile journey to its final orbit, NASA’s Nancy Grace Roman Space Telescope will soon reveal the universe’s d...">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="700">
+<meta property="article:published_time" content="2026-08-31">
+<meta property="article:modified_time" content="2026-08-31T00:12:21.125Z">
+<meta property="article:author" content="Dyve Tech Editorial Unit">
+<meta property="article:section" content="Tech / Cloud &amp; Infrastructure">
+<meta name="dyve:subcategory" content="{{SUBCATEGORY_LABEL_ATTR}}">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope...">
+<meta name="twitter:description" content="NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope Launches: Now on a three-month, million-mile journey to its final orbit, NASA’s Nancy Grace Ro...">
+<meta name="twitter:url" content="https://dyve.online/tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches.html">
+<meta name="twitter:image" content="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788134990/dyve-tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches-featured.jpg">
+<meta name="twitter:image:alt" content="Now on a three-month, million-mile journey to its final orbit, NASA’s Nancy Grace Roman Space Telescope will soon reveal the universe’s d...">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;500;600;700;800&family=Maven+Pro:wght@700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope Launches","description":"NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope Launches: Now on a three-month, million-mile journey to its final orbit, NASA’s Nancy Grace Ro...","url":"https://dyve.online/tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches.html","inLanguage":"en","image":["https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788134990/dyve-tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches-featured.jpg"],"author":{"@type":"Organization","name":"Dyve Tech Editorial Unit","url":"https://dyve.online/tech/","parentOrganization":{"@type":"Organization","@id":"https://dyve.online/#organization","name":"Dyve"}},"publisher":{"@type":"Organization","@id":"https://dyve.online/#dyve-tech","name":"Dyve Tech","url":"https://dyve.online/tech/","parentOrganization":{"@type":"Organization","@id":"https://dyve.online/#organization","name":"Dyve"},"logo":{"@type":"ImageObject","url":"https://dyve.online/logo.png"}},"datePublished":"2026-08-31","dateModified":"2026-08-31T00:12:21.125Z","wordCount":847,"timeRequired":"PT4M","isAccessibleForFree":true,"mainEntityOfPage":{"@type":"WebPage","@id":"https://dyve.online/tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches.html"},"articleSection":"Tech / Cloud \u0026 Infrastructure","about":[{"@type":"Thing","name":"Cloud \u0026 Infrastructure"}],"keywords":"three-month, million-mile, journey, final, orbit, nasa, nancy, grace, dark, universe-seeking, roman, space, telescope, launches, tech, cloud, infrastructure, news, report","mentions":[{"@type":"Thing","name":"three-month"}]}</script>
+<script type="application/ld+json" id="relatedArticlesSchema">{"@context":"https://schema.org","@type":"ItemList","name":"Related Articles for NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope Launches","numberOfItems":6,"itemListElement":[{"@type":"ListItem","position":1,"url":"https://dyve.online/tech/google-unveils-12-month-free-ai-offer-for-nigerian-students.html","name":"Google unveils 12-month free AI offer for Nigerian students"},{"@type":"ListItem","position":2,"url":"https://dyve.online/tech/hacker-claims-36-million-azure-account-records-stolen-from-major-companies.html","name":"Hacker claims 3.6 million Azure account records stolen from major companies"},{"@type":"ListItem","position":3,"url":"https://dyve.online/tech/commerzbank-cybercrime-30-million-stolen.html","name":"Commerzbank Cybercrime: €30 Million Stolen"},{"@type":"ListItem","position":4,"url":"https://dyve.online/tech/ransomware-attacks-surge-20-in-july-what-you-need-to-know.html","name":"Ransomware Attacks Surge 20% in July: What You Need to Know"},{"@type":"ListItem","position":5,"url":"https://dyve.online/tech/cloudflare-launches-kitesurf-a-browser-built-for-ai-agents.html","name":"Cloudflare launches Kitesurf, a browser built for AI agents"},{"@type":"ListItem","position":6,"url":"https://dyve.online/tech/europe-finalizes-ambitious-plans-for-iris-the-eus-sovereign-starlink-competitor.html","name":"Europe Finalizes Ambitious Plans for IRIS²: The EU’s ‘Sovereign’ Starlink Competitor"}]}</script>
+
+<style>
+:root{
+    --bg:#020403;
+    --surface:#050806;
+    --surface-2:#08110e;
+    --ink:#f2f7f5;
+    --body-c:rgba(242,247,245,.78);
+    --muted:rgba(242,247,245,.48);
+    --muted-2:rgba(242,247,245,.32);
+    --accent:#00ffaa;
+    --accent-d:#00d995;
+    --accent-soft:rgba(0,255,170,.07);
+    --line:rgba(255,255,255,.075);
+    --line-strong:rgba(255,255,255,.13);
+    --rule:rgba(255,255,255,.09);
+    --max-wide:1180px;
+    --max-hero:1050px;
+    --max-copy:730px;
+    --max-related:900px;
+    --related-bg:#050a08;
+    --related-card:#08110e;
+    --related-hover:#0b1813;
+    --shadow:0 18px 60px rgba(0,0,0,.22);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg);text-size-adjust:100%;-webkit-text-size-adjust:100%}
+body{
+    min-height:100vh;
+    background:radial-gradient(circle at 50% -8%,rgba(0,255,170,.065),transparent 32%),#020403;
+    color:var(--body-c);
+    font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+}
+::selection{background:rgba(0,255,170,.24);color:#fff}
+img{max-width:100%;display:block}
+button,a{font:inherit}
+a{color:inherit}
+button{appearance:none;-webkit-appearance:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+[hidden]{display:none!important}
+
+.pbar{
+    position:fixed;
+    top:0;
+    left:0;
+    height:3px;
+    width:0;
+    background:linear-gradient(90deg,var(--accent),var(--accent-d));
+    z-index:1200;
+    box-shadow:0 0 14px rgba(0,255,170,.28);
+}
+
+.top{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(2,4,3,.86);
+    border-bottom:1px solid var(--line);
+    backdrop-filter:blur(18px) saturate(130%);
+    -webkit-backdrop-filter:blur(18px) saturate(130%);
+}
+.top-in{
+    width:min(100%,var(--max-wide));
+    margin:0 auto;
+    min-height:68px;
+    padding:12px 20px;
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    gap:16px;
+}
+.back{
+    justify-self:start;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:1px solid var(--line-strong);
+    background:rgba(255,255,255,.025);
+    color:#eaf3ef;
+    transition:background .2s ease,color .2s ease,border-color .2s ease,transform .2s ease;
+    text-decoration:none;
+    flex-shrink:0;
+}
+.back:hover{background:var(--accent);color:#00130c;border-color:var(--accent);transform:translateX(-2px)}
+.brand{
+    justify-self:center;
+    font-family:'Audiowide','Maven Pro',sans-serif;
+    font-weight:400;
+    letter-spacing:.04em;
+    font-size:1rem;
+    text-decoration:none;
+    color:#edf5f2;
+    white-space:nowrap;
+}
+.brand span{color:rgba(237,245,242,.43);margin:0 2px}
+.top-link{
+    justify-self:end;
+    max-width:220px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:.68rem;
+    font-weight:800;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:var(--accent);
+}
+.top-link:hover{color:#fff}
+
+main{position:relative}
+article{padding:0 18px}
+.head{max-width:900px;margin:0 auto;text-align:center;padding:72px 0 8px}
+.kicker{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px;
+    max-width:100%;
+    color:var(--accent);
+    font-family:'Audiowide',sans-serif;
+    font-size:.61rem;
+    font-weight:400;
+    letter-spacing:.18em;
+    line-height:1.7;
+    text-transform:uppercase;
+    margin-bottom:24px;
+}
+.kicker svg{width:13px;height:13px;flex:0 0 auto}
+.kicker span{opacity:.42}
+h1{
+    max-width:980px;
+    margin:0 auto 30px;
+    font-family:'Audiowide','Maven Pro',sans-serif;
+    font-weight:400;
+    color:#f2f7f5;
+    font-size:clamp(2rem,6vw,3.65rem);
+    line-height:1.12;
+    letter-spacing:-.025em;
+    text-wrap:balance;
+}
+.byline{
+    color:var(--muted);
+    font-size:.86rem;
+    line-height:1.6;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    gap:8px 10px;
+}
+.byline .author{color:rgba(255,255,255,.84);font-weight:600}
+.byline .dot{color:rgba(255,255,255,.2)}
+.share{display:flex;justify-content:center;gap:10px;margin:26px 0 4px}
+.share button,.share a{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:1px solid var(--line-strong);
+    background:rgba(255,255,255,.02);
+    color:rgba(255,255,255,.62);
+    cursor:pointer;
+    transition:background .2s ease,color .2s ease,border-color .2s ease,transform .2s ease;
+    text-decoration:none;
+}
+.share button:hover,.share a:hover{background:var(--accent);border-color:var(--accent);color:#00130c;transform:translateY(-2px)}
+.share svg{width:16px;height:16px}
+
+.hero{max-width:var(--max-hero);margin:40px auto 0}
+.hero-media{
+    position:relative;
+    width:100%;
+    aspect-ratio:1200 / 700;
+    overflow:hidden;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:#050a08;
+    isolation:isolate;
+    box-shadow:var(--shadow);
+}
+.hero-media::before{
+    content:"";
+    position:absolute;
+    inset:-24px;
+    background-image:var(--hero-bg);
+    background-size:cover;
+    background-position:center;
+    filter:blur(24px);
+    transform:scale(1.08);
+    opacity:.32;
+    z-index:-2;
+}
+.hero-media::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.18));
+    z-index:-1;
+    pointer-events:none;
+}
+.hero-media img.hero-main{
+    position:relative;
+    width:100%;
+    height:100%;
+    max-width:none;
+    object-fit:contain;
+    object-position:center;
+    display:block;
+}
+.hero-media img.hero-bg-source{display:none}
+
+.sf-box{max-width:780px;margin:46px auto 0}
+.rule{border:0;border-top:1px solid var(--rule)}
+.standfirst{
+    font-family:'Source Serif 4',Georgia,serif;
+    font-style:italic;
+    font-size:1.23rem;
+    line-height:1.72;
+    color:rgba(242,247,245,.67);
+    padding:30px 4px 22px;
+    text-wrap:pretty;
+}
+.more-link{
+    display:inline-block;
+    font-family:'Source Serif 4',Georgia,serif;
+    font-style:italic;
+    font-size:1rem;
+    color:var(--accent);
+    text-decoration:underline;
+    text-decoration-thickness:1px;
+    text-underline-offset:4px;
+    margin:0 4px 26px;
+}
+.more-link:hover{color:#fff}
+
+.source-block{
+    margin:0 4px 22px;
+    padding-top:2px;
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:.76rem;
+    line-height:1.55;
+    color:var(--muted);
+    overflow-wrap:anywhere;
+}
+.source-block a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.source-block a:hover{color:#fff}
+
+.body{
+    max-width:var(--max-copy);
+    margin:0 auto;
+    font-family:'Source Serif 4',Georgia,serif;
+    font-size:1.16rem;
+    line-height:1.86;
+    color:rgba(242,247,245,.79);
+    overflow-wrap:anywhere;
+}
+.body::after{content:"";display:block;clear:both}
+.body p{margin:0 0 1.55em}
+.body h2,.body h3,.body h4{
+    font-family:'Space Grotesk',Inter,sans-serif;
+    color:#f2f7f5;
+    line-height:1.28;
+    letter-spacing:-.015em;
+    scroll-margin-top:96px;
+}
+.body h2{font-size:1.72rem;font-weight:700;margin:1.8em 0 .72em}
+.body h3{font-size:1.34rem;font-weight:700;margin:1.65em 0 .68em}
+.body h4{font-size:1.1rem;font-weight:700;margin:1.5em 0 .65em}
+.body a{color:var(--accent);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.body a:hover{color:#fff}
+.body strong{color:#f4faf7;font-weight:700}
+.body em{color:rgba(242,247,245,.88)}
+.body blockquote{
+    border-left:3px solid var(--accent);
+    margin:2em 0;
+    padding:.85em 1.35em;
+    font-style:italic;
+    color:rgba(242,247,245,.68);
+    background:rgba(0,255,170,.035);
+    border-radius:0 8px 8px 0;
+}
+.body blockquote p:last-child{margin-bottom:0}
+.body ul,.body ol{padding-left:1.4em;margin:0 0 1.55em}
+.body li{margin-bottom:.5em;padding-left:.12em}
+.body li:last-child{margin-bottom:0}
+.body hr{border:0;border-top:1px solid var(--rule);margin:2.4em 0}
+.body figure{margin:2em 0}
+.body figure img{margin:0 auto}
+.body figcaption{margin-top:9px;font-family:Inter,system-ui,sans-serif;font-size:.74rem;line-height:1.5;color:var(--muted);text-align:center}
+.body img{width:auto;max-width:100%;height:auto;border-radius:8px;margin:2em auto}
+.body video,.body iframe{max-width:100%;width:100%;border:0;border-radius:10px;margin:2em auto}
+.body table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;margin:2em 0;font-family:Inter,system-ui,sans-serif;font-size:.88rem}
+.body th,.body td{border:1px solid var(--line-strong);padding:.7em .8em;text-align:left;vertical-align:top;min-width:120px}
+.body th{color:#f2f7f5;background:rgba(255,255,255,.035);font-weight:700}
+.body pre{
+    background:#07100c;
+    border:1px solid var(--line);
+    border-radius:9px;
+    padding:1em 1.1em;
+    overflow:auto;
+    margin:0 0 1.55em;
+    -webkit-overflow-scrolling:touch;
+}
+.body code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.88em;color:#d9f9ed}
+.body :not(pre)>code{padding:.12em .34em;background:rgba(0,255,170,.06);border-radius:4px}
+
+.tags{
+    max-width:var(--max-copy);
+    margin:56px auto 0;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:9px;
+}
+.tags-label{font-size:.66rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-2);margin-right:3px}
+.chip{
+    font-size:.66rem;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:rgba(255,255,255,.62);
+    background:rgba(255,255,255,.02);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:9px 14px;
+    transition:background .2s ease,color .2s ease,border-color .2s ease,transform .2s ease;
+}
+.chip:hover{background:var(--accent);border-color:var(--accent);color:#00130c;transform:translateY(-1px)}
+
+.related-mid{
+    max-width:760px;
+    margin:48px auto;
+    padding:40px 32px;
+    background:var(--related-bg);
+    border:1px solid var(--line);
+    border-radius:16px;
+    position:relative;
+    overflow:hidden;
+}
+.related-mid::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-d),transparent)}
+.related-mid h2{font-family:'Audiowide',sans-serif;font-weight:400;color:#fff;font-size:1.3rem;line-height:1.3;margin-bottom:8px}
+.related-mid .subtitle{color:var(--muted);font-size:.88rem;line-height:1.6;margin-bottom:26px}
+.related-mid-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.related-mid-card{
+    background:var(--related-card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+    text-decoration:none;
+    transition:background .25s ease,border-color .25s ease,transform .25s ease;
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+.related-mid-card:hover{background:var(--related-hover);border-color:rgba(0,255,170,.2);transform:translateY(-4px)}
+.related-mid-card img{height:140px;width:100%;object-fit:cover;background:#07100c}
+.related-mid-card .content{padding:17px}
+.related-mid-card h3{font-family:'Space Grotesk',Inter,sans-serif;font-size:.94rem;font-weight:700;color:#f2f7f5;line-height:1.42;margin-bottom:8px}
+.related-mid-card .tag{font-size:.62rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.related-mid-card time{font-size:.72rem;color:rgba(255,255,255,.35)}
+
+.related{max-width:var(--max-related);margin:84px auto 0;padding:0 20px}
+.ymal-head{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+.ymal-flag{
+    flex:0 0 auto;
+    background:var(--accent);
+    color:#00130c;
+    font-family:'Audiowide',sans-serif;
+    font-size:.57rem;
+    font-weight:400;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    padding:10px 25px 10px 19px;
+    clip-path:polygon(12px 0,100% 0,100% 100%,0 100%);
+}
+.ymal-line{flex:1;height:1px;background:linear-gradient(90deg,var(--accent),transparent)}
+.ymal-list{display:flex;flex-direction:column}
+.ymal-item{
+    display:grid;
+    grid-template-columns:minmax(220px,330px) minmax(0,1fr);
+    gap:28px;
+    padding:26px 0;
+    border-bottom:1px solid var(--line);
+    text-decoration:none;
+    align-items:center;
+}
+.ymal-item:last-child{border-bottom:0}
+.ymal-thumb{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:16/10;background:#07100c;border:1px solid var(--line)}
+.ymal-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .45s cubic-bezier(.4,0,.2,1)}
+.ymal-item:hover .ymal-thumb img{transform:scale(1.045)}
+.ymal-tags{position:absolute;left:10px;bottom:10px;display:flex;gap:7px;flex-wrap:wrap}
+.ymal-tag{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:7px 11px;background:rgba(0,255,170,.08);color:var(--accent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.ymal-tag.alt{background:rgba(255,255,255,.07);color:rgba(255,255,255,.7)}
+.ymal-title{font-family:'Space Grotesk',Inter,sans-serif;font-weight:700;color:#f2f7f5;font-size:clamp(1.12rem,2.5vw,1.48rem);line-height:1.3;margin-bottom:13px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ymal-meta{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.32);display:flex;gap:14px;flex-wrap:wrap;line-height:1.5}
+.ymal-meta .author{color:rgba(255,255,255,.58)}
+.related-empty{color:var(--muted);padding:20px 0;font-size:.9rem}
+
+footer{
+    margin-top:84px;
+    background:#020403;
+    border-top:1px solid var(--line);
+    color:#fff;
+    padding:48px 20px calc(48px + env(safe-area-inset-bottom));
+    text-align:center;
+}
+.fbrand{font-family:'Audiowide','Maven Pro',sans-serif;font-weight:400;letter-spacing:.04em}
+.fbrand span{color:rgba(237,245,242,.43)}
+footer nav{display:flex;justify-content:center;gap:22px;margin:18px 0 14px;flex-wrap:wrap}
+footer nav a{color:rgba(255,255,255,.45);text-decoration:none;font-size:.78rem;letter-spacing:.05em;transition:color .2s ease}
+footer nav a:hover{color:var(--accent)}
+.copy{color:rgba(255,255,255,.28);font-size:.72rem;line-height:1.5}
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:24px;
+    z-index:1300;
+    transform:translate(-50%,12px);
+    opacity:0;
+    pointer-events:none;
+    padding:10px 15px;
+    border:1px solid rgba(0,255,170,.22);
+    border-radius:999px;
+    background:rgba(5,10,8,.94);
+    color:#eafff7;
+    box-shadow:0 12px 40px rgba(0,0,0,.32);
+    font-size:.78rem;
+    font-weight:700;
+    transition:opacity .2s ease,transform .2s ease;
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:760px){
+    .top-in{min-height:62px;padding:10px 14px;gap:10px}
+    .back{width:38px;height:38px}
+    .brand{font-size:.86rem}
+    .top-link{font-size:.58rem;max-width:115px;letter-spacing:.1em}
+    article{padding:0 14px}
+    .head{padding-top:54px}
+    .kicker{font-size:.56rem;letter-spacing:.13em;margin-bottom:20px}
+    h1{font-size:clamp(1.8rem,9vw,2.65rem);line-height:1.14;margin-bottom:24px}
+    .byline{font-size:.78rem;gap:6px 8px}
+    .share{margin-top:22px}
+    .hero{margin-top:30px}
+    .hero-media{border-radius:12px}
+    .sf-box{margin-top:34px}
+    .standfirst{font-size:1.1rem;line-height:1.7;padding:24px 2px 18px}
+    .body{font-size:1.08rem;line-height:1.82}
+    .body h2{font-size:1.5rem}
+    .body h3{font-size:1.22rem}
+    .tags{margin-top:44px}
+    .related{padding:0 14px;margin-top:64px}
+    .ymal-head{gap:10px}
+    .ymal-flag{font-size:.52rem;padding:9px 19px 9px 14px}
+    .ymal-item{grid-template-columns:1fr;gap:14px;padding:20px 0}
+    .ymal-thumb{aspect-ratio:16/9}
+    .ymal-title{font-size:1.08rem}
+    .related-mid{margin:38px 0;padding:26px 18px;border-radius:14px}
+    .related-mid-grid{grid-template-columns:1fr;gap:12px}
+    .related-mid-card img{height:170px}
+    footer{margin-top:64px;padding-top:40px}
+}
+
+@media(max-width:420px){
+    .top-in{grid-template-columns:40px 1fr auto}
+    .brand{font-size:.78rem}
+    .top-link{max-width:95px}
+    .head{padding-top:46px}
+    .share button,.share a{width:38px;height:38px}
+    .body{font-size:1.04rem}
+    .chip{padding:8px 12px}
+}
+
+@media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+
+@media print{
+    :root{--bg:#fff;--ink:#111;--body-c:#222;--muted:#666;--line:#ddd;--rule:#ccc}
+    html,body{background:#fff!important;color:#222!important}
+    .pbar,.top,.share,.related-mid,.related,footer,.toast{display:none!important}
+    article{padding:0}
+    .head{padding-top:20px}
+    h1,.body h2,.body h3,.body h4{color:#111!important}
+    .hero-media{box-shadow:none;border:1px solid #ddd}
+    .standfirst,.body{color:#222!important}
+    .body a{color:#111!important}
+    .tags{margin-bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="pbar" id="pbar" aria-hidden="true"></div>
+
+<header class="top">
+    <div class="top-in">
+        <a class="back" href="./" aria-label="Back to Dyve Tech">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </a>
+        <a class="brand" href="./" aria-label="Dyve Tech home">DYVE<span>|</span>TECH</a>
+        <a class="top-link" href="{{CATEGORY_URL}}">Tech / Cloud &amp; Infrastructure</a>
+    </div>
+</header>
+
+<main>
+<article itemscope itemtype="https://schema.org/TechArticle">
+    <meta itemprop="headline" content="NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope...">
+    <meta itemprop="description" content="NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope Launches: Now on a three-month, million-mile journey to its final orbit, NASA’s Nancy Grace Ro...">
+    <meta itemprop="image" content="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788134990/dyve-tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches-featured.jpg">
+    <meta itemprop="datePublished" content="2026-08-31">
+    <meta itemprop="dateModified" content="2026-08-31T00:12:21.125Z">
+    <meta itemprop="author" content="Dyve Tech Editorial Unit">
+    <meta itemprop="articleSection" content="Tech / Cloud &amp; Infrastructure">
+
+    <header class="head">
+        <div class="kicker" aria-label="Article classification">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Tech / Cloud &amp; Infrastructure <span aria-hidden="true">/</span> {{SUBCATEGORY_LABEL}} <span aria-hidden="true">/</span> News Report
+        </div>
+
+        <h1 itemprop="name">NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope Launches</h1>
+
+        <div class="byline">
+            <span>By</span>
+            <span class="author">Dyve Tech Editorial Unit</span>
+            <span class="dot" aria-hidden="true">•</span>
+            <time datetime="2026-08-31">August 31, 2026</time>
+            <span class="dot" aria-hidden="true">•</span>
+            <span>4 min read</span>
+            <span class="dot" id="updatedBylineDot" hidden aria-hidden="true">•</span>
+            <span id="updatedByline" hidden></span>
+        </div>
+
+        <div class="share" aria-label="Share article">
+            <button type="button" onclick="shareX()" aria-label="Share on X">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231z"/></svg>
+            </button>
+            <button type="button" onclick="shareFB()" aria-label="Share on Facebook">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12S0 5.446 0 12.073c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </button>
+            <button type="button" onclick="shareLI()" aria-label="Share on LinkedIn">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286z"/></svg>
+            </button>
+            <button type="button" onclick="copyLink()" aria-label="Copy article link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <figure class="hero">
+        <div class="hero-media" style="--hero-bg:url('https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788134990/dyve-tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches-featured.jpg')">
+            <img class="hero-main" src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788134990/dyve-tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches-featured.jpg" alt="Now on a three-month, million-mile journey to its final orbit, NASA’s Nancy Grace Roman Space Telescope will soon reveal the universe’s d..." itemprop="image" width="1200" height="700" loading="eager" fetchpriority="high" decoding="async" onerror="this.onerror=null;this.src='../dyve-placeholder.jpg';">
+        </div>
+    </figure>
+
+    <div class="sf-box">
+        <hr class="rule">
+        <p class="standfirst" itemprop="description">NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope Launches: Now on a three-month, million-mile journey to its final orbit, NASA’s Nancy Grace Ro...</p>
+        <a class="more-link" href="{{CATEGORY_URL}}">More from Tech / Cloud &amp; Infrastructure →</a>
+        <div class="source-block" id="sourceBlock" hidden>Source: <a id="sourceLink" href="#" rel="nofollow noopener noreferrer" target="_blank"></a></div>
+        <hr class="rule">
+    </div>
+
+    <div class="body" itemprop="articleBody"><p>Now on a three-month, million-mile journey to its final orbit, NASA’s Nancy Grace Roman Space Telescope will soon reveal the universe’s darkest secrets. The <a href="../tech/apple-submits-proposal-for-commissions-on-external-links.html" rel="noopener noreferrer">mission</a> <a href="../tech/cloudflare-launches-kitesurf-a-browser-built-for-ai-agents.html" rel="noopener noreferrer">launch</a>ed at 7:26 a.m. EDT Sunday aboard a SpaceX Falcon Heavy rocket from Launch Complex 39A at the agency’s Kennedy Space Center in Florida.</p><p>Roman pairs a large field of view with crisp infrared vision to explore vast swaths of the sky and probe deeply into cosmic history. This flagship mission will help astronomers explore&nbsp;<a href="https://science.nasa.gov/mission/roman-space-telescope/dark-matter/" rel="noopener noreferrer" style="color: rgb(27, 27, 27);">dark matter</a>,&nbsp;<a href="https://science.nasa.gov/mission/roman-space-telescope/dark-energy/" rel="noopener noreferrer" style="color: rgb(27, 27, 27);">dark energy</a>, and&nbsp;<a href="https://science.nasa.gov/mission/roman-space-telescope/exoplanets/" rel="noopener noreferrer" style="color: rgb(27, 27, 27);">worlds outside of our solar system</a>, known as exoplanets. Its surveys will support a broad range of research extending far beyond the mission’s main science goals.</p><p>“Roman is exactly the kind of success story we want to see across NASA,” said NASA Administrator Jared Isaacman. “Delivered ahead of schedule and on budget, this mission reflects more than a decade of dedication from the NASA workforce and our industry partners. Now, Roman will give us a new atlas of the universe, push the boundaries of discovery, and demonstrate what is possible when America’s space program pairs bold ambition with disciplined execution.”&nbsp;</p><p><img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788135108/dyve-tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches-inline-1788135105884.jpg" alt="Now on a three-month, million-mile journey to its final orbit, NASA’s Nancy Grace Roman Space Telescope will soon reveal the universe’s d..." loading="eager" decoding="async"></p><p>The ground control team at NASA’s Goddard Space Flight Center in Greenbelt, Maryland, began receiving telemetry data from Roman seven minutes after launch. The Falcon Heavy rocket performed as expected, separating from the observatory 31 minutes into the flight. After separating from the center core, the rocket’s boosters safely returned to the launch site for refurbishment.</p><p>“Roman will be a discovery machine that will bring us closer than ever before to answering humanity’s most profound questions about our cosmic history,” said Nicky Fox, associate administrator for the Science Mission Directorate at NASA Headquarters in Washington. “With its large field of view and fast survey speeds, Roman will usher us into a new era of discovery and make the invisible visible, setting the foundation for humanity’s search for life beyond our solar system.”</p><p>During launch and early orbit, Roman uses the Near Space Network’s ground stations and relay satellites to exchange tracking, telemetry, and command data with ground controllers. About 70 minutes after launch, the Deep Space Network takes over communications and guides Roman toward the second Sun-Earth Lagrange point, or L2, about one million miles from Earth. Roman connects to that network through the Canberra Deep Space Communication Complex in Australia first. Approximately six hours later it will transfer to the Madrid Deep Space Communication Complex in Spain and then to the Goldstone Deep Space Communication Complex in California, ensuring continuous contact with Roman throughout its journey.</p><p>The Roman team also confirmed successful deployment of the observatory’s&nbsp;<a href="https://www.nasa.gov/image-article/nasa-test-deploys-roman-space-telescope-solar-panels-visor/" rel="noopener noreferrer" style="color: rgb(27, 27, 27);">solar panels</a>&nbsp;and&nbsp;<a href="https://www.nasa.gov/missions/roman-space-telescope/nasa-installs-key-sunblock-shield-on-roman-space-telescope/" rel="noopener noreferrer" style="color: rgb(27, 27, 27);">lower instrument sun shade</a>&nbsp;an hour and 23 minutes after launch. Within the upcoming days, Roman’s&nbsp;<a href="https://www.nasa.gov/image-article/high-gain-antenna-nasas-roman-mission-clears-environmental-tests/" rel="noopener noreferrer" style="color: rgb(27, 27, 27);">high-gain antenna</a>&nbsp;and visor-like&nbsp;<a href="https://www.nasa.gov/missions/roman-space-telescope/nasa-tests-deployment-of-roman-space-telescopes-visor/" rel="noopener noreferrer" style="color: rgb(27, 27, 27);">deployable aperture cover</a>&nbsp;will deploy, ground controllers will initiate the first of two-mid-course corrections, and the Coronagraph Instrument will power on. This instrument will demonstrate the technology that future missions like NASA’s Habitable Worlds Observatory concept could use to image Earth-like planets in the search for life in the universe. Roman’s Coronagraph will take a giant step in that direction by snapping pictures of Jupiter-like planets.</p><p>A few weeks into Roman’s voyage, its primary instrument, the&nbsp;<a href="https://science.nasa.gov/mission/roman-space-telescope/wide-field-instrument/" rel="noopener noreferrer" style="color: rgb(27, 27, 27);">Wide Field Instrument</a>, will activate. This 300-megapixel infrared camera has 18 4K detectors, each about the size of a saltine cracker. These detectors collect photons of light that will be decoded into crisp cosmic panoramas. Thanks to the observatory’s rigid design and stable optical performance, it will rapidly scan the sky without needing substantial time between separate observations. The Roman telescope is designed to survey the universe a thousand times faster than NASA’s Hubble Space Telescope.</p><p>Throughout the rest of Roman’s three-month commissioning period, scientists will run the instruments through a series of calibrations and tests. NASA anticipates releasing Roman’s first images by early 2027.</p><p>Roman will send back 1.4 terabytes of data every day, the highest data rate of any NASA astrophysics mission, so far. Machine learning, artificial intelligence, and citizen scientists will help sift through it and flag significant findings, which astronomers can then study.</p><p>“We’ve never been able to view the universe with eyes like Roman’s before,” said Julie McEnery, Roman’s senior project scientist at NASA Goddard. “There’s no telling what more we’ll know and have seen by this time next year.”</p><p>Roman is the fourth primary mission NASA has launched on a Falcon Heavy rocket. Earlier this year, the agency’s Launch Services Program worked with SpaceX to accelerate the launch date to accommodate the space telescope’s early completion.</p><p>The telescope is managed at NASA Goddard with participation by the agency’s Jet Propulsion Laboratory in Southern California; Caltech/IPAC in Pasadena, California; the Space Telescope Science Institute in Baltimore; and a team of scientists from various research institutions. The primary industrial partners are BAE Systems Inc., L3Harris Technologies, and Teledyne Scientific &amp; Imaging. Contributions to Roman also are made by ESA, JAXA, the French space agency CNES (Centre National d’Études Spatiales), and the Max Planck Institute for Astronomy in Germany.</p><p>To learn more about the Roman mission, visit:</p><p class="ql-align-center"><a href="https://www.nasa.gov/roman" rel="noopener noreferrer" style="color: rgb(27, 27, 27);">https://www.nasa.gov/roman</a></p><p><br></p></div>
+
+    <div class="tags" aria-label="Article topics">
+        <span class="tags-label">Filed under</span>
+        <a class="chip" href="{{CATEGORY_URL}}">#Tech / Cloud &amp; Infrastructure</a>
+        <a class="chip" href="{{SUBCATEGORY_URL}}">#{{SUBCATEGORY_LABEL}}</a>
+        <a class="chip" href="{{CATEGORY_URL}}">#News Report</a>
+        <a class="chip" href="./">#DyveTech</a>
+    </div>
+</article>
+
+<section class="related-mid" id="midArticleRelated" hidden aria-labelledby="midRelatedTitle">
+    <h2 id="midRelatedTitle">Continue Reading</h2>
+    <p class="subtitle">Deepen your understanding with these related insights.</p>
+    <div class="related-mid-grid" id="midRelatedGrid"></div>
+</section>
+
+<section class="related" id="relatedSection" aria-labelledby="relatedTitle">
+    <div class="ymal-head"><span class="ymal-flag" id="relatedTitle">You may also like</span><span class="ymal-line" aria-hidden="true"></span></div>
+    <div class="ymal-list" id="relatedGrid"></div>
+</section>
+</main>
+
+<footer>
+    <div class="fbrand">DYVE<span>|</span>TECH</div>
+    <nav aria-label="Footer navigation"><a href="../">Dyve</a><a href="./">Latest Tech</a><a href="{{CATEGORY_URL}}">Tech / Cloud &amp; Infrastructure</a><a href="../signals/">HackaX Intelligence</a><a href="../about-us/">About Dyve</a></nav>
+    <p class="copy">© 2026 Dyve Tech. All rights reserved.</p>
+</footer>
+
+<div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script type="application/json" id="dyveArticleData">{"title":"NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope Launches","description":"NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope Launches: Now on a three-month, million-mile journey to its final orbit, NASA’s Nancy Grace Ro...","image":"https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788134990/dyve-tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches-featured.jpg","imageAlt":"Now on a three-month, million-mile journey to its final orbit, NASA’s Nancy Grace Roman Space Telescope will soon reveal the universe’s d...","tag":"News Report","category":"tech","categoryLabel":"Tech / Cloud \u0026 Infrastructure","subcategory":"cloud-infrastructure","subcategoryLabel":"Cloud \u0026 Infrastructure","slug":"nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches","url":"https://dyve.online/tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches.html","date":"2026-08-31","modified":"2026-08-31T00:12:21.125Z","modifiedFormatted":"Aug 31, 2026","readTime":4,"author":"Dyve Tech Editorial Unit","publisherName":"Dyve Tech Editorial Unit","sourceUrl":"","seoTitle":"NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope...","focusKeyword":"three-month","keywords":["three-month","million-mile","journey","final","orbit","nasa","nancy","grace","dark","universe-seeking","roman","space","telescope","launches","tech","cloud","infrastructure","news","report"]}</script>
+<script type="application/json" id="dyveRelatedData">{"items":[{"title":"Google unveils 12-month free AI offer for Nigerian students","image":"https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80\u0026w=1200\u0026auto=format\u0026fit=crop","tag":"Tech Trends","author":"Dyve Tech Editorial Unit","date":"2026-08-20","readTime":4,"url":"tech/google-unveils-12-month-free-ai-offer-for-nigerian-students.html"},{"title":"Hacker claims 3.6 million Azure account records stolen from major companies","image":"https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787151668/c3wrt9zftkohqo8vtz7r.jpg","tag":"Tech Trends","author":"Dyve Tech Editorial Unit","date":"2026-08-19","readTime":4,"url":"tech/hacker-claims-36-million-azure-account-records-stolen-from-major-companies.html"},{"title":"Commerzbank Cybercrime: €30 Million Stolen","image":"https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786736939/nehidqhs7i5p1scbjopd.jpg","tag":"Tech Trends","author":"Dyve Tech Intelligence Unit","date":"2026-08-14","readTime":4,"url":"tech/commerzbank-cybercrime-30-million-stolen.html"},{"title":"Ransomware Attacks Surge 20% in July: What You Need to Know","image":"https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786218048/l594nfnpgsmyn5vo0clk.jpg","tag":"Tech Trends","author":"Dyve Tech Intelligence Unit","date":"2026-08-08","readTime":4,"url":"tech/ransomware-attacks-surge-20-in-july-what-you-need-to-know.html"},{"title":"Cloudflare launches Kitesurf, a browser built for AI agents","image":"https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786138831/j7wxjxy6ehbnczjijhme.jpg","tag":"Tech Trends","author":"Dyve Tech Intelligence Unit","date":"2026-08-07","readTime":4,"url":"tech/cloudflare-launches-kitesurf-a-browser-built-for-ai-agents.html"},{"title":"Europe Finalizes Ambitious Plans for IRIS²: The EU’s ‘Sovereign’ Starlink Competitor","image":"https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786125072/gut9xkzmflzeqles1z8a.jpg","tag":"Tech Trends","author":"Dyve Tech Intelligence Unit","date":"2026-08-07","readTime":4,"url":"tech/europe-finalizes-ambitious-plans-for-iris-the-eus-sovereign-starlink-competitor.html"}],"mid":[{"title":"Google unveils 12-month free AI offer for Nigerian students","image":"https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80\u0026w=1200\u0026auto=format\u0026fit=crop","tag":"Tech Trends","date":"2026-08-20","url":"tech/google-unveils-12-month-free-ai-offer-for-nigerian-students.html"},{"title":"Hacker claims 3.6 million Azure account records stolen from major companies","image":"https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787151668/c3wrt9zftkohqo8vtz7r.jpg","tag":"Tech Trends","date":"2026-08-19","url":"tech/hacker-claims-36-million-azure-account-records-stolen-from-major-companies.html"}]}</script>
+
+<script>
+(function(){
+    'use strict';
+
+    var pbar=document.getElementById('pbar');
+    var sourceBlock=document.getElementById('sourceBlock');
+    var sourceLink=document.getElementById('sourceLink');
+    var toast=document.getElementById('toast');
+    var grid=document.getElementById('relatedGrid');
+    var midGrid=document.getElementById('midRelatedGrid');
+    var midSection=document.getElementById('midArticleRelated');
+    var dataEl=document.getElementById('dyveArticleData');
+    var relatedEl=document.getElementById('dyveRelatedData');
+    var updatedByline=document.getElementById('updatedByline');
+    var updatedBylineDot=document.getElementById('updatedBylineDot');
+    var toastTimer=null;
+
+    function updateProgress(){
+        var h=document.documentElement.scrollHeight-window.innerHeight;
+        var p=h>0?(window.scrollY/h)*100:0;
+        if(pbar)pbar.style.width=Math.max(0,Math.min(100,p))+'%';
+    }
+
+    if('requestAnimationFrame' in window){
+        var progressTick=false;
+        window.addEventListener('scroll',function(){
+            if(progressTick)return;
+            progressTick=true;
+            window.requestAnimationFrame(function(){
+                progressTick=false;
+                updateProgress();
+            });
+        },{passive:true});
+    }else{
+        window.addEventListener('scroll',updateProgress,{passive:true});
+    }
+    window.addEventListener('resize',updateProgress,{passive:true});
+    updateProgress();
+
+    function encode(value){return encodeURIComponent(String(value||''));}
+
+    function openShare(url){
+        var features='noopener,noreferrer,width=720,height=560,menubar=no,toolbar=no,location=yes,resizable=yes,scrollbars=yes';
+        var win=window.open(url,'dyveShare',features);
+        if(win)win.opener=null;
+    }
+
+    window.shareX=function(){
+        var url='https://x.com/intent/post?url='+encode(location.href)+'&text='+encode(document.title);
+        openShare(url);
+    };
+
+    window.shareFB=function(){
+        openShare('https://www.facebook.com/sharer/sharer.php?u='+encode(location.href));
+    };
+
+    window.shareLI=function(){
+        openShare('https://www.linkedin.com/sharing/share-offsite/?url='+encode(location.href));
+    };
+
+    function showToast(message){
+        if(!toast)return;
+        window.clearTimeout(toastTimer);
+        toast.textContent=message;
+        toast.classList.add('show');
+        toastTimer=window.setTimeout(function(){toast.classList.remove('show');},1800);
+    }
+
+    function legacyCopy(text){
+        var area=document.createElement('textarea');
+        area.value=text;
+        area.setAttribute('readonly','');
+        area.style.position='fixed';
+        area.style.opacity='0';
+        area.style.pointerEvents='none';
+        document.body.appendChild(area);
+        area.select();
+        var copied=false;
+        try{copied=document.execCommand('copy');}catch(e){copied=false;}
+        area.remove();
+        return copied;
+    }
+
+    window.copyLink=async function(){
+        var url=location.href;
+        try{
+            if(navigator.clipboard && window.isSecureContext){
+                await navigator.clipboard.writeText(url);
+                showToast('Link copied');
+                return;
+            }
+            if(legacyCopy(url)){
+                showToast('Link copied');
+                return;
+            }
+            showToast('Copy unavailable');
+        }catch(e){
+            if(legacyCopy(url))showToast('Link copied');
+            else showToast('Copy unavailable');
+        }
+    };
+
+    function readJson(el,fallback){
+        if(!el)return fallback;
+        try{
+            var raw=el.textContent || '';
+            if(!raw.trim())return fallback;
+            var parsed=JSON.parse(raw);
+            return parsed==null?fallback:parsed;
+        }catch(e){return fallback;}
+    }
+
+    var articleData=readJson(dataEl,{});
+    var related=readJson(relatedEl,{});
+
+    function esc(value){
+        return String(value==null?'':value)
+            .replace(/&/g,'&amp;')
+            .replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;')
+            .replace(/'/g,'&#39;');
+    }
+
+    function safeHttpUrl(value){
+        var raw=String(value==null?'':value).trim();
+        if(!raw)return '';
+        try{
+            var url=new URL(raw,location.href);
+            if(url.protocol!=='http:' && url.protocol!=='https:')return '';
+            return url.href;
+        }catch(e){return '';}
+    }
+
+    function safeArticleHref(value){
+        var raw=String(value==null?'':value).trim();
+        if(!raw)return '#';
+        try{
+            if(/^https?:\/\//i.test(raw)){
+                var absolute=new URL(raw);
+                return (absolute.protocol==='http:' || absolute.protocol==='https:') ? esc(absolute.href) : '#';
+            }
+            if(raw.charAt(0)==='/'){
+                var rootPath=new URL(raw,location.origin);
+                return (rootPath.protocol==='http:' || rootPath.protocol==='https:') ? esc(rootPath.href) : '#';
+            }
+            var relative=raw.replace(/^\.\//,'').replace(/^\/+/, '');
+            if(relative.indexOf('tech/')===0)relative='../'+relative;
+            var resolved=new URL(relative,location.href);
+            if(resolved.protocol!=='http:' && resolved.protocol!=='https:')return '#';
+            return esc(resolved.href);
+        }catch(e){return '#';}
+    }
+
+    function safeImage(value){
+        var url=safeHttpUrl(value);
+        return esc(url);
+    }
+
+    function renderRelatedItem(article,index){
+        article=article||{};
+        var href=safeArticleHref(article.url || '');
+        var image=safeImage(article.image || '');
+        var title=esc(article.title || '');
+        var tag=esc(article.tag || 'News');
+        var author=esc(article.author || articleData.publisherName || '');
+        var date=esc(article.date || '');
+        var mins=Math.max(1,Number(article.readTime || 4)||4);
+        var imageHtml=image
+            ? '<img src="'+image+'" alt="'+title+'" loading="lazy" decoding="async">'
+            : '<span aria-hidden="true"></span>';
+        return '<a class="ymal-item" href="'+href+'">'+
+            '<div class="ymal-thumb">'+imageHtml+
+            '<div class="ymal-tags"><span class="ymal-tag'+(index%2?' alt':'')+'">'+tag+'</span></div></div>'+
+            '<div><div class="ymal-title">'+title+'</div>'+
+            '<div class="ymal-meta"><span class="author">'+author+'</span><span>'+date+' | '+mins+' MINS READ</span></div></div></a>';
+    }
+
+    function renderRelatedMid(article){
+        article=article||{};
+        var href=safeArticleHref(article.url || '');
+        var image=safeImage(article.image || '');
+        var title=esc(article.title || '');
+        var imageHtml=image
+            ? '<img src="'+image+'" alt="'+title+'" loading="lazy" decoding="async">'
+            : '';
+        return '<a class="related-mid-card" href="'+href+'">'+
+            imageHtml+
+            '<div class="content"><div class="tag">'+esc(article.tag || 'News')+'</div>'+
+            '<h3>'+title+'</h3><time>'+esc(article.date || '')+'</time></div></a>';
+    }
+
+    if(grid){
+        var items=Array.isArray(related.items)?related.items:[];
+        grid.innerHTML=items.length
+            ? items.map(renderRelatedItem).join('')
+            : '<p class="related-empty">No related articles are currently available.</p>';
+    }
+
+    if(midGrid && midSection){
+        var midItems=Array.isArray(related.mid)?related.mid:[];
+        if(midItems.length){
+            midGrid.innerHTML=midItems.map(renderRelatedMid).join('');
+            midSection.hidden=false;
+        }
+    }
+
+    if(updatedByline && updatedBylineDot && articleData.modified && articleData.date && articleData.modified!==articleData.date){
+        updatedByline.textContent='Updated '+(articleData.modifiedFormatted || articleData.modified);
+        updatedByline.hidden=false;
+        updatedBylineDot.hidden=false;
+    }
+
+    if(sourceBlock && sourceLink && articleData.sourceUrl){
+        var sourceUrl=safeHttpUrl(articleData.sourceUrl);
+        if(sourceUrl){
+            sourceLink.href=sourceUrl;
+            sourceLink.textContent=sourceUrl;
+            sourceBlock.hidden=false;
+        }
+    }
+
+    document.querySelectorAll('.body img').forEach(function(image){
+        if(!image.getAttribute('loading'))image.setAttribute('loading','lazy');
+        if(!image.getAttribute('decoding'))image.setAttribute('decoding','async');
+    });
+
+    document.querySelectorAll('.body a').forEach(function(link){
+        var href=link.getAttribute('href')||'';
+        if(/^https?:\/\//i.test(href)){
+            link.setAttribute('rel','noopener noreferrer');
+            link.setAttribute('target','_blank');
+        }
+    });
+})();
+</script>
+</body>
+</html>

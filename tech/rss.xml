@@ -5,10 +5,22 @@
     <link>https://dyve.online/tech/</link>
     <description>Technology news, analysis and intelligence from Dyve Tech.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 30 Aug 2026 21:48:27 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 31 Aug 2026 00:12:23 GMT</lastBuildDate>
     <generator>Dyve Tech Editorial Publisher</generator>
     <atom:link href="https://dyve.online/tech/rss.xml" rel="self" type="application/rss+xml" />
 
+    <item>
+        <title>NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope Launches</title>
+        <link>https://dyve.online/tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches.html</link>
+        <guid isPermaLink="true">https://dyve.online/tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches.html</guid>
+        <description>NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope Launches: Now on a three-month, million-mile journey to its final orbit, NASA’s Nancy Grace Ro...</description>
+        <pubDate>Mon, 31 Aug 2026 00:12:21 GMT</pubDate>
+        <dc:creator>Dyve Tech Editorial Unit</dc:creator>
+        <category>Tech</category>
+        <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788134990/dyve-tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches-featured.jpg" medium="image" />
+        <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788134990/dyve-tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches-featured.jpg" />
+        <content:encoded><![CDATA[<p>NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope Launches: Now on a three-month, million-mile journey to its final orbit, NASA’s Nancy Grace Ro...</p>]]></content:encoded>
+    </item>
     <item>
         <title>GTA 6 Takes Around 80 Hours To Complete, Says Developer</title>
         <link>https://dyve.online/tech/gta-6-takes-around-80-hours-to-complete-says-developer.html</link>
@@ -596,18 +608,6 @@
         <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786136661/qzkutmnr9rc7te5zdvna.jpg" medium="image" />
         <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786136661/qzkutmnr9rc7te5zdvna.jpg" />
         <content:encoded><![CDATA[<p>Cybersecurity is rapidly changing as models become more capable in ways that can both strengthen cyberdefenses and enabl. Dyve Tech intelligence on cybersecu...</p>]]></content:encoded>
-    </item>
-    <item>
-        <title>Apple issues new challenge against UK order for access to private user data</title>
-        <link>https://dyve.online/tech/apple-issues-new-challenge-against-uk-order-for-access-to-private-user-data.html</link>
-        <guid isPermaLink="true">https://dyve.online/tech/apple-issues-new-challenge-against-uk-order-for-access-to-private-user-data.html</guid>
-        <description>Discover insights on apple issues new challenge against uk order for access to private user data. The tech giant has not told BBC News what the complaint rel...</description>
-        <pubDate>Tue, 04 Aug 2026 00:00:00 GMT</pubDate>
-        <dc:creator>Dyve Tech Intelligence Unit</dc:creator>
-        <category>Tech</category>
-        <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/q_auto,f_auto,w_1200/v1785848661/oewfwawo3gipdz0kxpn2.png" medium="image" />
-        <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/q_auto,f_auto,w_1200/v1785848661/oewfwawo3gipdz0kxpn2.png" />
-        <content:encoded><![CDATA[<p>Discover insights on apple issues new challenge against uk order for access to private user data. The tech giant has not told BBC News what the complaint rel...</p>]]></content:encoded>
     </item>
 </channel>
 </rss>
