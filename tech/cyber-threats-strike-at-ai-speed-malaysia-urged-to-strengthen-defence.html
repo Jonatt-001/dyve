@@ -1,0 +1,909 @@
+<!--
+DYVE TECH ARTICLE TEMPLATE — tech/articles.html
+This file owns the public article-page design system.
+
+EDITOR CONTRACT:
+- The editor injects content/data only. Do not put layout or CSS in the editor.
+- You can redesign this file independently. Keep the article-template token contract intact.
+- Add/remove visual components here without changing tech-editor/index.html.
+- Required tokens are listed in the editor's renderArticleTemplate() function.
+
+The final published article is a standalone HTML file. It does not fetch the CMS at runtime.
+-->
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="theme-color" content="#020403">
+<meta name="color-scheme" content="dark">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="format-detection" content="telephone=no">
+<title>As cyber threats strike at AI speed, Malaysia urged to embed r... | Dyve Tech</title>
+<meta name="description" content="As cyber threats strike at AI speed, Malaysia urged to embed risk‑based defence: CYBERJAYA, Aug 29 — In the nearly 30 years since Malaysia began developing i...">
+<meta name="author" content="Dyve Tech Editorial Unit">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://dyve.online/tech/cyber-threats-strike-at-ai-speed-malaysia-urged-to-strengthen-defence.html">
+<link rel="alternate" type="application/rss+xml" title="Dyve Tech RSS" href="https://dyve.online/tech/rss.xml">
+
+<meta property="og:site_name" content="Dyve Tech">
+<meta property="og:type" content="article">
+<meta property="og:title" content="As cyber threats strike at AI speed, Malaysia urged to embed r...">
+<meta property="og:description" content="As cyber threats strike at AI speed, Malaysia urged to embed risk‑based defence: CYBERJAYA, Aug 29 — In the nearly 30 years since Malaysia began developing i...">
+<meta property="og:url" content="https://dyve.online/tech/cyber-threats-strike-at-ai-speed-malaysia-urged-to-strengthen-defence.html">
+<meta property="og:image" content="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788137192/dyve-tech/as-cyber-threats-strike-at-ai-speed-malaysia-urged-to-embed-riskbased-defence-featured.jpg">
+<meta property="og:image:alt" content="CYBERJAYA, Aug 29 — In the nearly 30 years since Malaysia began developing its national cyber emergency response capabilities with the es...">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="700">
+<meta property="article:published_time" content="2026-08-31">
+<meta property="article:modified_time" content="2026-08-31T00:48:43.296Z">
+<meta property="article:author" content="Dyve Tech Editorial Unit">
+<meta property="article:section" content="Cyber News / Attacks &amp; Breaches">
+<meta name="dyve:subcategory" content="{{SUBCATEGORY_LABEL_ATTR}}">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="As cyber threats strike at AI speed, Malaysia urged to embed r...">
+<meta name="twitter:description" content="As cyber threats strike at AI speed, Malaysia urged to embed risk‑based defence: CYBERJAYA, Aug 29 — In the nearly 30 years since Malaysia began developing i...">
+<meta name="twitter:url" content="https://dyve.online/tech/cyber-threats-strike-at-ai-speed-malaysia-urged-to-strengthen-defence.html">
+<meta name="twitter:image" content="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788137192/dyve-tech/as-cyber-threats-strike-at-ai-speed-malaysia-urged-to-embed-riskbased-defence-featured.jpg">
+<meta name="twitter:image:alt" content="CYBERJAYA, Aug 29 — In the nearly 30 years since Malaysia began developing its national cyber emergency response capabilities with the es...">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;500;600;700;800&family=Maven+Pro:wght@700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Cyber Threats Strike at AI Speed, Malaysia Urged to Strengthen Defence","description":"As cyber threats strike at AI speed, Malaysia urged to embed risk‑based defence: CYBERJAYA, Aug 29 — In the nearly 30 years since Malaysia began developing i...","url":"https://dyve.online/tech/cyber-threats-strike-at-ai-speed-malaysia-urged-to-strengthen-defence.html","inLanguage":"en","image":["https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788137192/dyve-tech/as-cyber-threats-strike-at-ai-speed-malaysia-urged-to-embed-riskbased-defence-featured.jpg"],"author":{"@type":"Organization","name":"Dyve Tech Editorial Unit","url":"https://dyve.online/tech/","parentOrganization":{"@type":"Organization","@id":"https://dyve.online/#organization","name":"Dyve"}},"publisher":{"@type":"Organization","@id":"https://dyve.online/#dyve-tech","name":"Dyve Tech","url":"https://dyve.online/tech/","parentOrganization":{"@type":"Organization","@id":"https://dyve.online/#organization","name":"Dyve"},"logo":{"@type":"ImageObject","url":"https://dyve.online/logo.png"}},"datePublished":"2026-08-31","dateModified":"2026-08-31T00:48:43.296Z","wordCount":735,"timeRequired":"PT4M","isAccessibleForFree":true,"mainEntityOfPage":{"@type":"WebPage","@id":"https://dyve.online/tech/cyber-threats-strike-at-ai-speed-malaysia-urged-to-strengthen-defence.html"},"articleSection":"Cyber News / Attacks \u0026 Breaches","about":[{"@type":"Thing","name":"Attacks \u0026 Breaches"}],"keywords":"cyberjaya, nearly, years, since, malaysia, began, developing, national, cyber, threats, strike, speed, urged, strengthen, defence, embed, risk, based, news, attacks","mentions":[{"@type":"Thing","name":"cyberjaya"}]}</script>
+<script type="application/ld+json" id="relatedArticlesSchema">{"@context":"https://schema.org","@type":"ItemList","name":"Related Articles for Cyber Threats Strike at AI Speed, Malaysia Urged to Strengthen Defence","numberOfItems":6,"itemListElement":[{"@type":"ListItem","position":1,"url":"https://dyve.online/tech/nigeria-under-cyber-threat-major-cyber-breaches-and-attacks-making-headlines-in-2026.html","name":"Nigeria Under Cyber Threat: Major Cyber Breaches and Attacks Making Headlines in 2026"},{"@type":"ListItem","position":2,"url":"https://dyve.online/tech/finally-github-restores-services-after-nearly-8hrs.html","name":"FINALLY : GitHub restores services after nearly 8hrs"},{"@type":"ListItem","position":3,"url":"https://dyve.online/tech/why-your-ai-coding-agent-keeps-breaking-production-and-how-git-blame-can-stop-it.html","name":"Why Your AI Coding Agent Keeps Breaking Production (And How  git blame Can Stop It)"},{"@type":"ListItem","position":4,"url":"https://dyve.online/tech/dark-web-monitoring.html","name":"Dark Web Monitoring Systems (How Organizations Track Threats)"},{"@type":"ListItem","position":5,"url":"https://dyve.online/tech/mark-zuckerberg-predicts-that-billions-of-people-will-have-personal-ai-agents-in-five-years.html","name":"Mark Zuckerberg predicts that billions of people will have personal AI agents in five years"},{"@type":"ListItem","position":6,"url":"https://dyve.online/tech/responding-to-the-next-frontier-of-critical-cyber-capabilities.html","name":"Responding to the next frontier of critical cyber capabilities"}]}</script>
+
+<style>
+:root{
+    --bg:#020403;
+    --surface:#050806;
+    --surface-2:#08110e;
+    --ink:#f2f7f5;
+    --body-c:rgba(242,247,245,.78);
+    --muted:rgba(242,247,245,.48);
+    --muted-2:rgba(242,247,245,.32);
+    --accent:#00ffaa;
+    --accent-d:#00d995;
+    --accent-soft:rgba(0,255,170,.07);
+    --line:rgba(255,255,255,.075);
+    --line-strong:rgba(255,255,255,.13);
+    --rule:rgba(255,255,255,.09);
+    --max-wide:1180px;
+    --max-hero:1050px;
+    --max-copy:730px;
+    --max-related:900px;
+    --related-bg:#050a08;
+    --related-card:#08110e;
+    --related-hover:#0b1813;
+    --shadow:0 18px 60px rgba(0,0,0,.22);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg);text-size-adjust:100%;-webkit-text-size-adjust:100%}
+body{
+    min-height:100vh;
+    background:radial-gradient(circle at 50% -8%,rgba(0,255,170,.065),transparent 32%),#020403;
+    color:var(--body-c);
+    font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+}
+::selection{background:rgba(0,255,170,.24);color:#fff}
+img{max-width:100%;display:block}
+button,a{font:inherit}
+a{color:inherit}
+button{appearance:none;-webkit-appearance:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+[hidden]{display:none!important}
+
+.pbar{
+    position:fixed;
+    top:0;
+    left:0;
+    height:3px;
+    width:0;
+    background:linear-gradient(90deg,var(--accent),var(--accent-d));
+    z-index:1200;
+    box-shadow:0 0 14px rgba(0,255,170,.28);
+}
+
+.top{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(2,4,3,.86);
+    border-bottom:1px solid var(--line);
+    backdrop-filter:blur(18px) saturate(130%);
+    -webkit-backdrop-filter:blur(18px) saturate(130%);
+}
+.top-in{
+    width:min(100%,var(--max-wide));
+    margin:0 auto;
+    min-height:68px;
+    padding:12px 20px;
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    gap:16px;
+}
+.back{
+    justify-self:start;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:1px solid var(--line-strong);
+    background:rgba(255,255,255,.025);
+    color:#eaf3ef;
+    transition:background .2s ease,color .2s ease,border-color .2s ease,transform .2s ease;
+    text-decoration:none;
+    flex-shrink:0;
+}
+.back:hover{background:var(--accent);color:#00130c;border-color:var(--accent);transform:translateX(-2px)}
+.brand{
+    justify-self:center;
+    font-family:'Audiowide','Maven Pro',sans-serif;
+    font-weight:400;
+    letter-spacing:.04em;
+    font-size:1rem;
+    text-decoration:none;
+    color:#edf5f2;
+    white-space:nowrap;
+}
+.brand span{color:rgba(237,245,242,.43);margin:0 2px}
+.top-link{
+    justify-self:end;
+    max-width:220px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:.68rem;
+    font-weight:800;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:var(--accent);
+}
+.top-link:hover{color:#fff}
+
+main{position:relative}
+article{padding:0 18px}
+.head{max-width:900px;margin:0 auto;text-align:center;padding:72px 0 8px}
+.kicker{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px;
+    max-width:100%;
+    color:var(--accent);
+    font-family:'Audiowide',sans-serif;
+    font-size:.61rem;
+    font-weight:400;
+    letter-spacing:.18em;
+    line-height:1.7;
+    text-transform:uppercase;
+    margin-bottom:24px;
+}
+.kicker svg{width:13px;height:13px;flex:0 0 auto}
+.kicker span{opacity:.42}
+h1{
+    max-width:980px;
+    margin:0 auto 30px;
+    font-family:'Audiowide','Maven Pro',sans-serif;
+    font-weight:400;
+    color:#f2f7f5;
+    font-size:clamp(2rem,6vw,3.65rem);
+    line-height:1.12;
+    letter-spacing:-.025em;
+    text-wrap:balance;
+}
+.byline{
+    color:var(--muted);
+    font-size:.86rem;
+    line-height:1.6;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    gap:8px 10px;
+}
+.byline .author{color:rgba(255,255,255,.84);font-weight:600}
+.byline .dot{color:rgba(255,255,255,.2)}
+.share{display:flex;justify-content:center;gap:10px;margin:26px 0 4px}
+.share button,.share a{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:1px solid var(--line-strong);
+    background:rgba(255,255,255,.02);
+    color:rgba(255,255,255,.62);
+    cursor:pointer;
+    transition:background .2s ease,color .2s ease,border-color .2s ease,transform .2s ease;
+    text-decoration:none;
+}
+.share button:hover,.share a:hover{background:var(--accent);border-color:var(--accent);color:#00130c;transform:translateY(-2px)}
+.share svg{width:16px;height:16px}
+
+.hero{max-width:var(--max-hero);margin:40px auto 0}
+.hero-media{
+    position:relative;
+    width:100%;
+    aspect-ratio:1200 / 700;
+    overflow:hidden;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:#050a08;
+    isolation:isolate;
+    box-shadow:var(--shadow);
+}
+.hero-media::before{
+    content:"";
+    position:absolute;
+    inset:-24px;
+    background-image:var(--hero-bg);
+    background-size:cover;
+    background-position:center;
+    filter:blur(24px);
+    transform:scale(1.08);
+    opacity:.32;
+    z-index:-2;
+}
+.hero-media::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.18));
+    z-index:-1;
+    pointer-events:none;
+}
+.hero-media img.hero-main{
+    position:relative;
+    width:100%;
+    height:100%;
+    max-width:none;
+    object-fit:contain;
+    object-position:center;
+    display:block;
+}
+.hero-media img.hero-bg-source{display:none}
+
+.sf-box{max-width:780px;margin:46px auto 0}
+.rule{border:0;border-top:1px solid var(--rule)}
+.standfirst{
+    font-family:'Source Serif 4',Georgia,serif;
+    font-style:italic;
+    font-size:1.23rem;
+    line-height:1.72;
+    color:rgba(242,247,245,.67);
+    padding:30px 4px 22px;
+    text-wrap:pretty;
+}
+.more-link{
+    display:inline-block;
+    font-family:'Source Serif 4',Georgia,serif;
+    font-style:italic;
+    font-size:1rem;
+    color:var(--accent);
+    text-decoration:underline;
+    text-decoration-thickness:1px;
+    text-underline-offset:4px;
+    margin:0 4px 26px;
+}
+.more-link:hover{color:#fff}
+
+.source-block{
+    margin:0 4px 22px;
+    padding-top:2px;
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:.76rem;
+    line-height:1.55;
+    color:var(--muted);
+    overflow-wrap:anywhere;
+}
+.source-block a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.source-block a:hover{color:#fff}
+
+.body{
+    max-width:var(--max-copy);
+    margin:0 auto;
+    font-family:'Source Serif 4',Georgia,serif;
+    font-size:1.16rem;
+    line-height:1.86;
+    color:rgba(242,247,245,.79);
+    overflow-wrap:anywhere;
+}
+.body::after{content:"";display:block;clear:both}
+.body p{margin:0 0 1.55em}
+.body h2,.body h3,.body h4{
+    font-family:'Space Grotesk',Inter,sans-serif;
+    color:#f2f7f5;
+    line-height:1.28;
+    letter-spacing:-.015em;
+    scroll-margin-top:96px;
+}
+.body h2{font-size:1.72rem;font-weight:700;margin:1.8em 0 .72em}
+.body h3{font-size:1.34rem;font-weight:700;margin:1.65em 0 .68em}
+.body h4{font-size:1.1rem;font-weight:700;margin:1.5em 0 .65em}
+.body a{color:var(--accent);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.body a:hover{color:#fff}
+.body strong{color:#f4faf7;font-weight:700}
+.body em{color:rgba(242,247,245,.88)}
+.body blockquote{
+    border-left:3px solid var(--accent);
+    margin:2em 0;
+    padding:.85em 1.35em;
+    font-style:italic;
+    color:rgba(242,247,245,.68);
+    background:rgba(0,255,170,.035);
+    border-radius:0 8px 8px 0;
+}
+.body blockquote p:last-child{margin-bottom:0}
+.body ul,.body ol{padding-left:1.4em;margin:0 0 1.55em}
+.body li{margin-bottom:.5em;padding-left:.12em}
+.body li:last-child{margin-bottom:0}
+.body hr{border:0;border-top:1px solid var(--rule);margin:2.4em 0}
+.body figure{margin:2em 0}
+.body figure img{margin:0 auto}
+.body figcaption{margin-top:9px;font-family:Inter,system-ui,sans-serif;font-size:.74rem;line-height:1.5;color:var(--muted);text-align:center}
+.body img{width:auto;max-width:100%;height:auto;border-radius:8px;margin:2em auto}
+.body video,.body iframe{max-width:100%;width:100%;border:0;border-radius:10px;margin:2em auto}
+.body table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;margin:2em 0;font-family:Inter,system-ui,sans-serif;font-size:.88rem}
+.body th,.body td{border:1px solid var(--line-strong);padding:.7em .8em;text-align:left;vertical-align:top;min-width:120px}
+.body th{color:#f2f7f5;background:rgba(255,255,255,.035);font-weight:700}
+.body pre{
+    background:#07100c;
+    border:1px solid var(--line);
+    border-radius:9px;
+    padding:1em 1.1em;
+    overflow:auto;
+    margin:0 0 1.55em;
+    -webkit-overflow-scrolling:touch;
+}
+.body code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.88em;color:#d9f9ed}
+.body :not(pre)>code{padding:.12em .34em;background:rgba(0,255,170,.06);border-radius:4px}
+
+.tags{
+    max-width:var(--max-copy);
+    margin:56px auto 0;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:9px;
+}
+.tags-label{font-size:.66rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-2);margin-right:3px}
+.chip{
+    font-size:.66rem;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:rgba(255,255,255,.62);
+    background:rgba(255,255,255,.02);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:9px 14px;
+    transition:background .2s ease,color .2s ease,border-color .2s ease,transform .2s ease;
+}
+.chip:hover{background:var(--accent);border-color:var(--accent);color:#00130c;transform:translateY(-1px)}
+
+.related-mid{
+    max-width:760px;
+    margin:48px auto;
+    padding:40px 32px;
+    background:var(--related-bg);
+    border:1px solid var(--line);
+    border-radius:16px;
+    position:relative;
+    overflow:hidden;
+}
+.related-mid::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-d),transparent)}
+.related-mid h2{font-family:'Audiowide',sans-serif;font-weight:400;color:#fff;font-size:1.3rem;line-height:1.3;margin-bottom:8px}
+.related-mid .subtitle{color:var(--muted);font-size:.88rem;line-height:1.6;margin-bottom:26px}
+.related-mid-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.related-mid-card{
+    background:var(--related-card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+    text-decoration:none;
+    transition:background .25s ease,border-color .25s ease,transform .25s ease;
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+.related-mid-card:hover{background:var(--related-hover);border-color:rgba(0,255,170,.2);transform:translateY(-4px)}
+.related-mid-card img{height:140px;width:100%;object-fit:cover;background:#07100c}
+.related-mid-card .content{padding:17px}
+.related-mid-card h3{font-family:'Space Grotesk',Inter,sans-serif;font-size:.94rem;font-weight:700;color:#f2f7f5;line-height:1.42;margin-bottom:8px}
+.related-mid-card .tag{font-size:.62rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.related-mid-card time{font-size:.72rem;color:rgba(255,255,255,.35)}
+
+.related{max-width:var(--max-related);margin:84px auto 0;padding:0 20px}
+.ymal-head{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+.ymal-flag{
+    flex:0 0 auto;
+    background:var(--accent);
+    color:#00130c;
+    font-family:'Audiowide',sans-serif;
+    font-size:.57rem;
+    font-weight:400;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    padding:10px 25px 10px 19px;
+    clip-path:polygon(12px 0,100% 0,100% 100%,0 100%);
+}
+.ymal-line{flex:1;height:1px;background:linear-gradient(90deg,var(--accent),transparent)}
+.ymal-list{display:flex;flex-direction:column}
+.ymal-item{
+    display:grid;
+    grid-template-columns:minmax(220px,330px) minmax(0,1fr);
+    gap:28px;
+    padding:26px 0;
+    border-bottom:1px solid var(--line);
+    text-decoration:none;
+    align-items:center;
+}
+.ymal-item:last-child{border-bottom:0}
+.ymal-thumb{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:16/10;background:#07100c;border:1px solid var(--line)}
+.ymal-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .45s cubic-bezier(.4,0,.2,1)}
+.ymal-item:hover .ymal-thumb img{transform:scale(1.045)}
+.ymal-tags{position:absolute;left:10px;bottom:10px;display:flex;gap:7px;flex-wrap:wrap}
+.ymal-tag{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:7px 11px;background:rgba(0,255,170,.08);color:var(--accent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.ymal-tag.alt{background:rgba(255,255,255,.07);color:rgba(255,255,255,.7)}
+.ymal-title{font-family:'Space Grotesk',Inter,sans-serif;font-weight:700;color:#f2f7f5;font-size:clamp(1.12rem,2.5vw,1.48rem);line-height:1.3;margin-bottom:13px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ymal-meta{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.32);display:flex;gap:14px;flex-wrap:wrap;line-height:1.5}
+.ymal-meta .author{color:rgba(255,255,255,.58)}
+.related-empty{color:var(--muted);padding:20px 0;font-size:.9rem}
+
+footer{
+    margin-top:84px;
+    background:#020403;
+    border-top:1px solid var(--line);
+    color:#fff;
+    padding:48px 20px calc(48px + env(safe-area-inset-bottom));
+    text-align:center;
+}
+.fbrand{font-family:'Audiowide','Maven Pro',sans-serif;font-weight:400;letter-spacing:.04em}
+.fbrand span{color:rgba(237,245,242,.43)}
+footer nav{display:flex;justify-content:center;gap:22px;margin:18px 0 14px;flex-wrap:wrap}
+footer nav a{color:rgba(255,255,255,.45);text-decoration:none;font-size:.78rem;letter-spacing:.05em;transition:color .2s ease}
+footer nav a:hover{color:var(--accent)}
+.copy{color:rgba(255,255,255,.28);font-size:.72rem;line-height:1.5}
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:24px;
+    z-index:1300;
+    transform:translate(-50%,12px);
+    opacity:0;
+    pointer-events:none;
+    padding:10px 15px;
+    border:1px solid rgba(0,255,170,.22);
+    border-radius:999px;
+    background:rgba(5,10,8,.94);
+    color:#eafff7;
+    box-shadow:0 12px 40px rgba(0,0,0,.32);
+    font-size:.78rem;
+    font-weight:700;
+    transition:opacity .2s ease,transform .2s ease;
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:760px){
+    .top-in{min-height:62px;padding:10px 14px;gap:10px}
+    .back{width:38px;height:38px}
+    .brand{font-size:.86rem}
+    .top-link{font-size:.58rem;max-width:115px;letter-spacing:.1em}
+    article{padding:0 14px}
+    .head{padding-top:54px}
+    .kicker{font-size:.56rem;letter-spacing:.13em;margin-bottom:20px}
+    h1{font-size:clamp(1.8rem,9vw,2.65rem);line-height:1.14;margin-bottom:24px}
+    .byline{font-size:.78rem;gap:6px 8px}
+    .share{margin-top:22px}
+    .hero{margin-top:30px}
+    .hero-media{border-radius:12px}
+    .sf-box{margin-top:34px}
+    .standfirst{font-size:1.1rem;line-height:1.7;padding:24px 2px 18px}
+    .body{font-size:1.08rem;line-height:1.82}
+    .body h2{font-size:1.5rem}
+    .body h3{font-size:1.22rem}
+    .tags{margin-top:44px}
+    .related{padding:0 14px;margin-top:64px}
+    .ymal-head{gap:10px}
+    .ymal-flag{font-size:.52rem;padding:9px 19px 9px 14px}
+    .ymal-item{grid-template-columns:1fr;gap:14px;padding:20px 0}
+    .ymal-thumb{aspect-ratio:16/9}
+    .ymal-title{font-size:1.08rem}
+    .related-mid{margin:38px 0;padding:26px 18px;border-radius:14px}
+    .related-mid-grid{grid-template-columns:1fr;gap:12px}
+    .related-mid-card img{height:170px}
+    footer{margin-top:64px;padding-top:40px}
+}
+
+@media(max-width:420px){
+    .top-in{grid-template-columns:40px 1fr auto}
+    .brand{font-size:.78rem}
+    .top-link{max-width:95px}
+    .head{padding-top:46px}
+    .share button,.share a{width:38px;height:38px}
+    .body{font-size:1.04rem}
+    .chip{padding:8px 12px}
+}
+
+@media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+
+@media print{
+    :root{--bg:#fff;--ink:#111;--body-c:#222;--muted:#666;--line:#ddd;--rule:#ccc}
+    html,body{background:#fff!important;color:#222!important}
+    .pbar,.top,.share,.related-mid,.related,footer,.toast{display:none!important}
+    article{padding:0}
+    .head{padding-top:20px}
+    h1,.body h2,.body h3,.body h4{color:#111!important}
+    .hero-media{box-shadow:none;border:1px solid #ddd}
+    .standfirst,.body{color:#222!important}
+    .body a{color:#111!important}
+    .tags{margin-bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="pbar" id="pbar" aria-hidden="true"></div>
+
+<header class="top">
+    <div class="top-in">
+        <a class="back" href="./" aria-label="Back to Dyve Tech">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </a>
+        <a class="brand" href="./" aria-label="Dyve Tech home">DYVE<span>|</span>TECH</a>
+        <a class="top-link" href="{{CATEGORY_URL}}">Cyber News / Attacks &amp; Breaches</a>
+    </div>
+</header>
+
+<main>
+<article itemscope itemtype="https://schema.org/TechArticle">
+    <meta itemprop="headline" content="As cyber threats strike at AI speed, Malaysia urged to embed r...">
+    <meta itemprop="description" content="As cyber threats strike at AI speed, Malaysia urged to embed risk‑based defence: CYBERJAYA, Aug 29 — In the nearly 30 years since Malaysia began developing i...">
+    <meta itemprop="image" content="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788137192/dyve-tech/as-cyber-threats-strike-at-ai-speed-malaysia-urged-to-embed-riskbased-defence-featured.jpg">
+    <meta itemprop="datePublished" content="2026-08-31">
+    <meta itemprop="dateModified" content="2026-08-31T00:48:43.296Z">
+    <meta itemprop="author" content="Dyve Tech Editorial Unit">
+    <meta itemprop="articleSection" content="Cyber News / Attacks &amp; Breaches">
+
+    <header class="head">
+        <div class="kicker" aria-label="Article classification">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Cyber News / Attacks &amp; Breaches <span aria-hidden="true">/</span> {{SUBCATEGORY_LABEL}} <span aria-hidden="true">/</span> Breaking News
+        </div>
+
+        <h1 itemprop="name">Cyber Threats Strike at AI Speed, Malaysia Urged to Strengthen Defence</h1>
+
+        <div class="byline">
+            <span>By</span>
+            <span class="author">Dyve Tech Editorial Unit</span>
+            <span class="dot" aria-hidden="true">•</span>
+            <time datetime="2026-08-31">August 31, 2026</time>
+            <span class="dot" aria-hidden="true">•</span>
+            <span>4 min read</span>
+            <span class="dot" id="updatedBylineDot" hidden aria-hidden="true">•</span>
+            <span id="updatedByline" hidden></span>
+        </div>
+
+        <div class="share" aria-label="Share article">
+            <button type="button" onclick="shareX()" aria-label="Share on X">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231z"/></svg>
+            </button>
+            <button type="button" onclick="shareFB()" aria-label="Share on Facebook">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12S0 5.446 0 12.073c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </button>
+            <button type="button" onclick="shareLI()" aria-label="Share on LinkedIn">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286z"/></svg>
+            </button>
+            <button type="button" onclick="copyLink()" aria-label="Copy article link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <figure class="hero">
+        <div class="hero-media" style="--hero-bg:url('https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788137192/dyve-tech/as-cyber-threats-strike-at-ai-speed-malaysia-urged-to-embed-riskbased-defence-featured.jpg')">
+            <img class="hero-main" src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788137192/dyve-tech/as-cyber-threats-strike-at-ai-speed-malaysia-urged-to-embed-riskbased-defence-featured.jpg" alt="CYBERJAYA, Aug 29 — In the nearly 30 years since Malaysia began developing its national cyber emergency response capabilities with the es..." itemprop="image" width="1200" height="700" loading="eager" fetchpriority="high" decoding="async" onerror="this.onerror=null;this.src='../dyve-placeholder.jpg';">
+        </div>
+    </figure>
+
+    <div class="sf-box">
+        <hr class="rule">
+        <p class="standfirst" itemprop="description">As cyber threats strike at AI speed, Malaysia urged to embed risk‑based defence: CYBERJAYA, Aug 29 — In the nearly 30 years since Malaysia began developing i...</p>
+        <a class="more-link" href="{{CATEGORY_URL}}">More from Cyber News / Attacks &amp; Breaches →</a>
+        <div class="source-block" id="sourceBlock" hidden>Source: <a id="sourceLink" href="#" rel="nofollow noopener noreferrer" target="_blank"></a></div>
+        <hr class="rule">
+    </div>
+
+    <div class="body" itemprop="articleBody"><p><a href="../tech/nigeria-under-cyber-threat-major-cyber-breaches-and-attacks-making-headlines-in-2026.html" rel="noopener noreferrer" style="color: rgb(51, 51, 51);">CYBER</a><span style="color: rgb(51, 51, 51);">JAYA, Aug 29 — In the nearly 30 years since Malaysia began developing its national cyber emergency response capabilities with the establishment of MyCERT, the most significant change has been not merely the growing volume of cyber threats, but the speed at which attacks can occur, now further accelerated by artificial intelligence (AI).</span></p><p><span style="color: rgb(51, 51, 51);">Telekom Malaysia Chief Information Security Officer Raja Azrina Raja Othman, who was among the co-founders of MyCERT in 1997, said cyber threats three decades ago were largely confined to specific systems and networks.</span></p><p>Today, however, almost all services operate digitally and are interconnected, ranging from banking and government services to corporate operations and national critical infrastructure.</p><p>“When a cyberattack occurs, the impact goes beyond mere system downtime. It can compromise operations, finances, customer data and reputation, as well as disrupt services relied upon by the public,” she said in a special interview held in conjunction with the recent launch of TM’s 80th-anniversary celebrations, officiated by Prime Minister Datuk Seri Anwar Ibrahim.</p><p><img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788137085/dyve-tech/as-cyber-threats-strike-at-ai-speed-malaysia-urged-to-embed-riskbased-defence-inline-1788137080267.jpg" alt="CYBERJAYA, Aug 29 — In the nearly 30 years since Malaysia began developing its national cyber emergency response capabilities with the es..." loading="eager" decoding="async"></p><p><br></p><p>She added that another major shift was the sheer speed at which cyberattacks could now be launched, with AI further accelerating the process.</p><p>“With AI, cyber attackers can more easily identify vulnerabilities, craft more convincing phishing campaigns and launch attacks at a much faster pace.</p><p>“Cyber attackers today operate rapidly with the aid of AI. Therefore, cyber defence strategies can no longer rely solely on manual processes,” she said</p><p>Raja Azrina said the real challenge lies in increasingly complex information infrastructures driven by extensive application integration.</p><p>A lack of alignment between IT planning and information security could increase an organisation’s exposure to cyber threats, she said.</p><p>However, she observed that some organisations still viewed<a href="../tech/owncloud-flaw-exploited-to-steal-nuclear-records.html" rel="noopener noreferrer"> cybersecurit</a>y as an optional measure rather than an essential component of their operations.</p><p>“In reality, cybersecurity is a matter of risk management and business continuity. If core systems are compromised, can the organisation continue to operate? Can we maintain service delivery to customers? And will they retain confidence in our business?</p><p>“These are the questions organisations must address,” she added.</p><p>Therefore, she said, responsibility for cybersecurity must start with leadership and be embedded within organisational governance.</p><p>She stressed that cybersecurity investments should be guided by a risk-based approach, with organisations prioritising risks according to their potential impact on business operations.</p><p>“Even with cybersecurity investments, we cannot assume that attacks can be prevented entirely. Instead, we must be prepared for the possibility that an incident could still occur.</p><p>“What distinguishes truly prepared organisations is their ability to detect threats early, respond swiftly and remediate issues without causing prolonged disruption to operations.</p><p>“In cybersecurity, we cannot wait until a crisis strikes before deciding who needs to take action,” she said.</p><p>Raja Azrina said cybersecurity was not a new field for TM, as it had long been part of the company’s responsibility to manage and protect the nation’s digital infrastructure.</p><p>“TM’s cybersecurity capabilities are built on years of experience in protecting our own operations and supporting the digital needs of enterprises and the government, covering networks, cloud services, data centres and applications,” she said.</p><p>“Our teams continuously monitor security, drawing on their experience in managing vast and complex digital environments,” she added.</p><p>She noted that TM also had local cybersecurity experts specialising in various areas, including threat detection and monitoring, incident response and digital forensics.</p><p>“Based on our experience, cybersecurity monitoring and controls are required at every level - network, infrastructure and application - to establish layered protection and enhance the effectiveness of detection and response,” she said.</p><p>For Raja Azrina, the question today is no longer whether organisations will adopt AI, but whether they can do so securely while maintaining the trust of customers and the public, as security measures must evolve as rapidly as technology.</p><p>She said this was one of the key reasons TM developed the TM Cyber Defence Centre (TM CYDEC).</p><p>Through a “Cyber Fusion” approach, TM CYDEC enables comprehensive monitoring of cybersecurity issues across network, infrastructure and application security for the industry and government sectors. TM also has an AI security framework in place to govern AI security.</p><p>“We believe that the right cybersecurity strategy, a risk-based approach, and effective services and technologies can help organisations detect and respond to cyber threats earlier, thereby minimising their impact on business.</p><p>“Ultimately, our goal is to enable organisations to continue innovating and leveraging AI with confidence, without compromising security and trust,” she said. — Bernama</p></div>
+
+    <div class="tags" aria-label="Article topics">
+        <span class="tags-label">Filed under</span>
+        <a class="chip" href="{{CATEGORY_URL}}">#Cyber News / Attacks &amp; Breaches</a>
+        <a class="chip" href="{{SUBCATEGORY_URL}}">#{{SUBCATEGORY_LABEL}}</a>
+        <a class="chip" href="{{CATEGORY_URL}}">#Breaking News</a>
+        <a class="chip" href="./">#DyveTech</a>
+    </div>
+</article>
+
+<section class="related-mid" id="midArticleRelated" hidden aria-labelledby="midRelatedTitle">
+    <h2 id="midRelatedTitle">Continue Reading</h2>
+    <p class="subtitle">Deepen your understanding with these related insights.</p>
+    <div class="related-mid-grid" id="midRelatedGrid"></div>
+</section>
+
+<section class="related" id="relatedSection" aria-labelledby="relatedTitle">
+    <div class="ymal-head"><span class="ymal-flag" id="relatedTitle">You may also like</span><span class="ymal-line" aria-hidden="true"></span></div>
+    <div class="ymal-list" id="relatedGrid"></div>
+</section>
+</main>
+
+<footer>
+    <div class="fbrand">DYVE<span>|</span>TECH</div>
+    <nav aria-label="Footer navigation"><a href="../">Dyve</a><a href="./">Latest Tech</a><a href="{{CATEGORY_URL}}">Cyber News / Attacks &amp; Breaches</a><a href="../signals/">HackaX Intelligence</a><a href="../about-us/">About Dyve</a></nav>
+    <p class="copy">© 2026 Dyve Tech. All rights reserved.</p>
+</footer>
+
+<div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script type="application/json" id="dyveArticleData">{"title":"Cyber Threats Strike at AI Speed, Malaysia Urged to Strengthen Defence","description":"As cyber threats strike at AI speed, Malaysia urged to embed risk‑based defence: CYBERJAYA, Aug 29 — In the nearly 30 years since Malaysia began developing i...","image":"https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788137192/dyve-tech/as-cyber-threats-strike-at-ai-speed-malaysia-urged-to-embed-riskbased-defence-featured.jpg","imageAlt":"CYBERJAYA, Aug 29 — In the nearly 30 years since Malaysia began developing its national cyber emergency response capabilities with the es...","tag":"Breaking News","category":"cyber-news","categoryLabel":"Cyber News / Attacks \u0026 Breaches","subcategory":"attacks-breaches","subcategoryLabel":"Attacks \u0026 Breaches","slug":"cyber-threats-strike-at-ai-speed-malaysia-urged-to-strengthen-defence","url":"https://dyve.online/tech/cyber-threats-strike-at-ai-speed-malaysia-urged-to-strengthen-defence.html","date":"2026-08-31","modified":"2026-08-31T00:48:43.296Z","modifiedFormatted":"Aug 31, 2026","readTime":4,"author":"Dyve Tech Editorial Unit","publisherName":"Dyve Tech Editorial Unit","sourceUrl":"","seoTitle":"As cyber threats strike at AI speed, Malaysia urged to embed r...","focusKeyword":"cyberjaya","keywords":["cyberjaya","nearly","years","since","malaysia","began","developing","national","cyber","threats","strike","speed","urged","strengthen","defence","embed","risk","based","news","attacks"]}</script>
+<script type="application/json" id="dyveRelatedData">{"items":[{"title":"Nigeria Under Cyber Threat: Major Cyber Breaches and Attacks Making Headlines in 2026","image":"https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788022418/dyve-tech/nigeria-under-cyber-threat-major-cyber-breaches-and-attacks-making-headlines-in-2026-featured.png","tag":"Tutorials \u0026 Guides","author":"Dyve Tech Editorial Unit","date":"2026-08-29","readTime":4,"url":"tech/nigeria-under-cyber-threat-major-cyber-breaches-and-attacks-making-headlines-in-2026.html"},{"title":"FINALLY : GitHub restores services after nearly 8hrs","image":"https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787062157/a7ip8gv8it7jtamvzk9v.jpg","tag":"Tech Trends","author":"Dyve Tech Editorial Unit","date":"2026-08-18","readTime":4,"url":"tech/finally-github-restores-services-after-nearly-8hrs.html"},{"title":"Why Your AI Coding Agent Keeps Breaking Production (And How  git blame Can Stop It)","image":"https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786811791/iddjpaoixudtfpnuaubs.jpg","tag":"Artificial Intelligence","author":"Dyve Tech Intelligence Unit","date":"2026-08-15","readTime":4,"url":"tech/why-your-ai-coding-agent-keeps-breaking-production-and-how-git-blame-can-stop-it.html"},{"title":"Dark Web Monitoring Systems (How Organizations Track Threats)","image":"https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80\u0026w=800","tag":"Dark Web","author":"Dyve Tech Intelligence Unit","date":"2026-08-12","readTime":4,"url":"tech/dark-web-monitoring.html"},{"title":"Mark Zuckerberg predicts that billions of people will have personal AI agents in five years","image":"https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80\u0026w=800","tag":"Artificial Intelligence","author":"Dyve Tech Intelligence Unit","date":"2026-08-07","readTime":4,"url":"tech/mark-zuckerberg-predicts-that-billions-of-people-will-have-personal-ai-agents-in-five-years.html"},{"title":"Responding to the next frontier of critical cyber capabilities","image":"https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786136661/qzkutmnr9rc7te5zdvna.jpg","tag":"Artificial Intelligence","author":"Dyve Tech Intelligence Unit","date":"2026-08-07","readTime":4,"url":"tech/responding-to-the-next-frontier-of-critical-cyber-capabilities.html"}],"mid":[{"title":"Nigeria Under Cyber Threat: Major Cyber Breaches and Attacks Making Headlines in 2026","image":"https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788022418/dyve-tech/nigeria-under-cyber-threat-major-cyber-breaches-and-attacks-making-headlines-in-2026-featured.png","tag":"Tutorials \u0026 Guides","date":"2026-08-29","url":"tech/nigeria-under-cyber-threat-major-cyber-breaches-and-attacks-making-headlines-in-2026.html"},{"title":"FINALLY : GitHub restores services after nearly 8hrs","image":"https://res.cloudinary.com/dxdbn6xwy/image/upload/v1787062157/a7ip8gv8it7jtamvzk9v.jpg","tag":"Tech Trends","date":"2026-08-18","url":"tech/finally-github-restores-services-after-nearly-8hrs.html"}]}</script>
+
+<script>
+(function(){
+    'use strict';
+
+    var pbar=document.getElementById('pbar');
+    var sourceBlock=document.getElementById('sourceBlock');
+    var sourceLink=document.getElementById('sourceLink');
+    var toast=document.getElementById('toast');
+    var grid=document.getElementById('relatedGrid');
+    var midGrid=document.getElementById('midRelatedGrid');
+    var midSection=document.getElementById('midArticleRelated');
+    var dataEl=document.getElementById('dyveArticleData');
+    var relatedEl=document.getElementById('dyveRelatedData');
+    var updatedByline=document.getElementById('updatedByline');
+    var updatedBylineDot=document.getElementById('updatedBylineDot');
+    var toastTimer=null;
+
+    function updateProgress(){
+        var h=document.documentElement.scrollHeight-window.innerHeight;
+        var p=h>0?(window.scrollY/h)*100:0;
+        if(pbar)pbar.style.width=Math.max(0,Math.min(100,p))+'%';
+    }
+
+    if('requestAnimationFrame' in window){
+        var progressTick=false;
+        window.addEventListener('scroll',function(){
+            if(progressTick)return;
+            progressTick=true;
+            window.requestAnimationFrame(function(){
+                progressTick=false;
+                updateProgress();
+            });
+        },{passive:true});
+    }else{
+        window.addEventListener('scroll',updateProgress,{passive:true});
+    }
+    window.addEventListener('resize',updateProgress,{passive:true});
+    updateProgress();
+
+    function encode(value){return encodeURIComponent(String(value||''));}
+
+    function openShare(url){
+        var features='noopener,noreferrer,width=720,height=560,menubar=no,toolbar=no,location=yes,resizable=yes,scrollbars=yes';
+        var win=window.open(url,'dyveShare',features);
+        if(win)win.opener=null;
+    }
+
+    window.shareX=function(){
+        var url='https://x.com/intent/post?url='+encode(location.href)+'&text='+encode(document.title);
+        openShare(url);
+    };
+
+    window.shareFB=function(){
+        openShare('https://www.facebook.com/sharer/sharer.php?u='+encode(location.href));
+    };
+
+    window.shareLI=function(){
+        openShare('https://www.linkedin.com/sharing/share-offsite/?url='+encode(location.href));
+    };
+
+    function showToast(message){
+        if(!toast)return;
+        window.clearTimeout(toastTimer);
+        toast.textContent=message;
+        toast.classList.add('show');
+        toastTimer=window.setTimeout(function(){toast.classList.remove('show');},1800);
+    }
+
+    function legacyCopy(text){
+        var area=document.createElement('textarea');
+        area.value=text;
+        area.setAttribute('readonly','');
+        area.style.position='fixed';
+        area.style.opacity='0';
+        area.style.pointerEvents='none';
+        document.body.appendChild(area);
+        area.select();
+        var copied=false;
+        try{copied=document.execCommand('copy');}catch(e){copied=false;}
+        area.remove();
+        return copied;
+    }
+
+    window.copyLink=async function(){
+        var url=location.href;
+        try{
+            if(navigator.clipboard && window.isSecureContext){
+                await navigator.clipboard.writeText(url);
+                showToast('Link copied');
+                return;
+            }
+            if(legacyCopy(url)){
+                showToast('Link copied');
+                return;
+            }
+            showToast('Copy unavailable');
+        }catch(e){
+            if(legacyCopy(url))showToast('Link copied');
+            else showToast('Copy unavailable');
+        }
+    };
+
+    function readJson(el,fallback){
+        if(!el)return fallback;
+        try{
+            var raw=el.textContent || '';
+            if(!raw.trim())return fallback;
+            var parsed=JSON.parse(raw);
+            return parsed==null?fallback:parsed;
+        }catch(e){return fallback;}
+    }
+
+    var articleData=readJson(dataEl,{});
+    var related=readJson(relatedEl,{});
+
+    function esc(value){
+        return String(value==null?'':value)
+            .replace(/&/g,'&amp;')
+            .replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;')
+            .replace(/'/g,'&#39;');
+    }
+
+    function safeHttpUrl(value){
+        var raw=String(value==null?'':value).trim();
+        if(!raw)return '';
+        try{
+            var url=new URL(raw,location.href);
+            if(url.protocol!=='http:' && url.protocol!=='https:')return '';
+            return url.href;
+        }catch(e){return '';}
+    }
+
+    function safeArticleHref(value){
+        var raw=String(value==null?'':value).trim();
+        if(!raw)return '#';
+        try{
+            if(/^https?:\/\//i.test(raw)){
+                var absolute=new URL(raw);
+                return (absolute.protocol==='http:' || absolute.protocol==='https:') ? esc(absolute.href) : '#';
+            }
+            if(raw.charAt(0)==='/'){
+                var rootPath=new URL(raw,location.origin);
+                return (rootPath.protocol==='http:' || rootPath.protocol==='https:') ? esc(rootPath.href) : '#';
+            }
+            var relative=raw.replace(/^\.\//,'').replace(/^\/+/, '');
+            if(relative.indexOf('tech/')===0)relative='../'+relative;
+            var resolved=new URL(relative,location.href);
+            if(resolved.protocol!=='http:' && resolved.protocol!=='https:')return '#';
+            return esc(resolved.href);
+        }catch(e){return '#';}
+    }
+
+    function safeImage(value){
+        var url=safeHttpUrl(value);
+        return esc(url);
+    }
+
+    function renderRelatedItem(article,index){
+        article=article||{};
+        var href=safeArticleHref(article.url || '');
+        var image=safeImage(article.image || '');
+        var title=esc(article.title || '');
+        var tag=esc(article.tag || 'News');
+        var author=esc(article.author || articleData.publisherName || '');
+        var date=esc(article.date || '');
+        var mins=Math.max(1,Number(article.readTime || 4)||4);
+        var imageHtml=image
+            ? '<img src="'+image+'" alt="'+title+'" loading="lazy" decoding="async">'
+            : '<span aria-hidden="true"></span>';
+        return '<a class="ymal-item" href="'+href+'">'+
+            '<div class="ymal-thumb">'+imageHtml+
+            '<div class="ymal-tags"><span class="ymal-tag'+(index%2?' alt':'')+'">'+tag+'</span></div></div>'+
+            '<div><div class="ymal-title">'+title+'</div>'+
+            '<div class="ymal-meta"><span class="author">'+author+'</span><span>'+date+' | '+mins+' MINS READ</span></div></div></a>';
+    }
+
+    function renderRelatedMid(article){
+        article=article||{};
+        var href=safeArticleHref(article.url || '');
+        var image=safeImage(article.image || '');
+        var title=esc(article.title || '');
+        var imageHtml=image
+            ? '<img src="'+image+'" alt="'+title+'" loading="lazy" decoding="async">'
+            : '';
+        return '<a class="related-mid-card" href="'+href+'">'+
+            imageHtml+
+            '<div class="content"><div class="tag">'+esc(article.tag || 'News')+'</div>'+
+            '<h3>'+title+'</h3><time>'+esc(article.date || '')+'</time></div></a>';
+    }
+
+    if(grid){
+        var items=Array.isArray(related.items)?related.items:[];
+        grid.innerHTML=items.length
+            ? items.map(renderRelatedItem).join('')
+            : '<p class="related-empty">No related articles are currently available.</p>';
+    }
+
+    if(midGrid && midSection){
+        var midItems=Array.isArray(related.mid)?related.mid:[];
+        if(midItems.length){
+            midGrid.innerHTML=midItems.map(renderRelatedMid).join('');
+            midSection.hidden=false;
+        }
+    }
+
+    if(updatedByline && updatedBylineDot && articleData.modified && articleData.date && articleData.modified!==articleData.date){
+        updatedByline.textContent='Updated '+(articleData.modifiedFormatted || articleData.modified);
+        updatedByline.hidden=false;
+        updatedBylineDot.hidden=false;
+    }
+
+    if(sourceBlock && sourceLink && articleData.sourceUrl){
+        var sourceUrl=safeHttpUrl(articleData.sourceUrl);
+        if(sourceUrl){
+            sourceLink.href=sourceUrl;
+            sourceLink.textContent=sourceUrl;
+            sourceBlock.hidden=false;
+        }
+    }
+
+    document.querySelectorAll('.body img').forEach(function(image){
+        if(!image.getAttribute('loading'))image.setAttribute('loading','lazy');
+        if(!image.getAttribute('decoding'))image.setAttribute('decoding','async');
+    });
+
+    document.querySelectorAll('.body a').forEach(function(link){
+        var href=link.getAttribute('href')||'';
+        if(/^https?:\/\//i.test(href)){
+            link.setAttribute('rel','noopener noreferrer');
+            link.setAttribute('target','_blank');
+        }
+    });
+})();
+</script>
+</body>
+</html>

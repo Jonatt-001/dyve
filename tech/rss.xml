@@ -5,10 +5,22 @@
     <link>https://dyve.online/tech/</link>
     <description>Technology news, analysis and intelligence from Dyve Tech.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 31 Aug 2026 00:12:23 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 31 Aug 2026 00:48:45 GMT</lastBuildDate>
     <generator>Dyve Tech Editorial Publisher</generator>
     <atom:link href="https://dyve.online/tech/rss.xml" rel="self" type="application/rss+xml" />
 
+    <item>
+        <title>Cyber Threats Strike at AI Speed, Malaysia Urged to Strengthen Defence</title>
+        <link>https://dyve.online/tech/cyber-threats-strike-at-ai-speed-malaysia-urged-to-strengthen-defence.html</link>
+        <guid isPermaLink="true">https://dyve.online/tech/cyber-threats-strike-at-ai-speed-malaysia-urged-to-strengthen-defence.html</guid>
+        <description>As cyber threats strike at AI speed, Malaysia urged to embed risk‑based defence: CYBERJAYA, Aug 29 — In the nearly 30 years since Malaysia began developing i...</description>
+        <pubDate>Mon, 31 Aug 2026 00:48:43 GMT</pubDate>
+        <dc:creator>Dyve Tech Editorial Unit</dc:creator>
+        <category>Cyber News</category>
+        <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788137192/dyve-tech/as-cyber-threats-strike-at-ai-speed-malaysia-urged-to-embed-riskbased-defence-featured.jpg" medium="image" />
+        <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788137192/dyve-tech/as-cyber-threats-strike-at-ai-speed-malaysia-urged-to-embed-riskbased-defence-featured.jpg" />
+        <content:encoded><![CDATA[<p>As cyber threats strike at AI speed, Malaysia urged to embed risk‑based defence: CYBERJAYA, Aug 29 — In the nearly 30 years since Malaysia began developing i...</p>]]></content:encoded>
+    </item>
     <item>
         <title>NASA’s Dark Universe-Seeking Nancy Grace Roman Space Telescope Launches</title>
         <link>https://dyve.online/tech/nasas-dark-universe-seeking-nancy-grace-roman-space-telescope-launches.html</link>
@@ -596,18 +608,6 @@
         <media:content url="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&amp;w=800" medium="image" />
         <media:thumbnail url="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&amp;w=800" />
         <content:encoded><![CDATA[<p>Discover insights on mark zuckerberg predicts that billions of people will have personal ai agents in five years. Meta founder and CEO Mark Zuckerberg is try...</p>]]></content:encoded>
-    </item>
-    <item>
-        <title>Responding to the next frontier of critical cyber capabilities</title>
-        <link>https://dyve.online/tech/responding-to-the-next-frontier-of-critical-cyber-capabilities.html</link>
-        <guid isPermaLink="true">https://dyve.online/tech/responding-to-the-next-frontier-of-critical-cyber-capabilities.html</guid>
-        <description>Cybersecurity is rapidly changing as models become more capable in ways that can both strengthen cyberdefenses and enabl. Dyve Tech intelligence on cybersecu...</description>
-        <pubDate>Fri, 07 Aug 2026 00:00:00 GMT</pubDate>
-        <dc:creator>Dyve Tech Intelligence Unit</dc:creator>
-        <category>Tech</category>
-        <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786136661/qzkutmnr9rc7te5zdvna.jpg" medium="image" />
-        <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786136661/qzkutmnr9rc7te5zdvna.jpg" />
-        <content:encoded><![CDATA[<p>Cybersecurity is rapidly changing as models become more capable in ways that can both strengthen cyberdefenses and enabl. Dyve Tech intelligence on cybersecu...</p>]]></content:encoded>
     </item>
 </channel>
 </rss>
