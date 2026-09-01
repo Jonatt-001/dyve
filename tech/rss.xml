@@ -5,10 +5,22 @@
     <link>https://dyve.online/tech/</link>
     <description>Technology news, analysis and intelligence from Dyve Tech.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 31 Aug 2026 02:53:44 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 01 Sep 2026 02:09:10 GMT</lastBuildDate>
     <generator>Dyve Tech Editorial Publisher</generator>
     <atom:link href="https://dyve.online/tech/rss.xml" rel="self" type="application/rss+xml" />
 
+    <item>
+        <title>ATM Flaws Reveal Key Weaknesses in the Software Supply Chain</title>
+        <link>https://dyve.online/tech/atm-flaws-reveal-key-weaknesses-in-the-software-supply-chain.html</link>
+        <guid isPermaLink="true">https://dyve.online/tech/atm-flaws-reveal-key-weaknesses-in-the-software-supply-chain.html</guid>
+        <description>ATM Flaws Reveal Key Weaknesses in the Software Supply Chain: FOR THE PAST five years, security researcher Matt Burch has immersed himself in the esoteric an...</description>
+        <pubDate>Tue, 01 Sep 2026 02:08:59 GMT</pubDate>
+        <dc:creator>Dyve Tech Editorial Unit</dc:creator>
+        <category>Cyber News</category>
+        <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788228308/dyve-tech/atm-flaws-reveal-key-weaknesses-in-the-software-supply-chain-featured.jpg" medium="image" />
+        <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788228308/dyve-tech/atm-flaws-reveal-key-weaknesses-in-the-software-supply-chain-featured.jpg" />
+        <content:encoded><![CDATA[<p>ATM Flaws Reveal Key Weaknesses in the Software Supply Chain: FOR THE PAST five years, security researcher Matt Burch has immersed himself in the esoteric an...</p>]]></content:encoded>
+    </item>
     <item>
         <title>Court Rules Trump Administration Illegally Blacklisted Anthropic</title>
         <link>https://dyve.online/tech/court-rules-trump-administration-illegally-blacklisted-anthropic.html</link>
@@ -596,18 +608,6 @@
         <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786130124/pcyiqib92li3ydz0kesa.jpg" medium="image" />
         <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786130124/pcyiqib92li3ydz0kesa.jpg" />
         <content:encoded><![CDATA[<p>Discover insights on cloudflare open-sources vibe-coding platform for people who aren’t coders. Cloudflare has open-sourced its Cloudflare OS platform, which...</p>]]></content:encoded>
-    </item>
-    <item>
-        <title>Europe Finalizes Ambitious Plans for IRIS²: The EU’s ‘Sovereign’ Starlink Competitor</title>
-        <link>https://dyve.online/tech/europe-finalizes-ambitious-plans-for-iris-the-eus-sovereign-starlink-competitor.html</link>
-        <guid isPermaLink="true">https://dyve.online/tech/europe-finalizes-ambitious-plans-for-iris-the-eus-sovereign-starlink-competitor.html</guid>
-        <description>Are we about to witness a new space race for global internet supremacy? The European Union has officially moved past the planning stage for IRIS², its highly anticipated low Earth orbit (LEO) satellite broadband network.</description>
-        <pubDate>Fri, 07 Aug 2026 00:00:00 GMT</pubDate>
-        <dc:creator>Dyve Tech Intelligence Unit</dc:creator>
-        <category>Tech</category>
-        <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786125072/gut9xkzmflzeqles1z8a.jpg" medium="image" />
-        <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786125072/gut9xkzmflzeqles1z8a.jpg" />
-        <content:encoded><![CDATA[<p>Are we about to witness a new space race for global internet supremacy? The European Union has officially moved past the planning stage for IRIS², its highly anticipated low Earth orbit (LEO) satellite broadband network.</p>]]></content:encoded>
     </item>
 </channel>
 </rss>

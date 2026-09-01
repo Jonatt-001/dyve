@@ -2,7 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     <url>
         <loc>https://dyve.online/tech/</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
+    </url>
+    <url>
+        <loc>https://dyve.online/tech/atm-flaws-reveal-key-weaknesses-in-the-software-supply-chain.html</loc>
+        <lastmod>2026-09-01</lastmod>
+        <image:image>
+            <image:loc>https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788228308/dyve-tech/atm-flaws-reveal-key-weaknesses-in-the-software-supply-chain-featured.jpg</image:loc>
+            <image:title>ATM Flaws Reveal Key Weaknesses in the Software Supply Chain</image:title>
+            <image:caption>FOR THE PAST five years, security researcher Matt Burch has immersed himself in the esoteric and high-stakes world of ATM security, in wh...</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>https://dyve.online/tech/court-rules-trump-administration-illegally-blacklisted-anthropic.html</loc>
@@ -573,126 +582,126 @@
     </url>
     <url>
         <loc>https://dyve.online/tech/category/tech.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/tech/artificial-intelligence.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/tech/software.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/tech/developer-tools.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/tech/coding-programming.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/tech/developers-engineering.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/tech/hardware-computing.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/tech/mobile-technology.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/tech/gadgets-devices.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/tech/cloud-infrastructure.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/tech/startups-industry.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/tech/emerging-technology.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/cyber-news.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/cyber-news/attacks-breaches.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/cyber-news/ransomware.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/cyber-news/vulnerabilities-exploits.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/cyber-news/threat-actors.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/cyber-news/malware-phishing.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/cyber-news/data-leaks-privacy.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/cyber-news/identity-fraud.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/cyber-news/cyber-defense.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/cyber-news/cyber-policy.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/global-intelligence.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/global-intelligence/geopolitics-technology.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/global-intelligence/state-nation-threats.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/global-intelligence/digital-espionage.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/global-intelligence/critical-infrastructure.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/global-intelligence/disinformation-influence.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/global-intelligence/surveillance-intelligence.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/global-intelligence/global-risk-security.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
     <url>
         <loc>https://dyve.online/tech/category/global-intelligence/emerging-threats.html</loc>
-        <lastmod>2026-08-31</lastmod>
+        <lastmod>2026-09-01</lastmod>
     </url>
 </urlset>
