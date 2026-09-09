@@ -5,10 +5,22 @@
     <link>https://dyve.online/tech/</link>
     <description>Technology news, analysis and intelligence from Dyve Tech.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 01 Sep 2026 02:09:10 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 09 Sep 2026 16:29:01 GMT</lastBuildDate>
     <generator>Dyve Tech Editorial Publisher</generator>
     <atom:link href="https://dyve.online/tech/rss.xml" rel="self" type="application/rss+xml" />
 
+    <item>
+        <title>Gigabud Uses Android App Cloning to Evade Fraud Detection</title>
+        <link>https://dyve.online/tech/gigabud-uses-android-app-cloning-to-evade-fraud-detection.html</link>
+        <guid isPermaLink="true">https://dyve.online/tech/gigabud-uses-android-app-cloning-to-evade-fraud-detection.html</guid>
+        <description>Gigabud Uses Android App Cloning to Evade Fraud Detection: The Gigabud Android banking trojan has been equipped to clone banking apps into a separate Android...</description>
+        <pubDate>Wed, 09 Sep 2026 16:29:00 GMT</pubDate>
+        <dc:creator>Dyve Tech Editorial Unit</dc:creator>
+        <category>Cyber News</category>
+        <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788971307/dyve-tech/gigabud-uses-android-app-cloning-to-evade-fraud-detection-featured.jpg" medium="image" />
+        <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1788971307/dyve-tech/gigabud-uses-android-app-cloning-to-evade-fraud-detection-featured.jpg" />
+        <content:encoded><![CDATA[<p>Gigabud Uses Android App Cloning to Evade Fraud Detection: The Gigabud Android banking trojan has been equipped to clone banking apps into a separate Android...</p>]]></content:encoded>
+    </item>
     <item>
         <title>ATM Flaws Reveal Key Weaknesses in the Software Supply Chain</title>
         <link>https://dyve.online/tech/atm-flaws-reveal-key-weaknesses-in-the-software-supply-chain.html</link>
@@ -596,18 +608,6 @@
         <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786138831/j7wxjxy6ehbnczjijhme.jpg" medium="image" />
         <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786138831/j7wxjxy6ehbnczjijhme.jpg" />
         <content:encoded><![CDATA[<p>Discover insights on cloudflare launches kitesurf, a browser built for ai agents. Cloudflare is the latest company to join the race to build a new web browse...</p>]]></content:encoded>
-    </item>
-    <item>
-        <title>Cloudflare open-sources vibe-coding platform for people who aren’t coders</title>
-        <link>https://dyve.online/tech/cloudflare-open-sources-vibe-coding-platform-for-people-who-arent-coders.html</link>
-        <guid isPermaLink="true">https://dyve.online/tech/cloudflare-open-sources-vibe-coding-platform-for-people-who-arent-coders.html</guid>
-        <description>Discover insights on cloudflare open-sources vibe-coding platform for people who aren’t coders. Cloudflare has open-sourced its Cloudflare OS platform, which...</description>
-        <pubDate>Fri, 07 Aug 2026 00:00:00 GMT</pubDate>
-        <dc:creator>Dyve Tech Intelligence Unit</dc:creator>
-        <category>Tech</category>
-        <media:content url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786130124/pcyiqib92li3ydz0kesa.jpg" medium="image" />
-        <media:thumbnail url="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1786130124/pcyiqib92li3ydz0kesa.jpg" />
-        <content:encoded><![CDATA[<p>Discover insights on cloudflare open-sources vibe-coding platform for people who aren’t coders. Cloudflare has open-sourced its Cloudflare OS platform, which...</p>]]></content:encoded>
     </item>
 </channel>
 </rss>
