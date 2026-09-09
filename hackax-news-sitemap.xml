@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
 <url>
-            <loc>https://dyve.online/updates/spark-rat-targets-cambodia-abuses-vulnerable-opswat-driver-to-disable-security-tools.html</loc>
+            <loc>https://dyve.online/advisories/group-of-bipartisan-lawmakers-ask-us-government-to-ban-several-hack-for-hire-firms.html</loc>
 
             <news:news>
 
@@ -18,95 +18,11 @@
                 </news:publication>
 
                 <news:publication_date>
-                    2026-08-27T00:00:00.000Z
+                    2026-09-09T00:00:00.000Z
                 </news:publication_date>
 
                 <news:title>
-                    Spark RAT Targets Cambodia, Abuses Vulnerable OPSWAT Driver to Disable Security Tools
-                </news:title>
-
-            </news:news>
-
-        </url>
-<url>
-            <loc>https://dyve.online/threat-actors/gocaracal-malware-uses-ethereum-smart-contracts-to-keep-c2-infrastructure-alive.html</loc>
-
-            <news:news>
-
-                <news:publication>
-
-                    <news:name>
-                        Dyve HackaX
-                    </news:name>
-
-                    <news:language>
-                        en
-                    </news:language>
-
-                </news:publication>
-
-                <news:publication_date>
-                    2026-08-27T00:00:00.000Z
-                </news:publication_date>
-
-                <news:title>
-                    GoCaracal Malware Uses Ethereum Smart Contracts to Keep C2 Infrastructure Alive
-                </news:title>
-
-            </news:news>
-
-        </url>
-<url>
-            <loc>https://dyve.online/advisories/how-to-fix-a-leaked-api-key-a-developers-guide-to-git-security.html</loc>
-
-            <news:news>
-
-                <news:publication>
-
-                    <news:name>
-                        Dyve HackaX
-                    </news:name>
-
-                    <news:language>
-                        en
-                    </news:language>
-
-                </news:publication>
-
-                <news:publication_date>
-                    2026-08-27T00:00:00.000Z
-                </news:publication_date>
-
-                <news:title>
-                    How to Fix a Leaked API Key: A Developer’s Guide to Git Security
-                </news:title>
-
-            </news:news>
-
-        </url>
-<url>
-            <loc>https://dyve.online/article/iran-linked-hackers-reportedly-took-a-uk-power-generator-offline-for-four-days-heres-why-it-matters.html</loc>
-
-            <news:news>
-
-                <news:publication>
-
-                    <news:name>
-                        Dyve HackaX
-                    </news:name>
-
-                    <news:language>
-                        en
-                    </news:language>
-
-                </news:publication>
-
-                <news:publication_date>
-                    2026-08-26T00:00:00.000Z
-                </news:publication_date>
-
-                <news:title>
-                    Iran-Linked Hackers Reportedly Took a UK Power Generator Offline for Four Days. Here’s Why It Matters
+                    Group of bipartisan lawmakers ask US government to ban several hack-for-hire firms
                 </news:title>
 
             </news:news>
