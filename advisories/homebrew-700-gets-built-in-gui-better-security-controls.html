@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1.0"
+>
+
+<title>
+    Homebrew 7.0.0 gets built-in GUI, better security controls | Dyve HackaX
+</title>
+
+<meta
+    name="description"
+    content="Homebrew package manager version 7.0.0 has been released with a built-in vulnerability scanner, stronger security controls, and the full release of its..."
+>
+
+<meta
+    name="keywords"
+    content="SECURITY ADVISORY, Security Advisory, homebrew, gets, built-in, better, security, controls, package, manager, version, released, vulnerability, scanner, stronger, full, release, native, brewui, graphical, interface, open-source, primarily, used, macos, allowing, users, install, software, similar, linux, managers, Dyve HackaX, cyber threat intelligence"
+>
+
+<meta
+    name="robots"
+    content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
+>
+
+<link
+    rel="canonical"
+    href="https://dyve.online/advisories/homebrew-700-gets-built-in-gui-better-security-controls.html"
+>
+
+<link
+    rel="author"
+    href="https://dyve.online/about-us/"
+>
+
+<meta
+    property="og:type"
+    content="article"
+>
+
+<meta
+    property="og:site_name"
+    content="Dyve HackaX"
+>
+
+<meta
+    property="og:title"
+    content="Homebrew 7.0.0 gets built-in GUI, better security controls"
+>
+
+<meta
+    property="og:description"
+    content="Homebrew package manager version 7.0.0 has been released with a built-in vulnerability scanner, stronger security controls, and the full release of its..."
+>
+
+<meta
+    property="og:url"
+    content="https://dyve.online/advisories/homebrew-700-gets-built-in-gui-better-security-controls.html"
+>
+
+<meta
+    property="og:image"
+    content="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1789509548/byzelf1c7yufitimk5q3.png"
+>
+
+<meta
+    property="og:image:alt"
+    content="Homebrew 7.0.0 gets built-in GUI, better security controls - General Updates featured image"
+>
+
+<meta
+    property="og:image:type"
+    content="image/webp"
+>
+
+<meta
+    property="article:published_time"
+    content="2026-09-15"
+>
+
+<meta
+    property="article:modified_time"
+    content="2026-09-15T22:01:15.869Z"
+>
+
+<meta
+    property="article:author"
+    content="Dyve HackaX Intelligence Unit"
+>
+
+<meta
+    property="article:section"
+    content="Security Advisory"
+>
+
+<meta
+    property="article:tag"
+    content="SECURITY ADVISORY"
+>
+
+<meta
+    name="twitter:card"
+    content="summary_large_image"
+>
+
+<meta
+    name="twitter:title"
+    content="Homebrew 7.0.0 gets built-in GUI, better security controls"
+>
+
+<meta
+    name="twitter:description"
+    content="Homebrew package manager version 7.0.0 has been released with a built-in vulnerability scanner, stronger security controls, and the full release of its..."
+>
+
+<meta
+    name="twitter:image"
+    content="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1789509548/byzelf1c7yufitimk5q3.png"
+>
+
+<meta
+    name="twitter:image:alt"
+    content="Homebrew 7.0.0 gets built-in GUI, better security controls - General Updates featured image"
+>
+
+<meta
+    name="theme-color"
+    content="#020403"
+>
+
+<link
+    rel="icon"
+    href="https://dyve.online/favicon.ico"
+>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+>
+
+<link
+    rel="stylesheet"
+    href="../article.css"
+>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Homebrew 7.0.0 gets built-in GUI, better security controls","description":"Homebrew package manager version 7.0.0 has been released with a built-in vulnerability scanner, stronger security controls, and the full release of its...","image":["https://res.cloudinary.com/dxdbn6xwy/image/upload/v1789509548/byzelf1c7yufitimk5q3.png"],"datePublished":"2026-09-15","dateModified":"2026-09-15T22:01:15.869Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://dyve.online/advisories/homebrew-700-gets-built-in-gui-better-security-controls.html"},"author":{"@type":"Organization","name":"Dyve HackaX Intelligence Unit","url":"https://dyve.online/"},"publisher":{"@type":"Organization","name":"Dyve HackaX","url":"https://dyve.online/"},"articleSection":"Security Advisory","keywords":["homebrew","gets","built-in","better","security","controls","package","manager","version","released","vulnerability","scanner","stronger","full","release","native","brewui","graphical","interface","open-source","primarily","used","macos","allowing","users","install","software","similar","linux","managers"]}</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"HackaX","item":"https://dyve.online/"},{"@type":"ListItem","position":2,"name":"Security Advisory","item":"https://dyve.online/advisories/"},{"@type":"ListItem","position":3,"name":"Homebrew 7.0.0 gets built-in GUI, better security controls","item":"https://dyve.online/advisories/homebrew-700-gets-built-in-gui-better-security-controls.html"}]}</script>
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="header-inner">
+
+        <button
+            class="back-btn"
+            onclick="goBack()"
+            aria-label="Back"
+        >
+            ←
+        </button>
+
+        <a
+            class="logo"
+            href="../"
+        >
+            DYVE // HACKAX
+        </a>
+
+        <nav>
+            <a href="../">
+                Intel
+            </a>
+
+            <a href="../dark-web/">
+                Dark Web
+            </a>
+
+            <a href="../signals/">
+                Signals
+            </a>
+        </nav>
+
+    </div>
+
+</header>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="intel-box">
+
+            <div class="intel-title">
+                HACKAX INTELLIGENCE
+            </div>
+
+            <div class="intel-item">
+                <div class="intel-label">
+                    Classification
+                </div>
+
+                <div class="intel-value">
+                    Security Advisory
+                </div>
+            </div>
+
+            <div class="intel-item">
+                <div class="intel-label">
+                    Threat Type
+                </div>
+
+                <div class="intel-value">
+                    SECURITY ADVISORY
+                </div>
+            </div>
+
+            <div class="intel-item">
+                <div class="intel-label">
+                    Status
+                </div>
+
+                <div class="intel-value">
+                    Routine Update
+                </div>
+            </div>
+
+            <div class="intel-item">
+                <div class="intel-label">
+                    Severity
+                </div>
+
+                <div class="intel-value">
+                    Informational
+                </div>
+            </div>
+
+            <div class="intel-item">
+                <div class="intel-label">
+                    Scope
+                </div>
+
+                <div class="intel-value">
+                    Global
+                </div>
+            </div>
+
+        </div>
+
+    </aside>
+
+    <main
+        class="article"
+        itemscope
+        itemtype="https://schema.org/NewsArticle"
+    >
+
+        <meta
+            itemprop="headline"
+            content="Homebrew 7.0.0 gets built-in GUI, better security controls"
+        >
+
+        <meta
+            itemprop="description"
+            content="Homebrew package manager version 7.0.0 has been released with a built-in vulnerability scanner, stronger security controls, and the full release of its..."
+        >
+
+        <meta
+            itemprop="image"
+            content="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1789509548/byzelf1c7yufitimk5q3.png"
+        >
+
+        <meta
+            itemprop="datePublished"
+            content="2026-09-15"
+        >
+
+        <meta
+            itemprop="dateModified"
+            content="2026-09-15T22:01:15.869Z"
+        >
+
+        <div class="breadcrumb">
+            [ HACKAX INTEL FEED ] /
+            SECURITY ADVISORY /
+            SECURITY ADVISORY
+        </div>
+
+        <h1 itemprop="name">
+            Homebrew 7.0.0 gets built-in GUI, better security controls
+        </h1>
+
+        <div
+            class="subhead"
+            itemprop="description"
+        >
+            Homebrew package manager version 7.0.0 has been released with a built-in vulnerability scanner, stronger security controls, and the full release of its...
+        </div>
+
+        <div class="meta">
+            Dyve HackaX Intelligence Unit
+            •
+            <time
+                datetime="2026-09-15"
+            >
+                2026-09-15
+            </time>
+            •
+            Routine Update
+        </div>
+
+        
+                <figure class="hero">
+                    <img
+                        src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1789509548/byzelf1c7yufitimk5q3.png"
+                        alt="Homebrew 7.0.0 gets built-in GUI, better security controls - General Updates featured image"
+                        title="Homebrew 7.0.0 gets built-in GUI, better security controls | General Updates"
+                        width="1200"
+                        height="675"
+                        loading="eager"
+                        decoding="async"
+                        fetchpriority="high"
+                        itemprop="image"
+                    >
+
+                    <figcaption>
+                        General Updates coverage: Homebrew 7.0.0 gets built-in GUI, better security controls (GENERAL UPDATE).
+                    </figcaption>
+                </figure>
+            
+
+        <div class="share">
+
+            <button onclick="copyLink()">
+                Copy
+            </button>
+
+            <button onclick="shareX()">
+                Share
+            </button>
+
+            <button onclick="shareLinkedIn()">
+                LinkedIn
+            </button>
+
+        </div>
+
+        <div
+            class="content"
+            itemprop="articleBody"
+        >
+            <p>Homebrew package manager version 7.0.0 has been released with a built-in vulnerability scanner, stronger security controls, and the full release of its native BrewUI graphical interface.</p><p>The open-source package manager is primarily used on macOS, allowing users to install software in a similar way to Linux package managers by automatically downloading packages and resolving and installing their dependencies.</p><p>The popularity of the project is obvious from its 49k stars and 11k forks on GitHub and from threat actors frequently targeting it to&nbsp;<a href="https://www.bleepingcomputer.com/news/security/google-ads-for-fake-homebrew-logmein-sites-push-infostealers/" rel="noopener noreferrer" target="_blank" style="color: rgb(2, 89, 156);">push&nbsp;info-stealer malware</a>, including through&nbsp;<a href="https://www.bleepingcomputer.com/news/security/fake-homebrew-google-ads-target-mac-users-with-malware/" rel="noopener noreferrer" target="_blank" style="color: rgb(2, 89, 156);">clone sites</a>and&nbsp;<a href="https://www.bleepingcomputer.com/news/security/claude-llm-artifacts-abused-to-push-mac-infostealers-in-clickfix-attack/" rel="noopener noreferrer" target="_blank" style="color: rgb(2, 89, 156);">ClickFix lures</a>.</p><p><img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1789509509/hackax/homebrew-gets-built-in-better-security-controls-updates-body-1789509506854.png" alt="Homebrew 7.0.0 gets built-in GUI, better security controls - General Updates article image" title="Homebrew 7.0.0 gets built-in GUI, better security controls | General Updates" loading="lazy" decoding="async"></p><p><span style="color: rgb(7, 7, 7);">In the latest version, the BrewUI official native graphical interface available on macOS 26 “Tahoe” and later makes it easy to browse and search for packages, as well as inspect and manage their dependencies.</span></p><p><img src="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1789509521/hackax/homebrew-gets-built-in-better-security-controls-updates-body-1789509518856.png" alt="Homebrew 7.0.0 gets built-in GUI, better security controls - General Updates article image" title="Homebrew 7.0.0 gets built-in GUI, better security controls | General Updates" loading="lazy" decoding="async"></p><p><span style="color: rgb(7, 7, 7);">Users can now use the vulnerability scanner through a new command (brew vulns). Also included is a Homebrew-specific advisory database that tracks vulnerabilities affecting the formula versions and revisions distributed by Homebrew.</span></p><p><a href="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1789509509/hackax/homebrew-gets-built-in-better-security-controls-updates-body-1789509506854.png" data-hackax-link="contextual" data-hackax-target="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1789509509/hackax/homebrew-gets-built-in-better-security-controls-updates-body-1789509506854.png" rel="noopener noreferrer" target="_blank">Homebrew</a> manages “casks,” which are used to install graphical applications, fonts, plugins, and other macOS software, and&nbsp;<a href="https://formulae.brew.sh/" rel="noopener noreferrer" target="_blank" style="color: rgb(2, 89, 156);">formulae</a>, which are Ruby-based package definitions that can instruc<a href="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1789509521/hackax/homebrew-gets-built-in-better-security-controls-updates-body-1789509518856.png" data-hackax-link="contextual" data-hackax-target="https://res.cloudinary.com/dxdbn6xwy/image/upload/v1789509521/hackax/homebrew-gets-built-in-better-security-controls-updates-body-1789509518856.png" rel="noopener noreferrer" target="_blank">t Homebr</a>ew to download files, run build commands, or install dependencies.</p><p>Homebrew 7.0.0 adds a scanning command that can check installed formulae, a specific one, or formulae and their dependencies declared in a Brewfile.</p><p>For each formula, Homebrew determines the upstream software repository and its version/tag, while for installed packages, it uses information from the available SBOM or derives the source from the formula definition.</p><p>The command sends the upstream repository and version/tag to OSV.dev in a batch query, retrieves the vulnerability records, verifies potential matches, applies optional severity filters, and finally checks whether Homebrew has already applied a security patch to this formula.</p><p>Separately, Homebrew’s new advisory database publishes OSV-format records documenting vulnerabilities affecting Homebrew formula versions and revisions, including fixes that have been backported without changing the upstream software version.</p><p>“Homebrew publishes advisory findings in the formula API and a downloadable advisory index, helping other tools distinguish outstanding vulnerabilities from fixes already shipped,” the&nbsp;<a href="http://brew.sh/2026/09/13/homebrew-7.0.0/" rel="noopener noreferrer" target="_blank" style="color: rgb(2, 89, 156);">project team explains</a>.</p><p>“The database’s OSV-format records are freely reusable under CC0, giving security teams a shared source of Homebrew-specific vulnerability data.”</p><p>Users also get better sandboxing in Homebrew 7.0.0 as access to users’ home directories is blocked by default and network-enabled dependency downloads are separated from offline installation.</p><p class="ql-align-center"><br></p><p><span style="color: rgb(7, 7, 7);">Homebrew also notes that installations and upgrades are faster in the new release, thanks to a new ability to download, prepare, and install packages concurrently.</span></p>
+        </div>
+
+        <div class="article-tags">
+
+            <span>
+                SECURITY ADVISORY
+            </span>
+
+            <span>
+                Security Advisory
+            </span>
+
+            <span>
+                Dyve HackaX
+            </span>
+
+        </div>
+
+    </main>
+
+</div>
+
+<section class="hx-cta">
+
+    <div class="hx-cta-card">
+
+        <h2>
+            Stay ahead of active threats
+        </h2>
+
+        <p>
+            Track breach signals, threat actors,
+            ransomware activity and underground
+            intelligence with Dyve HackaX.
+        </p>
+
+        <a
+            href="../"
+            class="hx-cta-btn"
+        >
+            Explore HackaX Intelligence →
+        </a>
+
+    </div>
+
+</section>
+
+<footer class="hx-footer">
+
+    <div class="hx-footer-logo">
+        DYVE // HACKAX
+    </div>
+
+    <div class="hx-legal">
+
+        <span>
+            © 2026 Dyve
+        </span>
+
+        <a
+            href="../privacy-policy/index.html"
+        >
+            Privacy
+        </a>
+
+        <a
+            href="../terms-of-service/index.html"
+        >
+            Terms
+        </a>
+
+    </div>
+
+</footer>
+
+<script>
+
+function copyLink(){
+    if(navigator.clipboard){
+        navigator.clipboard.writeText(
+            location.href
+        );
+    }
+
+    alert("Link copied");
+}
+
+function shareX(){
+    window.open(
+        "https://twitter.com/intent/tweet?url=" +
+        encodeURIComponent(location.href) +
+        "&text=" +
+        encodeURIComponent(document.title),
+        "_blank"
+    );
+}
+
+function shareLinkedIn(){
+    window.open(
+        "https://www.linkedin.com/sharing/share-offsite/?url=" +
+        encodeURIComponent(location.href),
+        "_blank"
+    );
+}
+
+function goBack(){
+    history.length > 1
+        ? history.back()
+        : location.href="../";
+}
+
+</script>
+
+</body>
+</html>
