@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
 <url>
-            <loc>https://dyve.online/signals/infostealer-logs-expose-replayable-ai-tokens-that-can-bypass-mfa.html</loc>
+            <loc>https://dyve.online/advisories/homebrew-700-gets-built-in-gui-better-security-controls.html</loc>
 
             <news:news>
 
@@ -18,67 +18,11 @@
                 </news:publication>
 
                 <news:publication_date>
-                    2026-09-09T00:00:00.000Z
+                    2026-09-15T00:00:00.000Z
                 </news:publication_date>
 
                 <news:title>
-                    Infostealer Logs Expose Replayable AI Tokens That Can Bypass MFA
-                </news:title>
-
-            </news:news>
-
-        </url>
-<url>
-            <loc>https://dyve.online/threat-actors/deepseek-harness-flaw-let-ai-agents-disable-their-own-file-sandbox-without-approval.html</loc>
-
-            <news:news>
-
-                <news:publication>
-
-                    <news:name>
-                        Dyve HackaX
-                    </news:name>
-
-                    <news:language>
-                        en
-                    </news:language>
-
-                </news:publication>
-
-                <news:publication_date>
-                    2026-09-09T00:00:00.000Z
-                </news:publication_date>
-
-                <news:title>
-                    DeepSeek Harness Flaw Let AI Agents Disable Their Own File Sandbox Without Approval
-                </news:title>
-
-            </news:news>
-
-        </url>
-<url>
-            <loc>https://dyve.online/advisories/group-of-bipartisan-lawmakers-ask-us-government-to-ban-several-hack-for-hire-firms.html</loc>
-
-            <news:news>
-
-                <news:publication>
-
-                    <news:name>
-                        Dyve HackaX
-                    </news:name>
-
-                    <news:language>
-                        en
-                    </news:language>
-
-                </news:publication>
-
-                <news:publication_date>
-                    2026-09-09T00:00:00.000Z
-                </news:publication_date>
-
-                <news:title>
-                    Group of bipartisan lawmakers ask US government to ban several hack-for-hire firms
+                    Homebrew 7.0.0 gets built-in GUI, better security controls
                 </news:title>
 
             </news:news>
