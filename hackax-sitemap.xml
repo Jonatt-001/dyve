@@ -79,6 +79,12 @@
             <priority>.9</priority>
         </url>
 <url>
+            <loc>https://dyve.online/advisories/homebrew-700-gets-built-in-gui-better-security-controls.html</loc>
+            <lastmod>2026-09-15</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>.8</priority>
+        </url>
+<url>
             <loc>https://dyve.online/signals/infostealer-logs-expose-replayable-ai-tokens-that-can-bypass-mfa.html</loc>
             <lastmod>2026-09-09</lastmod>
             <changefreq>weekly</changefreq>
